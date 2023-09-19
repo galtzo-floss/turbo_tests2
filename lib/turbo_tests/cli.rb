@@ -121,13 +121,14 @@ module TurboTests
       exitstatus = TurboTests::Runner.run(
         formatters: formatters,
         tags: tags,
-        files: @argv.empty? ? ["spec"] : @argv,
+        files: files,
         runtime_log: runtime_log,
         verbose: verbose,
         fail_fast: fail_fast,
         count: count,
         seed: seed,
         print_failed_group: print_failed_group,
+        parallel_options: parallel_options,
       )
 
       invoke_rake_task("turbo_tests:cleanup")

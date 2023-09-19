@@ -109,6 +109,12 @@ Options:
         --print_failed_group         Prints group that had failures in it
 ```
 
+To pass any options supported by paralell_tests, use `--` :
+
+```bash
+bundle exec turbo_tests -n 4 -- --only-group 1 --pattern spec/system
+```
+
 ### Rake Hooks
 
 If Rake is present, the CLI will invoke the tasks `turbo_tests:setup` and `turbo_tests:cleanup` before and after running
