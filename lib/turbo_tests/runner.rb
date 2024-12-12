@@ -155,15 +155,6 @@ module TurboTests
       end
     end
 
-    def setup_tmp_dir
-      begin
-        FileUtils.rm_r("tmp/test-pipes")
-      rescue Errno::ENOENT
-      end
-
-      FileUtils.mkdir_p("tmp/test-pipes/")
-    end
-
     def start_regular_subprocess(tests, process_id, **opts)
       start_subprocess(
         {"TEST_ENV_NUMBER" => process_id.to_s},
