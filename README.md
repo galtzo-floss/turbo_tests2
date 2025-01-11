@@ -70,6 +70,14 @@ Or install it yourself as:
 $ gem install turbo_tests2
 ```
 
+## Setup
+
+Create test databases
+
+```bash
+$ bundle exec turbo_tests --create
+```
+
 ## Usage
 
 Execute tests:
@@ -97,6 +105,7 @@ Options:
     -v, --verbose                    More output
         --fail-fast=[N]
         --seed SEED                  Seed for rspec
+        --create                     Create test databases
 ```
 
 ### Rake Hooks
