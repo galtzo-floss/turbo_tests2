@@ -127,7 +127,7 @@ module TurboTests
         fail_fast: fail_fast,
         count: count,
         seed: seed,
-        print_failed_group: print_failed_group
+        print_failed_group: print_failed_group,
       )
 
       invoke_rake_task("turbo_tests:cleanup")
