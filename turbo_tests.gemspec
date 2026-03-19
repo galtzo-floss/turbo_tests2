@@ -1,21 +1,21 @@
 require_relative "lib/turbo_tests/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "turbo_tests"
+  spec.name = "turbo_tests2"
   spec.version = TurboTests::VERSION
   spec.platform = Gem::Platform::RUBY
   spec.date = Time.now.strftime('%Y-%m-%d')
 
-  spec.summary = "`turbo_tests` is a drop-in replacement for `grosser/parallel_tests` with incremental summarized output. Source code of `turbo_test` gem is based on Discourse and Rubygems work in this area (see README file of the source repository)."
-  spec.homepage = "https://github.com/serpapi/turbo_tests"
+  spec.summary = "`turbo_tests2` is a drop-in replacement for `serpapi/turbo_tests` and `grosser/parallel_tests` with incremental summarized output. Source code of `turbo_test2` gem is based on Discourse and Rubygems work in this area (see README file of the source repository)."
+  spec.homepage = "https://github.com/galtzo-floss/turbo_tests2"
   spec.license = "MIT"
 
-  spec.authors = ["Illia Zub"]
-  spec.email = ["ilya@serpapi.com"]
+  spec.authors = ["Peter H. Boling", "Illia Zub"]
+  spec.email = ["floss@galtzo.com"]
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://github.com/serpapi/turbo_tests"
-  spec.metadata["changelog_uri"] = "https://github.com/serpapi/turbo_tests/releases"
+  spec.metadata["source_code_uri"] = "https://github.com/galtzo-floss/turbo_tests2"
+  spec.metadata["changelog_uri"] = "https://github.com/galtzo-floss/turbo_tests2/releases"
 
   spec.required_ruby_version = ">= 2.7"
 
