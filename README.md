@@ -9,11 +9,11 @@
 
 <div align="center">
 
-  ![Tests](https://github.com/serpapi/turbo_tests/workflows/Tests/badge.svg)
+  ![Tests](https://github.com/galtzo-floss/turbo_tests2/workflows/Tests/badge.svg)
 
 </div>
 
-`turbo_tests` is a drop-in replacement for [`grosser/parallel_tests`](https://github.com/grosser/parallel_tests) with incremental summarized output. Source code of this gem is based on [Discourse](https://github.com/discourse/discourse/blob/6b9784cf8a18636bce281a7e4d18e65a0cbc6290/lib/turbo_tests.rb) and [RubyGems](https://github.com/rubygems/rubygems/tree/390335ceb351668cd433bd5bb9823dd021f82533/bundler/tool) work in this area.
+`turbo_tests2` is a drop-in replacement for [`grosser/parallel_tests`](https://github.com/grosser/parallel_tests) with incremental summarized output. Source code of this gem is based on [Discourse](https://github.com/discourse/discourse/blob/6b9784cf8a18636bce281a7e4d18e65a0cbc6290/lib/turbo_tests.rb) and [RubyGems](https://github.com/rubygems/rubygems/tree/390335ceb351668cd433bd5bb9823dd021f82533/bundler/tool) work in this area.
 
 Incremental summarized output [doesn't fit vision of `parallel_tests` author](https://github.com/grosser/parallel_tests/issues/708) and [RSpec doesn't support built-in parallel testing yet](https://github.com/rspec/rspec-rails/issues/2104#issuecomment-658474900). This gem will not be useful once one of the issues above will be implemented.
 
@@ -40,10 +40,10 @@ Finished in 1 minute 35.05 seconds (files took 6.26 seconds to load)
 2158 examples, 0 failures
 ```
 
-`turbo_tests` output looks like regular `rspec`:
+`turbo_tests2` output looks like regular `rspec`:
 
 ```bash
-$ bundle exec turbo_tests
+$ bundle exec turbo_tests2
 ..........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................F........................................................................................................................................F..............................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
 
 Finished in 2 minute 25.15 seconds (files took 0 seconds to load)
@@ -55,7 +55,7 @@ Finished in 2 minute 25.15 seconds (files took 0 seconds to load)
 Add this line to your application's `Gemfile`:
 
 ```ruby
-gem 'turbo_tests'
+gem 'turbo_tests2'
 ```
 
 And then execute:
@@ -67,7 +67,7 @@ $ bundle install
 Or install it yourself as:
 
 ```bash
-$ gem install turbo_tests
+$ gem install turbo_tests2
 ```
 
 ## Usage
@@ -75,17 +75,17 @@ $ gem install turbo_tests
 Execute tests:
 
 ```bash
-$ bundle exec turbo_tests
+$ bundle exec turbo_tests2
 ```
 
 Show help:
 
 ```bash
-$ bundle exec turbo_tests -h
-Usage: turbo_tests [options]
+$ bundle exec turbo_tests2 -h
+Usage: turbo_tests2 [options]
 
 [optional] Only selected files & folders:
-  turbo_tests spec/bar spec/baz/xxx_spec.rb
+  turbo_tests2 spec/bar spec/baz/xxx_spec.rb
 
 Options:
     -n [PROCESSES]                   How many processes to use, default: available CPUs
@@ -107,7 +107,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/serpapi/turbo_tests. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/serpapi/turbo_tests/blob/master/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/galtzo-floss/turbo_tests2. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/galtzo-floss/turbo_tests2/blob/master/CODE_OF_CONDUCT.md).
 
 
 ## License
@@ -116,4 +116,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the TurboTests project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/serpapi/turbo_tests/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the TurboTests project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/galtzo-floss/turbo_tests2/blob/master/CODE_OF_CONDUCT.md).

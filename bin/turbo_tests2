@@ -6,6 +6,6 @@
 root = File.expand_path("../..", __FILE__)
 $LOAD_PATH << "#{root}/lib" if File.exist?("#{root}/Gemfile")
 
-require "turbo_tests"
+require "turbo_tests2"
 
 TurboTests::CLI.new(ARGV).run

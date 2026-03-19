@@ -100,7 +100,7 @@ module TurboTests
         if @reporter.failed_examples.empty? && wait_threads.map(&:value).all?(&:success?)
           0
         else
-          # From https://github.com/serpapi/turbo_tests/pull/20/
+          # From https://github.com/galtzo-floss/turbo_tests2/pull/20/
           wait_threads.map { |thread| thread.value.exitstatus }.max
         end
       end

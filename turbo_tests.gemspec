@@ -1,4 +1,4 @@
-require_relative "lib/turbo_tests/version"
+require_relative "lib/turbo_tests2/version"
 
 Gem::Specification.new do |spec|
   spec.name = "turbo_tests2"
@@ -30,5 +30,5 @@ Gem::Specification.new do |spec|
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   end
 
-  spec.executables = ["turbo_tests"]
+  spec.executables = ["turbo_tests2"]
 end

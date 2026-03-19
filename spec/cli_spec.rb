@@ -1,12 +1,12 @@
 RSpec.describe TurboTests::CLI do
   before { output }
 
-  subject(:output) { `bundle exec turbo_tests -f d #{fixture}`.strip }
+  subject(:output) { `bundle exec turbo_tests2 -f d #{fixture}`.strip }
 
   context "when the 'seed' parameter was used" do
     let(:seed) { 1234 }
 
-    subject(:output) { `bundle exec turbo_tests -f d #{fixture} --seed #{seed}`.strip }
+    subject(:output) { `bundle exec turbo_tests2 -f d #{fixture} --seed #{seed}`.strip }
 
     context "errors outside of examples" do
       let(:expected_start_of_output) {

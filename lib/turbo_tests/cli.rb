@@ -24,12 +24,12 @@ module TurboTests
 
           Reports test results incrementally. Uses methods from `parallel_tests` gem to split files to groups.
 
-          Source code of `turbo_tests` gem is based on Discourse and RubyGems work in this area (see README file of the source repository).
+          Source code of `turbo_tests2` gem is based on Discourse and RubyGems work in this area (see README file of the source repository).
 
-          Usage: turbo_tests [options]
+          Usage: turbo_tests2 [options]
 
           [optional] Only selected files & folders:
-            turbo_tests spec/bar spec/baz/xxx_spec.rb
+            turbo_tests2 spec/bar spec/baz/xxx_spec.rb
 
           Options:
         BANNER
@@ -109,7 +109,7 @@ module TurboTests
         seed: seed
       )
 
-      # From https://github.com/serpapi/turbo_tests/pull/20/
+      # From https://github.com/galtzo-floss/turbo_tests2/pull/20/
       exit exitstatus
     end
   end

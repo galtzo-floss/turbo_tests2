@@ -6,12 +6,12 @@ on:
     branches:
       - master
     paths:
-      - "lib/turbo_tests/version.rb"
+      - "lib/turbo_tests2/version.rb"
 
 jobs:
   release:
     env:
-      GEM_NAME: turbo_tests
+      GEM_NAME: turbo_tests2
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     name: Tag and Release
     runs-on: ubuntu-latest
@@ -31,7 +31,7 @@ jobs:
       run: |
         bundle exec rake install:local
         bundle install
-        bundle exec turbo_tests
+        bundle exec turbo_tests2
 
     - uses: actions/upload-artifact@v4
       with:
@@ -46,7 +46,7 @@ jobs:
     - name: Get current version
       id: version-label
       run: |
-        VERSION=$(grep VERSION lib/turbo_tests/version.rb | head -n 1 | cut -d'"' -f2)
+        VERSION=$(grep VERSION lib/turbo_tests2/version.rb | head -n 1 | cut -d'"' -f2)
         echo "version=${VERSION}" >> $GITHUB_OUTPUT
 
     - name: Create tag
