@@ -10,13 +10,13 @@ require "rspec"
 require "parallel_tests"
 require "parallel_tests/rspec/runner"
 
-require "turbo_tests2/reporter"
-require "turbo_tests2/runner"
-require "turbo_tests2/json_rows_formatter"
+require "turbo_tests/reporter"
+require "turbo_tests/runner"
+require "turbo_tests/json_rows_formatter"
 
 module TurboTests
-  autoload :CLI, "turbo_tests2/cli"
-  autoload :VERSION, "turbo_tests2/version"
+  autoload :CLI, "turbo_tests/cli"
+  autoload :VERSION, "turbo_tests/version"
 
   FakeException = Struct.new(:backtrace, :message, :cause)
   class FakeException

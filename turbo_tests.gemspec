@@ -1,4 +1,4 @@
-require_relative "lib/turbo_tests2/version"
+require_relative "lib/turbo_tests/version"
 
 Gem::Specification.new do |spec|
   spec.name = "turbo_tests2"

@@ -6,7 +6,7 @@ on:
     branches:
       - master
     paths:
-      - "lib/turbo_tests2/version.rb"
+      - "lib/turbo_tests/version.rb"
 
 jobs:
   release:
