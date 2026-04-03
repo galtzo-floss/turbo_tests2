@@ -8,7 +8,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    ansi (1.5.0)
+    ansi (1.6.0)
     appraisal2 (3.0.6)
       bundler (>= 1.17.3)
       rake (>= 10)
@@ -41,10 +41,10 @@ GEM
     lint_roller (1.1.0)
     method_source (1.1.0)
     ostruct (0.6.3)
-    parallel (1.27.0)
+    parallel (1.28.0)
     parallel_tests (5.6.0)
       parallel
-    parser (3.3.11.0)
+    parser (3.3.11.1)
       ast (~> 2.4.1)
       racc
     prism (1.9.0)
@@ -205,4 +205,4 @@ DEPENDENCIES
   yard-junk (~> 0.0.10)
 
 BUNDLED WITH
-   2.6.2
+  4.0.9
