@@ -26,3 +26,5 @@ eval_gemfile "gemfiles/modular/style.gemfile"
 eval_gemfile "gemfiles/modular/documentation.gemfile"
 
 gem "appraisal2"
+
+eval_gemfile "gemfiles/modular/templating.gemfile"
