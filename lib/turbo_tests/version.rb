@@ -1,3 +1,8 @@
+# frozen_string_literal: true
+
 module TurboTests
-  VERSION = "2.2.5"
+  module Version
+    VERSION = "2.2.5"
+  end
+  VERSION = Version::VERSION # Traditional Constant Location
 end

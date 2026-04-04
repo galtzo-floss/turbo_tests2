@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+require "version_gem"
+require_relative "turbo_tests/version"
+
+TurboTests::Version.class_eval do
+  extend VersionGem::Basic
+end
 require "securerandom"
 require "open3"
 require "fileutils"
@@ -16,9 +22,7 @@ require "turbo_tests/json_rows_formatter"
 
 module TurboTests
   autoload :CLI, "turbo_tests/cli"
-  autoload :VERSION, "turbo_tests/version"
-
-  FakeException = Struct.new(:backtrace, :message, :cause)
+FakeException = Struct.new(:backtrace, :message, :cause)
   class FakeException
     def self.from_obj(obj)
       return unless obj

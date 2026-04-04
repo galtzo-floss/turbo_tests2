@@ -1,22 +1,30 @@
-source "https://rubygems.org"
+# frozen_string_literal: true
 
-# Specify your gem's dependencies in turbo_tests2.gemspec
+# kettle-jem:freeze
+# To retain chunks of comments & code during turbo_tests2 templating:
+# Wrap custom sections with freeze markers (e.g., as above and below this comment chunk).
+# turbo_tests2 will then preserve content between those markers across template runs.
+# kettle-jem:unfreeze
+
+source "https://gem.coop"
+
+git_source(:codeberg) { |repo_name| "https://codeberg.org/#{repo_name}" }
+git_source(:gitlab) { |repo_name| "https://gitlab.com/#{repo_name}" }
+
 #### IMPORTANT #######################################################
 # Gemfile is for local development ONLY; Gemfile is NOT loaded in CI #
 ####################################################### IMPORTANT ####
 
-# Specify your gem's general development dependencies in turbo_tests.gemspec
+# Include dependencies from turbo_tests2.gemspec
 gemspec
 
-# Security Audit
-if RUBY_VERSION >= "3"
-  # NOTE: Audit fails on Ruby 2.7 because nokogiri has dropped support for Ruby < 3
-  # See: https://github.com/sparklemotion/nokogiri/security/advisories/GHSA-r95h-9x8f-r3f7
-  # We can't add upgraded nokogiri here unless we are developing on Ruby 3+
-  eval_gemfile "gemfiles/modular/audit.gemfile"
-end
+# Templating (env-switched: KETTLE_RB_DEV=true for local paths)
+eval_gemfile "gemfiles/modular/templating.gemfile"
 
-# Code Coverage
+# Debugging
+eval_gemfile "gemfiles/modular/debug.gemfile"
+
+# Code Coverage (env-switched: KETTLE_RB_DEV=true for local paths)
 eval_gemfile "gemfiles/modular/coverage.gemfile"
 
 # Linting
@@ -25,6 +33,11 @@ eval_gemfile "gemfiles/modular/style.gemfile"
 # Documentation
 eval_gemfile "gemfiles/modular/documentation.gemfile"
 
-gem "appraisal2"
+# Optional
+eval_gemfile "gemfiles/modular/optional.gemfile"
 
-eval_gemfile "gemfiles/modular/templating.gemfile"
+### Std Lib Extracted Gems
+eval_gemfile "gemfiles/modular/x_std_libs.gemfile"
+
+# See unlocked_deps appraisal for more details on irb inclusion
+gem "irb", "~> 1.17" # ruby >= 2.7

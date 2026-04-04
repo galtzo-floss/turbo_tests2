@@ -48,6 +48,12 @@
 #   max_recursion_depth:
 #     Limit for recursive merging when a merger supports it
 #
+# Other per-file options (apply to any strategy):
+#   skip_unresolved_scan:
+#     true  - do not scan this file for unresolved {KJ|...} tokens after writing.
+#             Use when a file legitimately contains {KJ|...} text as documentation
+#             or example content rather than as a template placeholder.
+#
 # Token values:
 #   Precedence is:
 #     1) ENV variables
@@ -90,6 +96,41 @@ engines:
 # Default (when key is absent): org_and_project
 readme:
   top_logo_mode: org
+
+# SPDX license identifiers for this project.
+# List one or more licenses that apply to the gem. Users may use the software
+# under the terms of any one license listed here (OR semantics, not AND).
+#
+# Accepted values (initial supported set):
+#   MIT                              - MIT License (open source, permissive)
+#   AGPL-3.0-only                    - GNU Affero General Public License v3
+#   PolyForm-Noncommercial-1.0.0     - PolyForm Noncommercial License 1.0.0
+#   PolyForm-Small-Business-1.0.0    - PolyForm Small Business License 1.0.0
+#   LicenseRef-Big-Time-Public-License - Big Time Public License 2.0.2
+#
+# Defaults to spec.licenses from the gemspec when this key is absent.
+#
+# Template behaviour:
+#   - Each listed license is copied as <SPDX-basename>.md into the project.
+#   - A LICENSE.md index file is generated referencing all chosen licenses.
+#   - Any non-MIT license adds a "contact for commercial license" prompt.
+#   - When MIT (or AGPL), a PolyForm variant, AND LicenseRef-Big-Time-Public-License
+#     are all present, a use-case guide table is added to README and LICENSE.md.
+licenses: [MIT]
+
+# Machine / automation accounts to exclude from generated copyright output.
+#
+# When kettle-jem collects copyright information via `git blame`, it filters
+# out known GitHub/GitLab bot accounts automatically.  Use this list to also
+# exclude internal automation accounts that are not bots in the git sense
+# (i.e. they do not follow the "[bot]" naming convention).
+#
+# Each entry is matched case-insensitively against the commit author name AND
+# the commit author email, so you can list either form.
+#
+# Default (when key is absent or empty): ["autobolt"]
+machine_users:
+  - autobolt
 
 # Self-test / templating CI threshold.
 # Set to a number from 0 to 100 to fail `rake kettle:jem:selftest` once
@@ -152,28 +193,5 @@ patterns:
 # Per-file configuration (nested directory structure)
 # Only files that need overrides belong here. Everything else defaults to merge.
 files:
-  AGENTS.md:
-    strategy: accept_template
-
-# To override specific files, add entries like:
-#
-# files:
-#   README.md:
-#     strategy: accept_template
-#
-#   SECURITY.md:
-#     strategy: keep_destination
-#
-#   certs:
-#     pboling.pem:
-#       strategy: raw_copy
-#
-#   .git-hooks:
-#     commit-msg:
-#       strategy: merge
-#       file_type: ruby
-#
-#   Rakefile:
-#     strategy: merge
-#     preference: destination
-#     add_template_only_nodes: false
+   AGENTS.md:
+     strategy: accept_template
