@@ -272,5 +272,29 @@ An error occurred while loading #{fixture}.
         expect(TurboTests::Runner).to have_received(:create).with(4)
       end
     end
+
+    describe "#invoke_rake_task" do
+      subject(:cli) { described_class.new([]) }
+
+      context "when the task is defined" do
+        let(:task) { instance_double(Rake::Task, invoke: nil) }
+
+        before do
+          allow(Rake::Task).to receive(:task_defined?).with("turbo_tests:example").and_return(true)
+          allow(Rake::Task).to receive(:[]).with("turbo_tests:example").and_return(task)
+        end
+
+        it "invokes the task" do
+          cli.send(:invoke_rake_task, "turbo_tests:example")
+          expect(task).to have_received(:invoke)
+        end
+      end
+
+      context "when the task is not defined" do
+        it "returns without invoking anything" do
+          block_is_expected.not_to raise_error
+        end
+      end
+    end
   end
 end
