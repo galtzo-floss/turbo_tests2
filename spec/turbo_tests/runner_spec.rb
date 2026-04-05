@@ -459,8 +459,7 @@ RSpec.describe TurboTests::Runner do
         runner = build_runner(print_failed_group: true, reporter: reporter)
 
         allow(ParallelTests).to receive(:determine_number_of_processes).and_return(0)
-        allow(ParallelTests::RSpec::Runner).to receive(:tests_with_size).and_return([])
-        allow(ParallelTests::RSpec::Runner).to receive(:tests_in_groups).and_return([])
+        allow(ParallelTests::RSpec::Runner).to receive_messages(tests_with_size: [], tests_in_groups: [])
         allow(reporter).to receive(:report).and_yield(reporter)
         allow(Signal).to receive(:trap).and_return(nil)
         allow(runner).to receive(:handle_messages)
