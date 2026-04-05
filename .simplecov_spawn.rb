@@ -4,7 +4,12 @@
 # to collect coverage from processes started with backticks, Open3, or Process.spawn.
 #
 # How this works:
-#   `require "simplecov"` below causes Ruby to load simplecov's defaults module
+#   `require "kettle-soup-cover"` sets up Kettle::Soup::Cover::Constants (and other
+#   modules), mirroring what spec_helper.rb does. This must happen BEFORE simplecov
+#   is loaded because our `.simplecov` file does `require "kettle/soup/cover/config"`,
+#   and config.rb references Kettle::Soup::Cover::Constants directly.
+#
+#   `require "simplecov"` then causes Ruby to load simplecov's defaults module
 #   (simplecov/defaults.rb), which searches upward from SimpleCov.root for a
 #   `.simplecov` file and loads it immediately at require time. Our `.simplecov`
 #   calls `SimpleCov.start`, so coverage measurement begins in that ONE call —
@@ -21,7 +26,10 @@
 # Usage — set in the test process before spawning, restore after:
 #   ENV["RUBYOPT"] = "-r./.simplecov_spawn #{ENV["RUBYOPT"]}".strip
 #
-# See: https://github.com/simplecov-ruby/simplecov#running-simplecov-against-spawned-subprocesses
+# .simplecov (and kettle/soup/cover/config inside it) references Kettle::Soup::Cover::Constants.
+# That namespace is only available after the kettle-soup-cover main entry point is loaded.
+# Mirror spec_helper.rb: require "kettle-soup-cover" first, then "simplecov".
+require "kettle-soup-cover"
 require "simplecov"
 
 # .simplecov was auto-loaded above and already called SimpleCov.start.
