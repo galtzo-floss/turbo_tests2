@@ -1,11 +1,4 @@
-# External RSpec & related config
-require "parallel_tests/tasks"
-require "kettle/test/rspec"
-
-# RSpec Configs
-require_relative "config/debug"
-require_relative "config/rspec/rspec_core"
-require_relative "config/rspec/rspec_block_is_expected"
+# frozen_string_literal: true
 
 # Config for development dependencies of this library
 # i.e., not configured by this library
@@ -20,5 +13,14 @@ rescue LoadError => error
   # check the error message and re-raise when unexpected
   raise error unless error.message.include?("kettle")
 end
+
+# External RSpec & related config
+require "parallel_tests/tasks"
+require "kettle/test/rspec"
+
+# RSpec Configs
+require_relative "config/debug"
+require_relative "config/rspec/rspec_core"
+require_relative "config/rspec/rspec_block_is_expected"
 
 require "turbo_tests2"
