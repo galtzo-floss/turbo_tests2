@@ -3,6 +3,19 @@ RSpec.describe TurboTests::CLI do
 
   before { output }
 
+  # When SimpleCov is active, inject .simplecov_spawn into spawned subprocesses
+  # via RUBYOPT so their coverage is collected and merged into the main report.
+  around do |example|
+    if defined?(SimpleCov) && SimpleCov.running
+      original_rubyopt = ENV.fetch("RUBYOPT", nil)
+      ENV["RUBYOPT"] = "-r./.simplecov_spawn #{original_rubyopt}".strip
+      example.run
+      ENV["RUBYOPT"] = original_rubyopt
+    else
+      example.run
+    end
+  end
+
   context "when the 'seed' parameter was used", :check_output do
     subject(:output) { `bundle exec turbo_tests -f d #{fixture} --seed #{seed}`.strip }
 
