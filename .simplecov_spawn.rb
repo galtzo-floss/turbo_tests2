@@ -29,6 +29,11 @@
 # .simplecov (and kettle/soup/cover/config inside it) references Kettle::Soup::Cover::Constants.
 # That namespace is only available after the kettle-soup-cover main entry point is loaded.
 # Mirror spec_helper.rb: require "kettle-soup-cover" first, then "simplecov".
+#
+# Disable resultset cleaning in spawned processes: each spawned process must NOT wipe
+# .resultset.json or it would erase the accumulated coverage from other workers.
+# Only the parent process (which initialises SimpleCov normally via .simplecov) may clean.
+ENV["K_SOUP_COV_CLEAN_RESULTSET"] = "false"
 require "kettle-soup-cover"
 require "simplecov"
 
