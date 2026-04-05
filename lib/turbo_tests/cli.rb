@@ -123,6 +123,9 @@ module TurboTests
 
       invoke_rake_task("turbo_tests:setup")
 
+      files = @argv.empty? ? ["spec"] : @argv
+      parallel_options = {}
+
       exitstatus = TurboTests::Runner.run(
         formatters: formatters,
         tags: tags,
