@@ -144,4 +144,133 @@ An error occurred while loading #{fixture}.
       end
     end
   end
+
+  describe "passing examples", :check_output do
+    let(:fixture) { "./fixtures/rspec/passing_spec.rb" }
+
+    it "reports a passing example and exits 0" do
+      expect($?.exitstatus).to eql(0)
+      expect(output).to include("1 example, 0 failures")
+    end
+  end
+
+  # Unit tests for option parsing — stub Runner.run so no subprocess is spawned.
+  describe "option parsing" do
+    # Override the outer subject(:output) so the inherited `before { output }` is a no-op.
+    subject(:output) { nil }
+
+    let(:captured_opts) { {} }
+
+    before do
+      allow(TurboTests::Runner).to receive(:run) do |opts|
+        captured_opts.merge!(opts)
+        0
+      end
+    end
+
+    def run_cli(args)
+      TurboTests::CLI.new(args).run
+    rescue SystemExit
+      nil
+    end
+
+    it "defaults to progress formatter writing to stdout" do
+      run_cli([])
+      expect(captured_opts[:formatters]).to eq([{name: "progress", outputs: ["-"]}])
+    end
+
+    it "passes verbose: true with --verbose" do
+      run_cli(["--verbose"])
+      expect(captured_opts[:verbose]).to be true
+    end
+
+    it "passes nice: true with --nice" do
+      run_cli(["--nice"])
+      expect(captured_opts[:nice]).to be true
+    end
+
+    it "passes runtime_log with --runtime-log" do
+      run_cli(["--runtime-log", "my.log"])
+      expect(captured_opts[:runtime_log]).to eq("my.log")
+    end
+
+    it "collects tags with --tag" do
+      run_cli(["--tag", "focus"])
+      expect(captured_opts[:tags]).to eq(["focus"])
+    end
+
+    it "passes seed with --seed" do
+      run_cli(["--seed", "42"])
+      expect(captured_opts[:seed]).to eq("42")
+    end
+
+    it "passes print_failed_group: true with --print_failed_group" do
+      run_cli(["--print_failed_group"])
+      expect(captured_opts[:print_failed_group]).to be true
+    end
+
+    it "adds a named formatter with -f" do
+      run_cli(["-f", "progress"])
+      expect(captured_opts[:formatters].first[:name]).to eq("progress")
+    end
+
+    it "requires the file with -r" do
+      run_cli(["-r", "json"]) # json is already loaded; require is a no-op
+      expect(captured_opts[:verbose]).to be false
+    end
+
+    describe "--fail-fast" do
+      it "defaults to 1 with no value" do
+        run_cli(["--fail-fast"])
+        expect(captured_opts[:fail_fast]).to eq(1)
+      end
+
+      it "defaults to 1 when value is 0" do
+        run_cli(["--fail-fast=0"])
+        expect(captured_opts[:fail_fast]).to eq(1)
+      end
+
+      it "uses the given value when >= 1" do
+        run_cli(["--fail-fast=3"])
+        expect(captured_opts[:fail_fast]).to eq(3)
+      end
+
+      it "defaults to 1 on non-integer value" do
+        run_cli(["--fail-fast=abc"])
+        expect(captured_opts[:fail_fast]).to eq(1)
+      end
+    end
+
+    describe "-o / --out FILE" do
+      context "with no prior formatter" do
+        it "adds a default progress formatter and sets the file as output" do
+          run_cli(["-o", "output.txt"])
+          expect(captured_opts[:formatters].first[:name]).to eq("progress")
+          expect(captured_opts[:formatters].first[:outputs]).to eq(["output.txt"])
+        end
+      end
+
+      context "with a prior -f formatter" do
+        it "appends the file to that formatter's outputs" do
+          run_cli(["-f", "progress", "-o", "output.txt"])
+          expect(captured_opts[:formatters].first[:outputs]).to include("output.txt")
+        end
+      end
+    end
+
+    describe "--create" do
+      before { allow(TurboTests::Runner).to receive(:create).and_return(nil) }
+
+      it "calls Runner.create and skips Runner.run" do
+        run_cli(["--create"])
+        expect(TurboTests::Runner).to have_received(:create).with(nil)
+        expect(TurboTests::Runner).not_to have_received(:run)
+      end
+
+      it "passes -n count to Runner.create" do
+        run_cli(["--create", "-n", "4"])
+        expect(TurboTests::Runner).to have_received(:create).with(4)
+      end
+    end
+  end
 end
