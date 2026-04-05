@@ -20,32 +20,6 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Added
 
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
-
-## [3.0.0] - 2026-04-04
-
-- TAG: [v3.0.0][3.0.0t]
-- COVERAGE: 97.48% -- 426/437 lines in 14 files
-- BRANCH COVERAGE: 90.36% -- 75/83 branches in 14 files
-- 38.81% documented
-
-[🔀upstream]: https://github.com/serpapi/turbo_tests
-[🔀fork-point]: https://github.com/serpapi/turbo_tests/commit/7d4064e5b8acc2f53929fccf7be3eb63f8a9f140
-[🔀vitals]: https://github.com/VitalConnectInc/turbo_tests
-[🔀rm-wrapper]: https://github.com/serpapi/turbo_tests/pull/45/files#r1456006187
-[🐛vitals-13]: https://github.com/VitalConnectInc/turbo_tests/issues/13
-[📎simplecov-spawn]: https://github.com/simplecov-ruby/simplecov#running-simplecov-against-spawned-subprocesses
-
-### Added
-
 #### From `VitalConnectInc/turbo_tests`, now part of `turbo_tests2`
 
 - `--create` flag: create test database(s) before running the suite,
@@ -84,6 +58,8 @@ Please file a bug if you notice a violation of semantic versioning.
   developer-facing configuration aligned with the `galtzo-floss` workspace
   conventions.
 
+[📎simplecov-spawn]: https://github.com/simplecov-ruby/simplecov#running-simplecov-against-spawned-subprocesses
+
 ### Changed
 
 - Gem renamed from `turbo_tests` to `turbo_tests2`; the `turbo_tests` binary
@@ -99,6 +75,12 @@ Please file a bug if you notice a violation of semantic versioning.
 - Upgraded GitHub Actions to `actions/checkout@v4` and
   `actions/upload-artifact@v4`.
 
+[🔀rm-wrapper]: https://github.com/serpapi/turbo_tests/pull/45/files#r1456006187
+
+### Deprecated
+
+### Removed
+
 ### Fixed
 
 - Delay loading of `parallel_tests` Rake tasks: loading them eagerly at
@@ -108,6 +90,13 @@ Please file a bug if you notice a violation of semantic versioning.
   to each subprocess process group (with `Errno::ESRCH` rescue for already-
   gone processes) and sets a handled flag; a second interrupt calls
   `Kernel.exit` immediately, preventing hung CI jobs.
+
+[🐛vitals-13]: https://github.com/VitalConnectInc/turbo_tests/issues/13
+[🔀upstream]: https://github.com/serpapi/turbo_tests
+[🔀fork-point]: https://github.com/serpapi/turbo_tests/commit/7d4064e5b8acc2f53929fccf7be3eb63f8a9f140
+[🔀vitals]: https://github.com/VitalConnectInc/turbo_tests
+
+### Security
 
 [Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.0.0...HEAD
 [3.0.0]: https://github.com/galtzo-floss/turbo_tests2/compare/7d4064e5b8acc2f53929fccf7be3eb63f8a9f140...v3.0.0
