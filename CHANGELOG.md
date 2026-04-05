@@ -57,6 +57,12 @@ Please file a bug if you notice a violation of semantic versioning.
 - `kettle-jem` template bootstrap: project tooling, gemfiles, CI, and
   developer-facing configuration aligned with the `galtzo-floss` workspace
   conventions.
+- Multi-process integration spec (`spec/integration/multi_process_spec.rb`):
+  dogfoods the library's core value proposition by launching real
+  `bundle exec turbo_tests -n 2` subprocesses against multiple fixture
+  spec files and asserting on the merged, streamed output.  Covers three
+  scenarios: passing+pending, failing+passing, and load-error+passing.
+  Full suite now at **97 examples, 0 failures**, LINE 98.87%, BRANCH 100%.
 
 [📎simplecov-spawn]: https://github.com/simplecov-ruby/simplecov#running-simplecov-against-spawned-subprocesses
 
@@ -90,6 +96,19 @@ Please file a bug if you notice a violation of semantic versioning.
   to each subprocess process group (with `Errno::ESRCH` rescue for already-
   gone processes) and sets a handled flag; a second interrupt calls
   `Kernel.exit` immediately, preventing hung CI jobs.
+- All 24 RuboCop lint offenses resolved (0 remaining): converted singleton
+  `def self.*` methods to `class << self` blocks, replaced block-level
+  `rescue` with explicit `begin..rescue..end` for Ruby 2.3 compatibility,
+  swapped `STDERR`/`STDOUT` for `$stderr`/`$stdout`, and suppressed
+  intentional `Thread.new` calls.
+- Prevented duplicate `test`/`spec` Rake task registration.
+- Branch coverage restored to **100% (83/83 branches)**: stale SimpleCov
+  `.resultset.json` entries from before the `class << self` refactor were
+  producing phantom uncovered branches with shifted line numbers.  Added
+  targeted tests for all 8 genuinely uncovered branches (`Errno::ENOENT`
+  rescue, `Process.respond_to?(:getpgid)` fallback, plain `"rspec"` command
+  path, stdout prefix printing, nil-message skip, fail-fast kill+break,
+  `print_failed_group`, and both `RSpecExt#handle_interrupt` branches).
 
 [🐛vitals-13]: https://github.com/VitalConnectInc/turbo_tests/issues/13
 [🔀upstream]: https://github.com/serpapi/turbo_tests
