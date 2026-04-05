@@ -72,6 +72,7 @@ task :default do
   puts "Default task complete."
 end
 
+desc "Run tests via spec task"
 task test: :spec
 
 begin

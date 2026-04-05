@@ -30,13 +30,23 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Security
 
-## [3.0.0] - 2026-04-05
+## [3.0.0] - 2026-04-04
 
-Hard forked from [`serpapi/turbo_tests`][🔀upstream] at commit [`7d4064e`][🔀fork-point] (upstream v2.2.5).
-Prior development history from [`VitalConnectInc/turbo_tests`][🔀vitals] (a prior fork of the same upstream
-by the same maintainer) is incorporated wholesale and documented below.
+- TAG: [v3.0.0][3.0.0t]
+- COVERAGE: 97.48% -- 426/437 lines in 14 files
+- BRANCH COVERAGE: 90.36% -- 75/83 branches in 14 files
+- 38.81% documented
 
-### Added (from `VitalConnectInc/turbo_tests`, now part of `turbo_tests2`)
+[🔀upstream]: https://github.com/serpapi/turbo_tests
+[🔀fork-point]: https://github.com/serpapi/turbo_tests/commit/7d4064e5b8acc2f53929fccf7be3eb63f8a9f140
+[🔀vitals]: https://github.com/VitalConnectInc/turbo_tests
+[🔀rm-wrapper]: https://github.com/serpapi/turbo_tests/pull/45/files#r1456006187
+[🐛vitals-13]: https://github.com/VitalConnectInc/turbo_tests/issues/13
+[📎simplecov-spawn]: https://github.com/simplecov-ruby/simplecov#running-simplecov-against-spawned-subprocesses
+
+### Added
+
+#### From `VitalConnectInc/turbo_tests`, now part of `turbo_tests2`
 
 - `--create` flag: create test database(s) before running the suite,
   mirroring the same feature from `parallel_tests`.
@@ -54,7 +64,7 @@ by the same maintainer) is incorporated wholesale and documented below.
 - Forward additional `Runner` options to `Reporter` for richer output control.
 - Custom-formatter documentation added to README.
 
-### Added (new in `turbo_tests2`)
+#### New in `turbo_tests2`
 
 - `exe/turbo_tests` binary: primary drop-in replacement for the original
   `serpapi/turbo_tests` gem's executable — existing scripts and CI configs
@@ -99,13 +109,6 @@ by the same maintainer) is incorporated wholesale and documented below.
   gone processes) and sets a handled flag; a second interrupt calls
   `Kernel.exit` immediately, preventing hung CI jobs.
 
-
-[Unreleased]: https://gitlab.com/galtzo-floss/turbo_tests2/-/compare/v3.0.0...HEAD
-[3.0.0]: https://gitlab.com/galtzo-floss/turbo_tests2/-/compare/7d4064e5b8acc2f53929fccf7be3eb63f8a9f140...v3.0.0
-[3.0.0t]: https://gitlab.com/galtzo-floss/turbo_tests2/-/tags/v3.0.0
-[🔀upstream]: https://github.com/serpapi/turbo_tests
-[🔀fork-point]: https://github.com/serpapi/turbo_tests/commit/7d4064e5b8acc2f53929fccf7be3eb63f8a9f140
-[🔀vitals]: https://github.com/VitalConnectInc/turbo_tests
-[🔀rm-wrapper]: https://github.com/serpapi/turbo_tests/pull/45/files#r1456006187
-[🐛vitals-13]: https://github.com/VitalConnectInc/turbo_tests/issues/13
-[📎simplecov-spawn]: https://github.com/simplecov-ruby/simplecov#running-simplecov-against-spawned-subprocesses
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/galtzo-floss/turbo_tests2/compare/7d4064e5b8acc2f53929fccf7be3eb63f8a9f140...v3.0.0
+[3.0.0t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.0.0

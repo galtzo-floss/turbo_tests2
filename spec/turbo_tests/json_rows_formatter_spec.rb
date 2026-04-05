@@ -9,10 +9,12 @@ RSpec.describe TurboTests::JsonRowsFormatter do
   let(:output_id) { "TEST_OUTPUT_ID_#{SecureRandom.hex(4)}" }
 
   around do |example|
-    ENV["RSPEC_FORMATTER_OUTPUT_ID"] = output_id
-    example.run
-  ensure
-    ENV.delete("RSPEC_FORMATTER_OUTPUT_ID")
+    begin
+      ENV["RSPEC_FORMATTER_OUTPUT_ID"] = output_id
+      example.run
+    ensure
+      ENV.delete("RSPEC_FORMATTER_OUTPUT_ID")
+    end
   end
 
   def parsed_row
@@ -23,21 +25,25 @@ RSpec.describe TurboTests::JsonRowsFormatter do
   end
 
   def build_example(shared_group_frames: [])
-    execution_result = double("execution_result",
+    execution_result = double(
+      "execution_result",
       example_skipped?: false,
       pending_message: nil,
       status: :passed,
       pending_fixed?: false,
       exception: nil,
-      pending_exception: nil)
+      pending_exception: nil,
+    )
 
-    double("example",
+    double(
+      "example",
       execution_result: execution_result,
       location: "spec/foo_spec.rb:1",
       description: "does something",
       full_description: "Foo does something",
       metadata: {shared_group_inclusion_backtrace: shared_group_frames},
-      location_rerun_argument: "spec/foo_spec.rb:1")
+      location_rerun_argument: "spec/foo_spec.rb:1",
+    )
   end
 
   describe "#example_passed" do
@@ -54,20 +60,24 @@ RSpec.describe TurboTests::JsonRowsFormatter do
   describe "#example_failed" do
     it "outputs an example_failed row with exception details" do
       exception = RuntimeError.new("oops")
-      execution_result = double("execution_result",
+      execution_result = double(
+        "execution_result",
         example_skipped?: false,
         pending_message: nil,
         status: :failed,
         pending_fixed?: false,
         exception: exception,
-        pending_exception: nil)
-      example = double("example",
+        pending_exception: nil,
+      )
+      example = double(
+        "example",
         execution_result: execution_result,
         location: "spec/foo_spec.rb:2",
         description: "fails",
         full_description: "Foo fails",
         metadata: {shared_group_inclusion_backtrace: []},
-        location_rerun_argument: "spec/foo_spec.rb:2")
+        location_rerun_argument: "spec/foo_spec.rb:2",
+      )
       notification = double("notification", example: example)
 
       formatter.example_failed(notification)
@@ -80,20 +90,24 @@ RSpec.describe TurboTests::JsonRowsFormatter do
 
   describe "#example_pending" do
     it "outputs an example_pending row" do
-      execution_result = double("execution_result",
+      execution_result = double(
+        "execution_result",
         example_skipped?: true,
         pending_message: "TODO",
         status: :pending,
         pending_fixed?: false,
         exception: nil,
-        pending_exception: nil)
-      example = double("example",
+        pending_exception: nil,
+      )
+      example = double(
+        "example",
         execution_result: execution_result,
         location: "spec/foo_spec.rb:3",
         description: "is pending",
         full_description: "Foo is pending",
         metadata: {shared_group_inclusion_backtrace: []},
-        location_rerun_argument: "spec/foo_spec.rb:3")
+        location_rerun_argument: "spec/foo_spec.rb:3",
+      )
       notification = double("notification", example: example)
 
       formatter.example_pending(notification)
@@ -105,9 +119,11 @@ RSpec.describe TurboTests::JsonRowsFormatter do
 
   describe "example_to_json with shared group inclusion backtrace" do
     it "serializes shared group frames via stack_frame_to_json" do
-      shared_frame = double("frame",
+      shared_frame = double(
+        "frame",
         shared_group_name: "shared behaviors",
-        inclusion_location: "spec/support/shared.rb:5")
+        inclusion_location: "spec/support/shared.rb:5",
+      )
       notification = double("notification", example: build_example(shared_group_frames: [shared_frame]))
 
       formatter.example_passed(notification)
@@ -122,20 +138,24 @@ RSpec.describe TurboTests::JsonRowsFormatter do
   describe "exception_to_json with nil exception" do
     it "returns nil" do
       # exception_to_json(nil) is called for examples without exceptions
-      execution_result = double("execution_result",
+      execution_result = double(
+        "execution_result",
         example_skipped?: false,
         pending_message: nil,
         status: :passed,
         pending_fixed?: false,
         exception: nil,
-        pending_exception: nil)
-      example = double("example",
+        pending_exception: nil,
+      )
+      example = double(
+        "example",
         execution_result: execution_result,
         location: "spec/foo_spec.rb:1",
         description: "no exception",
         full_description: "Foo no exception",
         metadata: {shared_group_inclusion_backtrace: []},
-        location_rerun_argument: "spec/foo_spec.rb:1")
+        location_rerun_argument: "spec/foo_spec.rb:1",
+      )
       notification = double("notification", example: example)
 
       formatter.example_passed(notification)

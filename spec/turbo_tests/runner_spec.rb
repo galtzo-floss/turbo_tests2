@@ -4,7 +4,7 @@ require "spec_helper"
 
 RSpec.describe TurboTests::Runner do
   def build_runner(**overrides)
-    described_class.new(**{
+    described_class.new(
       reporter: double("reporter"),
       formatters: [],
       start_time: RSpec::Core::Time.now,
@@ -20,7 +20,8 @@ RSpec.describe TurboTests::Runner do
       use_runtime_info: true,
       parallel_options: {},
       nice: false,
-    }.merge(overrides))
+**overrides,
+    )
   end
 
   describe "#fail_fast_met (private)" do
@@ -105,7 +106,9 @@ RSpec.describe TurboTests::Runner do
 
         described_class.run(
           files: ["spec/turbo_tests/cli_spec.rb"],
-          formatters: [], tags: [], parallel_options: {},
+          formatters: [],
+          tags: [],
+          parallel_options: {},
         )
       end
     end
@@ -252,12 +255,12 @@ RSpec.describe TurboTests::Runner do
     let(:fake_wait_thr) { double("wait_thr", pid: 99999, value: double("status", success?: true)) }
 
     def mock_open3(runner_instance, &extra)
-      allow(Open3).to receive(:popen3) do |*_args|
+      allow(Open3).to receive(:popen3) do |*args|
         r1, w1 = IO.pipe
         r2, w2 = IO.pipe
         w1.close
         w2.close
-        extra&.call(*_args)
+        extra&.call(*args)
         [fake_stdin, r1, r2, fake_wait_thr]
       end
     end

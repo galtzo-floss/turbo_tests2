@@ -43,7 +43,7 @@ RSpec.describe TurboTests::Reporter do
   describe ".from_config" do
     it "uses $stdout for '-' output" do
       reporter = described_class.from_config(
-        [{name: "progress", outputs: ["-"]}], start_time, nil, false, [], {},
+        [{name: "progress", outputs: ["-"]}], start_time, nil, false, [], {}
       )
       fmtr_output = reporter.instance_variable_get(:@formatters).first.instance_variable_get(:@output)
       expect(fmtr_output).to eq($stdout)
@@ -55,7 +55,7 @@ RSpec.describe TurboTests::Reporter do
 
       begin
         reporter = described_class.from_config(
-          [{name: "progress", outputs: [tmp_path]}], start_time, nil, false, [], {},
+          [{name: "progress", outputs: [tmp_path]}], start_time, nil, false, [], {}
         )
         expect(reporter.instance_variable_get(:@formatters).first).to be_a(RSpec::Core::Formatters::ProgressFormatter)
         expect(File).to exist(tmp_path)
@@ -69,9 +69,11 @@ RSpec.describe TurboTests::Reporter do
     subject(:reporter) { build_reporter }
 
     let(:formatter) do
-      double("formatter",
+      double(
+        "formatter",
         example_group_started: nil,
-        example_group_finished: nil).tap do |f|
+        example_group_finished: nil,
+      ).tap do |f|
         allow(f).to receive(:respond_to?) { |m| %i[example_group_started example_group_finished].include?(m) }
       end
     end

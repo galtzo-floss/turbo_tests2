@@ -3,8 +3,9 @@
 require "spec_helper"
 require "utils/hash_extension"
 
+# rubocop:disable RSpec/SpecFilePathFormat
 RSpec.describe CoreExtensions do
-  using CoreExtensions
+  using described_class
 
   describe "Hash#to_struct" do
     it "converts a flat hash to a Struct" do
@@ -28,3 +29,4 @@ RSpec.describe CoreExtensions do
     end
   end
 end
+# rubocop:enable RSpec/SpecFilePathFormat

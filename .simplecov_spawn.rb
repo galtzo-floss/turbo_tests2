@@ -35,8 +35,8 @@ require "simplecov"
 # .simplecov was auto-loaded above and already called SimpleCov.start.
 # Override to quiet mode: the parent process owns the formatted report.
 SimpleCov.print_error_status = false
-SimpleCov.formatter SimpleCov::Formatter::SimpleFormatter
-SimpleCov.minimum_coverage 0
+SimpleCov.formatter(SimpleCov::Formatter::SimpleFormatter)
+SimpleCov.minimum_coverage(0)
 
 # Each spawned process needs a unique command_name so results don't overwrite
 # each other in .resultset.json. Set this AFTER start so .simplecov's own

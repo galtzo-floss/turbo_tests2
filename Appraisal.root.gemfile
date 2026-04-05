@@ -1,4 +1,3 @@
-
 source "https://gem.coop"
 
 # Appraisal Root Gemfile is for running appraisal to generate the Appraisal Gemfiles

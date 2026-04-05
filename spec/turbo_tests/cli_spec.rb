@@ -1,5 +1,5 @@
 RSpec.describe TurboTests::CLI do
-  subject(:output) { `bundle exec turbo_tests -f d #{fixture}`.strip }
+  subject(:output) { %x(bundle exec turbo_tests -f d #{fixture}).strip }
 
   before { output }
 
@@ -17,11 +17,11 @@ RSpec.describe TurboTests::CLI do
   end
 
   context "when the 'seed' parameter was used", :check_output do
-    subject(:output) { `bundle exec turbo_tests -f d #{fixture} --seed #{seed}`.strip }
+    subject(:output) { %x(bundle exec turbo_tests -f d #{fixture} --seed #{seed}).strip }
 
     let(:seed) { 1234 }
 
-    context "errors outside of examples" do
+    context "when errors occur outside of examples" do
       let(:expected_start_of_output) do
         %(
 1 processes for 1 specs, ~ 1 specs per process
@@ -41,18 +41,18 @@ An error occurred while loading #{fixture}.
       let(:fixture) { "./fixtures/rspec/errors_outside_of_examples_spec.rb" }
 
       it "reports" do
-        expect($?.exitstatus).to eql(1)
+        expect($?.exitstatus).to be(1)
 
         expect(output).to start_with(expected_start_of_output)
         expect(output).to end_with(expected_end_of_output)
       end
     end
 
-    context "pending exceptions", :aggregate_failures do
+    context "with pending exceptions", :aggregate_failures do
       let(:fixture) { "./fixtures/rspec/pending_exceptions_spec.rb" }
 
       it "reports" do
-        expect($?.exitstatus).to eql(0)
+        expect($?.exitstatus).to be(0)
 
         [
           "is implemented but skipped with 'pending' (PENDING: TODO: skipped with 'pending')",
@@ -70,7 +70,7 @@ An error occurred while loading #{fixture}.
   end
 
   context "when 'seed' parameter was not used", :check_output do
-    context "errors outside of examples" do
+    context "when errors occur outside of examples" do
       let(:expected_start_of_output) do
         %(
 1 processes for 1 specs, ~ 1 specs per process
@@ -86,7 +86,7 @@ An error occurred while loading #{fixture}.
       let(:fixture) { "./fixtures/rspec/errors_outside_of_examples_spec.rb" }
 
       it "reports" do
-        expect($?.exitstatus).to eql(1)
+        expect($?.exitstatus).to be(1)
 
         expect(output).to start_with(expected_start_of_output)
         expect(output).to end_with(expected_end_of_output)
@@ -97,11 +97,11 @@ An error occurred while loading #{fixture}.
       end
     end
 
-    context "pending exceptions", :aggregate_failures do
+    context "with pending exceptions", :aggregate_failures do
       let(:fixture) { "./fixtures/rspec/pending_exceptions_spec.rb" }
 
       it "reports" do
-        expect($?.exitstatus).to eql(0)
+        expect($?.exitstatus).to be(0)
 
         [
           "is implemented but skipped with 'pending' (PENDING: TODO: skipped with 'pending')",
@@ -122,7 +122,7 @@ An error occurred while loading #{fixture}.
     let(:fixture) { "./fixtures/rspec/failing_spec.rb" }
 
     it "outputs extra_failure_lines" do
-      expect($?.exitstatus).to eql(1)
+      expect($?.exitstatus).to be(1)
 
       expect(output).to include("Test info in extra_failure_lines")
     end
@@ -132,7 +132,7 @@ An error occurred while loading #{fixture}.
     let(:fixture) { "./fixtures/rspec/no_method_error_spec.rb" }
 
     it "outputs file name and line number" do
-      expect($?.exitstatus).to eql(1)
+      expect($?.exitstatus).to be(1)
 
       [
         /undefined method [`']\[\]' for nil/,
@@ -149,7 +149,7 @@ An error occurred while loading #{fixture}.
     let(:fixture) { "./fixtures/rspec/passing_spec.rb" }
 
     it "reports a passing example and exits 0" do
-      expect($?.exitstatus).to eql(0)
+      expect($?.exitstatus).to be(0)
       expect(output).to include("1 example, 0 failures")
     end
   end

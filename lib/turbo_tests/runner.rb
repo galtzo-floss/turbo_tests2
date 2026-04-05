@@ -9,62 +9,64 @@ module TurboTests
   class Runner
     using CoreExtensions
 
-    def self.create(count)
-      # We are unable to load parallel tests' tasks in the normal way (top of file)
-      # because it requires that the Rails.application instance already be configured
-      require "parallel_tests/tasks"
+    class << self
+      def create(count)
+        # We are unable to load parallel tests' tasks in the normal way (top of file)
+        # because it requires that the Rails.application instance already be configured
+        require "parallel_tests/tasks"
 
-      ENV["PARALLEL_TEST_FIRST_IS_1"] = "true"
-      command = ["bundle", "exec", "rake", "db:create", "RAILS_ENV=#{ParallelTests::Tasks.rails_env}"]
-      args = {count: count.to_s}
-      ParallelTests::Tasks.run_in_parallel(command, args)
-    end
-
-    def self.run(opts = {})
-      files = opts[:files]
-      formatters = opts[:formatters]
-      tags = opts[:tags]
-      parallel_options = opts[:parallel_options] || {}
-
-      start_time = opts.fetch(:start_time) { RSpec::Core::Time.now }
-      runtime_log = opts.fetch(:runtime_log, nil)
-      verbose = opts.fetch(:verbose, false)
-      fail_fast = opts.fetch(:fail_fast, nil)
-      count = opts.fetch(:count, nil)
-      seed = opts.fetch(:seed, nil)
-      seed_used = !seed.nil?
-      print_failed_group = opts.fetch(:print_failed_group, false)
-      nice = opts.fetch(:nice, false)
-
-      use_runtime_info = files == ["spec"]
-
-      if use_runtime_info
-        parallel_options[:runtime_log] = runtime_log
-      else
-        parallel_options[:group_by] = :filesize
+        ENV["PARALLEL_TEST_FIRST_IS_1"] = "true"
+        command = ["bundle", "exec", "rake", "db:create", "RAILS_ENV=#{ParallelTests::Tasks.rails_env}"]
+        args = {count: count.to_s}
+        ParallelTests::Tasks.run_in_parallel(command, args)
       end
 
-      warn("VERBOSE") if verbose
+      def run(opts = {})
+        files = opts[:files]
+        formatters = opts[:formatters]
+        tags = opts[:tags]
+        parallel_options = opts[:parallel_options] || {}
 
-      reporter = Reporter.from_config(formatters, start_time, seed, seed_used, files, parallel_options)
+        start_time = opts.fetch(:start_time) { RSpec::Core::Time.now }
+        runtime_log = opts.fetch(:runtime_log, nil)
+        verbose = opts.fetch(:verbose, false)
+        fail_fast = opts.fetch(:fail_fast, nil)
+        count = opts.fetch(:count, nil)
+        seed = opts.fetch(:seed, nil)
+        seed_used = !seed.nil?
+        print_failed_group = opts.fetch(:print_failed_group, false)
+        nice = opts.fetch(:nice, false)
 
-      new(
-        reporter: reporter,
-        formatters: formatters,
-        start_time: start_time,
-        files: files,
-        tags: tags,
-        runtime_log: runtime_log,
-        verbose: verbose,
-        fail_fast: fail_fast,
-        count: count,
-        seed: seed,
-        seed_used: seed_used,
-        print_failed_group: print_failed_group,
-        use_runtime_info: use_runtime_info,
-        parallel_options: parallel_options,
-        nice: nice,
-      ).run
+        use_runtime_info = files == ["spec"]
+
+        if use_runtime_info
+          parallel_options[:runtime_log] = runtime_log
+        else
+          parallel_options[:group_by] = :filesize
+        end
+
+        warn("VERBOSE") if verbose
+
+        reporter = Reporter.from_config(formatters, start_time, seed, seed_used, files, parallel_options)
+
+        new(
+          reporter: reporter,
+          formatters: formatters,
+          start_time: start_time,
+          files: files,
+          tags: tags,
+          runtime_log: runtime_log,
+          verbose: verbose,
+          fail_fast: fail_fast,
+          count: count,
+          seed: seed,
+          seed_used: seed_used,
+          print_failed_group: print_failed_group,
+          use_runtime_info: use_runtime_info,
+          parallel_options: parallel_options,
+          nice: nice,
+        ).run
+      end
     end
 
     def initialize(**opts)
@@ -149,10 +151,13 @@ module TurboTests
       else
         puts "\nShutting down subprocesses..."
         @wait_threads.each do |wait_thr|
-          child_pid = wait_thr.pid
-          pgid = Process.respond_to?(:getpgid) ? Process.getpgid(child_pid) : 0
-          Process.kill(:INT, child_pid) if Process.pid != pgid
-        rescue Errno::ESRCH, Errno::ENOENT
+          begin
+            child_pid = wait_thr.pid
+            pgid = Process.respond_to?(:getpgid) ? Process.getpgid(child_pid) : 0
+            Process.kill(:INT, child_pid) if Process.pid != pgid
+          rescue Errno::ESRCH, Errno::ENOENT
+            # process already gone — ignore
+          end
         end
         @interrupt_handled = true
       end
@@ -236,6 +241,7 @@ module TurboTests
         stdin, stdout, stderr, wait_thr = Open3.popen3(env, *command)
         stdin.close
 
+        # rubocop:disable ThreadSafety/NewThread
         @threads <<
           Thread.new do
             stdout.each_line do |line|
@@ -255,26 +261,33 @@ module TurboTests
 
             @messages << {type: "exit", process_id: process_id}
           end
+        # rubocop:enable ThreadSafety/NewThread
 
-        @threads << start_copy_thread(stderr, STDERR)
+        @threads << start_copy_thread(stderr, $stderr)
 
+        # rubocop:disable ThreadSafety/NewThread
         @threads << Thread.new do
           @messages << {type: "error"} unless wait_thr.value.success?
         end
+        # rubocop:enable ThreadSafety/NewThread
 
         wait_thr
       end
     end
 
     def start_copy_thread(src, dst)
+      # rubocop:disable ThreadSafety/NewThread
       Thread.new do
+        # rubocop:enable ThreadSafety/NewThread
         loop do
-          msg = src.readpartial(4096)
-        rescue EOFError
-          src.close
-          break
-        else
-          dst.write(msg)
+          begin
+            msg = src.readpartial(4096)
+          rescue EOFError
+            src.close
+            break
+          else
+            dst.write(msg)
+          end
         end
       end
     end
@@ -327,7 +340,7 @@ module TurboTests
           warn("Unhandled message in main process: #{message}")
         end
 
-        STDOUT.flush
+        $stdout.flush
       end
     rescue Interrupt
     end

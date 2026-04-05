@@ -22,23 +22,25 @@ require "turbo_tests/json_rows_formatter"
 
 module TurboTests
   autoload :CLI, "turbo_tests/cli"
-FakeException = Struct.new(:backtrace, :message, :cause)
+  FakeException = Struct.new(:backtrace, :message, :cause)
   class FakeException
-    def self.from_obj(obj)
-      return unless obj
+    class << self
+      def from_obj(obj)
+        return unless obj
 
-      klass =
-        Class.new(FakeException) do
-          define_singleton_method(:name) do
-            obj[:class_name]
+        klass =
+          Class.new(FakeException) do
+            define_singleton_method(:name) do
+              obj[:class_name]
+            end
           end
-        end
 
-      klass.new(
-        obj[:backtrace],
-        obj[:message],
-        FakeException.from_obj(obj[:cause]),
-      )
+        klass.new(
+          obj[:backtrace],
+          obj[:message],
+          FakeException.from_obj(obj[:cause]),
+        )
+      end
     end
   end
 
@@ -51,15 +53,17 @@ FakeException = Struct.new(:backtrace, :message, :cause)
     :pending_exception,
   )
   class FakeExecutionResult
-    def self.from_obj(obj)
-      new(
-        obj[:example_skipped?],
-        obj[:pending_message],
-        obj[:status].to_sym,
-        obj[:pending_fixed?],
-        FakeException.from_obj(obj[:exception]),
-        FakeException.from_obj(obj[:exception]),
-      )
+    class << self
+      def from_obj(obj)
+        new(
+          obj[:example_skipped?],
+          obj[:pending_message],
+          obj[:status].to_sym,
+          obj[:pending_fixed?],
+          FakeException.from_obj(obj[:exception]),
+          FakeException.from_obj(obj[:exception]),
+        )
+      end
     end
   end
 
@@ -72,26 +76,28 @@ FakeException = Struct.new(:backtrace, :message, :cause)
     :location_rerun_argument,
   )
   class FakeExample
-    def self.from_obj(obj)
-      metadata = obj[:metadata]
+    class << self
+      def from_obj(obj)
+        metadata = obj[:metadata]
 
-      metadata[:shared_group_inclusion_backtrace].map! do |frame|
-        RSpec::Core::SharedExampleGroupInclusionStackFrame.new(
-          frame[:shared_group_name],
-          frame[:inclusion_location],
+        metadata[:shared_group_inclusion_backtrace].map! do |frame|
+          RSpec::Core::SharedExampleGroupInclusionStackFrame.new(
+            frame[:shared_group_name],
+            frame[:inclusion_location],
+          )
+        end
+
+        metadata[:shared_group_inclusion_backtrace] = metadata.delete(:shared_group_inclusion_backtrace)
+
+        new(
+          FakeExecutionResult.from_obj(obj[:execution_result]),
+          obj[:location],
+          obj[:description],
+          obj[:full_description],
+          metadata,
+          obj[:location_rerun_argument],
         )
       end
-
-      metadata[:shared_group_inclusion_backtrace] = metadata.delete(:shared_group_inclusion_backtrace)
-
-      new(
-        FakeExecutionResult.from_obj(obj[:execution_result]),
-        obj[:location],
-        obj[:description],
-        obj[:full_description],
-        metadata,
-        obj[:location_rerun_argument],
-      )
     end
 
     def notification
