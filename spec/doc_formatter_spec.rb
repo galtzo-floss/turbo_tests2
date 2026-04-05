@@ -2,6 +2,7 @@
 # https://github.com/serpapi/turbo_tests/pull/8#issue-583037321
 sleep 3
 
+# rubocop:disable RSpec/DescribeClass
 RSpec.describe "Top-level context" do
   describe "#instance_method" do
     it "does what it's supposed to" do
@@ -13,3 +14,4 @@ RSpec.describe "Top-level context" do
     end
   end
 end
+# rubocop:enable RSpec/DescribeClass
