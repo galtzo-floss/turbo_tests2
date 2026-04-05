@@ -180,6 +180,28 @@ RSpec.describe TurboTests::Runner do
       queue << {type: "exit", process_id: 2}
       expect { runner.send(:handle_messages) }.not_to raise_error
     end
+
+    context "when fail_fast threshold is met on example_failed" do
+      it "kills all threads and breaks out of the message loop" do
+        runner = build_runner_for_messages(fail_fast: 1)
+        runner.instance_variable_set(:@failure_count, 0)
+
+        mock_thread = double("thread")
+        expect(mock_thread).to receive(:kill)
+        runner.instance_variable_set(:@threads, [mock_thread])
+
+        reporter_with_fail = double("reporter", example_failed: nil)
+        runner.instance_variable_set(:@reporter, reporter_with_fail)
+
+        fake_example = double("example")
+        allow(TurboTests::FakeExample).to receive(:from_obj).and_return(fake_example)
+        allow(reporter_with_fail).to receive(:example_failed).with(fake_example)
+
+        runner.instance_variable_get(:@messages) << {type: "example_failed", example: {id: "1"}}
+
+        expect { runner.send(:handle_messages) }.not_to raise_error
+      end
+    end
   end
 
   describe "#handle_interrupt (private)" do
@@ -207,6 +229,36 @@ RSpec.describe TurboTests::Runner do
       runner.instance_variable_set(:@wait_threads, [wait_thr])
 
       allow(Process).to receive(:getpgid).with(99999).and_return(0)
+      allow(Process).to receive(:kill).with(:INT, 99999).and_raise(Errno::ESRCH)
+
+      expect { runner.send(:handle_interrupt) }.not_to raise_error
+      expect(runner.instance_variable_get(:@interrupt_handled)).to be true
+    end
+
+    it "rescues Errno::ENOENT when subprocess is already gone" do
+      runner = build_runner
+      runner.instance_variable_set(:@interrupt_handled, false)
+
+      wait_thr = double("wait_thr", pid: 99999)
+      runner.instance_variable_set(:@wait_threads, [wait_thr])
+
+      allow(Process).to receive(:getpgid).with(99999).and_return(0)
+      allow(Process).to receive(:kill).with(:INT, 99999).and_raise(Errno::ENOENT)
+
+      expect { runner.send(:handle_interrupt) }.not_to raise_error
+      expect(runner.instance_variable_get(:@interrupt_handled)).to be true
+    end
+
+    it "falls back to pgid=0 when Process does not respond to :getpgid" do
+      runner = build_runner
+      runner.instance_variable_set(:@interrupt_handled, false)
+
+      wait_thr = double("wait_thr", pid: 99999)
+      runner.instance_variable_set(:@wait_threads, [wait_thr])
+
+      allow(Process).to receive(:respond_to?).and_call_original
+      allow(Process).to receive(:respond_to?).with(:getpgid).and_return(false)
+      # pgid = 0 (fallback), Process.pid != 0, so kill is attempted
       allow(Process).to receive(:kill).with(:INT, 99999).and_raise(Errno::ESRCH)
 
       expect { runner.send(:handle_interrupt) }.not_to raise_error
@@ -344,6 +396,78 @@ RSpec.describe TurboTests::Runner do
       end
 
       expect(captured).to include("ParallelTests::RSpec::RuntimeLogger")
+    end
+
+    it "uses plain 'rspec' string when neither RSPEC_EXECUTABLE nor BUNDLE_BIN_PATH is set" do
+      captured = []
+      mock_open3(runner) { |*args| captured.replace(args) }
+
+      begin
+        old_rspec = ENV.delete("RSPEC_EXECUTABLE")
+        old_bundle = ENV.delete("BUNDLE_BIN_PATH")
+        runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
+      ensure
+        ENV["RSPEC_EXECUTABLE"] = old_rspec if old_rspec
+        ENV["BUNDLE_BIN_PATH"] = old_bundle if old_bundle
+      end
+
+      # command_name = "rspec" (string), [*"rspec"] = ["rspec"], first arg after env hash
+      expect(captured[1]).to eq("rspec")
+    end
+
+    context "when stdout contains lines with and without the formatter output ID" do
+      let(:output_id) { "fixed-test-output-id" }
+
+      before { allow(SecureRandom).to receive(:uuid).and_return(output_id) }
+
+      def mock_open3_with_stdout(content)
+        r1, w1 = IO.pipe
+        r2, w2 = IO.pipe
+        w1.write(content)
+        w1.close
+        w2.close
+        allow(Open3).to receive(:popen3).and_return([fake_stdin, r1, r2, fake_wait_thr])
+      end
+
+      it "prints non-blank initial content before the output ID to $stdout" do
+        json_msg = {type: "seed", seed: 1234}.to_json
+        mock_open3_with_stdout("prefix_content#{output_id}#{json_msg}\n")
+
+        expect {
+          runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
+          runner.instance_variable_get(:@threads).each { |t| t.join(2) }
+        }.to output("prefix_content").to_stdout
+      end
+
+      it "skips lines that contain no formatter output ID (message is nil)" do
+        # A plain line without the output_id: result.shift(×2) gives initial + nil message
+        # → `next unless message` is taken, no JSON parse attempted
+        mock_open3_with_stdout("plain rspec output without output id\n")
+
+        expect {
+          runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
+          runner.instance_variable_get(:@threads).each { |t| t.join(2) }
+        }.not_to raise_error
+      end
+    end
+  end
+
+  describe "#run (instance method)" do
+    context "when print_failed_group is true" do
+      it "calls report_failed_group after messages are handled" do
+        reporter = double("reporter", failed_examples: [])
+        runner = build_runner(print_failed_group: true, reporter: reporter)
+
+        allow(ParallelTests).to receive(:determine_number_of_processes).and_return(0)
+        allow(ParallelTests::RSpec::Runner).to receive(:tests_with_size).and_return([])
+        allow(ParallelTests::RSpec::Runner).to receive(:tests_in_groups).and_return([])
+        allow(reporter).to receive(:report).and_yield(reporter)
+        allow(Signal).to receive(:trap).and_return(nil)
+        allow(runner).to receive(:handle_messages)
+
+        expect(runner).to receive(:report_failed_group).with([])
+        runner.run
+      end
     end
   end
 end

@@ -164,4 +164,27 @@ RSpec.describe TurboTests::JsonRowsFormatter do
       expect(row.dig(:example, :execution_result, :exception)).to be_nil
     end
   end
+
+  describe "RSpecExt#handle_interrupt (prepended to RSpec::Core::Runner)" do
+    let(:host) { Class.new { prepend RSpecExt }.new }
+
+    context "when RSpec.world.wants_to_quit is false (first interrupt)" do
+      before { allow(RSpec.world).to receive(:wants_to_quit).and_return(false) }
+
+      it "sets wants_to_quit to true" do
+        expect(RSpec.world).to receive(:wants_to_quit=).with(true)
+        host.handle_interrupt
+      end
+    end
+
+    context "when RSpec.world.wants_to_quit is true (second interrupt)" do
+      before { allow(RSpec.world).to receive(:wants_to_quit).and_return(true) }
+
+      it "calls exit!(1) to force immediate shutdown" do
+        # exit! is a Kernel method; stub on the instance to prevent actual process exit
+        expect(host).to receive(:exit!).with(1)
+        host.handle_interrupt
+      end
+    end
+  end
 end
