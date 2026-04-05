@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "turbo_tests2"
+
+TurboTests::CLI.new(ARGV).run

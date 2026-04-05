@@ -101,7 +101,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.bindir = "exe"
   # Listed files are the relative paths from bindir above.
-  spec.executables = ["turbo_tests2"]
+  # `turbo_tests` is the primary drop-in replacement name; `turbo_tests2` is an alias.
+  spec.executables = ["turbo_tests", "turbo_tests2"]
 
   spec.add_dependency("parallel_tests", ">= 3.3.0", "< 6")
   spec.add_dependency("rspec", ">= 3.10")

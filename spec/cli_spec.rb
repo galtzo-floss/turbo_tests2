@@ -1,10 +1,10 @@
 RSpec.describe TurboTests::CLI do
-  subject(:output) { %x(bundle exec turbo_tests -f d #{fixture}).strip }
+  subject(:output) { `bundle exec turbo_tests -f d #{fixture}`.strip }
 
   before { output }
 
-  context "when the 'seed' parameter was used" do
-    subject(:output) { %x(bundle exec turbo_tests -f d #{fixture} --seed #{seed}).strip }
+  context "when the 'seed' parameter was used", :check_output do
+    subject(:output) { `bundle exec turbo_tests -f d #{fixture} --seed #{seed}`.strip }
 
     let(:seed) { 1234 }
 
@@ -56,7 +56,7 @@ An error occurred while loading #{fixture}.
     end
   end
 
-  context "when 'seed' parameter was not used" do
+  context "when 'seed' parameter was not used", :check_output do
     context "errors outside of examples" do
       let(:expected_start_of_output) do
         %(
@@ -105,7 +105,7 @@ An error occurred while loading #{fixture}.
     end
   end
 
-  describe "extra_failure_lines" do
+  describe "extra_failure_lines", :check_output do
     let(:fixture) { "./fixtures/rspec/failing_spec.rb" }
 
     it "outputs extra_failure_lines" do
@@ -115,7 +115,7 @@ An error occurred while loading #{fixture}.
     end
   end
 
-  describe "full error failure message and line" do
+  describe "full error failure message and line", :check_output do
     let(:fixture) { "./fixtures/rspec/no_method_error_spec.rb" }
 
     it "outputs file name and line number" do
