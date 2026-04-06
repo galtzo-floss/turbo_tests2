@@ -7,4 +7,3 @@ source "https://gem.coop"
 
 gemspec
 
-gem "appraisal", github: "pboling/appraisal", branch: "eval_gemfile"
