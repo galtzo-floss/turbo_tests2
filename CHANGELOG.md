@@ -20,6 +20,25 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [3.0.0] - 2026-04-06
+
+- TAG: [v3.0.0][3.0.0t]
+- COVERAGE: 97.63% -- 454/465 lines in 15 files
+- BRANCH COVERAGE: 100.00% -- 87/87 branches in 15 files
+- 38.81% documented
+
+### Added
+
 - `--create` flag: create test database(s) before running the suite,
   mirroring the same feature from `parallel_tests`.
 - `--print-failed-group` option: after a run, print which subprocess group
@@ -60,17 +79,14 @@ Please file a bug if you notice a violation of semantic versioning.
   scenarios: passing+pending, failing+passing, and load-error+passing.
   Full suite now at **97 examples, 0 failures**, LINE 98.87%, BRANCH 100%.
 
-### Changed
-
-### Deprecated
-
 ### Removed
 
 [📎simplecov-spawn]: https://github.com/simplecov-ruby/simplecov#running-simplecov-against-spawned-subprocesses
-
-### Fixed
 
 ### Security
 
 [🔀rm-wrapper]: https://github.com/serpapi/turbo_tests/pull/45/files#r1456006187
 
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/galtzo-floss/turbo_tests2/compare/HEAD^...v3.0.0
+[3.0.0t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.0.0
