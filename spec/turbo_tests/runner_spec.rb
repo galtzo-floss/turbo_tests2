@@ -450,6 +450,37 @@ RSpec.describe TurboTests::Runner do
         }.not_to raise_error
       end
     end
+
+    it "passes --tag= flags from @tags via start_regular_subprocess" do
+      runner.instance_variable_set(:@tags, ["focus", "wip"])
+      captured = []
+      mock_open3(runner) { |*args| captured.replace(args) }
+
+      begin
+        old = ENV.delete("RSPEC_EXECUTABLE")
+        runner.send(:start_regular_subprocess, tests, 1, record_runtime: false)
+      ensure
+        ENV["RSPEC_EXECUTABLE"] = old if old
+      end
+
+      expect(captured).to include("--tag=focus", "--tag=wip")
+    end
+  end
+
+  describe "#start_copy_thread (private)" do
+    it "writes data from src to dst until EOF" do
+      runner = build_runner
+      r, w = IO.pipe
+      dst = StringIO.new
+
+      w.write("hello from subprocess")
+      w.close
+
+      thread = runner.send(:start_copy_thread, r, dst)
+      thread.join(2)
+
+      expect(dst.string).to eq("hello from subprocess")
+    end
   end
 
   describe "#run (instance method)" do

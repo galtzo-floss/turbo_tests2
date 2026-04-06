@@ -59,7 +59,9 @@ require "bundler/gem_tasks" if !Dir[File.join(__dir__, "*.gemspec")].empty?
 # Define a base default task early so other files can enhance it.
 desc "Default tasks aggregator"
 task :default do
+  # :nocov:
   puts "Default task complete."
+  # :nocov:
 end
 
 # External gems that define tasks - add here!
@@ -71,7 +73,9 @@ begin
 rescue LoadError
   desc("(stub) kettle:jem:selftest is unavailable")
   task("kettle:jem:selftest") do
+    # :nocov:
     warn("NOTE: kettle-jem isn't installed, or is disabled for #{RUBY_VERSION} in the current environment")
+    # :nocov:
   end
 end
 
@@ -80,8 +84,10 @@ end
 begin
   require "stone_checksums"
 rescue LoadError
+  # :nocov:
   desc("(stub) build:generate_checksums is unavailable")
   task("build:generate_checksums") do
     warn("NOTE: stone_checksums isn't installed, or is disabled for #{RUBY_VERSION} in the current environment")
   end
+  # :nocov:
 end

@@ -152,7 +152,9 @@ module TurboTests
       begin
         require "rake"
       rescue LoadError
+        # :nocov:
         return # rake is optional
+        # :nocov:
       end
 
       # Pass an empty argv so Rake doesn't parse the current process's ARGV,
