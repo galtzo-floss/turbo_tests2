@@ -85,92 +85,47 @@ end
 
 appraise "ruby-2-7" do
   eval_gemfile "modular/x_std_libs/r2/libs.gemfile"
-  gem "mutex_m", "~> 0.2"
-  gem "stringio", "~> 3.0"
-  remove_gem "appraisal" # only present because it must be in the gemfile because we target a git branch
 end
 
 appraise "ruby-3-0" do
   eval_gemfile "modular/x_std_libs/r3.1/libs.gemfile"
-  gem "mutex_m", "~> 0.2"
-  gem "stringio", "~> 3.0"
-  remove_gem "appraisal" # only present because it must be in the gemfile because we target a git branch
 end
 
 appraise "ruby-3-1" do
   eval_gemfile "modular/x_std_libs/r3.1/libs.gemfile"
-  gem "mutex_m", "~> 0.2"
-  gem "stringio", "~> 3.0"
-  remove_gem "appraisal" # only present because it must be in the gemfile because we target a git branch
 end
 
 appraise "ruby-3-2" do
   eval_gemfile "modular/x_std_libs/r3/libs.gemfile"
-  gem "mutex_m", "~> 0.2"
-  gem "stringio", "~> 3.0"
-  remove_gem "appraisal" # only present because it must be in the gemfile because we target a git branch
 end
 
 appraise "ruby-3-3" do
   eval_gemfile "modular/x_std_libs/r3/libs.gemfile"
-  gem "mutex_m", "~> 0.2"
-  gem "stringio", "~> 3.0"
-  remove_gem "appraisal" # only present because it must be in the gemfile because we target a git branch
 end
 
 appraise "ruby-3-4" do
   eval_gemfile "modular/x_std_libs/r3/libs.gemfile"
-  gem "mutex_m", "~> 0.2"
-  gem "stringio", "~> 3.0"
-  remove_gem "appraisal" # only present because it must be in the gemfile because we target a git branch
 end
 
 # Only run security audit on the latest version of Ruby
 appraise "audit" do
   eval_gemfile "modular/x_std_libs.gemfile"
-  gem "mutex_m", "~> 0.2"
-  gem "stringio", "~> 3.0"
-  eval_gemfile "modular/audit.gemfile"
-  remove_gem "appraisal" # only present because it must be in the gemfile because we target a git branch
 end
 
 # Only run coverage on the latest version of Ruby
 appraise "coverage" do
-  gem "mutex_m", "~> 0.2"
-  gem "stringio", "~> 3.0"
   eval_gemfile "modular/coverage.gemfile"
   eval_gemfile "modular/optional.gemfile"
   eval_gemfile "modular/x_std_libs.gemfile"
-  remove_gem "appraisal" # only present because it must be in the gemfile because we target a git branch
 end
 
 # Only run linter on the latest version of Ruby (but, in support of oldest supported Ruby version)
 appraise "style" do
-  gem "mutex_m", "~> 0.2"
-  gem "stringio", "~> 3.0"
   eval_gemfile "modular/style.gemfile"
   eval_gemfile "modular/x_std_libs.gemfile"
-  remove_gem "appraisal" # only present because it must be in the gemfile because we target a git branch
 end
 
 appraise "templating" do
   # eval_gemfile "modular/templating.gemfile"
   eval_gemfile "modular/x_std_libs.gemfile"
-end
-appraise "ruby-head" do
-  gem "mutex_m", ">= 0.2"
-  gem "stringio", ">= 3.0"
-  remove_gem "appraisal" # only present because it must be in the gemfile because we target a git branch
-end
-
-appraise "truffleruby-head" do
-  gem "mutex_m", ">= 0.2"
-  gem "stringio", ">= 3.0"
-  remove_gem "appraisal" # only present because it must be in the gemfile because we target a git branch
-end
-
-appraise "jruby-head" do
-  gem "mutex_m", ">= 0.2"
-  gem "stringio", ">= 3.0"
-  remove_gem "appraisal" # only present because it must be in the gemfile because we target a git branch
 end
