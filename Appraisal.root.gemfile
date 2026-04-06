@@ -6,4 +6,3 @@ source "https://gem.coop"
 # We do not load the standard Gemfile, as it is tailored for local development.
 
 gemspec
-

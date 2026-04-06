@@ -258,7 +258,7 @@ require "simplecov"
 # https://github.com/simplecov-ruby/simplecov/blob/master/lib/simplecov/profiles/rails.rb
 SimpleCov.start("rails") do
   enable_coverage :branch
-  
+
   coverage_dir "coverage/turbo_tests/#{ENV["TEST_ENV_NUMBER"]}"
 
   formatter SimpleCov::Formatter::SimpleFormatter
@@ -275,7 +275,7 @@ namespace :turbo_tests do
     require "simplecov"
 
     # report coverage usage based on the results of all tests
-    SimpleCov.collate Dir["coverage/turbo_tests/*/.resultset.json"] do
+    SimpleCov.collate(Dir["coverage/turbo_tests/*/.resultset.json"]) do
       enable_coverage :branch
 
       minimum_coverage line: 100, branch: 100
