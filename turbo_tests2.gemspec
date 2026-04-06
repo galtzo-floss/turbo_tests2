@@ -33,7 +33,7 @@ Gem::Specification.new do |spec|
   spec.description = "🍲 `turbo_tests2` is a drop-in replacement for `serpapi/turbo_tests` and `grosser/parallel_tests` with incremental summarized output. Source code of `turbo_test2` gem is based on Discourse and Rubygems work in this area (see README file of the source repository)."
   spec.homepage = "https://github.com/galtzo-floss/turbo_tests2"
   spec.licenses = ["MIT"]
-  spec.required_ruby_version = ">= 2.3.0"
+  spec.required_ruby_version = ">= 2.4.0"
 
   # Linux distros often package gems and securely certify them independent
   #   of the official RubyGem certification process. Allowed via ENV["SKIP_GEM_SIGNING"]
@@ -113,11 +113,11 @@ Gem::Specification.new do |spec|
   #       visibility and discoverability.
   #       However, development dependencies in gemspec will install on
   #       all versions of Ruby that will run in CI.
-  #       This gem, and its gemspec runtime dependencies, will install on Ruby down to 2.3.0.
-  #       This gem, and its gemspec development dependencies, will install on Ruby down to 2.3.0.
+  #       This gem, and its gemspec runtime dependencies, will install on Ruby down to 2.4.0.
+  #       This gem, and its gemspec development dependencies, will install on Ruby down to 2.4.0.
   #       Thus, dev dependencies in gemspec must have
   #
-  #       required_ruby_version ">= 2.3.0" (or lower)
+  #       required_ruby_version ">= 2.4.0" (or lower)
   #
   #       Development dependencies that require strictly newer Ruby versions should be in a "gemfile",
   #       and preferably a modular one (see gemfiles/modular/*.gemfile).
