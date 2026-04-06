@@ -60,7 +60,7 @@ RSpec.describe "TurboTests multi-process integration", :check_output do
       expect(output).to include("4 examples, 0 failures, 3 pending")
     end
 
-    it "exits zero when no worker fails" do
+    it "exits zero when no worker fails", :check_output do
       output # trigger the subject
       expect($CHILD_STATUS.exitstatus).to be(0)
     end
@@ -89,7 +89,7 @@ RSpec.describe "TurboTests multi-process integration", :check_output do
       expect(output).to include("passes")
     end
 
-    it "exits non-zero" do
+    it "exits non-zero", :check_output do
       output # trigger the subject
       expect($CHILD_STATUS.exitstatus).to be(1)
     end
@@ -116,7 +116,7 @@ RSpec.describe "TurboTests multi-process integration", :check_output do
       expect(output).to include("passes")
     end
 
-    it "exits non-zero" do
+    it "exits non-zero", :check_output do
       output # trigger the subject
       expect($CHILD_STATUS.exitstatus).to be(1)
     end
