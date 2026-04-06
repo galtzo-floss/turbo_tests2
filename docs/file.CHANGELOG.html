@@ -68,12 +68,9 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 and <a href="https://tom.preston-werner.com/2022/05/23/major-version-numbers-are-not-sacred.html">yes</a>, platform and engine support are part of the <a href="https://github.com/semver/semver/issues/716#issuecomment-869336139">public API</a>.<br>
 Please file a bug if you notice a violation of semantic versioning.</p>
 
-<h2 id="unreleased"><a href="https://github.com/galtzo-floss/turbo_tests2/compare/v3.0.0...HEAD">Unreleased</a></h2>
+<h2 id="unreleased">[Unreleased]</h2>
 
 <h3 id="added">Added</h3>
-
-<h4 id="from-vitalconnectincturbo_tests-now-part-of-turbo_tests2">From <code>VitalConnectInc/turbo_tests</code>, now part of <code>turbo_tests2</code>
-</h4>
 
 <ul>
   <li>
@@ -96,13 +93,9 @@ place of the default <code>rspec</code> command (useful for Binstubs or wrappers
   <li>
 <code>parallel_tests</code> v5 compatibility.</li>
   <li>Forward additional <code>Runner</code> options to <code>Reporter</code> for richer output control.</li>
-  <li>Custom-formatter documentation added to README.</li>
-</ul>
-
-<h4 id="new-in-turbo_tests2">New in <code>turbo_tests2</code>
-</h4>
-
-<ul>
+  <li>
+    <p>Custom-formatter documentation added to README.</p>
+  </li>
   <li>
 <code>exe/turbo_tests</code> binary: primary drop-in replacement for the original<br>
 <code>serpapi/turbo_tests</code> gem’s executable — existing scripts and CI configs<br>
@@ -133,56 +126,18 @@ Full suite now at <strong>97 examples, 0 failures</strong>, LINE 98.87%, BRANCH 
 
 <h3 id="changed">Changed</h3>
 
-<ul>
-  <li>Gem renamed from <code>turbo_tests</code> to <code>turbo_tests2</code>; the <code>turbo_tests</code> binary<br>
-is retained as the canonical entry point for drop-in compatibility.</li>
-  <li>Bumped to <strong>v3.0.0</strong> to distinguish the fork from the original<br>
-<code>serpapi/turbo_tests</code> gem series, which ended at v2.2.5.</li>
-  <li>Use <code>parallel_tests</code> directly instead of routing through the now-removed<br>
-<code>parallel_tests/rspec_runner</code> wrapper layer<br>
-(<a href="https://github.com/serpapi/turbo_tests/pull/45/files#r1456006187">upstream discussion</a>).</li>
-  <li>Development Ruby pinned to 4.0.1; CI matrix extended to cover Ruby 2.3 –<br>
-4.x, JRuby, and TruffleRuby.</li>
-  <li>Appraisals replaced with <code>appraisal2</code> for better <code>eval_gemfile</code> support.</li>
-  <li>Upgraded GitHub Actions to <code>actions/checkout@v4</code> and<br>
-<code>actions/upload-artifact@v4</code>.</li>
-</ul>
-
 <h3 id="deprecated">Deprecated</h3>
 
 <h3 id="removed">Removed</h3>
 
 <h3 id="fixed">Fixed</h3>
 
-<ul>
-  <li>Delay loading of <code>parallel_tests</code> Rake tasks: loading them eagerly at<br>
-require-time caused errors when the tasks weren’t needed<br>
-(<a href="https://github.com/VitalConnectInc/turbo_tests/issues/13">VitalConnectInc#13</a>).</li>
-  <li>Improved SIGINT handling: on the first interrupt the runner sends <code>SIGINT</code><br>
-to each subprocess process group (with <code>Errno::ESRCH</code> rescue for already-<br>
-gone processes) and sets a handled flag; a second interrupt calls<br>
-<code>Kernel.exit</code> immediately, preventing hung CI jobs.</li>
-  <li>All 24 RuboCop lint offenses resolved (0 remaining): converted singleton<br>
-<code>def self.*</code> methods to <code>class &lt;&lt; self</code> blocks, replaced block-level<br>
-<code>rescue</code> with explicit <code>begin..rescue..end</code> for Ruby 2.3 compatibility,<br>
-swapped <code>STDERR</code>/<code>STDOUT</code> for <code>$stderr</code>/<code>$stdout</code>, and suppressed<br>
-intentional <code>Thread.new</code> calls.</li>
-  <li>Prevented duplicate <code>test</code>/<code>spec</code> Rake task registration.</li>
-  <li>Branch coverage restored to <strong>100% (83/83 branches)</strong>: stale SimpleCov<br>
-<code>.resultset.json</code> entries from before the <code>class &lt;&lt; self</code> refactor were<br>
-producing phantom uncovered branches with shifted line numbers.  Added<br>
-targeted tests for all 8 genuinely uncovered branches (<code>Errno::ENOENT</code><br>
-rescue, <code>Process.respond_to?(:getpgid)</code> fallback, plain <code>"rspec"</code> command<br>
-path, stdout prefix printing, nil-message skip, fail-fast kill+break,<br>
-<code>print_failed_group</code>, and both <code>RSpecExt#handle_interrupt</code> branches).</li>
-</ul>
-
 <h3 id="security">Security</h3>
 
 </div></div>
 
       <div id="footer">
-  Generated on Sun Apr  5 00:39:28 2026 by
+  Generated on Mon Apr  6 01:56:12 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.38 (ruby-4.0.1).
 </div>

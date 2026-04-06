@@ -80,6 +80,41 @@ I've summarized my thoughts in [this blog post](https://dev.to/galtzo/hostile-ta
 
 <h2 id="-synopsis">🌻 Synopsis</h2>
 
+<p><code>turbo_tests2</code> is a drop-in replacement for <a href="https://github.com/grosser/parallel_tests">grosser/parallel_tests</a> with incremental summarized output. Source code of this gem is based on <a href="https://github.com/discourse/discourse/blob/6b9784cf8a18636bce281a7e4d18e65a0cbc6290/lib/turbo_tests.rb">Discourse</a> and <a href="https://github.com/rubygems/rubygems/tree/390335ceb351668cd433bd5bb9823dd021f82533/bundler/tool">RubyGems</a> work in this area.</p>
+
+<p>Incremental summarized output doesn’t <a href="https://github.com/grosser/parallel_tests/issues/708">fit vision</a> of <code>parallel_tests</code> author and <a href="https://github.com/rspec/rspec-rails/issues/2104#issuecomment-658474900">RSpec doesn’t support built-in parallel testing yet</a>. This gem will not be useful once one of the issues above will be implemented.</p>
+
+<h3 id="why-incremental-output">Why incremental output?</h3>
+
+<p><code>parallel_tests</code> is great, but it messes output:</p>
+
+<pre class="code language-bash"><code class="language-bash">
+$ bundle exec rake parallel_tests:spec[^spec/search]
+.................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+
+Finished in 1 minute 6.92 seconds (files took 6.95 seconds to load)
+2616 examples, 0 failures
+
+.........................................................................................................................................F........................................................................................................................................F..............................................................................................................................................................................................................................................................................................
+
+Finished in 1 minute 35.05 seconds (files took 6.26 seconds to load)
+2158 examples, 2 failures
+
+.................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+
+Finished in 1 minute 35.05 seconds (files took 6.26 seconds to load)
+2158 examples, 0 failures
+</code></pre>
+
+<p><code>turbo_tests2</code> output looks like regular <code>rspec</code>:</p>
+
+<pre class="code language-bash"><code class="language-bash">$ bundle exec turbo_tests2
+..........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................F........................................................................................................................................F..............................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+
+Finished in 2 minute 25.15 seconds (files took 0 seconds to load)
+6873 examples, 2 failures
+</code></pre>
+
 <h2 id="-info-you-can-shake-a-stick-at">💡 Info you can shake a stick at</h2>
 
 <table>
@@ -325,7 +360,103 @@ by following the instructions below.</p>
 
 <h2 id="️-configuration">⚙️ Configuration</h2>
 
+<p>Create test databases</p>
+
+<pre class="code language-bash"><code class="language-bash">$ bundle exec turbo_tests --create
+</code></pre>
+
 <h2 id="-basic-usage">🔧 Basic Usage</h2>
+
+<p>Show help:</p>
+
+<pre class="code language-bash"><code class="language-bash">$ bundle exec turbo_tests2 -h
+Usage: turbo_tests2 [options]
+
+[optional] Only selected files &amp; folders:
+  turbo_tests2 spec/bar spec/baz/xxx_spec.rb
+
+Options:
+    -n [PROCESSES]                   How many processes to use, default: available CPUs
+    -r, --require PATH               Require a file.
+    -f, --format FORMATTER           Choose a formatter. Available formatters: progress (p), documentation (d). Default: progress
+    -t, --tag TAG                    Run examples with the specified tag.
+    -o, --out FILE                   Write output to a file instead of $stdout
+        --runtime-log FILE           Location of previously recorded test runtimes
+    -v, --verbose                    More output
+        --fail-fast=[N]
+        --seed SEED                  Seed for rspec
+        --create                     Create test databases
+        --print_failed_group         Prints group that had failures in it
+</code></pre>
+
+<p>To pass any options supported by paralell_tests, use <code>--</code>:</p>
+
+<pre class="code language-bash"><code class="language-bash">bundle exec turbo_tests -n 4 -- --only-group 1 --pattern spec/system
+</code></pre>
+
+<p><code>turbo_tests</code> supports custom formatter such as Fuubar, but you might need to require it:</p>
+
+<pre class="code language-bash"><code class="language-bash">bundle exec turbo_tests -r fuubar -f Fuubar spec/whatever
+</code></pre>
+
+<h3 id="rake-hooks">Rake Hooks</h3>
+
+<p>If Rake is present, the CLI will invoke the tasks <code>turbo_tests:setup</code> and <code>turbo_tests:cleanup</code> before and after running<br>
+the test suite. These can be used to do work that should only happen once, such as removing files or collating coverage:</p>
+
+<pre class="code language-ruby"><code class="language-ruby"># lib/tasks/turbo_tests.rake
+namespace :turbo_tests do
+  task setup: :environment do
+    # precompile assets once, to avoid doing it per each process
+    Rake::Tasks[&quot;assets:precompile&quot;]
+  end
+
+  task cleanup: :environment do
+    # keep things nice and tidy
+    Rake::Tasks[&quot;assets:clobber&quot;]
+  end
+end
+</code></pre>
+
+<h3 id="simplecov">SimpleCov</h3>
+
+<p>You can get accurate coverage reporting by having SimpleCov write the results for each process into a different directory<br>
+and then have the results collated as part of cleanup:</p>
+
+<pre class="code language-ruby"><code class="language-ruby"># spec/spec_helper.rb
+require &quot;simplecov&quot;
+
+# Configure minimum test coverage levels
+#
+# Details of default values for these configuration options can be seen at
+# https://github.com/simplecov-ruby/simplecov/blob/master/lib/simplecov/profiles/rails.rb
+SimpleCov.start(&quot;rails&quot;) do
+  enable_coverage :branch
+
+  coverage_dir &quot;coverage/turbo_tests/#{ENV[&quot;TEST_ENV_NUMBER&quot;]}&quot;
+
+  formatter SimpleCov::Formatter::SimpleFormatter
+end
+
+# lib/tasks/turbo_tests.rake
+namespace :turbo_tests do
+  task setup: :environment do
+    # remove any existing coverage files to avoid false reporting
+    FileUtils.rm_rf(&quot;coverage/turbo_tests&quot;)
+  end
+
+  task cleanup: :environment do
+    require &quot;simplecov&quot;
+
+    # report coverage usage based on the results of all tests
+    SimpleCov.collate(Dir[&quot;coverage/turbo_tests/*/.resultset.json&quot;]) do
+      enable_coverage :branch
+
+      minimum_coverage line: 100, branch: 100
+    end
+  end
+end
+</code></pre>
 
 <h2 id="-floss-funding">🦷 FLOSS Funding</h2>
 
@@ -463,7 +594,7 @@ the <a href="http://guides.rubygems.org/patterns/#pessimistic-version-constraint
 
 <p>For example:</p>
 
-<pre class="code language-ruby"><code class="language-ruby">spec.add_dependency(&quot;turbo_tests2&quot;, &quot;~&gt; 2.0&quot;)
+<pre class="code language-ruby"><code class="language-ruby">spec.add_dependency(&quot;turbo_tests2&quot;, &quot;~&gt; 3.0&quot;)
 </code></pre>
 
 <details>
@@ -516,7 +647,7 @@ Please consider sponsoring me or the project.</p>
 </div></div>
 
       <div id="footer">
-  Generated on Sun Apr  5 00:39:28 2026 by
+  Generated on Mon Apr  6 01:56:12 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.38 (ruby-4.0.1).
 </div>

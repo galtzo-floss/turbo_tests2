@@ -155,7 +155,10 @@ module TurboTests
         return # rake is optional
       end
 
-      Rake.application.init
+      # Pass an empty argv so Rake doesn't parse the current process's ARGV,
+      # which may contain non-Rake arguments (e.g. RSpec's --pattern flag when
+      # tests are run via `rake spec`).
+      Rake.application.init("rake", [])
       Rake.application.load_rakefile
     end
 
