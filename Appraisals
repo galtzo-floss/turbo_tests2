@@ -122,6 +122,7 @@ appraise "style" do
 end
 
 appraise "templating" do
+  eval_gemfile "modular/templating.gemfile"
   # eval_gemfile "modular/templating.gemfile"
   eval_gemfile "modular/x_std_libs.gemfile"
 end

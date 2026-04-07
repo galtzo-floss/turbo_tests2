@@ -19,6 +19,8 @@ git_source(:gitlab) { |repo_name| "https://gitlab.com/#{repo_name}" }
 gemspec
 
 # Templating (env-switched: KETTLE_RB_DEV=true for local paths)
+eval_gemfile "gemfiles/modular/templating.gemfile"
+
 eval_gemfile "gemfiles/modular/templating.gemfile" if ENV.fetch("CI", "false").casecmp("false").zero?
 
 # Debugging
