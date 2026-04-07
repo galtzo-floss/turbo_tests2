@@ -20,6 +20,25 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [3.0.0] - 2026-04-06
+
+- TAG: [v3.0.0][3.0.0t]
+- COVERAGE: 100.00% -- 455/455 lines in 15 files
+- BRANCH COVERAGE: 100.00% -- 87/87 branches in 15 files
+- 38.81% documented
+
+### Added
+
 #### From `VitalConnectInc/turbo_tests`, now part of `turbo_tests2`
 
 - `--create` flag: create test database(s) before running the suite,
@@ -83,10 +102,6 @@ Please file a bug if you notice a violation of semantic versioning.
 
 [🔀rm-wrapper]: https://github.com/serpapi/turbo_tests/pull/45/files#r1456006187
 
-### Deprecated
-
-### Removed
-
 ### Fixed
 
 - Delay loading of `parallel_tests` Rake tasks: loading them eagerly at
@@ -114,8 +129,6 @@ Please file a bug if you notice a violation of semantic versioning.
 [🔀upstream]: https://github.com/serpapi/turbo_tests
 [🔀fork-point]: https://github.com/serpapi/turbo_tests/commit/7d4064e5b8acc2f53929fccf7be3eb63f8a9f140
 [🔀vitals]: https://github.com/VitalConnectInc/turbo_tests
-
-### Security
 
 [Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.0.0...HEAD
 [3.0.0]: https://github.com/galtzo-floss/turbo_tests2/compare/7d4064e5b8acc2f53929fccf7be3eb63f8a9f140...v3.0.0
