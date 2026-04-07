@@ -71,12 +71,12 @@ require "kettle/dev"
 begin
   require "kettle/jem"
 rescue LoadError
+  # :nocov:
   desc("(stub) kettle:jem:selftest is unavailable")
   task("kettle:jem:selftest") do
-    # :nocov:
     warn("NOTE: kettle-jem isn't installed, or is disabled for #{RUBY_VERSION} in the current environment")
-    # :nocov:
   end
+  # :nocov:
 end
 
 ### RELEASE TASKS
