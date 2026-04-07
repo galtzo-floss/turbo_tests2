@@ -122,6 +122,8 @@ appraise "style" do
 end
 
 appraise "templating" do
-  eval_gemfile "modular/templating.gemfile"
+  if ENV.fetch("CI", "false").casecmp("false").zero?
+    eval_gemfile "modular/templating.gemfile"
+  end
   eval_gemfile "modular/x_std_libs.gemfile"
 end

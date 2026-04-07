@@ -11,17 +11,11 @@ source "https://gem.coop"
 git_source(:codeberg) { |repo_name| "https://codeberg.org/#{repo_name}" }
 git_source(:gitlab) { |repo_name| "https://gitlab.com/#{repo_name}" }
 
-#### IMPORTANT #######################################################
-# Gemfile is for local development ONLY; Gemfile is NOT loaded in CI #
-####################################################### IMPORTANT ####
-
-# Include dependencies from turbo_tests2.gemspec
+# Include dependencies from {KJ|GEM_NAME}.gemspec
 gemspec
 
-# Templating (env-switched: KETTLE_RB_DEV=true for local paths)
-eval_gemfile "gemfiles/modular/templating.gemfile"
-
 if ENV.fetch("CI", "false").casecmp("false").zero?
+  # Templating (env-switched: KETTLE_RB_DEV=true for local paths)
   eval_gemfile "gemfiles/modular/templating.gemfile"
 end
 
