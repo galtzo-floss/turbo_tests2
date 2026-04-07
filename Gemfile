@@ -21,7 +21,9 @@ gemspec
 # Templating (env-switched: KETTLE_RB_DEV=true for local paths)
 eval_gemfile "gemfiles/modular/templating.gemfile"
 
-eval_gemfile "gemfiles/modular/templating.gemfile" if ENV.fetch("CI", "false").casecmp("false").zero?
+if ENV.fetch("CI", "false").casecmp("false").zero?
+  eval_gemfile "gemfiles/modular/templating.gemfile"
+end
 
 # Debugging
 eval_gemfile "gemfiles/modular/debug.gemfile"
