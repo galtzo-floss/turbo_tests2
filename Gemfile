@@ -14,10 +14,8 @@ git_source(:gitlab) { |repo_name| "https://gitlab.com/#{repo_name}" }
 # Include dependencies from {KJ|GEM_NAME}.gemspec
 gemspec
 
-if ENV.fetch("CI", "false").casecmp("false").zero?
-  # Templating (env-switched: KETTLE_RB_DEV=true for local paths)
-  eval_gemfile "gemfiles/modular/templating.gemfile"
-end
+# Templating (env-switched: KETTLE_RB_DEV=true for local paths)
+eval_gemfile "gemfiles/modular/templating.gemfile"
 
 # Debugging
 eval_gemfile "gemfiles/modular/debug.gemfile"
