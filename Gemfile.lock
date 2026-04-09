@@ -451,7 +451,7 @@ GEM
       kramdown-parser-gfm (~> 1.1)
       prawn (>= 2.5, < 3)
       version_gem (~> 1.1, >= 1.1.9)
-    yard (0.9.38)
+    yard (0.9.39)
     yard-fence (0.8.2)
       rdoc (~> 6.11)
       version_gem (~> 1.1, >= 1.1.9)
