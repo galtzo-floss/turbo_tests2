@@ -117,7 +117,7 @@ PATH
     markly-merge (2.0.0)
       ast-merge (~> 5.0, >= 5.0.0)
       markdown-merge (~> 2.0)
-      markly (~> 0.15, >= 0.15.2)
+      markly (~> 0.15, >= 0.15.3)
       tree_haver (~> 6.0, >= 6.0.0)
       version_gem (~> 1.1, >= 1.1.9)
 
@@ -237,7 +237,7 @@ GEM
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
     logger (1.7.0)
-    markly (0.15.2)
+    markly (0.15.3)
     matrix (0.4.3)
     mutex_m (0.3.0)
     nokogiri (1.19.2-x86_64-linux-gnu)

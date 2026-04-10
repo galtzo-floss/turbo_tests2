@@ -26,7 +26,7 @@ gem_version =
 Gem::Specification.new do |spec|
   spec.name = "turbo_tests2"
   spec.version = gem_version
-  spec.authors = ["Peter H. Boling", "Illia Zub"]
+  spec.authors = ["Illia", "Ilya Zub", "AMHOL", "Serge Bedzhyk", "Bo Anderson", "Dmitiry Zub☀️", "Illia", "mrudzki", "Sebastien Savater", "David Rodriguez", "Hiroshi SHIBATA", "Gareth Jones", "Peter H. Boling"]
   spec.email = ["floss@glatzo.com"]
 
   spec.summary = "🚀 `turbo_tests2` is a drop-in replacement for `serpapi/turbo_tests` and `grosser/parallel_tests` with incremental summarized output"
