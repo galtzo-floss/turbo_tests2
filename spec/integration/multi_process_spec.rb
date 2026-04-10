@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "turbo_tests2/rspec/shared_contexts/simplecov_spawn"
+
 # Integration tests that dogfood turbo_tests' core value proposition:
 #
 #   Run RSpec examples from multiple spec files in parallel subprocesses with
@@ -17,18 +19,7 @@
 RSpec.describe "TurboTests multi-process integration", :check_output do
   subject(:output) { %x(bundle exec turbo_tests -f d -n 2 #{fixtures}).strip }
 
-  # Inject the SimpleCov spawn shim into subprocesses when coverage is active,
-  # mirroring the setup in cli_spec.rb.
-  around do |example|
-    if defined?(SimpleCov) && SimpleCov.running
-      original_rubyopt = ENV.fetch("RUBYOPT", nil)
-      ENV["RUBYOPT"] = "-r./.simplecov_spawn #{original_rubyopt}".strip
-      example.run
-      ENV["RUBYOPT"] = original_rubyopt
-    else
-      example.run
-    end
-  end
+  include_context "with simplecov spawn coverage"
 
   # ── passing + pending ─────────────────────────────────────────────────────────
   # The happy path: two worker processes each finish successfully.
