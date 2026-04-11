@@ -3,7 +3,7 @@
 require "bundler"
 require "rspec/core"
 
-RSpec.shared_context "with simplecov spawn coverage" do
+RSpec.shared_context("with simplecov spawn coverage") do
   let(:simplecov_spawn_path) do
     File.expand_path(".simplecov_spawn.rb", Bundler.root.to_s)
   end
