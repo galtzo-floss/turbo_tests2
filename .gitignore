@@ -100,3 +100,5 @@ Appraisal.*.gemfile.lock
 # Editors
 # Sentinels
 .floss_funding.*.lock
+# Ignored because we currently use mise.toml
+.tool-versions

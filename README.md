@@ -1,9 +1,11 @@
-[![Galtzo FLOSS Logo by Aboling0, CC BY-SA 4.0][🖼️galtzo-i]][🖼️galtzo-discord] [![ruby-lang Logo, Yukihiro Matsumoto, Ruby Visual Identity Team, CC BY-SA 2.5][🖼️ruby-lang-i]][🖼️ruby-lang] [![turbo_tests2 Logo by Aboling0, CC BY-SA 4.0][🖼️turbo_tests2-i]][🖼️turbo_tests2]
+[![Galtzo FLOSS Logo by Aboling0, CC BY-SA 4.0][🖼️galtzo-i]][🖼️galtzo-discord] [![ruby-lang Logo, Yukihiro Matsumoto, Ruby Visual Identity Team, CC BY-SA 2.5][🖼️ruby-lang-i]][🖼️ruby-lang] [![galtzo-floss Logo by Aboling0, CC BY-SA 4.0][🖼️galtzo-floss-i]][🖼️galtzo-floss] [![turbo_tests2 Logo by Aboling0, CC BY-SA 4.0][🖼️turbo_tests2-i]][🖼️turbo_tests2]
 
 [🖼️galtzo-i]: https://logos.galtzo.com/assets/images/galtzo-floss/avatar-192px.svg
 [🖼️galtzo-discord]: https://discord.gg/3qme4XHNKN
 [🖼️ruby-lang-i]: https://logos.galtzo.com/assets/images/ruby-lang/avatar-192px.svg
 [🖼️ruby-lang]: https://www.ruby-lang.org/
+[🖼️galtzo-floss-i]: https://logos.galtzo.com/assets/images/galtzo-floss/avatar-192px.svg
+[🖼️galtzo-floss]: https://github.com/galtzo-floss
 [🖼️turbo_tests2-i]: https://logos.galtzo.com/assets/images/galtzo-floss/turbo_tests2/avatar-192px.svg
 [🖼️turbo_tests2]: https://github.com/galtzo-floss/turbo_tests2
 
