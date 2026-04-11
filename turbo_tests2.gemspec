@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
   spec.name = "turbo_tests2"
   spec.version = gem_version
   spec.authors = ["Illia", "Ilya Zub", "AMHOL", "Serge Bedzhyk", "Bo Anderson", "Dmitiry Zub☀️", "Illia", "mrudzki", "Sebastien Savater", "David Rodriguez", "Hiroshi SHIBATA", "Gareth Jones", "Peter H. Boling"]
-  spec.email = ["floss@glatzo.com"]
+  spec.email = ["floss@galtzo.com"]
 
   spec.summary = "🚀 `turbo_tests2` is a drop-in replacement for `serpapi/turbo_tests` and `grosser/parallel_tests` with incremental summarized output"
   spec.description = "🚀 `turbo_tests2` is a drop-in replacement for `serpapi/turbo_tests` and `grosser/parallel_tests` with incremental summarized output. Source code of `turbo_test2` gem is based on Discourse and Rubygems work in this area (see README file of the source repository)."
