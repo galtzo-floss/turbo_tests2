@@ -1,0 +1,209 @@
+{
+  "BUNDLE_GEMFILE: ${{ github.workspace }}/${{ matrix.gemfile }}.gemfile\nstrategy:": [
+    {
+      "file": ".github/workflows/coverage.yml",
+      "lines": [
+        43,
+        140
+      ]
+    }
+  ],
+  "badge: true\nfail_below_min: true": [
+    {
+      "file": ".github/workflows/coverage.yml",
+      "lines": [
+        117,
+        196
+      ]
+    }
+  ],
+  "continue-on-error: ${{ matrix.experimental || endsWith(matrix.ruby, 'head') }}\nenv: # $BUNDLE_GEMFILE must be set at job level, so it is set for all steps": [
+    {
+      "file": ".github/workflows/coverage.yml",
+      "lines": [
+        41,
+        138
+      ]
+    }
+  ],
+  "env: # $BUNDLE_GEMFILE must be set at job level, so it is set for all steps\nBUNDLE_GEMFILE: ${{ github.workspace }}/${{ matrix.gemfile }}.gemfile": [
+    {
+      "file": ".github/workflows/coverage.yml",
+      "lines": [
+        42,
+        139
+      ]
+    }
+  ],
+  "fail-fast: false\nmatrix:": [
+    {
+      "file": ".github/workflows/coverage.yml",
+      "lines": [
+        45,
+        142
+      ]
+    }
+  ],
+  "fail_below_min: true\nformat: markdown": [
+    {
+      "file": ".github/workflows/coverage.yml",
+      "lines": [
+        118,
+        197
+      ]
+    }
+  ],
+  "filename: ./coverage/coverage.xml\nbadge: true": [
+    {
+      "file": ".github/workflows/coverage.yml",
+      "lines": [
+        116,
+        195
+      ]
+    }
+  ],
+  "format: markdown\nhide_branch_rate: false": [
+    {
+      "file": ".github/workflows/coverage.yml",
+      "lines": [
+        119,
+        198
+      ]
+    }
+  ],
+  "gemfile: \"Appraisal.root\"\nrubygems: latest": [
+    {
+      "file": ".github/workflows/coverage.yml",
+      "lines": [
+        52,
+        149
+      ]
+    }
+  ],
+  "github-token: ${{ secrets.GITHUB_TOKEN }}\ncontinue-on-error: ${{ matrix.experimental != 'false' }}": [
+    {
+      "file": ".github/workflows/coverage.yml",
+      "lines": [
+        89,
+        217
+      ]
+    }
+  ],
+  "hide_branch_rate: false\nhide_complexity: true": [
+    {
+      "file": ".github/workflows/coverage.yml",
+      "lines": [
+        120,
+        199
+      ]
+    }
+  ],
+  "hide_complexity: true\nindicators: true": [
+    {
+      "file": ".github/workflows/coverage.yml",
+      "lines": [
+        121,
+        200
+      ]
+    }
+  ],
+  "if: ${{ github.event_name != 'pull_request' }}\ncontinue-on-error: ${{ matrix.experimental != 'false' }}": [
+    {
+      "file": ".github/workflows/coverage.yml",
+      "lines": [
+        173,
+        188
+      ]
+    }
+  ],
+  "include:\n# Coverage": [
+    {
+      "file": ".github/workflows/coverage.yml",
+      "lines": [
+        47,
+        144
+      ]
+    }
+  ],
+  "indicators: true\noutput: both": [
+    {
+      "file": ".github/workflows/coverage.yml",
+      "lines": [
+        122,
+        201
+      ]
+    }
+  ],
+  "matrix:\ninclude:": [
+    {
+      "file": ".github/workflows/coverage.yml",
+      "lines": [
+        46,
+        143
+      ]
+    }
+  ],
+  "path: code-coverage-results.md\ncontinue-on-error: ${{ matrix.experimental != 'false' }}": [
+    {
+      "file": ".github/workflows/coverage.yml",
+      "lines": [
+        132,
+        211
+      ]
+    }
+  ],
+  "recreate: true\npath: code-coverage-results.md": [
+    {
+      "file": ".github/workflows/coverage.yml",
+      "lines": [
+        131,
+        210
+      ]
+    }
+  ],
+  "ruby-version: \"${{ matrix.ruby }}\"\nrubygems: \"${{ matrix.rubygems }}\"": [
+    {
+      "file": ".github/workflows/coverage.yml",
+      "lines": [
+        63,
+        166
+      ]
+    }
+  ],
+  "rubygems: \"${{ matrix.rubygems }}\"\nbundler: \"${{ matrix.bundler }}\"": [
+    {
+      "file": ".github/workflows/coverage.yml",
+      "lines": [
+        64,
+        167
+      ]
+    }
+  ],
+  "rubygems: latest\nbundler: latest": [
+    {
+      "file": ".github/workflows/coverage.yml",
+      "lines": [
+        53,
+        150
+      ]
+    }
+  ],
+  "runs-on: ubuntu-latest\ncontinue-on-error: ${{ matrix.experimental || endsWith(matrix.ruby, 'head') }}": [
+    {
+      "file": ".github/workflows/coverage.yml",
+      "lines": [
+        40,
+        137
+      ]
+    }
+  ],
+  "strategy:\nfail-fast: false": [
+    {
+      "file": ".github/workflows/coverage.yml",
+      "lines": [
+        44,
+        141
+      ]
+    }
+  ]
+}
