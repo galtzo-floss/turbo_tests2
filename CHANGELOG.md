@@ -18,27 +18,6 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ## [Unreleased]
 
-### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
-
-## [3.0.0] - 2026-04-06
-
-- TAG: [v3.0.0][3.0.0t]
-- COVERAGE: 100.00% -- 455/455 lines in 15 files
-- BRANCH COVERAGE: 100.00% -- 87/87 branches in 15 files
-- 38.81% documented
-
-### Added
-
 #### From `VitalConnectInc/turbo_tests`, now part of `turbo_tests2`
 
 - `--create` flag: create test database(s) before running the suite,
@@ -102,6 +81,10 @@ Please file a bug if you notice a violation of semantic versioning.
 
 [🔀rm-wrapper]: https://github.com/serpapi/turbo_tests/pull/45/files#r1456006187
 
+### Deprecated
+
+### Removed
+
 ### Fixed
 
 - Delay loading of `parallel_tests` Rake tasks: loading them eagerly at
@@ -124,6 +107,8 @@ Please file a bug if you notice a violation of semantic versioning.
   rescue, `Process.respond_to?(:getpgid)` fallback, plain `"rspec"` command
   path, stdout prefix printing, nil-message skip, fail-fast kill+break,
   `print_failed_group`, and both `RSpecExt#handle_interrupt` branches).
+
+### Security
 
 [🐛vitals-13]: https://github.com/VitalConnectInc/turbo_tests/issues/13
 [🔀upstream]: https://github.com/serpapi/turbo_tests
