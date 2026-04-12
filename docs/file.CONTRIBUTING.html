@@ -221,7 +221,7 @@ pass/fail count, failing example list, and SimpleCov coverage percentages.</p>
 <pre class="code language-console"><code class="language-console">bundle exec rake rubocop_gradual:autocorrect
 </code></pre>
 
-<p>For more detailed information about using RuboCop in this project, please see the <a href="file.RUBOCOP.html" title="RUBOCOP.md">RUBOCOP.md</a> guide. This project uses <code>rubocop_gradual</code> instead of vanilla RuboCop, which requires specific commands for checking violations.</p>
+<p>For more detailed information about using RuboCop in this project, please see the <a href="RUBOCOP.md">RUBOCOP.md</a> guide. This project uses <code>rubocop_gradual</code> instead of vanilla RuboCop, which requires specific commands for checking violations.</p>
 
 <h3 id="important-do-not-add-inline-rubocop-disables">Important: Do not add inline RuboCop disables</h3>
 
@@ -281,6 +281,7 @@ See: <a href="https://guides.rubygems.org/security/#building-gems">RubyGems Secu
   <li>Update the version number in <code>version.rb</code>, and ensure <code>CHANGELOG.md</code> reflects changes</li>
   <li>Run <code>bin/setup &amp;&amp; bin/rake</code> again as a secondary check, and to update <code>Gemfile.lock</code>
 </li>
+  <li>Run <code>bin/rake yard</code> to regenerate the docs site using the canonical docs task</li>
   <li>Run <code>git commit -am "🔖 Prepare release v&lt;VERSION&gt;"</code> to commit the changes</li>
   <li>Run <code>git push</code> to trigger the final CI pipeline before release, and merge PRs
     <ul>
@@ -324,7 +325,7 @@ push git commits and tags, and push the <code>.gem</code> file to the gem host c
 </div></div>
 
       <div id="footer">
-  Generated on Sat Apr 11 00:44:19 2026 by
+  Generated on Sun Apr 12 03:30:28 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.39 (ruby-4.0.2).
 </div>
