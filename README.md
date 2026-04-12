@@ -182,10 +182,27 @@ NOTE: Be prepared to track down certs for signed gems and add them the same way 
 
 ## ⚙️ Configuration
 
+`turbo_tests2` ships the `turbo_tests2` executable by default.
+
+If you want an opt-in compatibility command for a specific project, generate a local shim:
+
+```bash
+$ bundle exec turbo_tests2 shim install
+Installed turbo_tests shim at bin/turbo_tests.
+```
+
+That creates `bin/turbo_tests`, which delegates to `bundle exec turbo_tests2 "$@"`.
+Remove it with:
+
+```bash
+$ bundle exec turbo_tests2 shim remove
+Removed turbo_tests shim at bin/turbo_tests.
+```
+
 Create test databases
 
 ```bash
-$ bundle exec turbo_tests --create
+$ bundle exec turbo_tests2 --create
 ```
 
 ## 🔧 Basic Usage
@@ -216,13 +233,13 @@ Options:
 To pass any options supported by paralell_tests, use `--`:
 
 ```bash
-bundle exec turbo_tests -n 4 -- --only-group 1 --pattern spec/system
+bundle exec turbo_tests2 -n 4 -- --only-group 1 --pattern spec/system
 ```
 
-`turbo_tests` supports custom formatter such as Fuubar, but you might need to require it:
+`turbo_tests2` supports custom formatter such as Fuubar, but you might need to require it:
 
 ```bash
-bundle exec turbo_tests -r fuubar -f Fuubar spec/whatever
+bundle exec turbo_tests2 -r fuubar -f Fuubar spec/whatever
 ```
 
 ### Rake Hooks

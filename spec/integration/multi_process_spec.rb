@@ -7,7 +7,7 @@ require "turbo_tests2/rspec/shared_contexts/simplecov_spawn"
 #   Run RSpec examples from multiple spec files in parallel subprocesses with
 #   iterative (streaming) output merged from all processes.
 #
-# Every test here launches a real `bundle exec turbo_tests` child process with
+# Every test here launches a real `bundle exec turbo_tests2` child process with
 # `-n 2` so exactly two RSpec workers are spawned.  We then assert on the
 # combined output to verify that:
 #   1. The parallel-processes header is present.
@@ -17,7 +17,7 @@ require "turbo_tests2/rspec/shared_contexts/simplecov_spawn"
 #   4. Exit codes match the outcome of the run.
 #
 RSpec.describe "TurboTests multi-process integration", :check_output do
-  subject(:output) { %x(bundle exec turbo_tests -f d -n 2 #{fixtures}).strip }
+  subject(:output) { %x(bundle exec turbo_tests2 -f d -n 2 #{fixtures}).strip }
 
   include_context "with simplecov spawn coverage"
 

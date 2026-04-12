@@ -9,6 +9,8 @@ module TurboTests
     end
 
     def run
+      handle_shim_command if shim_command?
+
       requires = []
       formatters = []
       tags = []
@@ -147,6 +149,59 @@ module TurboTests
     end
 
     private
+
+    def shim_command?
+      @argv.first == "shim"
+    end
+
+    def handle_shim_command
+      command = @argv[1]
+      args = @argv.drop(2)
+
+      result =
+        case command
+        when "install"
+          TurboTests::Shim.install(project_root: Dir.pwd, path: parse_shim_path(args, command: command))
+        when "remove"
+          TurboTests::Shim.remove(project_root: Dir.pwd, path: parse_shim_path(args, command: command))
+        else
+          warn(shim_usage(command))
+          exit(1)
+        end
+
+      io = result.exit_code.zero? ? $stdout : $stderr
+      io.puts(result.message)
+      exit(result.exit_code)
+    end
+
+    def parse_shim_path(args, command:)
+      path_override = nil
+      parser = OptionParser.new do |opts|
+        opts.banner = "Usage: turbo_tests2 shim #{command} [--path PATH]"
+        opts.on("--path PATH", "Use a custom shim path instead of bin/turbo_tests") { |value| path_override = value }
+      end
+
+      remaining = parser.parse(args.dup)
+      if remaining.size > 1 || (remaining.any? && path_override)
+        warn(shim_usage(command))
+        exit(1)
+      end
+
+      remaining.first || path_override
+    rescue OptionParser::ParseError => e
+      warn(e.message)
+      warn(shim_usage(command))
+      exit(1)
+    end
+
+    def shim_usage(command = nil)
+      lines = [
+        "Usage: turbo_tests2 shim install [--path PATH]",
+        "       turbo_tests2 shim remove [--path PATH]",
+      ]
+      lines << "Unknown shim command: #{command}" if command && !%w[install remove].include?(command)
+      lines.join("\n")
+    end
 
     def load_rake
       begin

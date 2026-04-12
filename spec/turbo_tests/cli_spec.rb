@@ -1,14 +1,14 @@
 require "turbo_tests2/rspec/shared_contexts/simplecov_spawn"
 
 RSpec.describe TurboTests::CLI do
-  subject(:output) { %x(bundle exec turbo_tests -f d #{fixture}).strip }
+  subject(:output) { %x(bundle exec turbo_tests2 -f d #{fixture}).strip }
 
   before { output }
 
   include_context "with simplecov spawn coverage"
 
   context "when the 'seed' parameter was used", :check_output do
-    subject(:output) { %x(bundle exec turbo_tests -f d #{fixture} --seed #{seed}).strip }
+    subject(:output) { %x(bundle exec turbo_tests2 -f d #{fixture} --seed #{seed}).strip }
 
     let(:seed) { 1234 }
 
@@ -163,6 +163,33 @@ An error occurred while loading #{fixture}.
       TurboTests::CLI.new(args).run
     rescue SystemExit
       nil
+    end
+
+    describe "shim commands" do
+      around do |example|
+        Dir.mktmpdir do |dir|
+          @shim_root = dir
+          example.run
+        end
+      end
+
+      attr_reader :shim_root
+
+      it "installs a project-local turbo_tests shim" do
+        run_cli(["shim", "install", "--path", File.join(shim_root, "bin/turbo_tests")])
+
+        expect(File).to exist(File.join(shim_root, "bin/turbo_tests"))
+        expect(File.read(File.join(shim_root, "bin/turbo_tests"))).to include("exec bundle exec turbo_tests2")
+      end
+
+      it "removes an installed shim" do
+        shim_path = File.join(shim_root, "bin/turbo_tests")
+
+        run_cli(["shim", "install", "--path", shim_path])
+        run_cli(["shim", "remove", "--path", shim_path])
+
+        expect(File).not_to exist(shim_path)
+      end
     end
 
     it "defaults to progress formatter writing to stdout" do
