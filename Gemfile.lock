@@ -267,7 +267,7 @@ GEM
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
     logger (1.7.0)
-    markly (0.15.3)
+    markly (0.16.0)
     matrix (0.4.3)
     mutex_m (0.3.0)
     nokogiri (1.19.2-x86_64-linux-gnu)
@@ -275,7 +275,7 @@ GEM
     oppen (1.0.0)
     ostruct (0.6.3)
     parallel (1.28.0)
-    parallel_tests (5.6.0)
+    parallel_tests (5.7.0)
       parallel
     parser (3.3.11.1)
       ast (~> 2.4.1)
@@ -296,7 +296,7 @@ GEM
     public_suffix (7.0.5)
     racc (1.8.1)
     rainbow (3.1.1)
-    rake (13.3.1)
+    rake (13.4.1)
     rbs (3.10.4)
       logger
       tsort
@@ -427,7 +427,7 @@ GEM
     simplecov-rcov (0.3.7)
       simplecov (>= 0.4.1)
     simplecov_json_formatter (0.1.4)
-    sorbet-runtime (0.6.13108)
+    sorbet-runtime (0.6.13123)
     standard (1.54.0)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
@@ -452,7 +452,7 @@ GEM
     terminal-table (4.0.0)
       unicode-display_width (>= 1.1.1, < 4)
     thor (1.5.0)
-    timecop (0.9.10)
+    timecop (0.9.11)
     timecop-rspec (1.0.3)
       delegate (~> 0.1)
       rspec (~> 3.0)
@@ -481,7 +481,7 @@ GEM
       kramdown-parser-gfm (~> 1.1)
       prawn (>= 2.5, < 3)
       version_gem (~> 1.1, >= 1.1.9)
-    yard (0.9.39)
+    yard (0.9.41)
     yard-junk (0.1.0)
       benchmark
       ostruct
