@@ -170,6 +170,27 @@ PATH
     tree_haver (6.0.0)
       version_gem (~> 1.1, >= 1.1.9)
 
+PATH
+  remote: /home/pboling/src/kettle-rb/yard-fence
+  specs:
+    yard-fence (0.8.2)
+      rdoc (~> 6.11)
+      version_gem (~> 1.1, >= 1.1.9)
+      yard (~> 0.9, >= 0.9.37)
+
+PATH
+  remote: /home/pboling/src/kettle-rb/yard-timekeeper
+  specs:
+    yard-timekeeper (0.1.0)
+      version_gem (~> 1.1, >= 1.1.9)
+
+PATH
+  remote: /home/pboling/src/kettle-rb/yard-yaml
+  specs:
+    yard-yaml (0.1.0)
+      version_gem (~> 1.1, >= 1.1.9)
+      yaml-converter (~> 0.1)
+
 GEM
   remote: https://gem.coop/
   specs:
@@ -461,10 +482,6 @@ GEM
       prawn (>= 2.5, < 3)
       version_gem (~> 1.1, >= 1.1.9)
     yard (0.9.39)
-    yard-fence (0.8.2)
-      rdoc (~> 6.11)
-      version_gem (~> 1.1, >= 1.1.9)
-      yard (~> 0.9, >= 0.9.37)
     yard-junk (0.1.0)
       benchmark
       ostruct
@@ -472,11 +489,6 @@ GEM
       yard
     yard-relative_markdown_links (0.6.0)
       nokogiri (>= 1.14.3, < 2)
-    yard-timekeeper (0.1.0)
-      version_gem (~> 1.1, >= 1.1.9)
-    yard-yaml (0.1.0)
-      version_gem (~> 1.1, >= 1.1.9)
-      yaml-converter (~> 0.1)
     zeitwerk (2.7.5)
     zlib (3.2.3)
 
@@ -536,11 +548,11 @@ DEPENDENCIES
   unparser (~> 0.8, >= 0.8.1)
   yaml-converter (~> 0.1)
   yard (~> 0.9, >= 0.9.37)
-  yard-fence (~> 0.8, >= 0.8.2)
+  yard-fence!
   yard-junk (~> 0.1, >= 0.1.0)
   yard-relative_markdown_links (~> 0.6)
-  yard-timekeeper (~> 0.1)
-  yard-yaml (~> 0.1)
+  yard-timekeeper!
+  yard-yaml!
 
 BUNDLED WITH
   4.0.10
