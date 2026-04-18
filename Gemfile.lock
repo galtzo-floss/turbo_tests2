@@ -184,13 +184,6 @@ PATH
     yard-timekeeper (0.1.0)
       version_gem (~> 1.1, >= 1.1.9)
 
-PATH
-  remote: /home/pboling/src/kettle-rb/yard-yaml
-  specs:
-    yard-yaml (0.1.0)
-      version_gem (~> 1.1, >= 1.1.9)
-      yaml-converter (~> 0.1)
-
 GEM
   remote: https://gem.coop/
   specs:
@@ -552,7 +545,6 @@ DEPENDENCIES
   yard-junk (~> 0.1, >= 0.1.0)
   yard-relative_markdown_links (~> 0.6)
   yard-timekeeper!
-  yard-yaml!
 
 BUNDLED WITH
   4.0.10
