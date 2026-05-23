@@ -5,7 +5,6 @@ Choose the option that best fits your use case:
 
 - [MIT](MIT.md)
 
-
 ## Copyright Notice
 
 Copyright (c) 2020-2023, 2025 Illia

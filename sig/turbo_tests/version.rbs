@@ -1,0 +1,7 @@
+module TurboTests
+  module Version
+    VERSION: String
+  end
+  VERSION: String
+end
+

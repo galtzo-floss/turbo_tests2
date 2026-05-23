@@ -65,8 +65,6 @@ task :default do
 end
 
 # External gems that define tasks - add here!
-require "kettle/dev"
-
 
 ### DUPLICATE DRIFT TASKS
 begin
@@ -89,10 +87,10 @@ rescue LoadError
   task("kettle:drift" => "kettle:drift:update")
 end
 
-
 ### TEMPLATING TASKS
 begin
   require "kettle/jem"
+  Kettle::Jem.install_tasks
 rescue LoadError
   # :nocov:
   desc("(stub) kettle:jem:selftest is unavailable")
@@ -113,4 +111,10 @@ rescue LoadError
     warn("NOTE: stone_checksums isn't installed, or is disabled for #{RUBY_VERSION} in the current environment")
   end
   # :nocov:
+end
+
+begin
+  require "kettle/dev"
+rescue LoadError
+  warn("NOTE: kettle-dev isn't installed, or is disabled for #{RUBY_VERSION} in the current environment")
 end

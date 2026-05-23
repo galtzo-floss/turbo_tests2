@@ -123,7 +123,7 @@ K_SOUP_COV_MIN_HARD=false bundle exec kettle-test spec/path/to/spec.rb
 
 ### Spec organization (required)
 
-- One spec file per class/module. For each class or module under `lib/`, keep all of its unit tests in a single spec file under `spec/` that mirrors the path and file name exactly: `lib/turbo_tests/my_class.rb` -> `spec/turbo_tests/my_class_spec.rb`.
+- One spec file per class/module. For each class or module under `lib/`, keep all of its unit tests in a single spec file under `spec/` that mirrors the path and file name exactly: `lib/turbo_tests2/my_class.rb` -> `spec/turbo_tests2/my_class_spec.rb`.
 - Exception: Integration specs that intentionally span multiple classes. Place these under `spec/integration/` (or a clearly named integration folder), and do not directly mirror a single class. Name them after the scenario, not a class.
 
 ## Lint It
@@ -212,11 +212,11 @@ NOTE: To build without signing the gem set `SKIP_GEM_SIGNING` to any value in th
 14. Run `bundle exec rake release` which will create a git tag for the version,
     push git commits and tags, and push the `.gem` file to the gem host configured in the gemspec.
 
-[📜src-gl]: https://gitlab.com/galtzo-floss/turbo_tests2/
+[📜src-gl]: https://gitlab.com/galtzo-floss/turbo_tests2
 [📜src-cb]: https://codeberg.org/galtzo-floss/turbo_tests2
 [📜src-gh]: https://github.com/galtzo-floss/turbo_tests2
 [🧪build]: https://github.com/galtzo-floss/turbo_tests2/actions
-[🤝conduct]: https://gitlab.com/galtzo-floss/turbo_tests2/-/blob/main/CODE_OF_CONDUCT.md
+[🤝conduct]: https://github.com/galtzo-floss/turbo_tests2/blob/main/CODE_OF_CONDUCT.md
 [🖐contrib-rocks]: https://contrib.rocks
 [🖐contributors]: https://github.com/galtzo-floss/turbo_tests2/graphs/contributors
 [🚎contributors-gl]: https://gitlab.com/galtzo-floss/turbo_tests2/-/graphs/main

@@ -47,11 +47,11 @@ jobs:
     steps:
       - name: Checkout
         if: ${{ !env.ACT }}
-        uses: actions/checkout@v6
+        uses: actions/checkout@v6                                       # v6.0.2
 
       - name: Setup Ruby & RubyGems
         if: ${{ !env.ACT }}
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@v1                                       # v1.300.0
         with:
           ruby-version: ${{ matrix.ruby }}
           rubygems: ${{ matrix.rubygems }}

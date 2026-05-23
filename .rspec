@@ -1,8 +1,6 @@
 --format progress
---format documentation
 --color
 --order random
---tty
 --require spec_helper
 --warnings
 --format html

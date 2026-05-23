@@ -1,5 +1,8 @@
 name: Tag and Release
 
+permissions:
+  contents: read
+
 on:
   workflow_dispatch:
   push:
@@ -7,6 +10,10 @@ on:
       - master
     paths:
       - "lib/turbo_tests/version.rb"
+
+concurrency:
+  group: "${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
 
 jobs:
   release:
@@ -20,9 +27,9 @@ jobs:
       packages: write
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
     - name: Set up Ruby 2.7
-      uses: ruby/setup-ruby@v1
+      uses: ruby/setup-ruby@afeafc3d1ab54a631816aba4c914a0081c12ff2f # v1.310.0
       with:
         ruby-version: 2.7
         bundler-cache: true

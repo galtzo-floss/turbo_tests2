@@ -17,19 +17,31 @@ Please file a bug if you notice a violation of semantic versioning.
 [📗keep-changelog-img]: https://img.shields.io/badge/keep--a--changelog-1.0.0-FFDD67.svg?style=flat
 
 ## [Unreleased]
-
 ### Added
-
 ### Changed
-
 ### Deprecated
-
 ### Removed
-
-[📎simplecov-spawn]: https://github.com/simplecov-ruby/simplecov#running-simplecov-against-spawned-subprocesses
-
 ### Fixed
-
 ### Security
 
-[🔀rm-wrapper]: https://github.com/serpapi/turbo_tests/pull/45/files#r1456006187
+## [1.0.1] - 2025-08-24
+- TAG: [v1.0.1][1.0.1t]
+- COVERAGE: 100.00% -- 130/130 lines in 7 files
+- BRANCH COVERAGE: 96.00% -- 48/50 branches in 7 files
+- 100% documented
+### Fixed
+- bugfix: oopsie
+
+## [1.0.0] - 2025-08-24
+- TAG: [v1.0.0][1.0.0t]
+- COVERAGE: 100.00% -- 130/130 lines in 7 files
+- BRANCH COVERAGE: 96.00% -- 48/50 branches in 7 files
+- 100% documented
+### Added
+- Initial release
+
+[Unreleased]: https://gitlab.com/galtzo-floss/turbo_tests2/-/compare/v1.0.0...HEAD
+[1.0.0]: https://gitlab.com/galtzo-floss/turbo_tests2/-/compare/a427c302df09cfe4253a7c8d400333f9a4c1a208...v1.0.0
+[1.0.0t]: https://gitlab.com/galtzo-floss/turbo_tests2/-/tags/v1.0.0
+[1.0.1]: https://gitlab.com/galtzo-floss/turbo_tests2/-/compare/v1.0.0...v1.0.1
+[1.0.1t]: https://gitlab.com/galtzo-floss/turbo_tests2/-/tags/v1.0.1
