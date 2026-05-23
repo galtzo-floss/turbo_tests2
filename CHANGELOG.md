@@ -17,16 +17,30 @@ Please file a bug if you notice a violation of semantic versioning.
 [📗keep-changelog-img]: https://img.shields.io/badge/keep--a--changelog-1.0.0-FFDD67.svg?style=flat
 
 ## [Unreleased]
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [3.0.0] - 2026-05-22
+
+- TAG: [v3.0.0][3.0.0t]
+- COVERAGE: 96.94% -- 538/555 lines in 17 files
+- BRANCH COVERAGE: 90.35% -- 103/114 branches in 17 files
+- 37.97% documented
+
 ### Added
 
 - Initial release
 
-### Changed
-### Deprecated
-### Removed
-### Fixed
-### Security
-
-[Unreleased]: https://gitlab.com/galtzo-floss/turbo_tests2/-/compare/v1.0.0...HEAD
-[1.0.0]: https://gitlab.com/galtzo-floss/turbo_tests2/-/compare/a427c302df09cfe4253a7c8d400333f9a4c1a208...v1.0.0
-[1.0.0t]: https://gitlab.com/galtzo-floss/turbo_tests2/-/tags/v1.0.0
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/galtzo-floss/turbo_tests2/compare/7d4064e5b8acc2f53929fccf7be3eb63f8a9f140...v3.0.0
+[3.0.0t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.0.0
