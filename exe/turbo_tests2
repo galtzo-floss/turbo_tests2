@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Alias for `turbo_tests` — turbo_tests2 is a drop-in replacement for turbo_tests.
+require "turbo_tests2"
+
+TurboTests::CLI.new(ARGV).run

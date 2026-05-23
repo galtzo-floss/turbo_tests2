@@ -9,6 +9,8 @@ module TurboTests
     end
 
     def run
+      handle_shim_command if shim_command?
+
       requires = []
       formatters = []
       tags = []
@@ -17,8 +19,11 @@ module TurboTests
       verbose = false
       fail_fast = nil
       seed = nil
+      print_failed_group = false
+      create = false
+      nice = false
 
-      OptionParser.new { |opts|
+      OptionParser.new do |opts|
         opts.banner = <<~BANNER
           Run all tests in parallel, giving each process ENV['TEST_ENV_NUMBER'] ('1', '2', '3', ...).
 
@@ -40,10 +45,14 @@ module TurboTests
           requires << filename
         end
 
-        opts.on("-f", "--format FORMATTER", "Choose a formatter. Available formatters: progress (p), documentation (d). Default: progress") do |name|
+        opts.on(
+          "-f",
+          "--format FORMATTER",
+          "Choose a formatter. Available formatters: progress (p), documentation (d). Default: progress",
+        ) do |name|
           formatters << {
             name: name,
-            outputs: []
+            outputs: [],
           }
         end
 
@@ -55,7 +64,7 @@ module TurboTests
           if formatters.empty?
             formatters << {
               name: "progress",
-              outputs: []
+              outputs: [],
             }
           end
           formatters.last[:outputs] << filename
@@ -72,63 +81,141 @@ module TurboTests
         opts.on("--fail-fast=[N]") do |n|
           n = begin
             Integer(n)
-          rescue
+          rescue StandardError
             nil
           end
-          fail_fast = n.nil? || n < 1 ? 1 : n
+          fail_fast = (n.nil? || n < 1) ? 1 : n
         end
 
         opts.on("--seed SEED", "Seed for rspec") do |s|
           seed = s
         end
-      }.parse!(@argv)
+
+        opts.on("--create", "Create databases") do
+          create = true
+        end
+
+        opts.on("--print_failed_group", "Prints group that had failures in it") do
+          print_failed_group = true
+        end
+
+        opts.on("--nice", "execute test commands with low priority") do
+          nice = true
+        end
+      end.parse!(@argv)
+
+      if create
+        return TurboTests::Runner.create(count)
+      end
 
       requires.each { |f| require(f) }
 
       if formatters.empty?
         formatters << {
           name: "progress",
-          outputs: []
+          outputs: [],
         }
       end
 
       formatters.each do |formatter|
-        if formatter[:outputs].empty?
-          formatter[:outputs] << "-"
-        end
+        formatter[:outputs] << "-" if formatter[:outputs].empty?
       end
 
       load_rake
 
       invoke_rake_task("turbo_tests:setup")
 
+      files = @argv.empty? ? ["spec"] : @argv
+      parallel_options = {}
+
       exitstatus = TurboTests::Runner.run(
         formatters: formatters,
         tags: tags,
-        files: @argv.empty? ? ["spec"] : @argv,
+        files: files,
         runtime_log: runtime_log,
         verbose: verbose,
         fail_fast: fail_fast,
         count: count,
-        seed: seed
+        seed: seed,
+        nice: nice,
+        print_failed_group: print_failed_group,
+        parallel_options: parallel_options,
       )
 
       invoke_rake_task("turbo_tests:cleanup")
 
       # From https://github.com/galtzo-floss/turbo_tests2/pull/20/
-      exit exitstatus
+      exit(exitstatus)
     end
 
     private
+
+    def shim_command?
+      @argv.first == "shim"
+    end
+
+    def handle_shim_command
+      command = @argv[1]
+      args = @argv.drop(2)
+
+      result =
+        case command
+        when "install"
+          TurboTests::Shim.install(project_root: Dir.pwd, path: parse_shim_path(args, command: command))
+        when "remove"
+          TurboTests::Shim.remove(project_root: Dir.pwd, path: parse_shim_path(args, command: command))
+        else
+          warn(shim_usage(command))
+          exit(1)
+        end
+
+      io = result.exit_code.zero? ? $stdout : $stderr
+      io.puts(result.message)
+      exit(result.exit_code)
+    end
+
+    def parse_shim_path(args, command:)
+      path_override = nil
+      parser = OptionParser.new do |opts|
+        opts.banner = "Usage: turbo_tests2 shim #{command} [--path PATH]"
+        opts.on("--path PATH", "Use a custom shim path instead of bin/turbo_tests") { |value| path_override = value }
+      end
+
+      remaining = parser.parse(args.dup)
+      if remaining.size > 1 || (remaining.any? && path_override)
+        warn(shim_usage(command))
+        exit(1)
+      end
+
+      remaining.first || path_override
+    rescue OptionParser::ParseError => e
+      warn(e.message)
+      warn(shim_usage(command))
+      exit(1)
+    end
+
+    def shim_usage(command = nil)
+      lines = [
+        "Usage: turbo_tests2 shim install [--path PATH]",
+        "       turbo_tests2 shim remove [--path PATH]",
+      ]
+      lines << "Unknown shim command: #{command}" if command && !%w[install remove].include?(command)
+      lines.join("\n")
+    end
 
     def load_rake
       begin
         require "rake"
       rescue LoadError
+        # :nocov:
         return # rake is optional
+        # :nocov:
       end
 
-      Rake.application.init
+      # Pass an empty argv so Rake doesn't parse the current process's ARGV,
+      # which may contain non-Rake arguments (e.g. RSpec's --pattern flag when
+      # tests are run via `rake spec`).
+      Rake.application.init("rake", [])
       Rake.application.load_rakefile
     end
 
