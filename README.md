@@ -28,7 +28,11 @@ I've summarized my thoughts in [this blog post](https://dev.to/galtzo/hostile-ta
 
 ## 🌻 Synopsis
 
-`turbo_tests2` is a drop-in replacement for [grosser/parallel_tests](https://github.com/grosser/parallel_tests) with incremental summarized output. Source code of this gem is based on [Discourse](https://github.com/discourse/discourse/blob/6b9784cf8a18636bce281a7e4d18e65a0cbc6290/lib/turbo_tests.rb) and [RubyGems](https://github.com/rubygems/rubygems/tree/390335ceb351668cd433bd5bb9823dd021f82533/bundler/tool) work in this area.
+| Hard Fork Note                                                                                                                                                                                                                                                                                                                                              |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| I ([@pboling](https://github.com/pboling)) discussed merging this project back into the original `turbo_tests` with [@ilyazub](https://github.com/ilyazub), and we might move in that direction, but it will take time. Since I need this now I'm releasing it as a separate gem/project. We'll be discussing potentially unifying the projects again soon. |
+
+`turbo_tests2` is a drop-in replacement for, and modernization of, `turbo_tests`, which is a drop-in replacement for [grosser/parallel_tests](https://github.com/grosser/parallel_tests), adding incremental summarized output. Source code of this gem is based on [Discourse](https://github.com/discourse/discourse/blob/6b9784cf8a18636bce281a7e4d18e65a0cbc6290/lib/turbo_tests.rb) and [RubyGems](https://github.com/rubygems/rubygems/tree/390335ceb351668cd433bd5bb9823dd021f82533/bundler/tool) work in this area.
 
 Incremental summarized output doesn't [fit vision](https://github.com/grosser/parallel_tests/issues/708) of `parallel_tests` author and [RSpec doesn't support built-in parallel testing yet](https://github.com/rspec/rspec-rails/issues/2104#issuecomment-658474900). This gem will not be useful once one of the issues above will be implemented.
 
