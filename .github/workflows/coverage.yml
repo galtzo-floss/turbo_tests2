@@ -58,7 +58,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Setup Ruby & RubyGems
-        uses: ruby/setup-ruby@e65c17d16e57e481586a6a5a0282698790062f92 # v1.300.0
+        uses: ruby/setup-ruby@afeafc3d1ab54a631816aba4c914a0081c12ff2f # v1.310.0
         with:
           ruby-version: "${{ matrix.ruby }}"
           rubygems: "${{ matrix.rubygems }}"
@@ -101,7 +101,7 @@ jobs:
       #   which will hopefully be noticed for the lack of code coverage comments
       - name: Upload coverage to CodeCov
         if: ${{ !env.ACT }}
-        uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6.0.0
+        uses: codecov/codecov-action@e79a6962e0d4c0c17b229090214935d2e33f8354 # v6.0.1
         with:
           use_oidc: true
           fail_ci_if_error: false # optional (default = false)
@@ -151,17 +151,17 @@ jobs:
             bundler: latest
 
     steps:
-      - uses: amancevice/setup-code-climate@v2
+      - uses: amancevice/setup-code-climate@0daf2985a225e8ac15975b4d233010e94d65b76a # v2
         name: CodeClimate Install
         if: ${{ github.event_name != 'pull_request' }}
         with:
           cc_test_reporter_id: ${{ secrets.CC_TEST_REPORTER_ID }}
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Setup Ruby & RubyGems
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@afeafc3d1ab54a631816aba4c914a0081c12ff2f # v1.310.0
         with:
           ruby-version: "${{ matrix.ruby }}"
           rubygems: "${{ matrix.rubygems }}"
@@ -189,7 +189,7 @@ jobs:
         continue-on-error: ${{ matrix.experimental != 'false' }}
 
       - name: Code Coverage Summary Report
-        uses: irongut/CodeCoverageSummary@v1.3.0
+        uses: irongut/CodeCoverageSummary@51cc3a756ddcd398d447c044c02cb6aa83fdae95 # v1.3.0
         if: ${{ github.event_name == 'pull_request' }}
         with:
           filename: ./coverage/coverage.xml
@@ -204,7 +204,7 @@ jobs:
         continue-on-error: ${{ matrix.experimental != 'false' }}
 
       - name: Add Coverage PR Comment
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@0ea0beb66eb9baf113663a64ec522f60e49231c0 # v3.0.4
         if: ${{ github.event_name == 'pull_request' }}
         with:
           recreate: true
@@ -212,12 +212,12 @@ jobs:
         continue-on-error: ${{ matrix.experimental != 'false' }}
 
       - name: Coveralls
-        uses: coverallsapp/github-action@master
+        uses: coverallsapp/github-action@0a51d2e0b5417d06e4ecceb534aec87defc53926 # main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: ${{ matrix.experimental != 'false' }}
 
       - name: Upload results to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@e79a6962e0d4c0c17b229090214935d2e33f8354 # v6.0.1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
