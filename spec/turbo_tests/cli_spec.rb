@@ -128,7 +128,7 @@ An error occurred while loading #{fixture}.
       [
         /undefined method [`']\[\]' for nil/,
         /it\("fails"\) \{ expect\(nil\[:key\]\).to\(eql\("value"\)\) \}/,
-        /# #{Regexp.escape(fixture)}:2:in [`']block \(2 levels\) in <top \(required\)>'/,
+        /# #{Regexp.escape(fixture)}:2:in [`']block (?:\(2 levels\) in <top \(required\)>|in <main>)'/,
         /1 example, 1 failure/,
       ].each do |part|
         expect(output).to match(part)

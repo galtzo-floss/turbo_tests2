@@ -32,6 +32,7 @@ Please file a bug if you notice a violation of semantic versioning.
   with RSpec versions where `.new` is private.
 - The shim command result object no longer depends on `Struct#keyword_init`, restoring Ruby 2.4
   compatibility.
+- Backtrace output specs now accept JRuby 9.2's legacy `block in <main>` frame wording.
 - GitHub Actions test jobs now force `kettle-test` to use its direct RSpec runner so coverage
   aggregation remains stable while testing `turbo_tests2` itself.
 - GitHub Actions appraisal jobs now pass explicit parent-directory RSpec paths so direct RSpec
