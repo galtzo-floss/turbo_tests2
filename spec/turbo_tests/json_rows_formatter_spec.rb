@@ -24,6 +24,13 @@ RSpec.describe TurboTests::JsonRowsFormatter do
     JSON.parse(json_part, symbolize_names: true)
   end
 
+  def parsed_rows
+    output.rewind
+    output.read.each_line.map do |line|
+      JSON.parse(line.split(output_id).last, symbolize_names: true)
+    end
+  end
+
   def build_example(shared_group_frames: [])
     execution_result = double(
       "execution_result",
@@ -55,6 +62,26 @@ RSpec.describe TurboTests::JsonRowsFormatter do
       row = parsed_row
       expect(row[:type]).to eq("example_passed")
       expect(row.dig(:example, :description)).to eq("does something")
+    end
+  end
+
+  describe "lifecycle notifications" do
+    it "outputs start, group, message, seed, and close rows" do
+      group = double("group", description: "group description")
+
+      formatter.start(double("start", count: 2, load_time: 0.45))
+      formatter.example_group_started(double("group_started", group: group))
+      formatter.example_group_finished(double("group_finished", group: group))
+      formatter.message(double("message", message: "hello"))
+      formatter.seed(double("seed", seed: 1234))
+      formatter.close(double("close"))
+
+      rows = parsed_rows
+      expect(rows.map { |row| row[:type] }).to eq(%w[load_summary group_started group_finished message seed close])
+      expect(rows[0].dig(:summary, :count)).to eq(2)
+      expect(rows[1].dig(:group, :group, :description)).to eq("group description")
+      expect(rows[3][:message]).to eq("hello")
+      expect(rows[4][:seed]).to eq(1234)
     end
   end
 

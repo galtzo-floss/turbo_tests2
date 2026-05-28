@@ -103,6 +103,50 @@ RSpec.describe TurboTests::Reporter do
     end
   end
 
+  describe "#example_pending and #example_failed" do
+    subject(:reporter) { build_reporter }
+
+    let(:notification) { double("ExampleNotification") }
+    let(:example) { double("example", notification: notification) }
+
+    before { reporter.instance_variable_set(:@formatters, []) }
+
+    it "tracks pending examples" do
+      reporter.example_pending(example)
+
+      expect(reporter.pending_examples).to include(example)
+      expect(reporter.instance_variable_get(:@all_examples)).to include(example)
+    end
+
+    it "tracks failed examples" do
+      reporter.example_failed(example)
+
+      expect(reporter.failed_examples).to include(example)
+      expect(reporter.instance_variable_get(:@all_examples)).to include(example)
+    end
+  end
+
+  describe "#message and #error_outside_of_examples" do
+    subject(:reporter) { build_reporter }
+
+    it "stores regular messages" do
+      reporter.instance_variable_set(:@formatters, [])
+
+      reporter.message("hello")
+
+      expect(reporter.instance_variable_get(:@messages)).to eq(["hello"])
+    end
+
+    it "increments the error count and stores the message" do
+      reporter.instance_variable_set(:@formatters, [])
+
+      reporter.error_outside_of_examples("load error")
+
+      expect(reporter.instance_variable_get(:@errors_outside_of_examples_count)).to eq(1)
+      expect(reporter.instance_variable_get(:@messages)).to eq(["load error"])
+    end
+  end
+
   describe "#deprecation" do
     subject(:reporter) { build_reporter }
 
@@ -179,6 +223,52 @@ RSpec.describe TurboTests::Reporter do
     it "outputs correct counts for non-empty groups" do
       groups = [["spec_a.rb", "spec_b.rb"], ["spec_c.rb"]]
       expect { reporter.report_number_of_tests(groups) }.to output(/2 processes for 3/).to_stdout
+    end
+  end
+
+  describe "#report" do
+    subject(:reporter) { build_reporter(start_time: start_time - 1, seed: 1234, seed_used: true) }
+
+    let(:formatter) do
+      double(
+        "formatter",
+        seed: nil,
+        start: nil,
+        stop: nil,
+        start_dump: nil,
+        dump_pending: nil,
+        dump_failures: nil,
+        dump_summary: nil,
+        close: nil,
+      ).tap do |formatter|
+        allow(formatter).to receive(:respond_to?) do |method|
+          %i[seed start stop start_dump dump_pending dump_failures dump_summary close].include?(method)
+        end
+      end
+    end
+
+    before { reporter.instance_variable_set(:@formatters, [formatter]) }
+
+    it "starts, yields, finishes, and closes formatters" do
+      yielded = nil
+
+      expect(formatter).to receive(:start)
+      expect(formatter).to receive(:dump_summary)
+      expect(formatter).to receive(:close)
+
+      reporter.report([["spec/foo_spec.rb"]]) do |inner|
+        yielded = inner
+      end
+
+      expect(yielded).to eq(reporter)
+    end
+
+    it "closes formatters when the report block raises" do
+      expect(formatter).to receive(:close)
+
+      expect do
+        reporter.report([]) { raise "boom" }
+      end.to raise_error("boom")
     end
   end
 end
