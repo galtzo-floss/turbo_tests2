@@ -117,6 +117,26 @@ RSpec.describe TurboTests::JsonRowsFormatter do
     end
   end
 
+  describe "#deprecation" do
+    it "outputs a deprecation row" do
+      notification = RSpec::Core::Notifications::DeprecationNotification.new(
+        "old_api",
+        "old_api is deprecated",
+        "new_api",
+        "spec/foo_spec.rb:4",
+      )
+
+      formatter.deprecation(notification)
+
+      row = parsed_row
+      expect(row[:type]).to eq("deprecation")
+      expect(row.dig(:deprecation, :deprecated)).to eq("old_api")
+      expect(row.dig(:deprecation, :message)).to eq("old_api is deprecated")
+      expect(row.dig(:deprecation, :replacement)).to eq("new_api")
+      expect(row.dig(:deprecation, :call_site)).to eq("spec/foo_spec.rb:4")
+    end
+  end
+
   describe "example_to_json with shared group inclusion backtrace" do
     it "serializes shared group frames via stack_frame_to_json" do
       shared_frame = double(

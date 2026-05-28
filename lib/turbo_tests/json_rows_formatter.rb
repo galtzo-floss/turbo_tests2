@@ -31,6 +31,7 @@ module TurboTests
       :example_group_finished,
       :message,
       :seed,
+      :deprecation,
     )
 
     attr_reader :output
@@ -101,7 +102,23 @@ module TurboTests
       )
     end
 
+    def deprecation(notification)
+      output_row(
+        type: :deprecation,
+        deprecation: deprecation_to_json(notification),
+      )
+    end
+
     private
+
+    def deprecation_to_json(notification)
+      {
+        deprecated: notification.deprecated,
+        message: notification.message,
+        replacement: notification.replacement,
+        call_site: notification.call_site,
+      }
+    end
 
     def exception_to_json(exception)
       return unless exception

@@ -103,6 +103,31 @@ RSpec.describe TurboTests::Reporter do
     end
   end
 
+  describe "#deprecation" do
+    subject(:reporter) { build_reporter }
+
+    it "delegates a reconstructed RSpec deprecation notification" do
+      formatter = double("formatter", deprecation: nil)
+      allow(formatter).to receive(:respond_to?).with(:deprecation).and_return(true)
+      reporter.instance_variable_set(:@formatters, [formatter])
+
+      expect(formatter).to receive(:deprecation) do |notification|
+        expect(notification).to be_a(RSpec::Core::Notifications::DeprecationNotification)
+        expect(notification.deprecated).to eq("old_api")
+        expect(notification.message).to eq("old_api is deprecated")
+        expect(notification.replacement).to eq("new_api")
+        expect(notification.call_site).to eq("spec/foo_spec.rb:4")
+      end
+
+      reporter.deprecation(
+        deprecated: "old_api",
+        message: "old_api is deprecated",
+        replacement: "new_api",
+        call_site: "spec/foo_spec.rb:4",
+      )
+    end
+  end
+
   describe "#report_number_of_tests" do
     subject(:reporter) { build_reporter }
 

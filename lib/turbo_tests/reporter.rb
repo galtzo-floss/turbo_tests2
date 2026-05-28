@@ -127,6 +127,16 @@ module TurboTests
       message(error_message)
     end
 
+    def deprecation(deprecation)
+      notification = RSpec::Core::Notifications::DeprecationNotification.new(
+        deprecation[:deprecated],
+        deprecation[:message],
+        deprecation[:replacement],
+        deprecation[:call_site],
+      )
+      delegate_to_formatters(:deprecation, notification)
+    end
+
     def finish
       end_time = RSpec::Core::Time.now
 

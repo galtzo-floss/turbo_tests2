@@ -332,6 +332,8 @@ module TurboTests
           else
             @reporter.message(message[:message])
           end
+        when "deprecation"
+          @reporter.deprecation(message[:deprecation])
         when "seed"
         when "close"
         when "error"
