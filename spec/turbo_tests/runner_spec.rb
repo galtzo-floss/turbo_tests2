@@ -181,6 +181,14 @@ RSpec.describe TurboTests::Runner do
       expect { runner.send(:handle_messages) }.not_to raise_error
     end
 
+    it "records exited process ids" do
+      runner = build_runner_for_messages
+      runner.instance_variable_get(:@messages) << {type: "exit", process_id: 1}
+      runner.send(:handle_messages)
+
+      expect(runner.instance_variable_get(:@exited_process_ids)).to eq([1])
+    end
+
     context "when fail_fast threshold is met on example_failed" do
       it "kills all threads and breaks out of the message loop" do
         runner = build_runner_for_messages(fail_fast: 1)
@@ -219,6 +227,17 @@ RSpec.describe TurboTests::Runner do
       runner.instance_variable_set(:@wait_threads, [])
       runner.send(:handle_interrupt)
       expect(runner.instance_variable_get(:@interrupt_handled)).to be true
+    end
+
+    it "prints unfinished groups on first interrupt" do
+      runner = build_runner
+      runner.instance_variable_set(:@interrupt_handled, false)
+      runner.instance_variable_set(:@wait_threads, [])
+      runner.instance_variable_set(:@tests_in_groups, [["spec/finished_spec.rb"], ["spec/running_spec.rb"]])
+      runner.instance_variable_set(:@exited_process_ids, [1])
+
+      expect { runner.send(:handle_interrupt) }
+        .to output(/Groups not finished:\n  1\) spec\/running_spec\.rb/).to_stdout
     end
 
     it "sends INT signal to each subprocess and rescues Errno::ESRCH" do
@@ -297,6 +316,16 @@ RSpec.describe TurboTests::Runner do
 
       expect { runner.send(:report_failed_group, tests_in_groups) }
         .to output(/Group that failed: spec\/foo_spec.rb spec\/bar_spec.rb/).to_stdout
+    end
+  end
+
+  describe "#report_unfinished_groups (private)" do
+    it "does not print when every group has exited" do
+      runner = build_runner
+      runner.instance_variable_set(:@tests_in_groups, [["spec/one_spec.rb"]])
+      runner.instance_variable_set(:@exited_process_ids, [1])
+
+      expect { runner.send(:report_unfinished_groups, "Unfinished") }.not_to output.to_stdout
     end
   end
 
@@ -498,6 +527,23 @@ RSpec.describe TurboTests::Runner do
         expect(runner).to receive(:report_failed_group).with([])
         runner.run
       end
+    end
+
+    it "stores test groups for interrupt reporting" do
+      reporter = double("reporter", failed_examples: [])
+      runner = build_runner(reporter: reporter)
+      test_groups = [["spec/one_spec.rb"]]
+
+      allow(ParallelTests).to receive(:determine_number_of_processes).and_return(1)
+      allow(ParallelTests::RSpec::Runner).to receive_messages(tests_with_size: [["spec/one_spec.rb", 1]], tests_in_groups: test_groups)
+      allow(reporter).to receive(:report).and_yield(reporter)
+      allow(Signal).to receive(:trap).and_return(nil)
+      allow(runner).to receive(:start_regular_subprocess).and_return(nil)
+      allow(runner).to receive(:handle_messages)
+
+      runner.run
+
+      expect(runner.instance_variable_get(:@tests_in_groups)).to eq(test_groups)
     end
   end
 end

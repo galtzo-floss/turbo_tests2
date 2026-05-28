@@ -97,6 +97,7 @@ module TurboTests
       @messages = Thread::Queue.new
       @threads = []
       @wait_threads = []
+      @exited_process_ids = []
       @error = false
       @print_failed_group = opts[:print_failed_group]
     end
@@ -113,6 +114,7 @@ module TurboTests
           @num_processes,
           **@parallel_options,
         )
+      @tests_in_groups = tests_in_groups
 
       subprocess_opts = {
         record_runtime: @record_runtime,
@@ -150,6 +152,7 @@ module TurboTests
         Kernel.exit
       else
         puts "\nShutting down subprocesses..."
+        report_unfinished_groups("Groups not finished")
         @wait_threads.each do |wait_thr|
           begin
             child_pid = wait_thr.pid
@@ -335,6 +338,7 @@ module TurboTests
           nil
         when "exit"
           exited += 1
+          @exited_process_ids << message[:process_id]
           break if exited == @num_processes
         else
           warn("Unhandled message in main process: #{message}")
@@ -355,6 +359,21 @@ module TurboTests
 
         failing_group = tests_in_groups[index].join(" ")
         puts "Group that failed: #{failing_group}"
+      end
+    end
+
+    def report_unfinished_groups(label)
+      groups = Array(@tests_in_groups)
+      unfinished_groups = groups.each_with_index.with_object([]) do |(tests, index), unfinished|
+        process_id = index + 1
+        unfinished << tests unless @exited_process_ids.include?(process_id)
+      end
+
+      return if unfinished_groups.empty?
+
+      puts "#{label}:"
+      unfinished_groups.each_with_index do |tests, index|
+        puts "  #{index + 1}) #{tests.join(" ")}"
       end
     end
   end
