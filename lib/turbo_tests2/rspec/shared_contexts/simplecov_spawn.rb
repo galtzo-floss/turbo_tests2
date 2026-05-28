@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
-require "bundler"
 require "rspec/core"
 
 RSpec.shared_context("with simplecov spawn coverage") do
   let(:simplecov_spawn_path) do
-    File.expand_path(".simplecov_spawn.rb", Bundler.root.to_s)
+    [Dir.pwd, File.expand_path("..", Dir.pwd)]
+      .map { |dir| File.expand_path(".simplecov_spawn.rb", dir) }
+      .find { |path| File.file?(path) }
   end
 
   around do |example|

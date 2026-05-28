@@ -32,6 +32,13 @@ Please file a bug if you notice a violation of semantic versioning.
   with RSpec versions where `.new` is private.
 - GitHub Actions test jobs now force `kettle-test` to use its direct RSpec runner so coverage
   aggregation remains stable while testing `turbo_tests2` itself.
+- GitHub Actions appraisal jobs now pass explicit parent-directory RSpec paths so direct RSpec
+  runs execute the real suite instead of finding zero examples from `gemfiles/`.
+- Spawned-process coverage setup now locates `.simplecov_spawn.rb` from the working directory
+  instead of `Bundler.root`, so appraisal gemfiles do not point it at `gemfiles/`.
+- The coverage workflow now uses the same hard coverage thresholds as local development.
+- The dedicated coverage workflow now runs RSpec directly so coverage artifacts are written under
+  the repository root for upload steps.
 - Removed the advanced CodeQL workflow because GitHub CodeQL default setup is enabled and rejects
   SARIF uploads from advanced configurations.
 

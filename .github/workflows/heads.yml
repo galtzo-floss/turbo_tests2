@@ -42,21 +42,21 @@ jobs:
           # ruby-head
           - ruby: "ruby-head"
             appraisal: "head"
-            exec_cmd: "kettle-test"
+            exec_cmd: "kettle-test -I ../spec --options ../.rspec ../spec"
             rubygems: default
             bundler: default
 
           # truffleruby-head
           - ruby: "truffleruby-head"
             appraisal: "head"
-            exec_cmd: "kettle-test"
+            exec_cmd: "kettle-test -I ../spec --options ../.rspec ../spec"
             rubygems: default
             bundler: default
 
           # jruby-head
           - ruby: "jruby-head"
             appraisal: "head"
-            exec_cmd: "kettle-test"
+            exec_cmd: "kettle-test -I ../spec --options ../.rspec ../spec"
             rubygems: default
             bundler: default
 

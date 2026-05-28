@@ -40,7 +40,7 @@ jobs:
           # Ruby 3.0
           - ruby: "ruby-3.0"
             appraisal: "ruby-3-0"
-            exec_cmd: "kettle-test"
+            exec_cmd: "kettle-test -I ../spec --options ../.rspec ../spec"
             rubygems: '3.5.23'
             bundler: '2.5.23'
 

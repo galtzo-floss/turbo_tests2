@@ -6,8 +6,8 @@ permissions:
   id-token: write
 
 env:
-  K_SOUP_COV_MIN_BRANCH: 100
-  K_SOUP_COV_MIN_LINE: 100
+  K_SOUP_COV_MIN_BRANCH: 76
+  K_SOUP_COV_MIN_LINE: 92
   K_SOUP_COV_MIN_HARD: true
   K_SOUP_COV_FORMATTERS: "xml,rcov,lcov,tty"
   K_SOUP_COV_DO: true
@@ -49,7 +49,7 @@ jobs:
           # Coverage
           - ruby: "ruby"
             appraisal: "coverage"
-            exec_cmd: "kettle-test"
+            exec_cmd: "rspec"
             rubygems: latest
             bundler: latest
 

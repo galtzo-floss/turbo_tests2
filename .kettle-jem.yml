@@ -160,7 +160,7 @@ rubygems:
 workflows:
   # Default command used by generated test workflows.
   # ENV override: KJ_EXEC_CMD
-  exec_cmd: env KETTLE_TEST_RUNNER=rspec kettle-test
+  exec_cmd: env KETTLE_TEST_RUNNER=rspec kettle-test -I ../spec --options ../.rspec ../spec
   # Include VCR/WebMock recording modular gemfiles in generated Appraisals.
   # Enable only for projects that actually require recording support.
   recording: false
