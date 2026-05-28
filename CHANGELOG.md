@@ -30,6 +30,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - RSpec deprecation notification reconstruction now uses the public `from_hash` API so CI passes
   with RSpec versions where `.new` is private.
+- The shim command result object no longer depends on `Struct#keyword_init`, restoring Ruby 2.4
+  compatibility.
 - GitHub Actions test jobs now force `kettle-test` to use its direct RSpec runner so coverage
   aggregation remains stable while testing `turbo_tests2` itself.
 - GitHub Actions appraisal jobs now pass explicit parent-directory RSpec paths so direct RSpec
