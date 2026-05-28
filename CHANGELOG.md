@@ -18,9 +18,26 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ## [Unreleased]
 
+Next release should be `3.1.0`.
+
+This is a minor release: it adds backward-compatible CLI options and developer workflow features,
+and fixes reporting fidelity. No breaking changes are known.
+
 ### Added
 
+- `-w` / `--workers` aliases for `-n`, matching the worker-count terminology used by other
+  parallel test runners.
+- `turbo_tests2 fan`, a generic worker fan-out command that runs an arbitrary command once per
+  worker with `TEST_ENV_NUMBER` and `PARALLEL_TEST_GROUPS` set.
+- `--example-status-log FILE`, which converts RSpec example-status persistence data into a
+  `parallel_tests`-compatible runtime log so grouping can use example-level timing history.
+
 ### Changed
+
+- Worker subprocess JSON now forwards RSpec deprecation notifications to the parent reporter.
+- Worker subprocess JSON now forwards RSpec profile output to the parent reporter.
+- Fail-fast runs now report spec groups that were stopped before execution.
+- Interrupted runs now report spec groups that had not finished before shutdown.
 
 ### Deprecated
 
@@ -28,7 +45,14 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Reconstructed failure backtraces now filter internal `turbo_tests2` frames.
+- Coverage was refreshed by adding focused specs for the new CLI, reporting, formatter, and
+  grouping behaviors.
+
 ### Security
+
+- Refreshed pinned GitHub Action SHAs.
+- Added checksums for the `v3.0.0` release artifacts.
 
 ## [3.0.0] - 2026-05-22
 
