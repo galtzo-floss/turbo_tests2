@@ -10,6 +10,7 @@ module TurboTests
 
     def run
       handle_shim_command if shim_command?
+      handle_fan_command if fan_command?
 
       requires = []
       formatters = []
@@ -154,6 +155,43 @@ module TurboTests
 
     def shim_command?
       @argv.first == "shim"
+    end
+
+    def fan_command?
+      @argv.first == "fan"
+    end
+
+    def handle_fan_command
+      args = @argv.drop(1)
+      count = nil
+      parser = OptionParser.new do |opts|
+        opts.banner = "Usage: turbo_tests2 fan [options] COMMAND [ARGS]"
+        opts.on("-n [PROCESSES]", "-w [PROCESSES]", "--workers [PROCESSES]", Integer, "How many processes to use, default: available CPUs") do |n|
+          count = n
+        end
+      end
+      parser.order!(args)
+
+      if args.empty?
+        warn(parser)
+        exit(1)
+      end
+
+      processes = ParallelTests.determine_number_of_processes(count)
+      pids = (1..processes).map do |process_id|
+        env = {
+          "TEST_ENV_NUMBER" => process_id.to_s,
+          "PARALLEL_TEST_GROUPS" => processes.to_s,
+        }
+        Process.spawn(env, *args)
+      end
+      statuses = pids.map { |pid| Process.wait2(pid).last }
+
+      exit(statuses.all?(&:success?) ? 0 : 1)
+    rescue OptionParser::ParseError => e
+      warn(e.message)
+      warn(parser)
+      exit(1)
     end
 
     def handle_shim_command
