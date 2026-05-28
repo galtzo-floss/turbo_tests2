@@ -205,9 +205,12 @@ RSpec.describe TurboTests::Runner do
         allow(TurboTests::FakeExample).to receive(:from_obj).and_return(fake_example)
         allow(reporter_with_fail).to receive(:example_failed).with(fake_example)
 
+        runner.instance_variable_set(:@tests_in_groups, [["spec/failing_spec.rb"], ["spec/skipped_spec.rb"]])
+        runner.instance_variable_set(:@exited_process_ids, [1])
         runner.instance_variable_get(:@messages) << {type: "example_failed", example: {id: "1"}}
 
-        expect { runner.send(:handle_messages) }.not_to raise_error
+        expect { runner.send(:handle_messages) }
+          .to output(/Groups stopped by fail-fast:\n  1\) spec\/skipped_spec\.rb/).to_stdout
       end
     end
   end

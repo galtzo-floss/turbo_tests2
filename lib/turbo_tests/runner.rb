@@ -321,6 +321,7 @@ module TurboTests
           @reporter.example_failed(example)
           @failure_count += 1
           if fail_fast_met
+            report_unfinished_groups("Groups stopped by fail-fast")
             @threads.each(&:kill)
             break
           end
