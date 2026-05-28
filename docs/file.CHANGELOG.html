@@ -6,7 +6,7 @@
 <title>
   File: CHANGELOG
   
-    &mdash; Documentation by YARD 0.9.43
+    &mdash; Documentation by YARD 0.9.44
   
 </title>
 
@@ -72,9 +72,33 @@ Please file a bug if you notice a violation of semantic versioning.</p>
 
 <h2 id="unreleased"><a href="https://github.com/galtzo-floss/turbo_tests2/compare/v3.0.0...HEAD">Unreleased</a></h2>
 
+<p>Next release should be <code>3.1.0</code>.</p>
+
+<p>This is a minor release: it adds backward-compatible CLI options and developer workflow features,<br>
+and fixes reporting fidelity. No breaking changes are known.</p>
+
 <h3 id="added">Added</h3>
 
+<ul>
+  <li>
+<code>-w</code> / <code>--workers</code> aliases for <code>-n</code>, matching the worker-count terminology used by other<br>
+parallel test runners.</li>
+  <li>
+<code>turbo_tests2 fan</code>, a generic worker fan-out command that runs an arbitrary command once per<br>
+worker with <code>TEST_ENV_NUMBER</code> and <code>PARALLEL_TEST_GROUPS</code> set.</li>
+  <li>
+<code>--example-status-log FILE</code>, which converts RSpec example-status persistence data into a<br>
+<code>parallel_tests</code>-compatible runtime log so grouping can use example-level timing history.</li>
+</ul>
+
 <h3 id="changed">Changed</h3>
+
+<ul>
+  <li>Worker subprocess JSON now forwards RSpec deprecation notifications to the parent reporter.</li>
+  <li>Worker subprocess JSON now forwards RSpec profile output to the parent reporter.</li>
+  <li>Fail-fast runs now report spec groups that were stopped before execution.</li>
+  <li>Interrupted runs now report spec groups that had not finished before shutdown.</li>
+</ul>
 
 <h3 id="deprecated">Deprecated</h3>
 
@@ -82,7 +106,18 @@ Please file a bug if you notice a violation of semantic versioning.</p>
 
 <h3 id="fixed">Fixed</h3>
 
+<ul>
+  <li>Reconstructed failure backtraces now filter internal <code>turbo_tests2</code> frames.</li>
+  <li>Coverage was refreshed by adding focused specs for the new CLI, reporting, formatter, and<br>
+grouping behaviors.</li>
+</ul>
+
 <h3 id="security">Security</h3>
+
+<ul>
+  <li>Refreshed pinned GitHub Action SHAs.</li>
+  <li>Added checksums for the <code>v3.0.0</code> release artifacts.</li>
+</ul>
 
 <h2 id="300---2026-05-22">
 <a href="https://github.com/galtzo-floss/turbo_tests2/compare/7d4064e5b8acc2f53929fccf7be3eb63f8a9f140...v3.0.0">3.0.0</a> - 2026-05-22</h2>
@@ -104,9 +139,9 @@ Please file a bug if you notice a violation of semantic versioning.</p>
 </div></div>
 
       <div id="footer">
-  Generated on Fri May 22 23:09:20 2026 by
+  Generated on Thu May 28 11:00:03 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.43 (ruby-4.0.2).
+  0.9.44 (ruby-4.0.5).
 </div>
 
     </div>

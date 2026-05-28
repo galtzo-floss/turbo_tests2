@@ -6,7 +6,7 @@
 <title>
   Class: TurboTests::CLI
   
-    &mdash; Documentation by YARD 0.9.43
+    &mdash; Documentation by YARD 0.9.44
   
 </title>
 
@@ -372,19 +372,30 @@
 146
 147
 148
-149</pre>
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/turbo_tests/cli.rb', line 11</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_run'>run</span>
   <span class='id identifier rubyid_handle_shim_command'>handle_shim_command</span> <span class='kw'>if</span> <span class='id identifier rubyid_shim_command?'>shim_command?</span>
+  <span class='id identifier rubyid_handle_fan_command'>handle_fan_command</span> <span class='kw'>if</span> <span class='id identifier rubyid_fan_command?'>fan_command?</span>
 
   <span class='id identifier rubyid_requires'>requires</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
   <span class='id identifier rubyid_formatters'>formatters</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
   <span class='id identifier rubyid_tags'>tags</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
   <span class='id identifier rubyid_count'>count</span> <span class='op'>=</span> <span class='kw'>nil</span>
   <span class='id identifier rubyid_runtime_log'>runtime_log</span> <span class='op'>=</span> <span class='kw'>nil</span>
+  <span class='id identifier rubyid_example_status_log'>example_status_log</span> <span class='op'>=</span> <span class='kw'>nil</span>
   <span class='id identifier rubyid_verbose'>verbose</span> <span class='op'>=</span> <span class='kw'>false</span>
   <span class='id identifier rubyid_fail_fast'>fail_fast</span> <span class='op'>=</span> <span class='kw'>nil</span>
   <span class='id identifier rubyid_seed'>seed</span> <span class='op'>=</span> <span class='kw'>nil</span>
@@ -408,7 +419,9 @@
 </span><span class='tstring_content'>      Options:
 </span><span class='heredoc_end'>    BANNER
 </span>
-    <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>-n [PROCESSES]</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='const'>Integer</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>How many processes to use, default: available CPUs</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_n'>n</span><span class='op'>|</span> <span class='id identifier rubyid_count'>count</span> <span class='op'>=</span> <span class='id identifier rubyid_n'>n</span> <span class='rbrace'>}</span>
+    <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>-n [PROCESSES]</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>-w [PROCESSES]</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--workers [PROCESSES]</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='const'>Integer</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>How many processes to use, default: available CPUs</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_n'>n</span><span class='op'>|</span>
+      <span class='id identifier rubyid_count'>count</span> <span class='op'>=</span> <span class='id identifier rubyid_n'>n</span>
+    <span class='kw'>end</span>
 
     <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>-r</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--require PATH</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Require a file.</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_filename'>filename</span><span class='op'>|</span>
       <span class='id identifier rubyid_requires'>requires</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_filename'>filename</span>
@@ -441,6 +454,10 @@
 
     <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--runtime-log FILE</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Location of previously recorded test runtimes</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_filename'>filename</span><span class='op'>|</span>
       <span class='id identifier rubyid_runtime_log'>runtime_log</span> <span class='op'>=</span> <span class='id identifier rubyid_filename'>filename</span>
+    <span class='kw'>end</span>
+
+    <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--example-status-log FILE</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Use RSpec example status persistence timings for grouping</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_filename'>filename</span><span class='op'>|</span>
+      <span class='id identifier rubyid_example_status_log'>example_status_log</span> <span class='op'>=</span> <span class='id identifier rubyid_filename'>filename</span>
     <span class='kw'>end</span>
 
     <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>-v</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--verbose</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>More output</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span>
@@ -502,6 +519,7 @@
     <span class='label'>tags:</span> <span class='id identifier rubyid_tags'>tags</span><span class='comma'>,</span>
     <span class='label'>files:</span> <span class='id identifier rubyid_files'>files</span><span class='comma'>,</span>
     <span class='label'>runtime_log:</span> <span class='id identifier rubyid_runtime_log'>runtime_log</span><span class='comma'>,</span>
+    <span class='label'>example_status_log:</span> <span class='id identifier rubyid_example_status_log'>example_status_log</span><span class='comma'>,</span>
     <span class='label'>verbose:</span> <span class='id identifier rubyid_verbose'>verbose</span><span class='comma'>,</span>
     <span class='label'>fail_fast:</span> <span class='id identifier rubyid_fail_fast'>fail_fast</span><span class='comma'>,</span>
     <span class='label'>count:</span> <span class='id identifier rubyid_count'>count</span><span class='comma'>,</span>
@@ -526,9 +544,9 @@
 </div>
 
       <div id="footer">
-  Generated on Fri May 22 23:05:20 2026 by
+  Generated on Thu May 28 11:00:03 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.43 (ruby-4.0.2).
+  0.9.44 (ruby-4.0.5).
 </div>
 
     </div>

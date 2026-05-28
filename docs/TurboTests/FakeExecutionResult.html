@@ -6,7 +6,7 @@
 <title>
   Class: TurboTests::FakeExecutionResult
   
-    &mdash; Documentation by YARD 0.9.43
+    &mdash; Documentation by YARD 0.9.44
   
 </title>
 
@@ -238,6 +238,32 @@
 
   
     <span class="summary_desc"><div class='inline'><p>Returns the value of attribute pending_message.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#run_time-instance_method" title="#run_time (instance method)">#<strong>run_time</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>Returns the value of attribute run_time.</p>
 </div></span>
   
 </li>
@@ -610,6 +636,65 @@ end</pre>
 </div>
     
       
+      <span id="run_time=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="run_time-instance_method">
+  
+    #<strong>run_time</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>Returns the value of attribute run_time</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Object</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'><p>the current value of run_time</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+48
+49
+50</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests.rb', line 48</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_run_time'>run_time</span>
+  <span class='ivar'>@run_time</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
       <span id="status=-instance_method"></span>
       <div class="method_details ">
   <h3 class="signature " id="status-instance_method">
@@ -690,7 +775,6 @@ end</pre>
       <pre class="lines">
 
 
-58
 59
 60
 61
@@ -699,10 +783,12 @@ end</pre>
 64
 65
 66
-67</pre>
+67
+68
+69</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests.rb', line 58</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests.rb', line 59</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_from_obj'>from_obj</span><span class='lparen'>(</span><span class='id identifier rubyid_obj'>obj</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
@@ -712,6 +798,7 @@ end</pre>
     <span class='id identifier rubyid_obj'>obj</span><span class='lbracket'>[</span><span class='symbol'>:pending_fixed?</span><span class='rbracket'>]</span><span class='comma'>,</span>
     <span class='const'><span class='object_link'><a href="FakeException.html" title="TurboTests::FakeException (class)">FakeException</a></span></span><span class='period'>.</span><span class='id identifier rubyid_from_obj'><span class='object_link'><a href="FakeException.html#from_obj-class_method" title="TurboTests::FakeException.from_obj (method)">from_obj</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_obj'>obj</span><span class='lbracket'>[</span><span class='symbol'>:exception</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='comma'>,</span>
     <span class='const'><span class='object_link'><a href="FakeException.html" title="TurboTests::FakeException (class)">FakeException</a></span></span><span class='period'>.</span><span class='id identifier rubyid_from_obj'><span class='object_link'><a href="FakeException.html#from_obj-class_method" title="TurboTests::FakeException.from_obj (method)">from_obj</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_obj'>obj</span><span class='lbracket'>[</span><span class='symbol'>:exception</span><span class='rbracket'>]</span><span class='rparen'>)</span><span class='comma'>,</span>
+    <span class='id identifier rubyid_obj'>obj</span><span class='lbracket'>[</span><span class='symbol'>:run_time</span><span class='rbracket'>]</span><span class='comma'>,</span>
   <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -724,9 +811,9 @@ end</pre>
 </div>
 
       <div id="footer">
-  Generated on Fri May 22 23:05:20 2026 by
+  Generated on Thu May 28 11:00:03 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.43 (ruby-4.0.2).
+  0.9.44 (ruby-4.0.5).
 </div>
 
     </div>

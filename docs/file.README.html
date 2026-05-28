@@ -6,7 +6,7 @@
 <title>
   File: README
   
-    &mdash; Documentation by YARD 0.9.43
+    &mdash; Documentation by YARD 0.9.44
   
 </title>
 
@@ -220,7 +220,11 @@ Finished in 2 minute 25.15 seconds (files took 0 seconds to load)
 
 <h3 id="compatibility">Compatibility</h3>
 
-<p>Compatible with MRI Ruby 2.4.0+, and concordant releases of JRuby, and TruffleRuby.</p>
+<p>Compatible with MRI Ruby 2.4.0+, and concordant releases of JRuby, and TruffleRuby.<br>
+CI workflows and Appraisals are generated for MRI Ruby 2.4+.<br>
+This test floor is configured by <code>ruby.test_minimum</code> in <code>.kettle-jem.yml</code> and<br>
+may be higher than the gem’s runtime compatibility floor when legacy Rubies are<br>
+not practical for the current toolchain.</p>
 
 <table>
   <thead>
@@ -236,13 +240,6 @@ Finished in 2 minute 25.15 seconds (files took 0 seconds to load)
     </tr>
   </tbody>
 </table>
-
-<details>
-  <summary>StructuredMerge package family</summary>
-
-  <p>This gem is part of the StructuredMerge Ruby package family. The implementation inventory, layering model, and backend notes live in the <a href="https://github.com/structuredmerge/structuredmerge-ruby#package-family">root package-family guide</a>. Shared behavior is defined by the <a href="https://github.com/structuredmerge/structuredmerge-fixtures">StructuredMerge fixtures</a> and implemented by the <a href="https://github.com/structuredmerge/structuredmerge-go">Go</a>, <a href="https://github.com/structuredmerge/structuredmerge-ruby">Ruby</a>, <a href="https://github.com/structuredmerge/structuredmerge-rust">Rust</a>, and <a href="https://github.com/structuredmerge/structuredmerge-typescript">TypeScript</a> repositories.</p>
-
-</details>
 
 <h3 id="federated-dvcs">Federated DVCS</h3>
 
@@ -550,7 +547,7 @@ or use the gem and think about how it could be better.</p>
 <details>
   <summary>Coverage service badges</summary>
 
-  <p><a href="https://codecov.io/gh/galtzo-floss/turbo_tests2"><img src="https://codecov.io/gh/galtzo-floss/turbo_tests2/graphs/tree.svg" alt="Coverage Graph"></a></p>
+  <p><a href="https://codecov.io/gh/galtzo-floss/turbo_tests2"><img src="https://codecov.io/gh/galtzo-floss/turbo_tests2/graph/badge.svg" alt="Coverage Graph"></a></p>
 
   <p><a href="https://coveralls.io/github/galtzo-floss/turbo_tests2?branch=main"><img src="https://coveralls.io/repos/github/galtzo-floss/turbo_tests2/badge.svg?branch=main" alt="Coveralls Test Coverage"></a></p>
 
@@ -591,7 +588,7 @@ For most applications, prefer the <a href="http://guides.rubygems.org/patterns/#
 
 <p>For example:</p>
 
-<pre class="code language-ruby"><code class="language-ruby">spec.add_dependency(&quot;turbo_tests2&quot;, &quot;~&gt; 0.0&quot;)
+<pre class="code language-ruby"><code class="language-ruby">spec.add_dependency(&quot;turbo_tests2&quot;, &quot;~&gt; 3.0&quot;)
 </code></pre>
 
 <details>
@@ -624,7 +621,7 @@ the <a href="MIT.md">MIT</a> <a href="MIT.md"><img src="https://img.shields.io/b
   <summary>Copyright holders</summary>
 
   <ul>
-    <li>Copyright (c) 2020-2023, 2025 Illia</li>
+    <li>Copyright (c) 2020-2023 Illia</li>
     <li>Copyright (c) 2020 Ilya Zub</li>
     <li>Copyright (c) 2021 AMHOL</li>
     <li>Copyright (c) 2021 Serge Bedzhyk</li>
@@ -668,16 +665,16 @@ Please consider sponsoring me or the project.</p>
 | Package | turbo_tests2 |<br>
 | Description | 🚀 <code>turbo_tests2</code> is a drop-in replacement for <code>serpapi/turbo_tests</code> and <code>grosser/parallel_tests</code> with incremental summarized output. Source code of <code>turbo_test2</code> gem is based on Discourse and Rubygems work in this area (see README file of the source repository). |<br>
 | Homepage | https://github.com/galtzo-floss/turbo_tests2 |<br>
-| Source | https://github.com/galtzo-floss/turbo_tests2 |<br>
+| Source | https://github.com/galtzo-floss/turbo_tests2/tree/v3.0.0 |<br>
 | License | <code>MIT</code> |<br>
 | Funding | https://github.com/sponsors/pboling, https://issuehunt.io/u/pboling, https://ko-fi.com/pboling, https://liberapay.com/pboling/donate, https://opencollective.com/galtzo-floss, https://patreon.com/galtzo, https://polar.sh/pboling, https://thanks.dev/u/gh/pboling, https://tidelift.com/funding/github/rubygems/turbo_tests2, https://www.buymeacoffee.com/pboling |<br>
 <!-- kettle-jem:metadata:end --></p>
 </div></div>
 
       <div id="footer">
-  Generated on Fri May 22 23:09:20 2026 by
+  Generated on Thu May 28 11:00:03 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.43 (ruby-4.0.2).
+  0.9.44 (ruby-4.0.5).
 </div>
 
     </div>

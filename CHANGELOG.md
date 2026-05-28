@@ -18,10 +18,24 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ## [Unreleased]
 
-Next release should be `3.1.0`.
+### Added
 
-This is a minor release: it adds backward-compatible CLI options and developer workflow features,
-and fixes reporting fidelity. No breaking changes are known.
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [3.1.0] - 2026-05-28
+
+- TAG: [v3.1.0][3.1.0t]
+- COVERAGE: 94.95% -- 602/634 lines in 16 files
+- BRANCH COVERAGE: 77.54% -- 107/138 branches in 16 files
+- 36.05% documented
 
 ### Added
 
@@ -38,10 +52,6 @@ and fixes reporting fidelity. No breaking changes are known.
 - Worker subprocess JSON now forwards RSpec profile output to the parent reporter.
 - Fail-fast runs now report spec groups that were stopped before execution.
 - Interrupted runs now report spec groups that had not finished before shutdown.
-
-### Deprecated
-
-### Removed
 
 ### Fixed
 
@@ -65,6 +75,8 @@ and fixes reporting fidelity. No breaking changes are known.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.0.0...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.0...HEAD
+[3.1.0]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.0.0...v3.1.0
+[3.1.0t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.0
 [3.0.0]: https://github.com/galtzo-floss/turbo_tests2/compare/7d4064e5b8acc2f53929fccf7be3eb63f8a9f140...v3.0.0
 [3.0.0t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.0.0

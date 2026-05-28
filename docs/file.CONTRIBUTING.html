@@ -6,7 +6,7 @@
 <title>
   File: CONTRIBUTING
   
-    &mdash; Documentation by YARD 0.9.43
+    &mdash; Documentation by YARD 0.9.44
   
 </title>
 
@@ -115,6 +115,20 @@ after running <code>bin/setup</code>. These include:</p>
 <pre class="code language-shell"><code class="language-shell">bin/rake -T
 </code></pre>
 
+<h2 id="code-quality-checks">Code quality checks</h2>
+
+<p>Run the Reek task when you want a smell check that fails on current findings:</p>
+
+<pre class="code language-shell"><code class="language-shell">bin/rake reek
+</code></pre>
+
+<p>Refresh the checked-in <code>REEK</code> backlog through the rake task, not by redirecting<br>
+the raw <code>reek</code> executable output. The rake task uses the project bundle and<br>
+avoids stale generated binstubs shadowing the Reek gem executable:</p>
+
+<pre class="code language-shell"><code class="language-shell">bin/rake reek:update
+</code></pre>
+
 <h2 id="environment-variables-for-local-development">Environment Variables for Local Development</h2>
 
 <p>Below are the primary environment variables recognized by stone_checksums (and its integrated tools). Unless otherwise noted, set boolean values to the string “true” to enable.</p>
@@ -170,7 +184,12 @@ Tip: When running a single spec file locally, you may want <code>K_SOUP_COV_MIN_
 <h2 id="appraisals">Appraisals</h2>
 
 <p>From time to time the <a href="https://github.com/appraisal-rb/appraisal2">appraisal2</a> gemfiles in <code>gemfiles/</code> will need to be updated.<br>
-They are created and updated with the commands:</p>
+Generated appraisal and CI workflow floors are controlled by <code>ruby.test_minimum</code><br>
+in <code>.kettle-jem.yml</code>; this project was templated with <code>ruby.test_minimum: 2.4</code>.<br>
+That value describes the lowest Ruby version expected to run the test/development<br>
+toolchain, and it may be higher than the gemspec runtime floor.</p>
+
+<p>They are created and updated with the commands:</p>
 
 <pre class="code language-console"><code class="language-console">bin/rake appraisal:update
 </code></pre>
@@ -319,9 +338,9 @@ push git commits and tags, and push the <code>.gem</code> file to the gem host c
 </div></div>
 
       <div id="footer">
-  Generated on Fri May 22 23:05:20 2026 by
+  Generated on Thu May 28 11:00:03 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.43 (ruby-4.0.2).
+  0.9.44 (ruby-4.0.5).
 </div>
 
     </div>

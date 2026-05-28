@@ -6,7 +6,7 @@
 <title>
   Class: TurboTests::JsonRowsFormatter
   
-    &mdash; Documentation by YARD 0.9.43
+    &mdash; Documentation by YARD 0.9.44
   
 </title>
 
@@ -113,6 +113,26 @@
   
 
 </div>
+  
+    <h2>
+      Constant Summary
+      <small><a href="#" class="constants_summary_toggle">collapse</a></small>
+    </h2>
+
+    <dl class="constants">
+      
+        <dt id="INTERNAL_BACKTRACE_PATTERNS-constant" class="">INTERNAL_BACKTRACE_PATTERNS =
+          
+        </dt>
+        <dd><pre class="code"><span class='lbracket'>[</span>
+  <span class='tstring'><span class='regexp_beg'>%r{</span><span class='tstring_content'>/bin/turbo_tests2\b</span><span class='regexp_end'>}</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='regexp_beg'>%r{</span><span class='tstring_content'>/exe/turbo_tests2\b</span><span class='regexp_end'>}</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='regexp_beg'>%r{</span><span class='tstring_content'>/lib/turbo_tests(?:\.rb|/)</span><span class='regexp_end'>}</span></span><span class='comma'>,</span>
+<span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span></pre></dd>
+      
+    </dl>
+  
+
 
 
 
@@ -164,6 +184,52 @@
   <span class="summary_signature">
     
       <a href="#close-instance_method" title="#close (instance method)">#<strong>close</strong>(_notification)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#deprecation-instance_method" title="#deprecation (instance method)">#<strong>deprecation</strong>(notification)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#dump_profile-instance_method" title="#dump_profile (instance method)">#<strong>dump_profile</strong>(notification)  &#x21d2; Object </a>
     
 
     
@@ -424,12 +490,12 @@
       <pre class="lines">
 
 
-38
-39
-40</pre>
+46
+47
+48</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 38</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 46</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_output'>output</span><span class='rparen'>)</span>
   <span class='ivar'>@output</span> <span class='op'>=</span> <span class='id identifier rubyid_output'>output</span>
@@ -471,12 +537,12 @@
       <pre class="lines">
 
 
-36
-37
-38</pre>
+44
+45
+46</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 36</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 44</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_output'>output</span>
   <span class='ivar'>@output</span>
@@ -508,18 +574,90 @@
       <pre class="lines">
 
 
-91
-92
-93
-94
-95</pre>
+99
+100
+101
+102
+103</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 91</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 99</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_close'>close</span><span class='lparen'>(</span><span class='id identifier rubyid__notification'>_notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
     <span class='label'>type:</span> <span class='symbol'>:close</span><span class='comma'>,</span>
+  <span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="deprecation-instance_method">
+  
+    #<strong>deprecation</strong>(notification)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+112
+113
+114
+115
+116
+117</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 112</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_deprecation'>deprecation</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
+    <span class='label'>type:</span> <span class='symbol'>:deprecation</span><span class='comma'>,</span>
+    <span class='label'>deprecation:</span> <span class='id identifier rubyid_deprecation_to_json'>deprecation_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span><span class='comma'>,</span>
+  <span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dump_profile-instance_method">
+  
+    #<strong>dump_profile</strong>(notification)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+119
+120
+121
+122
+123
+124</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 119</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dump_profile'>dump_profile</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
+    <span class='label'>type:</span> <span class='symbol'>:profile</span><span class='comma'>,</span>
+    <span class='label'>profile:</span> <span class='id identifier rubyid_profile_to_json'>profile_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span><span class='comma'>,</span>
   <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -542,15 +680,15 @@
       <pre class="lines">
 
 
-77
-78
-79
-80
-81
-82</pre>
+85
+86
+87
+88
+89
+90</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 77</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 85</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_example_failed'>example_failed</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
@@ -578,15 +716,15 @@
       <pre class="lines">
 
 
-56
-57
-58
-59
-60
-61</pre>
+64
+65
+66
+67
+68
+69</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 56</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 64</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_example_group_finished'>example_group_finished</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
@@ -614,15 +752,15 @@
       <pre class="lines">
 
 
-49
-50
-51
-52
-53
-54</pre>
+57
+58
+59
+60
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 49</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 57</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_example_group_started'>example_group_started</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
@@ -650,15 +788,15 @@
       <pre class="lines">
 
 
-63
-64
-65
-66
-67
-68</pre>
+71
+72
+73
+74
+75
+76</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 63</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 71</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_example_passed'>example_passed</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
@@ -686,15 +824,15 @@
       <pre class="lines">
 
 
-70
-71
-72
-73
-74
-75</pre>
+78
+79
+80
+81
+82
+83</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 70</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 78</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_example_pending'>example_pending</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
@@ -722,15 +860,15 @@
       <pre class="lines">
 
 
-97
-98
-99
-100
-101
-102</pre>
+105
+106
+107
+108
+109
+110</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 97</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 105</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_message'>message</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
@@ -758,15 +896,15 @@
       <pre class="lines">
 
 
-84
-85
-86
-87
-88
-89</pre>
+92
+93
+94
+95
+96
+97</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 84</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 92</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_seed'>seed</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
@@ -794,15 +932,15 @@
       <pre class="lines">
 
 
-42
-43
-44
-45
-46
-47</pre>
+50
+51
+52
+53
+54
+55</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 50</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_start'>start</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
@@ -820,9 +958,9 @@
 </div>
 
       <div id="footer">
-  Generated on Fri May 22 23:05:20 2026 by
+  Generated on Thu May 28 11:00:04 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.43 (ruby-4.0.2).
+  0.9.44 (ruby-4.0.5).
 </div>
 
     </div>
