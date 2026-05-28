@@ -202,6 +202,16 @@ An error occurred while loading #{fixture}.
       expect(captured_opts[:verbose]).to be true
     end
 
+    it "passes count with -w" do
+      run_cli(["-w", "2"])
+      expect(captured_opts[:count]).to eq(2)
+    end
+
+    it "passes count with --workers" do
+      run_cli(["--workers", "3"])
+      expect(captured_opts[:count]).to eq(3)
+    end
+
     it "passes nice: true with --nice" do
       run_cli(["--nice"])
       expect(captured_opts[:nice]).to be true

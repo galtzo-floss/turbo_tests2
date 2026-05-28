@@ -39,7 +39,9 @@ module TurboTests
           Options:
         BANNER
 
-        opts.on("-n [PROCESSES]", Integer, "How many processes to use, default: available CPUs") { |n| count = n }
+        opts.on("-n [PROCESSES]", "-w [PROCESSES]", "--workers [PROCESSES]", Integer, "How many processes to use, default: available CPUs") do |n|
+          count = n
+        end
 
         opts.on("-r", "--require PATH", "Require a file.") do |filename|
           requires << filename
