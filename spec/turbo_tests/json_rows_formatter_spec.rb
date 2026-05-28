@@ -61,6 +61,13 @@ RSpec.describe TurboTests::JsonRowsFormatter do
   describe "#example_failed" do
     it "outputs an example_failed row with exception details" do
       exception = RuntimeError.new("oops")
+      exception.set_backtrace(
+        [
+          "/app/spec/foo_spec.rb:2:in `block'",
+          "/app/lib/turbo_tests/json_rows_formatter.rb:10:in `example_failed'",
+          "/app/exe/turbo_tests2:5:in `<main>'",
+        ],
+      )
       execution_result = double(
         "execution_result",
         example_skipped?: false,
@@ -86,6 +93,7 @@ RSpec.describe TurboTests::JsonRowsFormatter do
       row = parsed_row
       expect(row[:type]).to eq("example_failed")
       expect(row.dig(:example, :execution_result, :exception, :message)).to eq("oops")
+      expect(row.dig(:example, :execution_result, :exception, :backtrace)).to eq(["/app/spec/foo_spec.rb:2:in `block'"])
     end
   end
 

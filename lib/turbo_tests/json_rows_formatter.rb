@@ -20,6 +20,12 @@ RSpec::Core::Runner.singleton_class.prepend(RSpecExt)
 module TurboTests
   # An RSpec formatter used for each subprocess during parallel test execution
   class JsonRowsFormatter
+    INTERNAL_BACKTRACE_PATTERNS = [
+      %r{/bin/turbo_tests2\b},
+      %r{/exe/turbo_tests2\b},
+      %r{/lib/turbo_tests(?:\.rb|/)},
+    ].freeze
+
     RSpec::Core::Formatters.register(
       self,
       :start,
@@ -141,10 +147,16 @@ module TurboTests
 
       {
         class_name: exception.class.name.to_s,
-        backtrace: exception.backtrace,
+        backtrace: filtered_backtrace(exception.backtrace),
         message: exception.message,
         cause: exception_to_json(exception.cause),
       }
+    end
+
+    def filtered_backtrace(backtrace)
+      Array(backtrace).reject do |line|
+        INTERNAL_BACKTRACE_PATTERNS.any? { |pattern| line.match?(pattern) }
+      end
     end
 
     def execution_result_to_json(result)
