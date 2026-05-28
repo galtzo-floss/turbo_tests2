@@ -334,6 +334,8 @@ module TurboTests
           end
         when "deprecation"
           @reporter.deprecation(message[:deprecation])
+        when "profile"
+          @reporter.profile(message[:profile])
         when "seed"
         when "close"
         when "error"

@@ -32,6 +32,7 @@ module TurboTests
       :message,
       :seed,
       :deprecation,
+      :dump_profile,
     )
 
     attr_reader :output
@@ -109,7 +110,22 @@ module TurboTests
       )
     end
 
+    def dump_profile(notification)
+      output_row(
+        type: :profile,
+        profile: profile_to_json(notification),
+      )
+    end
+
     private
+
+    def profile_to_json(notification)
+      {
+        duration: notification.duration,
+        number_of_examples: notification.number_of_examples,
+        examples: notification.examples.map { |example| example_to_json(example) },
+      }
+    end
 
     def deprecation_to_json(notification)
       {
@@ -138,6 +154,7 @@ module TurboTests
         status: result.status,
         pending_fixed?: result.pending_fixed?,
         exception: exception_to_json(result.exception || result.pending_exception),
+        run_time: result.respond_to?(:run_time) ? result.run_time : nil,
       }
     end
 

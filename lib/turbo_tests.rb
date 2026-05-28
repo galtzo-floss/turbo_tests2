@@ -52,6 +52,7 @@ module TurboTests
     :pending_fixed?,
     :exception,
     :pending_exception,
+    :run_time,
   )
   class FakeExecutionResult
     class << self
@@ -63,6 +64,7 @@ module TurboTests
           obj[:pending_fixed?],
           FakeException.from_obj(obj[:exception]),
           FakeException.from_obj(obj[:exception]),
+          obj[:run_time],
         )
       end
     end

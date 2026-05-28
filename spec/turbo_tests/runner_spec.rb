@@ -126,7 +126,7 @@ RSpec.describe TurboTests::Runner do
   end
 
   describe "#handle_messages (private)" do
-    let(:reporter) { double("reporter", message: nil, error_outside_of_examples: nil, deprecation: nil) }
+    let(:reporter) { double("reporter", message: nil, error_outside_of_examples: nil, deprecation: nil, profile: nil) }
 
     def build_runner_for_messages(**overrides)
       runner = build_runner(reporter: reporter, **overrides)
@@ -169,6 +169,14 @@ RSpec.describe TurboTests::Runner do
       runner = build_runner_for_messages
       expect(reporter).to receive(:deprecation).with(deprecation)
       enqueue_then_exit(runner, {type: "deprecation", deprecation: deprecation})
+      runner.send(:handle_messages)
+    end
+
+    it "handles 'profile' via reporter.profile" do
+      profile = {duration: 1.23}
+      runner = build_runner_for_messages
+      expect(reporter).to receive(:profile).with(profile)
+      enqueue_then_exit(runner, {type: "profile", profile: profile})
       runner.send(:handle_messages)
     end
 

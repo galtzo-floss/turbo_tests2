@@ -128,6 +128,47 @@ RSpec.describe TurboTests::Reporter do
     end
   end
 
+  describe "#profile" do
+    subject(:reporter) { build_reporter }
+
+    it "delegates a reconstructed RSpec profile notification" do
+      formatter = double("formatter", dump_profile: nil)
+      allow(formatter).to receive(:respond_to?) { |method| method == :dump_profile }
+      reporter.instance_variable_set(:@formatters, [formatter])
+
+      expect(formatter).to receive(:dump_profile) do |notification|
+        expect(notification).to be_a(RSpec::Core::Notifications::ProfileNotification)
+        expect(notification.duration).to eq(1.23)
+        expect(notification.number_of_examples).to eq(1)
+        expect(notification.examples.first.execution_result.run_time).to eq(0.12)
+      end
+
+      reporter.profile(
+        duration: 1.23,
+        number_of_examples: 1,
+        examples: [
+          {
+            execution_result: {
+              example_skipped?: false,
+              pending_message: nil,
+              status: "passed",
+              pending_fixed?: false,
+              exception: nil,
+              run_time: 0.12,
+            },
+            location: "spec/foo_spec.rb:1",
+            description: "does something",
+            full_description: "Foo does something",
+            location_rerun_argument: "spec/foo_spec.rb:1",
+            metadata: {
+              shared_group_inclusion_backtrace: [],
+            },
+          },
+        ],
+      )
+    end
+  end
+
   describe "#report_number_of_tests" do
     subject(:reporter) { build_reporter }
 

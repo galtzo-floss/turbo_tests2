@@ -33,6 +33,7 @@ RSpec.describe TurboTests::JsonRowsFormatter do
       pending_fixed?: false,
       exception: nil,
       pending_exception: nil,
+      run_time: 0.12,
     )
 
     double(
@@ -134,6 +135,25 @@ RSpec.describe TurboTests::JsonRowsFormatter do
       expect(row.dig(:deprecation, :message)).to eq("old_api is deprecated")
       expect(row.dig(:deprecation, :replacement)).to eq("new_api")
       expect(row.dig(:deprecation, :call_site)).to eq("spec/foo_spec.rb:4")
+    end
+  end
+
+  describe "#dump_profile" do
+    it "outputs a profile row with examples" do
+      notification = RSpec::Core::Notifications::ProfileNotification.new(
+        1.23,
+        [build_example],
+        1,
+        {},
+      )
+
+      formatter.dump_profile(notification)
+
+      row = parsed_row
+      expect(row[:type]).to eq("profile")
+      expect(row.dig(:profile, :duration)).to eq(1.23)
+      expect(row.dig(:profile, :number_of_examples)).to eq(1)
+      expect(row.dig(:profile, :examples, 0, :execution_result, :run_time)).to eq(0.12)
     end
   end
 

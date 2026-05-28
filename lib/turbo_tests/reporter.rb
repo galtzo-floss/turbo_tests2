@@ -137,6 +137,17 @@ module TurboTests
       delegate_to_formatters(:deprecation, notification)
     end
 
+    def profile(profile)
+      examples = profile[:examples].map { |example| FakeExample.from_obj(example) }
+      notification = RSpec::Core::Notifications::ProfileNotification.new(
+        profile[:duration],
+        examples,
+        profile[:number_of_examples],
+        {},
+      )
+      delegate_to_formatters(:dump_profile, notification)
+    end
+
     def finish
       end_time = RSpec::Core::Time.now
 
