@@ -70,14 +70,32 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 and <a href="https://tom.preston-werner.com/2022/05/23/major-version-numbers-are-not-sacred.html">yes</a>, platform and engine support are part of the <a href="https://github.com/semver/semver/issues/716#issuecomment-869336139">public API</a>.<br>
 Please file a bug if you notice a violation of semantic versioning.</p>
 
-<h2 id="unreleased"><a href="https://github.com/galtzo-floss/turbo_tests2/compare/v3.0.0...HEAD">Unreleased</a></h2>
-
-<p>Next release should be <code>3.1.0</code>.</p>
-
-<p>This is a minor release: it adds backward-compatible CLI options and developer workflow features,<br>
-and fixes reporting fidelity. No breaking changes are known.</p>
+<h2 id="unreleased"><a href="https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.0...HEAD">Unreleased</a></h2>
 
 <h3 id="added">Added</h3>
+
+<h3 id="changed">Changed</h3>
+
+<h3 id="deprecated">Deprecated</h3>
+
+<h3 id="removed">Removed</h3>
+
+<h3 id="fixed">Fixed</h3>
+
+<h3 id="security">Security</h3>
+
+<h2 id="310---2026-05-28">
+<a href="https://github.com/galtzo-floss/turbo_tests2/compare/v3.0.0...v3.1.0">3.1.0</a> - 2026-05-28</h2>
+
+<ul>
+  <li>TAG: <a href="https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.0">v3.1.0</a>
+</li>
+  <li>COVERAGE: 95.01% – 609/641 lines in 16 files</li>
+  <li>BRANCH COVERAGE: 77.54% – 107/138 branches in 16 files</li>
+  <li>36.78% documented</li>
+</ul>
+
+<h3 id="added-1">Added</h3>
 
 <ul>
   <li>
@@ -91,7 +109,7 @@ worker with <code>TEST_ENV_NUMBER</code> and <code>PARALLEL_TEST_GROUPS</code> s
 <code>parallel_tests</code>-compatible runtime log so grouping can use example-level timing history.</li>
 </ul>
 
-<h3 id="changed">Changed</h3>
+<h3 id="changed-1">Changed</h3>
 
 <ul>
   <li>Worker subprocess JSON now forwards RSpec deprecation notifications to the parent reporter.</li>
@@ -100,19 +118,33 @@ worker with <code>TEST_ENV_NUMBER</code> and <code>PARALLEL_TEST_GROUPS</code> s
   <li>Interrupted runs now report spec groups that had not finished before shutdown.</li>
 </ul>
 
-<h3 id="deprecated">Deprecated</h3>
-
-<h3 id="removed">Removed</h3>
-
-<h3 id="fixed">Fixed</h3>
+<h3 id="fixed-1">Fixed</h3>
 
 <ul>
   <li>Reconstructed failure backtraces now filter internal <code>turbo_tests2</code> frames.</li>
-  <li>Coverage was refreshed by adding focused specs for the new CLI, reporting, formatter, and<br>
-grouping behaviors.</li>
+  <li>
+    <p>Coverage was refreshed by adding focused specs for the new CLI, reporting, formatter, and<br>
+grouping behaviors.</p>
+  </li>
+  <li>RSpec deprecation notification reconstruction now uses the public <code>from_hash</code> API so CI passes<br>
+with RSpec versions where <code>.new</code> is private.</li>
+  <li>The shim command result object no longer depends on <code>Struct#keyword_init</code>, restoring Ruby 2.4<br>
+compatibility.</li>
+  <li>Backtrace output specs now accept JRuby 9.2’s legacy <code>block in &lt;main&gt;</code> frame wording.</li>
+  <li>GitHub Actions test jobs now force <code>kettle-test</code> to use its direct RSpec runner so coverage<br>
+aggregation remains stable while testing <code>turbo_tests2</code> itself.</li>
+  <li>GitHub Actions appraisal jobs now pass explicit parent-directory RSpec paths so direct RSpec<br>
+runs execute the real suite instead of finding zero examples from <code>gemfiles/</code>.</li>
+  <li>Spawned-process coverage setup now locates <code>.simplecov_spawn.rb</code> from the working directory<br>
+instead of <code>Bundler.root</code>, so appraisal gemfiles do not point it at <code>gemfiles/</code>.</li>
+  <li>The coverage workflow now uses the same hard coverage thresholds as local development.</li>
+  <li>The dedicated coverage workflow now runs RSpec directly so coverage artifacts are written under<br>
+the repository root for upload steps.</li>
+  <li>Removed the advanced CodeQL workflow because GitHub CodeQL default setup is enabled and rejects<br>
+SARIF uploads from advanced configurations.</li>
 </ul>
 
-<h3 id="security">Security</h3>
+<h3 id="security-1">Security</h3>
 
 <ul>
   <li>Refreshed pinned GitHub Action SHAs.</li>
@@ -130,7 +162,7 @@ grouping behaviors.</li>
   <li>37.97% documented</li>
 </ul>
 
-<h3 id="added-1">Added</h3>
+<h3 id="added-2">Added</h3>
 
 <ul>
   <li>Initial release</li>
@@ -139,7 +171,7 @@ grouping behaviors.</li>
 </div></div>
 
       <div id="footer">
-  Generated on Thu May 28 11:00:03 2026 by
+  Generated on Thu May 28 11:48:34 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.44 (ruby-4.0.5).
 </div>

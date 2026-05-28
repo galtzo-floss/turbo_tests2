@@ -955,11 +955,11 @@
       <pre class="code"><span class="info file"># File 'lib/turbo_tests/reporter.rb', line 130</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_deprecation'>deprecation</span><span class='lparen'>(</span><span class='id identifier rubyid_deprecation'>deprecation</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_notification'>notification</span> <span class='op'>=</span> <span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Core</span><span class='op'>::</span><span class='const'>Notifications</span><span class='op'>::</span><span class='const'>DeprecationNotification</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
-    <span class='id identifier rubyid_deprecation'>deprecation</span><span class='lbracket'>[</span><span class='symbol'>:deprecated</span><span class='rbracket'>]</span><span class='comma'>,</span>
-    <span class='id identifier rubyid_deprecation'>deprecation</span><span class='lbracket'>[</span><span class='symbol'>:message</span><span class='rbracket'>]</span><span class='comma'>,</span>
-    <span class='id identifier rubyid_deprecation'>deprecation</span><span class='lbracket'>[</span><span class='symbol'>:replacement</span><span class='rbracket'>]</span><span class='comma'>,</span>
-    <span class='id identifier rubyid_deprecation'>deprecation</span><span class='lbracket'>[</span><span class='symbol'>:call_site</span><span class='rbracket'>]</span><span class='comma'>,</span>
+  <span class='id identifier rubyid_notification'>notification</span> <span class='op'>=</span> <span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Core</span><span class='op'>::</span><span class='const'>Notifications</span><span class='op'>::</span><span class='const'>DeprecationNotification</span><span class='period'>.</span><span class='id identifier rubyid_from_hash'>from_hash</span><span class='lparen'>(</span>
+    <span class='label'>deprecated:</span> <span class='id identifier rubyid_deprecation'>deprecation</span><span class='lbracket'>[</span><span class='symbol'>:deprecated</span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='label'>message:</span> <span class='id identifier rubyid_deprecation'>deprecation</span><span class='lbracket'>[</span><span class='symbol'>:message</span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='label'>replacement:</span> <span class='id identifier rubyid_deprecation'>deprecation</span><span class='lbracket'>[</span><span class='symbol'>:replacement</span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='label'>call_site:</span> <span class='id identifier rubyid_deprecation'>deprecation</span><span class='lbracket'>[</span><span class='symbol'>:call_site</span><span class='rbracket'>]</span><span class='comma'>,</span>
   <span class='rparen'>)</span>
   <span class='id identifier rubyid_delegate_to_formatters'>delegate_to_formatters</span><span class='lparen'>(</span><span class='symbol'>:deprecation</span><span class='comma'>,</span> <span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
@@ -1494,7 +1494,7 @@ https://github.com/rspec/rspec-core/blob/5699fcdc4723087ff6139af55bd155ad9ad61a7
 </div>
 
       <div id="footer">
-  Generated on Thu May 28 11:00:04 2026 by
+  Generated on Thu May 28 11:48:34 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.44 (ruby-4.0.5).
 </div>

@@ -28,31 +28,14 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
-- RSpec deprecation notification reconstruction now uses the public `from_hash` API so CI passes
-  with RSpec versions where `.new` is private.
-- The shim command result object no longer depends on `Struct#keyword_init`, restoring Ruby 2.4
-  compatibility.
-- Backtrace output specs now accept JRuby 9.2's legacy `block in <main>` frame wording.
-- GitHub Actions test jobs now force `kettle-test` to use its direct RSpec runner so coverage
-  aggregation remains stable while testing `turbo_tests2` itself.
-- GitHub Actions appraisal jobs now pass explicit parent-directory RSpec paths so direct RSpec
-  runs execute the real suite instead of finding zero examples from `gemfiles/`.
-- Spawned-process coverage setup now locates `.simplecov_spawn.rb` from the working directory
-  instead of `Bundler.root`, so appraisal gemfiles do not point it at `gemfiles/`.
-- The coverage workflow now uses the same hard coverage thresholds as local development.
-- The dedicated coverage workflow now runs RSpec directly so coverage artifacts are written under
-  the repository root for upload steps.
-- Removed the advanced CodeQL workflow because GitHub CodeQL default setup is enabled and rejects
-  SARIF uploads from advanced configurations.
-
 ### Security
 
 ## [3.1.0] - 2026-05-28
 
 - TAG: [v3.1.0][3.1.0t]
-- COVERAGE: 94.95% -- 602/634 lines in 16 files
+- COVERAGE: 95.01% -- 609/641 lines in 16 files
 - BRANCH COVERAGE: 77.54% -- 107/138 branches in 16 files
-- 36.05% documented
+- 36.78% documented
 
 ### Added
 
@@ -75,6 +58,23 @@ Please file a bug if you notice a violation of semantic versioning.
 - Reconstructed failure backtraces now filter internal `turbo_tests2` frames.
 - Coverage was refreshed by adding focused specs for the new CLI, reporting, formatter, and
   grouping behaviors.
+
+- RSpec deprecation notification reconstruction now uses the public `from_hash` API so CI passes
+  with RSpec versions where `.new` is private.
+- The shim command result object no longer depends on `Struct#keyword_init`, restoring Ruby 2.4
+  compatibility.
+- Backtrace output specs now accept JRuby 9.2's legacy `block in <main>` frame wording.
+- GitHub Actions test jobs now force `kettle-test` to use its direct RSpec runner so coverage
+  aggregation remains stable while testing `turbo_tests2` itself.
+- GitHub Actions appraisal jobs now pass explicit parent-directory RSpec paths so direct RSpec
+  runs execute the real suite instead of finding zero examples from `gemfiles/`.
+- Spawned-process coverage setup now locates `.simplecov_spawn.rb` from the working directory
+  instead of `Bundler.root`, so appraisal gemfiles do not point it at `gemfiles/`.
+- The coverage workflow now uses the same hard coverage thresholds as local development.
+- The dedicated coverage workflow now runs RSpec directly so coverage artifacts are written under
+  the repository root for upload steps.
+- Removed the advanced CodeQL workflow because GitHub CodeQL default setup is enabled and rejects
+  SARIF uploads from advanced configurations.
 
 ### Security
 
