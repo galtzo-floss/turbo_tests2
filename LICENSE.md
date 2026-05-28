@@ -7,7 +7,7 @@ Choose the option that best fits your use case:
 
 ## Copyright Notice
 
-Copyright (c) 2020-2023, 2025 Illia
+Copyright (c) 2020-2023 Illia
 Copyright (c) 2020 Ilya Zub
 Copyright (c) 2021 AMHOL
 Copyright (c) 2021 Serge Bedzhyk

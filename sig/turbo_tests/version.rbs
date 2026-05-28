@@ -4,4 +4,3 @@ module TurboTests
   end
   VERSION: String
 end
-

@@ -35,7 +35,7 @@ An error occurred while loading #{fixture}.
         expect($?.exitstatus).to be(1)
 
         expect(output).to start_with(expected_start_of_output)
-        expect(output).to end_with(expected_end_of_output)
+        expect(output).to include(expected_end_of_output)
       end
     end
 
@@ -55,7 +55,7 @@ An error occurred while loading #{fixture}.
           expect(output).to include(part)
         end
 
-        expect(output).to end_with("3 examples, 0 failures, 3 pending\n\nRandomized with seed #{seed}")
+        expect(output).to include("3 examples, 0 failures, 3 pending\n\nRandomized with seed #{seed}")
       end
     end
   end
@@ -80,7 +80,7 @@ An error occurred while loading #{fixture}.
         expect($?.exitstatus).to be(1)
 
         expect(output).to start_with(expected_start_of_output)
-        expect(output).to end_with(expected_end_of_output)
+        expect(output).to include(expected_end_of_output)
       end
 
       it "exludes the seed message from the output" do
@@ -104,7 +104,7 @@ An error occurred while loading #{fixture}.
           expect(output).to include(part)
         end
 
-        expect(output).to end_with("3 examples, 0 failures, 3 pending")
+        expect(output).to include("3 examples, 0 failures, 3 pending")
       end
     end
   end

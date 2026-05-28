@@ -6,16 +6,16 @@
 # turbo_tests2 will then preserve content between those markers across template runs.
 # kettle-jem:unfreeze
 
-# turbo_tests2 Rakefile v1.0.0 - 2026-04-06
+# turbo_tests2 Rakefile v7.0.0 - 2026-05-28
 # Ruby 2.3 (Safe Navigation) or higher required
 #
-# MIT License (see License.txt)
+# See LICENSE.md for license information.
 #
 # Copyright (c) 2026 Peter H. Boling (galtzo.com)
 #
 # Expected to work in any project that uses Bundler.
 #
-# Sets up tasks for appraisal, floss_funding, rspec, minitest, rubocop, reek, yard, and stone_checksums.
+# Sets up tasks for appraisal2, floss_funding, kettle-jem, kettle-dev, rspec, minitest, rubocop_gradual, reek, yard, and stone_checksums.
 #
 # rake appraisal:install                      # Install Appraisal gemfiles (initial setup...
 # rake appraisal:reset                        # Delete Appraisal lockfiles (gemfiles/*.gemfile.lock)
@@ -31,9 +31,9 @@
 # rake default                                # Default tasks aggregator
 # rake install                                # Build and install turbo_tests2-1.0.0.gem in...
 # rake install:local                          # Build and install turbo_tests2-1.0.0.gem in...
-# rake kettle:jem:install                     # Install turbo_tests2 GitHub automation and ...
+# rake kettle:jem:install                     # Internal target used by `kettle-jem install`
 # rake kettle:jem:selftest                    # Self-test: template turbo_tests2 against itse...
-# rake kettle:jem:template                    # Template turbo_tests2 files into the curren...
+# rake kettle:jem:template                    # Internal target used by scoped `kettle-jem template --only`
 # rake reek                                   # Check for code smells
 # rake reek:update                            # Run reek and store the output into the RE...
 # rake release[remote]                        # Create tag v1.0.0 and build and push kett...
@@ -59,45 +59,39 @@ require "bundler/gem_tasks" if !Dir[File.join(__dir__, "*.gemspec")].empty?
 # Define a base default task early so other files can enhance it.
 desc "Default tasks aggregator"
 task :default do
-  # :nocov:
   puts "Default task complete."
-  # :nocov:
 end
 
 # External gems that define tasks - add here!
-
-### DUPLICATE DRIFT TASKS
 begin
-  require "kettle/drift"
-  Kettle::Drift.install_tasks
+  require "kettle/dev"
+  Kettle::Dev.install_tasks unless Kettle::Dev::RUNNING_AS == "rake"
 rescue LoadError
-  desc("(stub) kettle:drift:check is unavailable")
-  task("kettle:drift:check") do
-    warn("NOTE: kettle-drift isn't installed, or is disabled for #{RUBY_VERSION} in the current environment")
-  end
-  desc("(stub) kettle:drift:update is unavailable")
-  task("kettle:drift:update") do
-    warn("NOTE: kettle-drift isn't installed, or is disabled for #{RUBY_VERSION} in the current environment")
-  end
-  desc("(stub) kettle:drift:force_update is unavailable")
-  task("kettle:drift:force_update") do
-    warn("NOTE: kettle-drift isn't installed, or is disabled for #{RUBY_VERSION} in the current environment")
-  end
-  desc("(stub) kettle:drift is unavailable")
-  task("kettle:drift" => "kettle:drift:update")
+  warn("NOTE: kettle-dev isn't installed, or is disabled for #{RUBY_VERSION} in the current environment")
 end
 
 ### TEMPLATING TASKS
+# These tasks are installed for the `kettle-jem` executable. Run full templating
+# through `kettle-jem install`; use `kettle-jem template --only PATH` only for
+# scoped file updates. The executable prepares the environment and then
+# delegates here when rake orchestration is needed.
+kettle_jem_selftest_unavailable_note = nil
 begin
   require "kettle/jem"
-  Kettle::Jem.install_tasks
+  if Kettle::Jem.respond_to?(:install_tasks)
+    Kettle::Jem.install_tasks
+  else
+    kettle_jem_selftest_unavailable_note = "NOTE: kettle-jem #{Kettle::Jem::Version::VERSION} does not provide rake tasks in this environment"
+  end
 rescue LoadError
-  # :nocov:
+  kettle_jem_selftest_unavailable_note = "NOTE: kettle-jem isn't installed, or is disabled for #{RUBY_VERSION} in the current environment"
+end
+
+if kettle_jem_selftest_unavailable_note
   desc("(stub) kettle:jem:selftest is unavailable")
   task("kettle:jem:selftest") do
-    warn("NOTE: kettle-jem isn't installed, or is disabled for #{RUBY_VERSION} in the current environment")
+    warn(kettle_jem_selftest_unavailable_note)
   end
-  # :nocov:
 end
 
 ### RELEASE TASKS
@@ -105,16 +99,8 @@ end
 begin
   require "stone_checksums"
 rescue LoadError
-  # :nocov:
   desc("(stub) build:generate_checksums is unavailable")
   task("build:generate_checksums") do
     warn("NOTE: stone_checksums isn't installed, or is disabled for #{RUBY_VERSION} in the current environment")
   end
-  # :nocov:
-end
-
-begin
-  require "kettle/dev"
-rescue LoadError
-  warn("NOTE: kettle-dev isn't installed, or is disabled for #{RUBY_VERSION} in the current environment")
 end

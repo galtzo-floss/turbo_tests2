@@ -89,24 +89,16 @@ Finished in 2 minute 25.15 seconds (files took 0 seconds to load)
 ### Compatibility
 
 Compatible with MRI Ruby 2.4.0+, and concordant releases of JRuby, and TruffleRuby.
+CI workflows and Appraisals are generated for MRI Ruby 2.4+.
+This test floor is configured by `ruby.test_minimum` in `.kettle-jem.yml` and
+may be higher than the gem's runtime compatibility floor when legacy Rubies are
+not practical for the current toolchain.
 
 | 🚚 _Amazing_ test matrix was brought to you by | 🔎 appraisal2 🔎 and the color 💚 green 💚 |
 |------------------------------------------------|--------------------------------------------------------|
 | 👟 Check it out! | ✨ [github.com/appraisal-rb/appraisal2][💎appraisal2] ✨ |
 
-<details markdown="1">
-<summary>StructuredMerge package family</summary>
 
-This gem is part of the StructuredMerge Ruby package family. The implementation inventory, layering model, and backend notes live in the [root package-family guide][sm-family-guide]. Shared behavior is defined by the [StructuredMerge fixtures][sm-family-fixtures] and implemented by the [Go][sm-family-go], [Ruby][sm-family-ruby], [Rust][sm-family-rust], and [TypeScript][sm-family-typescript] repositories.
-
-</details>
-
-[sm-family-guide]: https://github.com/structuredmerge/structuredmerge-ruby#package-family
-[sm-family-fixtures]: https://github.com/structuredmerge/structuredmerge-fixtures
-[sm-family-go]: https://github.com/structuredmerge/structuredmerge-go
-[sm-family-ruby]: https://github.com/structuredmerge/structuredmerge-ruby
-[sm-family-rust]: https://github.com/structuredmerge/structuredmerge-rust
-[sm-family-typescript]: https://github.com/structuredmerge/structuredmerge-typescript
 
 ### Federated DVCS
 
@@ -406,7 +398,7 @@ For most applications, prefer the [Pessimistic Version Constraint][📌pvc] with
 For example:
 
 ```ruby
-spec.add_dependency("turbo_tests2", "~> 0.0")
+spec.add_dependency("turbo_tests2", "~> 3.0")
 ```
 
 <details markdown="1">
@@ -436,7 +428,7 @@ See [LICENSE.md][📄license] for the official copyright notice.
 <details markdown="1">
 <summary>Copyright holders</summary>
 
-- Copyright (c) 2020-2023, 2025 Illia
+- Copyright (c) 2020-2023 Illia
 - Copyright (c) 2020 Ilya Zub
 - Copyright (c) 2021 AMHOL
 - Copyright (c) 2021 Serge Bedzhyk
@@ -643,7 +635,7 @@ Thanks for RTFM. ☺️
 [🤝cb-pulls]: https://codeberg.org/galtzo-floss/turbo_tests2/pulls
 [🤝cb-donate]: https://donate.codeberg.org/
 [🤝contributing]: https://github.com/galtzo-floss/turbo_tests2/blob/main/CONTRIBUTING.md
-[🏀codecov-g]: https://codecov.io/gh/galtzo-floss/turbo_tests2/graphs/tree.svg
+[🏀codecov-g]: https://codecov.io/gh/galtzo-floss/turbo_tests2/graph/badge.svg
 [🖐contrib-rocks]: https://contrib.rocks
 [🖐contributors]: https://github.com/galtzo-floss/turbo_tests2/graphs/contributors
 [🖐contributors-img]: https://contrib.rocks/image?repo=galtzo-floss/turbo_tests2
@@ -670,6 +662,7 @@ Thanks for RTFM. ☺️
 [📄license-img]: https://img.shields.io/badge/License-MIT-259D6C.svg
 [📄license-compat]: https://www.apache.org/legal/resolved.html#category-a
 [📄license-compat-img]: https://img.shields.io/badge/Apache_Compatible:_Category_A-✓-259D6C.svg?style=flat&logo=Apache
+
 [📄ilo-declaration]: https://www.ilo.org/declaration/lang--en/index.htm
 [📄ilo-declaration-img]: https://img.shields.io/badge/ILO_Fundamental_Principles-✓-259D6C.svg?style=flat
 [🚎yard-current]: http://rubydoc.info/gems/turbo_tests2
@@ -688,7 +681,7 @@ Thanks for RTFM. ☺️
 | Package | turbo_tests2 |
 | Description | 🚀 `turbo_tests2` is a drop-in replacement for `serpapi/turbo_tests` and `grosser/parallel_tests` with incremental summarized output. Source code of `turbo_test2` gem is based on Discourse and Rubygems work in this area (see README file of the source repository). |
 | Homepage | https://github.com/galtzo-floss/turbo_tests2 |
-| Source | https://github.com/galtzo-floss/turbo_tests2 |
+| Source | https://github.com/galtzo-floss/turbo_tests2/tree/v3.0.0 |
 | License | `MIT` |
 | Funding | https://github.com/sponsors/pboling, https://issuehunt.io/u/pboling, https://ko-fi.com/pboling, https://liberapay.com/pboling/donate, https://opencollective.com/galtzo-floss, https://patreon.com/galtzo, https://polar.sh/pboling, https://thanks.dev/u/gh/pboling, https://tidelift.com/funding/github/rubygems/turbo_tests2, https://www.buymeacoffee.com/pboling |
 <!-- kettle-jem:metadata:end -->

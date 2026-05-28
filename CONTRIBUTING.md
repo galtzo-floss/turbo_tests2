@@ -50,6 +50,22 @@ There are many Rake tasks available as well. You can see them by running:
 bin/rake -T
 ```
 
+## Code quality checks
+
+Run the Reek task when you want a smell check that fails on current findings:
+
+```shell
+bin/rake reek
+```
+
+Refresh the checked-in `REEK` backlog through the rake task, not by redirecting
+the raw `reek` executable output. The rake task uses the project bundle and
+avoids stale generated binstubs shadowing the Reek gem executable:
+
+```shell
+bin/rake reek:update
+```
+
 ## Environment Variables for Local Development
 
 Below are the primary environment variables recognized by stone_checksums (and its integrated tools). Unless otherwise noted, set boolean values to the string "true" to enable.
@@ -91,6 +107,11 @@ For a quick starting point, this repository’s `mise.toml` defines the shared d
 ## Appraisals
 
 From time to time the [appraisal2][🚎appraisal2] gemfiles in `gemfiles/` will need to be updated.
+Generated appraisal and CI workflow floors are controlled by `ruby.test_minimum`
+in `.kettle-jem.yml`; this project was templated with `ruby.test_minimum: 2.4`.
+That value describes the lowest Ruby version expected to run the test/development
+toolchain, and it may be higher than the gemspec runtime floor.
+
 They are created and updated with the commands:
 
 ```console
