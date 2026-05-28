@@ -128,11 +128,11 @@ module TurboTests
     end
 
     def deprecation(deprecation)
-      notification = RSpec::Core::Notifications::DeprecationNotification.new(
-        deprecation[:deprecated],
-        deprecation[:message],
-        deprecation[:replacement],
-        deprecation[:call_site],
+      notification = RSpec::Core::Notifications::DeprecationNotification.from_hash(
+        deprecated: deprecation[:deprecated],
+        message: deprecation[:message],
+        replacement: deprecation[:replacement],
+        call_site: deprecation[:call_site],
       )
       delegate_to_formatters(:deprecation, notification)
     end

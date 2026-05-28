@@ -28,6 +28,13 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- RSpec deprecation notification reconstruction now uses the public `from_hash` API so CI passes
+  with RSpec versions where `.new` is private.
+- GitHub Actions test jobs now force `kettle-test` to use its direct RSpec runner so coverage
+  aggregation remains stable while testing `turbo_tests2` itself.
+- Removed the advanced CodeQL workflow because GitHub CodeQL default setup is enabled and rejects
+  SARIF uploads from advanced configurations.
+
 ### Security
 
 ## [3.1.0] - 2026-05-28

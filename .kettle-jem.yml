@@ -160,7 +160,7 @@ rubygems:
 workflows:
   # Default command used by generated test workflows.
   # ENV override: KJ_EXEC_CMD
-  exec_cmd: kettle-test
+  exec_cmd: env KETTLE_TEST_RUNNER=rspec kettle-test
   # Include VCR/WebMock recording modular gemfiles in generated Appraisals.
   # Enable only for projects that actually require recording support.
   recording: false
@@ -393,6 +393,9 @@ files:
   .github:
     copilot_instructions.md:
       strategy: accept_template
+    workflows:
+      codeql-analysis.yml:
+        strategy: keep_destination
   gemfiles:
     modular:
       templating.gemfile:

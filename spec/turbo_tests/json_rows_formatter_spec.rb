@@ -155,11 +155,11 @@ RSpec.describe TurboTests::JsonRowsFormatter do
 
   describe "#deprecation" do
     it "outputs a deprecation row" do
-      notification = RSpec::Core::Notifications::DeprecationNotification.new(
-        "old_api",
-        "old_api is deprecated",
-        "new_api",
-        "spec/foo_spec.rb:4",
+      notification = RSpec::Core::Notifications::DeprecationNotification.from_hash(
+        deprecated: "old_api",
+        message: "old_api is deprecated",
+        replacement: "new_api",
+        call_site: "spec/foo_spec.rb:4",
       )
 
       formatter.deprecation(notification)
