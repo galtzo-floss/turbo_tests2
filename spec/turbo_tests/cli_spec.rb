@@ -282,6 +282,11 @@ An error occurred while loading #{fixture}.
       expect(captured_opts[:runtime_log]).to eq("my.log")
     end
 
+    it "passes example_status_log with --example-status-log" do
+      run_cli(["--example-status-log", "spec/examples.txt"])
+      expect(captured_opts[:example_status_log]).to eq("spec/examples.txt")
+    end
+
     it "collects tags with --tag" do
       run_cli(["--tag", "focus"])
       expect(captured_opts[:tags]).to eq(["focus"])

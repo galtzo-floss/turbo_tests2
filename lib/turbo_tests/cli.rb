@@ -17,6 +17,7 @@ module TurboTests
       tags = []
       count = nil
       runtime_log = nil
+      example_status_log = nil
       verbose = false
       fail_fast = nil
       seed = nil
@@ -75,6 +76,10 @@ module TurboTests
 
         opts.on("--runtime-log FILE", "Location of previously recorded test runtimes") do |filename|
           runtime_log = filename
+        end
+
+        opts.on("--example-status-log FILE", "Use RSpec example status persistence timings for grouping") do |filename|
+          example_status_log = filename
         end
 
         opts.on("-v", "--verbose", "More output") do
@@ -136,6 +141,7 @@ module TurboTests
         tags: tags,
         files: files,
         runtime_log: runtime_log,
+        example_status_log: example_status_log,
         verbose: verbose,
         fail_fast: fail_fast,
         count: count,

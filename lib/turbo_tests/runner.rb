@@ -29,6 +29,7 @@ module TurboTests
 
         start_time = opts.fetch(:start_time) { RSpec::Core::Time.now }
         runtime_log = opts.fetch(:runtime_log, nil)
+        example_status_log = opts.fetch(:example_status_log, nil)
         verbose = opts.fetch(:verbose, false)
         fail_fast = opts.fetch(:fail_fast, nil)
         count = opts.fetch(:count, nil)
@@ -39,7 +40,10 @@ module TurboTests
 
         use_runtime_info = files == ["spec"]
 
-        if use_runtime_info
+        if example_status_log
+          runtime_log = runtime_log_from_example_status(example_status_log)
+          parallel_options[:runtime_log] = runtime_log
+        elsif use_runtime_info
           parallel_options[:runtime_log] = runtime_log
         else
           parallel_options[:group_by] = :filesize
@@ -56,6 +60,7 @@ module TurboTests
           files: files,
           tags: tags,
           runtime_log: runtime_log,
+          example_status_log: example_status_log,
           verbose: verbose,
           fail_fast: fail_fast,
           count: count,
@@ -66,6 +71,21 @@ module TurboTests
           parallel_options: parallel_options,
           nice: nice,
         ).run
+      end
+
+      def runtime_log_from_example_status(example_status_log)
+        statuses = RSpec::Core::ExampleStatusPersister.load_from(example_status_log)
+        runtimes = statuses.each_with_object(Hash.new(0.0)) do |status, sums|
+          next unless status.fetch(:status).match?(/pass/i)
+
+          file_name = RSpec::Core::Example.parse_id(status.fetch(:example_id)).first
+          sums[file_name] += status.fetch(:run_time).to_s[/\d+(\.\d+)?/].to_f
+        end
+
+        path = File.join("tmp", "turbo_tests2_example_status_runtime.log")
+        FileUtils.mkdir_p(File.dirname(path))
+        File.write(path, runtimes.sort.map { |file, runtime| "#{file}:#{runtime}" }.join("\n"))
+        path
       end
     end
 

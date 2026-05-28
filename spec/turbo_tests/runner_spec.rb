@@ -113,6 +113,27 @@ RSpec.describe TurboTests::Runner do
       end
     end
 
+    context "when example_status_log is provided" do
+      it "converts it to a runtime log and leaves grouping runtime-aware" do
+        runner_double = double("runner", run: 0)
+        allow(described_class).to receive(:runtime_log_from_example_status).with("spec/examples.txt").and_return("tmp/status_runtime.log")
+        allow(described_class).to receive(:new) do |**opts|
+          expect(opts[:runtime_log]).to eq("tmp/status_runtime.log")
+          expect(opts[:parallel_options]).to include(runtime_log: "tmp/status_runtime.log")
+          expect(opts[:parallel_options]).not_to have_key(:group_by)
+          runner_double
+        end
+
+        described_class.run(
+          files: ["spec/turbo_tests/cli_spec.rb"],
+          formatters: [],
+          tags: [],
+          example_status_log: "spec/examples.txt",
+          parallel_options: {},
+        )
+      end
+    end
+
     context "when verbose: true" do
       it "outputs VERBOSE warning" do
         runner_double = double("runner", run: 0)
@@ -121,6 +142,32 @@ RSpec.describe TurboTests::Runner do
         expect {
           described_class.run(files: ["spec"], formatters: [], tags: [], verbose: true, parallel_options: {})
         }.to output("VERBOSE\n").to_stderr
+      end
+    end
+  end
+
+  describe ".runtime_log_from_example_status" do
+    it "writes passed example runtimes grouped by spec file" do
+      Dir.mktmpdir do |dir|
+        begin
+          status_log = File.join(dir, "examples.txt")
+          File.write(
+            status_log,
+            <<~STATUS,
+              example_id             | status | run_time        |
+              ---------------------- | ------ | --------------- |
+              spec/a_spec.rb[1:1]    | passed | 0.1 seconds     |
+              spec/a_spec.rb[1:2]    | passed | 0.25 seconds    |
+              spec/b_spec.rb[1:1]    | failed | 3.0 seconds     |
+            STATUS
+          )
+
+          runtime_log = described_class.runtime_log_from_example_status(status_log)
+
+          expect(File.read(runtime_log)).to eq("spec/a_spec.rb:0.35")
+        ensure
+          FileUtils.rm_f(File.join("tmp", "turbo_tests2_example_status_runtime.log"))
+        end
       end
     end
   end
