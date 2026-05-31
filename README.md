@@ -217,12 +217,12 @@ bundle exec turbo_tests2 -r fuubar -f Fuubar spec/whatever
 
 ### Rake Hooks
 
-If Rake is present, the CLI will invoke the tasks `turbo_tests:setup` and `turbo_tests:cleanup` before and after running
+If Rake is present, the CLI will invoke the tasks `turbo_tests2:setup` and `turbo_tests2:cleanup` before and after running
 the test suite. These can be used to do work that should only happen once, such as removing files or collating coverage:
 
 ```ruby
 # lib/tasks/turbo_tests.rake
-namespace :turbo_tests do
+namespace :turbo_tests2 do
   task setup: :environment do
     # precompile assets once, to avoid doing it per each process
     Rake::Tasks["assets:precompile"]
@@ -256,8 +256,8 @@ SimpleCov.start("rails") do
   formatter SimpleCov::Formatter::SimpleFormatter
 end
 
-# lib/tasks/turbo_tests.rake
-namespace :turbo_tests do
+# lib/tasks/turbo_tests2.rake
+namespace :turbo_tests2 do
   task setup: :environment do
     # remove any existing coverage files to avoid false reporting
     FileUtils.rm_rf("coverage/turbo_tests")
