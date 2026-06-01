@@ -389,5 +389,55 @@ An error occurred while loading #{fixture}.
         end
       end
     end
+
+    describe "#invoke_rake_hook" do
+      subject(:cli) { described_class.new([]) }
+
+      let(:current_task) { instance_double(Rake::Task, invoke: nil) }
+      let(:legacy_task) { instance_double(Rake::Task, invoke: nil) }
+
+      before do
+        allow(Rake::Task).to receive(:task_defined?).with("turbo_tests2:setup").and_return(current_defined)
+        allow(Rake::Task).to receive(:task_defined?).with("turbo_tests:setup").and_return(legacy_defined)
+        allow(Rake::Task).to receive(:[]).with("turbo_tests2:setup").and_return(current_task)
+        allow(Rake::Task).to receive(:[]).with("turbo_tests:setup").and_return(legacy_task)
+      end
+
+      context "when the current namespace task is defined" do
+        let(:current_defined) { true }
+        let(:legacy_defined) { true }
+
+        it "invokes the current namespace task" do
+          cli.send(:invoke_rake_hook, "setup")
+
+          expect(current_task).to have_received(:invoke)
+          expect(legacy_task).not_to have_received(:invoke)
+        end
+      end
+
+      context "when only the legacy namespace task is defined" do
+        let(:current_defined) { false }
+        let(:legacy_defined) { true }
+
+        it "invokes the legacy namespace task" do
+          cli.send(:invoke_rake_hook, "setup")
+
+          expect(current_task).not_to have_received(:invoke)
+          expect(legacy_task).to have_received(:invoke)
+        end
+      end
+
+      context "when neither namespace task is defined" do
+        let(:current_defined) { false }
+        let(:legacy_defined) { false }
+
+        it "returns without invoking anything" do
+          cli.send(:invoke_rake_hook, "setup")
+
+          expect(current_task).not_to have_received(:invoke)
+          expect(legacy_task).not_to have_received(:invoke)
+        end
+      end
+    end
   end
 end

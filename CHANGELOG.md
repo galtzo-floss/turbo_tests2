@@ -28,6 +28,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- The CLI now honors documented `turbo_tests2:setup` and `turbo_tests2:cleanup`
+  Rake hooks, while still falling back to legacy `turbo_tests:*` hooks.
 - Worker processes now receive the full `parallel_tests` environment metadata, so SimpleCov
   defers minimum coverage enforcement to the combined final result instead of checking each
   shard independently.

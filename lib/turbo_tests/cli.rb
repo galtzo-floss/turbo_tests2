@@ -131,7 +131,7 @@ module TurboTests
 
       load_rake
 
-      invoke_rake_task("turbo_tests:setup")
+      invoke_rake_hook("setup")
 
       files = @argv.empty? ? ["spec"] : @argv
       parallel_options = {}
@@ -151,7 +151,7 @@ module TurboTests
         parallel_options: parallel_options,
       )
 
-      invoke_rake_task("turbo_tests:cleanup")
+      invoke_rake_hook("cleanup")
 
       # From https://github.com/galtzo-floss/turbo_tests2/pull/20/
       exit(exitstatus)
@@ -269,6 +269,15 @@ module TurboTests
       return unless defined?(Rake) && Rake::Task.task_defined?(name)
 
       Rake::Task[name].invoke
+    end
+
+    def invoke_rake_hook(name)
+      current_task = "turbo_tests2:#{name}"
+      legacy_task = "turbo_tests:#{name}"
+
+      return invoke_rake_task(current_task) if defined?(Rake) && Rake::Task.task_defined?(current_task)
+
+      invoke_rake_task(legacy_task)
     end
   end
 end
