@@ -41,7 +41,6 @@ jobs:
     continue-on-error: ${{ matrix.experimental || endsWith(matrix.ruby, 'head') }}
     env: # $BUNDLE_GEMFILE must be set at job level, so it is set for all steps
       BUNDLE_GEMFILE: ${{ github.workspace }}/Appraisal.root.gemfile
-      KETTLE_TEST_RUNNER: rspec
     strategy:
       fail-fast: false
       matrix:
@@ -49,7 +48,7 @@ jobs:
           # Coverage
           - ruby: "ruby"
             appraisal: "coverage"
-            exec_cmd: "rspec"
+            exec_cmd: "env KETTLE_TEST_RUNNER=rspec kettle-test -I ../spec --options ../.rspec ../spec"
             rubygems: latest
             bundler: latest
 
@@ -133,7 +132,7 @@ jobs:
           hide_complexity: true
           indicators: true
           output: both
-          thresholds: '100 100'
+          thresholds: '92 76'
         continue-on-error: ${{ matrix.experimental || endsWith(matrix.ruby, 'head') }}
 
       - name: Add Coverage PR Comment

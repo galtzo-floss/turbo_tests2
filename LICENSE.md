@@ -18,5 +18,5 @@ Copyright (c) 2023 mrudzki
 Copyright (c) 2023-2024 Sebastien Savater
 Copyright (c) 2024 David Rodriguez
 Copyright (c) 2024 Hiroshi SHIBATA
-Copyright (c) 2025 Gareth Jones
+Copyright (c) 2025-2026 Gareth Jones
 Copyright (c) 2025-2026 Peter H. Boling

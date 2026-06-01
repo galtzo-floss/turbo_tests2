@@ -33,14 +33,13 @@ jobs:
     continue-on-error: ${{ matrix.experimental || endsWith(matrix.ruby, 'head') }}
     env: # $BUNDLE_GEMFILE must be set at job level, so it is set for all steps
       BUNDLE_GEMFILE: ${{ github.workspace }}/Appraisal.root.gemfile
-      KETTLE_TEST_RUNNER: rspec
     strategy:
       matrix:
         include:
           # Ruby 3.0
           - ruby: "ruby-3.0"
             appraisal: "ruby-3-0"
-            exec_cmd: "kettle-test -I ../spec --options ../.rspec ../spec"
+            exec_cmd: "env KETTLE_TEST_RUNNER=rspec kettle-test -I ../spec --options ../.rspec ../spec"
             rubygems: '3.5.23'
             bundler: '2.5.23'
 
