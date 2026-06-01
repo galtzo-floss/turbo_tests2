@@ -28,6 +28,10 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Worker processes now receive the full `parallel_tests` environment metadata, so SimpleCov
+  defers minimum coverage enforcement to the combined final result instead of checking each
+  shard independently.
+
 ### Security
 
 ## [3.1.0] - 2026-05-28

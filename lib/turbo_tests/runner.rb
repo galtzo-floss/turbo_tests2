@@ -2,6 +2,7 @@
 
 require "json"
 require "parallel_tests/rspec/runner"
+require "tempfile"
 
 require_relative "../utils/hash_extension"
 
@@ -140,27 +141,29 @@ module TurboTests
         record_runtime: @record_runtime,
       }
 
-      @reporter.report(tests_in_groups) do |_reporter|
-        old_signal = Signal.trap(:INT) { handle_interrupt }
+      ParallelTests.with_pid_file do
+        @reporter.report(tests_in_groups) do |_reporter|
+          old_signal = Signal.trap(:INT) { handle_interrupt }
 
-        @wait_threads = tests_in_groups.map.with_index do |tests, process_id|
-          start_regular_subprocess(tests, process_id + 1, **subprocess_opts)
-        end.compact
-        @interrupt_handled = false
+          @wait_threads = tests_in_groups.map.with_index do |tests, process_id|
+            start_regular_subprocess(tests, process_id + 1, **subprocess_opts)
+          end.compact
+          @interrupt_handled = false
 
-        handle_messages
+          handle_messages
 
-        @threads.each(&:join)
+          @threads.each(&:join)
 
-        report_failed_group(tests_in_groups) if @print_failed_group
+          report_failed_group(tests_in_groups) if @print_failed_group
 
-        Signal.trap(:INT, old_signal)
+          Signal.trap(:INT, old_signal)
 
-        if @reporter.failed_examples.empty? && @wait_threads.map(&:value).all?(&:success?)
-          0
-        else
-          # From https://github.com/galtzo-floss/turbo_tests2/pull/20/
-          @wait_threads.map { |thread| thread.value.exitstatus }.max
+          if @reporter.failed_examples.empty? && @wait_threads.map(&:value).all?(&:success?)
+            0
+          else
+            # From https://github.com/galtzo-floss/turbo_tests2/pull/20/
+            @wait_threads.map { |thread| thread.value.exitstatus }.max
+          end
         end
       end
     end
@@ -188,7 +191,11 @@ module TurboTests
 
     def start_regular_subprocess(tests, process_id, **opts)
       start_subprocess(
-        {"TEST_ENV_NUMBER" => process_id.to_s},
+        {
+          "TEST_ENV_NUMBER" => process_id.to_s,
+          "PARALLEL_TEST_GROUPS" => @num_processes.to_s,
+          "PARALLEL_PID_FILE" => parallel_pid_file_path,
+        },
         @tags.map { |tag| "--tag=#{tag}" },
         tests,
         process_id,
@@ -262,6 +269,7 @@ module TurboTests
         end
 
         stdin, stdout, stderr, wait_thr = Open3.popen3(env, *command)
+        track_parallel_pid(wait_thr.pid)
         stdin.close
 
         # rubocop:disable ThreadSafety/NewThread
@@ -290,12 +298,27 @@ module TurboTests
 
         # rubocop:disable ThreadSafety/NewThread
         @threads << Thread.new do
-          @messages << {type: "error"} unless wait_thr.value.success?
+          status = wait_thr.value
+          @messages << {type: "error"} unless status.success?
+        ensure
+          untrack_parallel_pid(wait_thr.pid)
         end
         # rubocop:enable ThreadSafety/NewThread
 
         wait_thr
       end
+    end
+
+    def parallel_pid_file_path
+      ENV["PARALLEL_PID_FILE"]
+    end
+
+    def track_parallel_pid(pid)
+      ParallelTests.pids.add(pid) if parallel_pid_file_path
+    end
+
+    def untrack_parallel_pid(pid)
+      ParallelTests.pids.delete(pid) if pid && parallel_pid_file_path
     end
 
     def start_copy_thread(src, dst)

@@ -560,6 +560,26 @@ RSpec.describe TurboTests::Runner do
 
       expect(captured).to include("--tag=focus", "--tag=wip")
     end
+
+    it "passes the parallel test group count to workers for SimpleCov collation" do
+      runner.instance_variable_set(:@num_processes, 3)
+      captured = []
+      mock_open3(runner) { |*args| captured.replace(args) }
+
+      old = ENV.delete("RSPEC_EXECUTABLE")
+      begin
+        ParallelTests.with_pid_file do
+          runner.send(:start_regular_subprocess, tests, 2, record_runtime: false)
+          expect(captured.first).to include(
+            "TEST_ENV_NUMBER" => "2",
+            "PARALLEL_TEST_GROUPS" => "3",
+            "PARALLEL_PID_FILE" => ParallelTests.pid_file_path,
+          )
+        end
+      ensure
+        ENV["RSPEC_EXECUTABLE"] = old if old
+      end
+    end
   end
 
   describe "#start_copy_thread (private)" do
