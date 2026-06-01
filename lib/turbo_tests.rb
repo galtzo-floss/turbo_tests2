@@ -39,7 +39,7 @@ module TurboTests
         klass.new(
           obj[:backtrace],
           obj[:message],
-          FakeException.from_obj(obj[:cause]),
+          FakeException.from_obj(obj[:cause])
         )
       end
     end
@@ -52,7 +52,7 @@ module TurboTests
     :pending_fixed?,
     :exception,
     :pending_exception,
-    :run_time,
+    :run_time
   )
   class FakeExecutionResult
     class << self
@@ -64,7 +64,7 @@ module TurboTests
           obj[:pending_fixed?],
           FakeException.from_obj(obj[:exception]),
           FakeException.from_obj(obj[:exception]),
-          obj[:run_time],
+          obj[:run_time]
         )
       end
     end
@@ -76,7 +76,7 @@ module TurboTests
     :description,
     :full_description,
     :metadata,
-    :location_rerun_argument,
+    :location_rerun_argument
   )
   class FakeExample
     class << self
@@ -86,7 +86,7 @@ module TurboTests
         metadata[:shared_group_inclusion_backtrace].map! do |frame|
           RSpec::Core::SharedExampleGroupInclusionStackFrame.new(
             frame[:shared_group_name],
-            frame[:inclusion_location],
+            frame[:inclusion_location]
           )
         end
 
@@ -98,14 +98,14 @@ module TurboTests
           obj[:description],
           obj[:full_description],
           metadata,
-          obj[:location_rerun_argument],
+          obj[:location_rerun_argument]
         )
       end
     end
 
     def notification
       RSpec::Core::Notifications::ExampleNotification.for(
-        self,
+        self
       )
     end
   end

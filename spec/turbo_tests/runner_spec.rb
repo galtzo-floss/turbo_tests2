@@ -20,7 +20,7 @@ RSpec.describe TurboTests::Runner do
       use_runtime_info: true,
       parallel_options: {},
       nice: false,
-**overrides,
+      **overrides
     )
   end
 
@@ -108,7 +108,7 @@ RSpec.describe TurboTests::Runner do
           files: ["spec/turbo_tests/cli_spec.rb"],
           formatters: [],
           tags: [],
-          parallel_options: {},
+          parallel_options: {}
         )
       end
     end
@@ -129,7 +129,7 @@ RSpec.describe TurboTests::Runner do
           formatters: [],
           tags: [],
           example_status_log: "spec/examples.txt",
-          parallel_options: {},
+          parallel_options: {}
         )
       end
     end
@@ -153,7 +153,7 @@ RSpec.describe TurboTests::Runner do
           status_log = File.join(dir, "examples.txt")
           File.write(
             status_log,
-            <<~STATUS,
+            <<~STATUS
               example_id             | status | run_time        |
               ---------------------- | ------ | --------------- |
               spec/a_spec.rb[1:1]    | passed | 0.1 seconds     |
@@ -374,7 +374,7 @@ RSpec.describe TurboTests::Runner do
 
       threads = [
         double("thread", value: failed_status),
-        double("thread", value: success_status),
+        double("thread", value: success_status)
       ]
       runner.instance_variable_set(:@wait_threads, threads)
 
@@ -573,7 +573,7 @@ RSpec.describe TurboTests::Runner do
           expect(captured.first).to include(
             "TEST_ENV_NUMBER" => "2",
             "PARALLEL_TEST_GROUPS" => "3",
-            "PARALLEL_PID_FILE" => ParallelTests.pid_file_path,
+            "PARALLEL_PID_FILE" => ParallelTests.pid_file_path
           )
         end
       ensure

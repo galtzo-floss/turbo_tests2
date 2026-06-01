@@ -75,7 +75,7 @@ module TurboTests
       delegate_to_formatters(:seed, RSpec::Core::Notifications::SeedNotification.new(@seed, @seed_used))
       delegate_to_formatters(
         :start,
-        RSpec::Core::Notifications::StartNotification.new(expected_example_count, @load_time),
+        RSpec::Core::Notifications::StartNotification.new(expected_example_count, @load_time)
       )
     end
 
@@ -132,7 +132,7 @@ module TurboTests
         deprecated: deprecation[:deprecated],
         message: deprecation[:message],
         replacement: deprecation[:replacement],
-        call_site: deprecation[:call_site],
+        call_site: deprecation[:call_site]
       )
       delegate_to_formatters(:deprecation, notification)
     end
@@ -143,7 +143,7 @@ module TurboTests
         profile[:duration],
         examples,
         profile[:number_of_examples],
-        {},
+        {}
       )
       delegate_to_formatters(:dump_profile, notification)
     end
@@ -158,14 +158,14 @@ module TurboTests
       delegate_to_formatters(
         :dump_pending,
         RSpec::Core::Notifications::ExamplesNotification.new(
-          self,
-        ),
+          self
+        )
       )
       delegate_to_formatters(
         :dump_failures,
         RSpec::Core::Notifications::ExamplesNotification.new(
-          self,
-        ),
+          self
+        )
       )
       delegate_to_formatters(
         :dump_summary,
@@ -175,15 +175,15 @@ module TurboTests
           @failed_examples,
           @pending_examples,
           @load_time,
-          @errors_outside_of_examples_count,
-        ),
+          @errors_outside_of_examples_count
+        )
       )
       delegate_to_formatters(
         :seed,
         RSpec::Core::Notifications::SeedNotification.new(
           @seed,
-          @seed_used,
-        ),
+          @seed_used
+        )
       )
     ensure
       delegate_to_formatters(:close, RSpec::Core::Notifications::NullNotification)

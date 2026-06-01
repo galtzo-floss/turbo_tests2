@@ -47,5 +47,5 @@ SimpleCov.minimum_coverage(0)
 # each other in .resultset.json. Set this AFTER start so .simplecov's own
 # command_name setting doesn't clobber ours.
 SimpleCov.command_name(
-  "#{ENV.fetch("K_SOUP_COV_COMMAND_NAME", "RSpec (COVERAGE)")} (spawn:#{Process.pid})",
+  "#{ENV.fetch("K_SOUP_COV_COMMAND_NAME", "RSpec (COVERAGE)")} (spawn:#{Process.pid})"
 )

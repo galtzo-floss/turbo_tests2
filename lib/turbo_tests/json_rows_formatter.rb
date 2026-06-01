@@ -23,7 +23,7 @@ module TurboTests
     INTERNAL_BACKTRACE_PATTERNS = [
       %r{/bin/turbo_tests2\b},
       %r{/exe/turbo_tests2\b},
-      %r{/lib/turbo_tests(?:\.rb|/)},
+      %r{/lib/turbo_tests(?:\.rb|/)}
     ].freeze
 
     RSpec::Core::Formatters.register(
@@ -38,7 +38,7 @@ module TurboTests
       :message,
       :seed,
       :deprecation,
-      :dump_profile,
+      :dump_profile
     )
 
     attr_reader :output
@@ -50,76 +50,76 @@ module TurboTests
     def start(notification)
       output_row(
         type: :load_summary,
-        summary: load_summary_to_json(notification),
+        summary: load_summary_to_json(notification)
       )
     end
 
     def example_group_started(notification)
       output_row(
         type: :group_started,
-        group: group_to_json(notification),
+        group: group_to_json(notification)
       )
     end
 
     def example_group_finished(notification)
       output_row(
         type: :group_finished,
-        group: group_to_json(notification),
+        group: group_to_json(notification)
       )
     end
 
     def example_passed(notification)
       output_row(
         type: :example_passed,
-        example: example_to_json(notification.example),
+        example: example_to_json(notification.example)
       )
     end
 
     def example_pending(notification)
       output_row(
         type: :example_pending,
-        example: example_to_json(notification.example),
+        example: example_to_json(notification.example)
       )
     end
 
     def example_failed(notification)
       output_row(
         type: :example_failed,
-        example: example_to_json(notification.example),
+        example: example_to_json(notification.example)
       )
     end
 
     def seed(notification)
       output_row(
         type: :seed,
-        seed: notification.seed,
+        seed: notification.seed
       )
     end
 
     def close(_notification)
       output_row(
-        type: :close,
+        type: :close
       )
     end
 
     def message(notification)
       output_row(
         type: :message,
-        message: notification.message,
+        message: notification.message
       )
     end
 
     def deprecation(notification)
       output_row(
         type: :deprecation,
-        deprecation: deprecation_to_json(notification),
+        deprecation: deprecation_to_json(notification)
       )
     end
 
     def dump_profile(notification)
       output_row(
         type: :profile,
-        profile: profile_to_json(notification),
+        profile: profile_to_json(notification)
       )
     end
 
@@ -129,7 +129,7 @@ module TurboTests
       {
         duration: notification.duration,
         number_of_examples: notification.number_of_examples,
-        examples: notification.examples.map { |example| example_to_json(example) },
+        examples: notification.examples.map { |example| example_to_json(example) }
       }
     end
 
@@ -138,7 +138,7 @@ module TurboTests
         deprecated: notification.deprecated,
         message: notification.message,
         replacement: notification.replacement,
-        call_site: notification.call_site,
+        call_site: notification.call_site
       }
     end
 
@@ -149,7 +149,7 @@ module TurboTests
         class_name: exception.class.name.to_s,
         backtrace: filtered_backtrace(exception.backtrace),
         message: exception.message,
-        cause: exception_to_json(exception.cause),
+        cause: exception_to_json(exception.cause)
       }
     end
 
@@ -166,14 +166,14 @@ module TurboTests
         status: result.status,
         pending_fixed?: result.pending_fixed?,
         exception: exception_to_json(result.exception || result.pending_exception),
-        run_time: result.respond_to?(:run_time) ? result.run_time : nil,
+        run_time: result.respond_to?(:run_time) ? result.run_time : nil
       }
     end
 
     def stack_frame_to_json(frame)
       {
         shared_group_name: frame.shared_group_name,
-        inclusion_location: frame.inclusion_location,
+        inclusion_location: frame.inclusion_location
       }
     end
 
@@ -188,24 +188,24 @@ module TurboTests
             example
               .metadata[:shared_group_inclusion_backtrace]
               .map { |frame| stack_frame_to_json(frame) },
-          extra_failure_lines: example.metadata[:extra_failure_lines],
+          extra_failure_lines: example.metadata[:extra_failure_lines]
         },
-        location_rerun_argument: example.location_rerun_argument,
+        location_rerun_argument: example.location_rerun_argument
       }
     end
 
     def load_summary_to_json(notification)
       {
         count: notification.count,
-        load_time: notification.load_time,
+        load_time: notification.load_time
       }
     end
 
     def group_to_json(notification)
       {
         group: {
-          description: notification.group.description,
-        },
+          description: notification.group.description
+        }
       }
     end
 

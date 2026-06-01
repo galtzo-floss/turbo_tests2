@@ -10,22 +10,22 @@ RSpec.describe TurboTests::FakeExample do
           status: "passed",
           pending_fixed?: false,
           exception: nil,
-          run_time: 0.12,
+          run_time: 0.12
         },
         location: "spec/foo_spec.rb:1",
         description: "does something",
         full_description: "Foo does something",
         location_rerun_argument: "spec/foo_spec.rb:1",
         metadata: {
-          shared_group_inclusion_backtrace: shared_group_inclusion_backtrace,
-        },
+          shared_group_inclusion_backtrace: shared_group_inclusion_backtrace
+        }
       }
     end
 
     context "with non-empty shared_group_inclusion_backtrace" do
       it "converts frame hashes to SharedExampleGroupInclusionStackFrame objects" do
         frames = [
-          {shared_group_name: "shared behaviors", inclusion_location: "spec/support/shared.rb:5"},
+          {shared_group_name: "shared behaviors", inclusion_location: "spec/support/shared.rb:5"}
         ]
         example = described_class.from_obj(build_obj(shared_group_inclusion_backtrace: frames))
 
@@ -51,12 +51,12 @@ RSpec.describe TurboTests::FakeExample do
               cause: {
                 class_name: "InnerError",
                 backtrace: ["spec/foo_spec.rb:2"],
-                message: "inner",
-              },
+                message: "inner"
+              }
             },
-            run_time: 0.34,
-          },
-        ),
+            run_time: 0.34
+          }
+        )
       )
 
       exception = example.execution_result.exception
@@ -84,16 +84,16 @@ RSpec.describe TurboTests::FakeExample do
             status: "passed",
             pending_fixed?: false,
             exception: nil,
-            run_time: 0.12,
+            run_time: 0.12
           },
           location: "spec/foo_spec.rb:1",
           description: "does something",
           full_description: "Foo does something",
           location_rerun_argument: "spec/foo_spec.rb:1",
           metadata: {
-            shared_group_inclusion_backtrace: [],
-          },
-        },
+            shared_group_inclusion_backtrace: []
+          }
+        }
       )
 
       expect(example.notification).to be_a(RSpec::Core::Notifications::ExampleNotification)

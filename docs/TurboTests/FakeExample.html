@@ -754,7 +754,7 @@
   <span class='id identifier rubyid_metadata'>metadata</span><span class='lbracket'>[</span><span class='symbol'>:shared_group_inclusion_backtrace</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_map!'>map!</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_frame'>frame</span><span class='op'>|</span>
     <span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Core</span><span class='op'>::</span><span class='const'>SharedExampleGroupInclusionStackFrame</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
       <span class='id identifier rubyid_frame'>frame</span><span class='lbracket'>[</span><span class='symbol'>:shared_group_name</span><span class='rbracket'>]</span><span class='comma'>,</span>
-      <span class='id identifier rubyid_frame'>frame</span><span class='lbracket'>[</span><span class='symbol'>:inclusion_location</span><span class='rbracket'>]</span><span class='comma'>,</span>
+      <span class='id identifier rubyid_frame'>frame</span><span class='lbracket'>[</span><span class='symbol'>:inclusion_location</span><span class='rbracket'>]</span>
     <span class='rparen'>)</span>
   <span class='kw'>end</span>
 
@@ -766,7 +766,7 @@
     <span class='id identifier rubyid_obj'>obj</span><span class='lbracket'>[</span><span class='symbol'>:description</span><span class='rbracket'>]</span><span class='comma'>,</span>
     <span class='id identifier rubyid_obj'>obj</span><span class='lbracket'>[</span><span class='symbol'>:full_description</span><span class='rbracket'>]</span><span class='comma'>,</span>
     <span class='id identifier rubyid_metadata'>metadata</span><span class='comma'>,</span>
-    <span class='id identifier rubyid_obj'>obj</span><span class='lbracket'>[</span><span class='symbol'>:location_rerun_argument</span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='id identifier rubyid_obj'>obj</span><span class='lbracket'>[</span><span class='symbol'>:location_rerun_argument</span><span class='rbracket'>]</span>
   <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -806,7 +806,7 @@
 
 <span class='kw'>def</span> <span class='id identifier rubyid_notification'>notification</span>
   <span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Core</span><span class='op'>::</span><span class='const'>Notifications</span><span class='op'>::</span><span class='const'>ExampleNotification</span><span class='period'>.</span><span class='id identifier rubyid_for'>for</span><span class='lparen'>(</span>
-    <span class='kw'>self</span><span class='comma'>,</span>
+    <span class='kw'>self</span>
   <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -819,7 +819,7 @@
 </div>
 
       <div id="footer">
-  Generated on Thu May 28 11:00:03 2026 by
+  Generated on Mon Jun  1 01:15:25 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.44 (ruby-4.0.5).
 </div>

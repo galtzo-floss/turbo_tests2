@@ -82,6 +82,14 @@ Please file a bug if you notice a violation of semantic versioning.</p>
 
 <h3 id="fixed">Fixed</h3>
 
+<ul>
+  <li>The CLI now honors documented <code>turbo_tests2:setup</code> and <code>turbo_tests2:cleanup</code><br>
+Rake hooks, while still falling back to legacy <code>turbo_tests:*</code> hooks.</li>
+  <li>Worker processes now receive the full <code>parallel_tests</code> environment metadata, so SimpleCov<br>
+defers minimum coverage enforcement to the combined final result instead of checking each<br>
+shard independently.</li>
+</ul>
+
 <h3 id="security">Security</h3>
 
 <h2 id="310---2026-05-28">
@@ -171,7 +179,7 @@ SARIF uploads from advanced configurations.</li>
 </div></div>
 
       <div id="footer">
-  Generated on Thu May 28 11:48:34 2026 by
+  Generated on Mon Jun  1 01:15:24 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.44 (ruby-4.0.5).
 </div>

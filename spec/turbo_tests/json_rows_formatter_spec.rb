@@ -40,7 +40,7 @@ RSpec.describe TurboTests::JsonRowsFormatter do
       pending_fixed?: false,
       exception: nil,
       pending_exception: nil,
-      run_time: 0.12,
+      run_time: 0.12
     )
 
     double(
@@ -50,7 +50,7 @@ RSpec.describe TurboTests::JsonRowsFormatter do
       description: "does something",
       full_description: "Foo does something",
       metadata: {shared_group_inclusion_backtrace: shared_group_frames},
-      location_rerun_argument: "spec/foo_spec.rb:1",
+      location_rerun_argument: "spec/foo_spec.rb:1"
     )
   end
 
@@ -92,8 +92,8 @@ RSpec.describe TurboTests::JsonRowsFormatter do
         [
           "/app/spec/foo_spec.rb:2:in `block'",
           "/app/lib/turbo_tests/json_rows_formatter.rb:10:in `example_failed'",
-          "/app/exe/turbo_tests2:5:in `<main>'",
-        ],
+          "/app/exe/turbo_tests2:5:in `<main>'"
+        ]
       )
       execution_result = double(
         "execution_result",
@@ -102,7 +102,7 @@ RSpec.describe TurboTests::JsonRowsFormatter do
         status: :failed,
         pending_fixed?: false,
         exception: exception,
-        pending_exception: nil,
+        pending_exception: nil
       )
       example = double(
         "example",
@@ -111,7 +111,7 @@ RSpec.describe TurboTests::JsonRowsFormatter do
         description: "fails",
         full_description: "Foo fails",
         metadata: {shared_group_inclusion_backtrace: []},
-        location_rerun_argument: "spec/foo_spec.rb:2",
+        location_rerun_argument: "spec/foo_spec.rb:2"
       )
       notification = double("notification", example: example)
 
@@ -133,7 +133,7 @@ RSpec.describe TurboTests::JsonRowsFormatter do
         status: :pending,
         pending_fixed?: false,
         exception: nil,
-        pending_exception: nil,
+        pending_exception: nil
       )
       example = double(
         "example",
@@ -142,7 +142,7 @@ RSpec.describe TurboTests::JsonRowsFormatter do
         description: "is pending",
         full_description: "Foo is pending",
         metadata: {shared_group_inclusion_backtrace: []},
-        location_rerun_argument: "spec/foo_spec.rb:3",
+        location_rerun_argument: "spec/foo_spec.rb:3"
       )
       notification = double("notification", example: example)
 
@@ -159,7 +159,7 @@ RSpec.describe TurboTests::JsonRowsFormatter do
         deprecated: "old_api",
         message: "old_api is deprecated",
         replacement: "new_api",
-        call_site: "spec/foo_spec.rb:4",
+        call_site: "spec/foo_spec.rb:4"
       )
 
       formatter.deprecation(notification)
@@ -179,7 +179,7 @@ RSpec.describe TurboTests::JsonRowsFormatter do
         1.23,
         [build_example],
         1,
-        {},
+        {}
       )
 
       formatter.dump_profile(notification)
@@ -197,7 +197,7 @@ RSpec.describe TurboTests::JsonRowsFormatter do
       shared_frame = double(
         "frame",
         shared_group_name: "shared behaviors",
-        inclusion_location: "spec/support/shared.rb:5",
+        inclusion_location: "spec/support/shared.rb:5"
       )
       notification = double("notification", example: build_example(shared_group_frames: [shared_frame]))
 
@@ -220,7 +220,7 @@ RSpec.describe TurboTests::JsonRowsFormatter do
         status: :passed,
         pending_fixed?: false,
         exception: nil,
-        pending_exception: nil,
+        pending_exception: nil
       )
       example = double(
         "example",
@@ -229,7 +229,7 @@ RSpec.describe TurboTests::JsonRowsFormatter do
         description: "no exception",
         full_description: "Foo no exception",
         metadata: {shared_group_inclusion_backtrace: []},
-        location_rerun_argument: "spec/foo_spec.rb:1",
+        location_rerun_argument: "spec/foo_spec.rb:1"
       )
       notification = double("notification", example: example)
 

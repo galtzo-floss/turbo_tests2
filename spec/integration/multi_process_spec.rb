@@ -17,7 +17,7 @@ require "turbo_tests2/rspec/shared_contexts/simplecov_spawn"
 #   4. Exit codes match the outcome of the run.
 #
 RSpec.describe "TurboTests multi-process integration", :check_output do
-  subject(:output) { %x(bundle exec turbo_tests2 -f d -n 2 #{fixtures}).strip }
+  subject(:output) { `bundle exec turbo_tests2 -f d -n 2 #{fixtures}`.strip }
 
   include_context "with simplecov spawn coverage"
 

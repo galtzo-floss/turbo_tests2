@@ -59,7 +59,7 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><div id='filecontents'><p><a href="https://discord.gg/3qme4XHNKN"><img src="https://logos.galtzo.com/assets/images/galtzo-floss/avatar-192px.svg" alt="Galtzo FLOSS Logo by Aboling0, CC BY-SA 4.0"></a> <a href="https://www.ruby-lang.org/"><img src="https://logos.galtzo.com/assets/images/ruby-lang/avatar-192px.svg" alt="ruby-lang Logo, Yukihiro Matsumoto, Ruby Visual Identity Team, CC BY-SA 2.5"></a> <a href="https://github.com/galtzo-floss/turbo_tests2"><img src="https://logos.galtzo.com/assets/images/galtzo-floss/turbo_tests2/avatar-192px.svg" alt="turbo_tests2 Logo by Aboling0, CC BY-SA 4.0"></a></p>
+      <div id="content"><div id='filecontents'><p><a href="https://github.com/galtzo-floss"><img alt="galtzo-floss Logo by Aboling0, CC BY-SA 4.0" src="https://logos.galtzo.com/assets/images/galtzo-floss/avatar-128px.svg" width="12%" align="right"></a> <a href="https://github.com/galtzo-floss/turbo_tests2"><img alt="turbo_tests2 Logo by Aboling0, CC BY-SA 4.0" src="https://logos.galtzo.com/assets/images/galtzo-floss/turbo_tests2/avatar-128px.svg" width="12%" align="right"></a></p>
 
 <h1 id="-turbotests">🚀 TurboTests</h1>
 
@@ -80,7 +80,8 @@ I've summarized my thoughts in [this blog post](https://dev.to/galtzo/hostile-ta
 
 </details>
 
-<h2 id="-synopsis">🌻 Synopsis</h2>
+<h2 id="-synopsis--">🌻 Synopsis <a href="https://discord.gg/3qme4XHNKN"><img alt="Galtzo FLOSS Logo by Aboling0, CC BY-SA 4.0" src="https://logos.galtzo.com/assets/images/galtzo-floss/avatar-128px.svg" width="8%" align="right"></a> <a href="https://ruby-toolbox.com"><img alt="ruby-lang Logo, Yukihiro Matsumoto, Ruby Visual Identity Team, CC BY-SA 2.5" src="https://logos.galtzo.com/assets/images/ruby-lang/avatar-128px.svg" width="8%" align="right"></a>
+</h2>
 
 <table>
   <thead>
@@ -403,11 +404,11 @@ Options:
 
 <h3 id="rake-hooks">Rake Hooks</h3>
 
-<p>If Rake is present, the CLI will invoke the tasks <code>turbo_tests:setup</code> and <code>turbo_tests:cleanup</code> before and after running<br>
+<p>If Rake is present, the CLI will invoke the tasks <code>turbo_tests2:setup</code> and <code>turbo_tests2:cleanup</code> before and after running<br>
 the test suite. These can be used to do work that should only happen once, such as removing files or collating coverage:</p>
 
 <pre class="code language-ruby"><code class="language-ruby"># lib/tasks/turbo_tests.rake
-namespace :turbo_tests do
+namespace :turbo_tests2 do
   task setup: :environment do
     # precompile assets once, to avoid doing it per each process
     Rake::Tasks[&quot;assets:precompile&quot;]
@@ -440,8 +441,8 @@ SimpleCov.start(&quot;rails&quot;) do
   formatter SimpleCov::Formatter::SimpleFormatter
 end
 
-# lib/tasks/turbo_tests.rake
-namespace :turbo_tests do
+# lib/tasks/turbo_tests2.rake
+namespace :turbo_tests2 do
   task setup: :environment do
     # remove any existing coverage files to avoid false reporting
     FileUtils.rm_rf(&quot;coverage/turbo_tests&quot;)
@@ -632,7 +633,7 @@ the <a href="MIT.md">MIT</a> <a href="MIT.md"><img src="https://img.shields.io/b
     <li>Copyright (c) 2023-2024 Sebastien Savater</li>
     <li>Copyright (c) 2024 David Rodriguez</li>
     <li>Copyright (c) 2024 Hiroshi SHIBATA</li>
-    <li>Copyright (c) 2025 Gareth Jones</li>
+    <li>Copyright (c) 2025-2026 Gareth Jones</li>
     <li>Copyright (c) 2025-2026 Peter H. Boling</li>
   </ul>
 
@@ -657,22 +658,24 @@ Please consider sponsoring me or the project.</p>
 
 <h3 id="please-give-the-project-a-star--">Please give the project a star ⭐ ♥.</h3>
 
+<p>Many parts of this project are actively managed by a <a href="https://github.com/structuredmerge/structuredmerge-ruby/tree/main/gems/kettle-jem">kettle-jem</a> smart template utilizing <a href="https://structuredmerge.org">StructuredMerge.org</a> merge contracts.</p>
+
 <p>Thanks for RTFM. ☺️</p>
 
 <!-- kettle-jem:metadata:start -->
 <p>| Field | Value |<br>
 |—|—|<br>
 | Package | turbo_tests2 |<br>
-| Description | 🚀 <code>turbo_tests2</code> is a drop-in replacement for <code>serpapi/turbo_tests</code> and <code>grosser/parallel_tests</code> with incremental summarized output. Source code of <code>turbo_test2</code> gem is based on Discourse and Rubygems work in this area (see README file of the source repository). |<br>
-| Homepage | https://github.com/galtzo-floss/turbo_tests2 |<br>
-| Source | https://github.com/galtzo-floss/turbo_tests2/tree/v3.0.0 |<br>
-| License | <code>MIT</code> |<br>
+| Description | 🚀 turbo_tests2<code> is a drop-in replacement for </code>serpapi/turbo_tests<code> and </code>grosser/parallel_tests<code> with incremental summarized output. Source code of </code>turbo_test2<code> gem is based on Discourse and Rubygems work in this area (see README file of the source repository). |
+| Homepage | https://github.com/galtzo-floss/turbo_tests2 |
+| Source | https://github.com/galtzo-floss/turbo_tests2/tree/v3.1.0 |
+| License | </code>MIT` |<br>
 | Funding | https://github.com/sponsors/pboling, https://issuehunt.io/u/pboling, https://ko-fi.com/pboling, https://liberapay.com/pboling/donate, https://opencollective.com/galtzo-floss, https://patreon.com/galtzo, https://polar.sh/pboling, https://thanks.dev/u/gh/pboling, https://tidelift.com/funding/github/rubygems/turbo_tests2, https://www.buymeacoffee.com/pboling |<br>
 <!-- kettle-jem:metadata:end --></p>
 </div></div>
 
       <div id="footer">
-  Generated on Thu May 28 11:48:34 2026 by
+  Generated on Mon Jun  1 01:15:24 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.44 (ruby-4.0.5).
 </div>

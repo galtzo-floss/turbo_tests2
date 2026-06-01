@@ -1,14 +1,14 @@
 require "turbo_tests2/rspec/shared_contexts/simplecov_spawn"
 
 RSpec.describe TurboTests::CLI do
-  subject(:output) { %x(bundle exec turbo_tests2 -f d #{fixture}).strip }
+  subject(:output) { `bundle exec turbo_tests2 -f d #{fixture}`.strip }
 
   before { output }
 
   include_context "with simplecov spawn coverage"
 
   context "when the 'seed' parameter was used", :check_output do
-    subject(:output) { %x(bundle exec turbo_tests2 -f d #{fixture} --seed #{seed}).strip }
+    subject(:output) { `bundle exec turbo_tests2 -f d #{fixture} --seed #{seed}`.strip }
 
     let(:seed) { 1234 }
 
@@ -50,7 +50,7 @@ An error occurred while loading #{fixture}.
           "is implemented but skipped with 'skip' (PENDING: TODO: skipped with 'skip')",
           "is implemented but skipped with 'xit' (PENDING: Temporarily skipped with xit)",
 
-          "Pending: (Failures listed here are expected and do not affect your suite's status)",
+          "Pending: (Failures listed here are expected and do not affect your suite's status)"
         ].each do |part|
           expect(output).to include(part)
         end
@@ -99,7 +99,7 @@ An error occurred while loading #{fixture}.
           "is implemented but skipped with 'skip' (PENDING: TODO: skipped with 'skip')",
           "is implemented but skipped with 'xit' (PENDING: Temporarily skipped with xit)",
 
-          "Pending: (Failures listed here are expected and do not affect your suite's status)",
+          "Pending: (Failures listed here are expected and do not affect your suite's status)"
         ].each do |part|
           expect(output).to include(part)
         end
@@ -129,7 +129,7 @@ An error occurred while loading #{fixture}.
         /undefined method [`']\[\]' for nil/,
         /it\("fails"\) \{ expect\(nil\[:key\]\).to\(eql\("value"\)\) \}/,
         /# #{Regexp.escape(fixture)}:2:in [`']block (?:\(2 levels\) in <top \(required\)>|in <main>)'/,
-        /1 example, 1 failure/,
+        /1 example, 1 failure/
       ].each do |part|
         expect(output).to match(part)
       end
@@ -197,7 +197,7 @@ An error occurred while loading #{fixture}.
         spawned = []
         statuses = [
           double("status", success?: true),
-          double("status", success?: true),
+          double("status", success?: true)
         ]
 
         allow(ParallelTests).to receive(:determine_number_of_processes).with(2).and_return(2)
@@ -213,8 +213,8 @@ An error occurred while loading #{fixture}.
         expect(spawned).to eq(
           [
             [{"TEST_ENV_NUMBER" => "1", "PARALLEL_TEST_GROUPS" => "2"}, ["rake", "db:test:prepare"]],
-            [{"TEST_ENV_NUMBER" => "2", "PARALLEL_TEST_GROUPS" => "2"}, ["rake", "db:test:prepare"]],
-          ],
+            [{"TEST_ENV_NUMBER" => "2", "PARALLEL_TEST_GROUPS" => "2"}, ["rake", "db:test:prepare"]]
+          ]
         )
       end
 

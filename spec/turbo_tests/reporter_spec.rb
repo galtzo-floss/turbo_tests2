@@ -72,7 +72,7 @@ RSpec.describe TurboTests::Reporter do
       double(
         "formatter",
         example_group_started: nil,
-        example_group_finished: nil,
+        example_group_finished: nil
       ).tap do |f|
         allow(f).to receive(:respond_to?) { |m| %i[example_group_started example_group_finished].include?(m) }
       end
@@ -167,7 +167,7 @@ RSpec.describe TurboTests::Reporter do
         deprecated: "old_api",
         message: "old_api is deprecated",
         replacement: "new_api",
-        call_site: "spec/foo_spec.rb:4",
+        call_site: "spec/foo_spec.rb:4"
       )
     end
   end
@@ -198,17 +198,17 @@ RSpec.describe TurboTests::Reporter do
               status: "passed",
               pending_fixed?: false,
               exception: nil,
-              run_time: 0.12,
+              run_time: 0.12
             },
             location: "spec/foo_spec.rb:1",
             description: "does something",
             full_description: "Foo does something",
             location_rerun_argument: "spec/foo_spec.rb:1",
             metadata: {
-              shared_group_inclusion_backtrace: [],
-            },
-          },
-        ],
+              shared_group_inclusion_backtrace: []
+            }
+          }
+        ]
       )
     end
   end
@@ -239,7 +239,7 @@ RSpec.describe TurboTests::Reporter do
         dump_pending: nil,
         dump_failures: nil,
         dump_summary: nil,
-        close: nil,
+        close: nil
       ).tap do |formatter|
         allow(formatter).to receive(:respond_to?) do |method|
           %i[seed start stop start_dump dump_pending dump_failures dump_summary close].include?(method)

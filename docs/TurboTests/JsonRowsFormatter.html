@@ -127,7 +127,7 @@
         <dd><pre class="code"><span class='lbracket'>[</span>
   <span class='tstring'><span class='regexp_beg'>%r{</span><span class='tstring_content'>/bin/turbo_tests2\b</span><span class='regexp_end'>}</span></span><span class='comma'>,</span>
   <span class='tstring'><span class='regexp_beg'>%r{</span><span class='tstring_content'>/exe/turbo_tests2\b</span><span class='regexp_end'>}</span></span><span class='comma'>,</span>
-  <span class='tstring'><span class='regexp_beg'>%r{</span><span class='tstring_content'>/lib/turbo_tests(?:\.rb|/)</span><span class='regexp_end'>}</span></span><span class='comma'>,</span>
+  <span class='tstring'><span class='regexp_beg'>%r{</span><span class='tstring_content'>/lib/turbo_tests(?:\.rb|/)</span><span class='regexp_end'>}</span></span>
 <span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span></pre></dd>
       
     </dl>
@@ -585,7 +585,7 @@
 
 <span class='kw'>def</span> <span class='id identifier rubyid_close'>close</span><span class='lparen'>(</span><span class='id identifier rubyid__notification'>_notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
-    <span class='label'>type:</span> <span class='symbol'>:close</span><span class='comma'>,</span>
+    <span class='label'>type:</span> <span class='symbol'>:close</span>
   <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -621,7 +621,7 @@
 <span class='kw'>def</span> <span class='id identifier rubyid_deprecation'>deprecation</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
     <span class='label'>type:</span> <span class='symbol'>:deprecation</span><span class='comma'>,</span>
-    <span class='label'>deprecation:</span> <span class='id identifier rubyid_deprecation_to_json'>deprecation_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span><span class='comma'>,</span>
+    <span class='label'>deprecation:</span> <span class='id identifier rubyid_deprecation_to_json'>deprecation_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -657,7 +657,7 @@
 <span class='kw'>def</span> <span class='id identifier rubyid_dump_profile'>dump_profile</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
     <span class='label'>type:</span> <span class='symbol'>:profile</span><span class='comma'>,</span>
-    <span class='label'>profile:</span> <span class='id identifier rubyid_profile_to_json'>profile_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span><span class='comma'>,</span>
+    <span class='label'>profile:</span> <span class='id identifier rubyid_profile_to_json'>profile_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -693,7 +693,7 @@
 <span class='kw'>def</span> <span class='id identifier rubyid_example_failed'>example_failed</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
     <span class='label'>type:</span> <span class='symbol'>:example_failed</span><span class='comma'>,</span>
-    <span class='label'>example:</span> <span class='id identifier rubyid_example_to_json'>example_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='period'>.</span><span class='id identifier rubyid_example'>example</span><span class='rparen'>)</span><span class='comma'>,</span>
+    <span class='label'>example:</span> <span class='id identifier rubyid_example_to_json'>example_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='period'>.</span><span class='id identifier rubyid_example'>example</span><span class='rparen'>)</span>
   <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -729,7 +729,7 @@
 <span class='kw'>def</span> <span class='id identifier rubyid_example_group_finished'>example_group_finished</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
     <span class='label'>type:</span> <span class='symbol'>:group_finished</span><span class='comma'>,</span>
-    <span class='label'>group:</span> <span class='id identifier rubyid_group_to_json'>group_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span><span class='comma'>,</span>
+    <span class='label'>group:</span> <span class='id identifier rubyid_group_to_json'>group_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -765,7 +765,7 @@
 <span class='kw'>def</span> <span class='id identifier rubyid_example_group_started'>example_group_started</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
     <span class='label'>type:</span> <span class='symbol'>:group_started</span><span class='comma'>,</span>
-    <span class='label'>group:</span> <span class='id identifier rubyid_group_to_json'>group_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span><span class='comma'>,</span>
+    <span class='label'>group:</span> <span class='id identifier rubyid_group_to_json'>group_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -801,7 +801,7 @@
 <span class='kw'>def</span> <span class='id identifier rubyid_example_passed'>example_passed</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
     <span class='label'>type:</span> <span class='symbol'>:example_passed</span><span class='comma'>,</span>
-    <span class='label'>example:</span> <span class='id identifier rubyid_example_to_json'>example_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='period'>.</span><span class='id identifier rubyid_example'>example</span><span class='rparen'>)</span><span class='comma'>,</span>
+    <span class='label'>example:</span> <span class='id identifier rubyid_example_to_json'>example_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='period'>.</span><span class='id identifier rubyid_example'>example</span><span class='rparen'>)</span>
   <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -837,7 +837,7 @@
 <span class='kw'>def</span> <span class='id identifier rubyid_example_pending'>example_pending</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
     <span class='label'>type:</span> <span class='symbol'>:example_pending</span><span class='comma'>,</span>
-    <span class='label'>example:</span> <span class='id identifier rubyid_example_to_json'>example_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='period'>.</span><span class='id identifier rubyid_example'>example</span><span class='rparen'>)</span><span class='comma'>,</span>
+    <span class='label'>example:</span> <span class='id identifier rubyid_example_to_json'>example_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='period'>.</span><span class='id identifier rubyid_example'>example</span><span class='rparen'>)</span>
   <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -873,7 +873,7 @@
 <span class='kw'>def</span> <span class='id identifier rubyid_message'>message</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
     <span class='label'>type:</span> <span class='symbol'>:message</span><span class='comma'>,</span>
-    <span class='label'>message:</span> <span class='id identifier rubyid_notification'>notification</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='comma'>,</span>
+    <span class='label'>message:</span> <span class='id identifier rubyid_notification'>notification</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span>
   <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -909,7 +909,7 @@
 <span class='kw'>def</span> <span class='id identifier rubyid_seed'>seed</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
     <span class='label'>type:</span> <span class='symbol'>:seed</span><span class='comma'>,</span>
-    <span class='label'>seed:</span> <span class='id identifier rubyid_notification'>notification</span><span class='period'>.</span><span class='id identifier rubyid_seed'>seed</span><span class='comma'>,</span>
+    <span class='label'>seed:</span> <span class='id identifier rubyid_notification'>notification</span><span class='period'>.</span><span class='id identifier rubyid_seed'>seed</span>
   <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -945,7 +945,7 @@
 <span class='kw'>def</span> <span class='id identifier rubyid_start'>start</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
     <span class='label'>type:</span> <span class='symbol'>:load_summary</span><span class='comma'>,</span>
-    <span class='label'>summary:</span> <span class='id identifier rubyid_load_summary_to_json'>load_summary_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span><span class='comma'>,</span>
+    <span class='label'>summary:</span> <span class='id identifier rubyid_load_summary_to_json'>load_summary_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -958,7 +958,7 @@
 </div>
 
       <div id="footer">
-  Generated on Thu May 28 11:00:04 2026 by
+  Generated on Mon Jun  1 01:15:25 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.44 (ruby-4.0.5).
 </div>

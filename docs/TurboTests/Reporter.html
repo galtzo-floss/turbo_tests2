@@ -959,7 +959,7 @@
     <span class='label'>deprecated:</span> <span class='id identifier rubyid_deprecation'>deprecation</span><span class='lbracket'>[</span><span class='symbol'>:deprecated</span><span class='rbracket'>]</span><span class='comma'>,</span>
     <span class='label'>message:</span> <span class='id identifier rubyid_deprecation'>deprecation</span><span class='lbracket'>[</span><span class='symbol'>:message</span><span class='rbracket'>]</span><span class='comma'>,</span>
     <span class='label'>replacement:</span> <span class='id identifier rubyid_deprecation'>deprecation</span><span class='lbracket'>[</span><span class='symbol'>:replacement</span><span class='rbracket'>]</span><span class='comma'>,</span>
-    <span class='label'>call_site:</span> <span class='id identifier rubyid_deprecation'>deprecation</span><span class='lbracket'>[</span><span class='symbol'>:call_site</span><span class='rbracket'>]</span><span class='comma'>,</span>
+    <span class='label'>call_site:</span> <span class='id identifier rubyid_deprecation'>deprecation</span><span class='lbracket'>[</span><span class='symbol'>:call_site</span><span class='rbracket'>]</span>
   <span class='rparen'>)</span>
   <span class='id identifier rubyid_delegate_to_formatters'>delegate_to_formatters</span><span class='lparen'>(</span><span class='symbol'>:deprecation</span><span class='comma'>,</span> <span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
@@ -1175,14 +1175,14 @@
   <span class='id identifier rubyid_delegate_to_formatters'>delegate_to_formatters</span><span class='lparen'>(</span>
     <span class='symbol'>:dump_pending</span><span class='comma'>,</span>
     <span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Core</span><span class='op'>::</span><span class='const'>Notifications</span><span class='op'>::</span><span class='const'>ExamplesNotification</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
-      <span class='kw'>self</span><span class='comma'>,</span>
-    <span class='rparen'>)</span><span class='comma'>,</span>
+      <span class='kw'>self</span>
+    <span class='rparen'>)</span>
   <span class='rparen'>)</span>
   <span class='id identifier rubyid_delegate_to_formatters'>delegate_to_formatters</span><span class='lparen'>(</span>
     <span class='symbol'>:dump_failures</span><span class='comma'>,</span>
     <span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Core</span><span class='op'>::</span><span class='const'>Notifications</span><span class='op'>::</span><span class='const'>ExamplesNotification</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
-      <span class='kw'>self</span><span class='comma'>,</span>
-    <span class='rparen'>)</span><span class='comma'>,</span>
+      <span class='kw'>self</span>
+    <span class='rparen'>)</span>
   <span class='rparen'>)</span>
   <span class='id identifier rubyid_delegate_to_formatters'>delegate_to_formatters</span><span class='lparen'>(</span>
     <span class='symbol'>:dump_summary</span><span class='comma'>,</span>
@@ -1192,15 +1192,15 @@
       <span class='ivar'>@failed_examples</span><span class='comma'>,</span>
       <span class='ivar'>@pending_examples</span><span class='comma'>,</span>
       <span class='ivar'>@load_time</span><span class='comma'>,</span>
-      <span class='ivar'>@errors_outside_of_examples_count</span><span class='comma'>,</span>
-    <span class='rparen'>)</span><span class='comma'>,</span>
+      <span class='ivar'>@errors_outside_of_examples_count</span>
+    <span class='rparen'>)</span>
   <span class='rparen'>)</span>
   <span class='id identifier rubyid_delegate_to_formatters'>delegate_to_formatters</span><span class='lparen'>(</span>
     <span class='symbol'>:seed</span><span class='comma'>,</span>
     <span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Core</span><span class='op'>::</span><span class='const'>Notifications</span><span class='op'>::</span><span class='const'>SeedNotification</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span>
       <span class='ivar'>@seed</span><span class='comma'>,</span>
-      <span class='ivar'>@seed_used</span><span class='comma'>,</span>
-    <span class='rparen'>)</span><span class='comma'>,</span>
+      <span class='ivar'>@seed_used</span>
+    <span class='rparen'>)</span>
   <span class='rparen'>)</span>
 <span class='kw'>ensure</span>
   <span class='id identifier rubyid_delegate_to_formatters'>delegate_to_formatters</span><span class='lparen'>(</span><span class='symbol'>:close</span><span class='comma'>,</span> <span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Core</span><span class='op'>::</span><span class='const'>Notifications</span><span class='op'>::</span><span class='const'>NullNotification</span><span class='rparen'>)</span>
@@ -1337,7 +1337,7 @@
     <span class='id identifier rubyid_profile'>profile</span><span class='lbracket'>[</span><span class='symbol'>:duration</span><span class='rbracket'>]</span><span class='comma'>,</span>
     <span class='id identifier rubyid_examples'>examples</span><span class='comma'>,</span>
     <span class='id identifier rubyid_profile'>profile</span><span class='lbracket'>[</span><span class='symbol'>:number_of_examples</span><span class='rbracket'>]</span><span class='comma'>,</span>
-    <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='comma'>,</span>
+    <span class='lbrace'>{</span><span class='rbrace'>}</span>
   <span class='rparen'>)</span>
   <span class='id identifier rubyid_delegate_to_formatters'>delegate_to_formatters</span><span class='lparen'>(</span><span class='symbol'>:dump_profile</span><span class='comma'>,</span> <span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
@@ -1481,7 +1481,7 @@ https://github.com/rspec/rspec-core/blob/5699fcdc4723087ff6139af55bd155ad9ad61a7
   <span class='id identifier rubyid_delegate_to_formatters'>delegate_to_formatters</span><span class='lparen'>(</span><span class='symbol'>:seed</span><span class='comma'>,</span> <span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Core</span><span class='op'>::</span><span class='const'>Notifications</span><span class='op'>::</span><span class='const'>SeedNotification</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='ivar'>@seed</span><span class='comma'>,</span> <span class='ivar'>@seed_used</span><span class='rparen'>)</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_delegate_to_formatters'>delegate_to_formatters</span><span class='lparen'>(</span>
     <span class='symbol'>:start</span><span class='comma'>,</span>
-    <span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Core</span><span class='op'>::</span><span class='const'>Notifications</span><span class='op'>::</span><span class='const'>StartNotification</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_expected_example_count'>expected_example_count</span><span class='comma'>,</span> <span class='ivar'>@load_time</span><span class='rparen'>)</span><span class='comma'>,</span>
+    <span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Core</span><span class='op'>::</span><span class='const'>Notifications</span><span class='op'>::</span><span class='const'>StartNotification</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_expected_example_count'>expected_example_count</span><span class='comma'>,</span> <span class='ivar'>@load_time</span><span class='rparen'>)</span>
   <span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1494,7 +1494,7 @@ https://github.com/rspec/rspec-core/blob/5699fcdc4723087ff6139af55bd155ad9ad61a7
 </div>
 
       <div id="footer">
-  Generated on Thu May 28 11:48:34 2026 by
+  Generated on Mon Jun  1 01:15:25 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.44 (ruby-4.0.5).
 </div>

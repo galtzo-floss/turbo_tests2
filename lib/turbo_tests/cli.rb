@@ -52,11 +52,11 @@ module TurboTests
         opts.on(
           "-f",
           "--format FORMATTER",
-          "Choose a formatter. Available formatters: progress (p), documentation (d). Default: progress",
+          "Choose a formatter. Available formatters: progress (p), documentation (d). Default: progress"
         ) do |name|
           formatters << {
             name: name,
-            outputs: [],
+            outputs: []
           }
         end
 
@@ -68,7 +68,7 @@ module TurboTests
           if formatters.empty?
             formatters << {
               name: "progress",
-              outputs: [],
+              outputs: []
             }
           end
           formatters.last[:outputs] << filename
@@ -89,7 +89,7 @@ module TurboTests
         opts.on("--fail-fast=[N]") do |n|
           n = begin
             Integer(n)
-          rescue StandardError
+          rescue
             nil
           end
           fail_fast = (n.nil? || n < 1) ? 1 : n
@@ -121,7 +121,7 @@ module TurboTests
       if formatters.empty?
         formatters << {
           name: "progress",
-          outputs: [],
+          outputs: []
         }
       end
 
@@ -148,7 +148,7 @@ module TurboTests
         seed: seed,
         nice: nice,
         print_failed_group: print_failed_group,
-        parallel_options: parallel_options,
+        parallel_options: parallel_options
       )
 
       invoke_rake_hook("cleanup")
@@ -187,7 +187,7 @@ module TurboTests
       pids = (1..processes).map do |process_id|
         env = {
           "TEST_ENV_NUMBER" => process_id.to_s,
-          "PARALLEL_TEST_GROUPS" => processes.to_s,
+          "PARALLEL_TEST_GROUPS" => processes.to_s
         }
         Process.spawn(env, *args)
       end
@@ -243,7 +243,7 @@ module TurboTests
     def shim_usage(command = nil)
       lines = [
         "Usage: turbo_tests2 shim install [--path PATH]",
-        "       turbo_tests2 shim remove [--path PATH]",
+        "       turbo_tests2 shim remove [--path PATH]"
       ]
       lines << "Unknown shim command: #{command}" if command && !%w[install remove].include?(command)
       lines.join("\n")
