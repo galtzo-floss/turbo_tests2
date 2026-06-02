@@ -408,6 +408,10 @@ files:
     workflows:
       codeql-analysis.yml:
         strategy: keep_destination
+      coverage.yml:
+        strategy: merge
+        preference: destination
+        file_type: yaml
   gemfiles:
     modular:
       templating.gemfile:
