@@ -580,6 +580,27 @@ RSpec.describe TurboTests::Runner do
         ENV["RSPEC_EXECUTABLE"] = old if old
       end
     end
+
+    it "untracks worker pids after the pid-file environment has been restored" do
+      mock_open3(runner)
+      allow(ENV).to receive(:[]).and_call_original
+      allow(ENV).to receive(:[]).with("RSPEC_EXECUTABLE").and_return(nil)
+      allow(ENV).to receive(:[]).with("BUNDLE_BIN_PATH").and_return(nil)
+
+      wait_threads = nil
+      ParallelTests.with_pid_file do
+        env = {
+          "TEST_ENV_NUMBER" => "2",
+          "PARALLEL_TEST_GROUPS" => "3",
+          "PARALLEL_PID_FILE" => ParallelTests.pid_file_path
+        }
+
+        runner.send(:start_subprocess, env, [], tests, 2, record_runtime: false)
+        wait_threads = runner.instance_variable_get(:@threads).dup
+      end
+
+      expect { wait_threads.each(&:value) }.not_to raise_error
+    end
   end
 
   describe "#start_copy_thread (private)" do

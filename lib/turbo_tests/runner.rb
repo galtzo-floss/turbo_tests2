@@ -268,8 +268,9 @@ module TurboTests
           warn("Process #{process_id}: #{command_str}")
         end
 
+        pid_file_path = env["PARALLEL_PID_FILE"] || parallel_pid_file_path
         stdin, stdout, stderr, wait_thr = Open3.popen3(env, *command)
-        track_parallel_pid(wait_thr.pid)
+        track_parallel_pid(wait_thr.pid, pid_file_path)
         stdin.close
 
         # rubocop:disable ThreadSafety/NewThread
@@ -302,7 +303,7 @@ module TurboTests
             status = wait_thr.value
             @messages << {type: "error"} unless status.success?
           ensure
-            untrack_parallel_pid(wait_thr.pid)
+            untrack_parallel_pid(wait_thr.pid, pid_file_path)
           end
         end
         # rubocop:enable ThreadSafety/NewThread
@@ -315,12 +316,12 @@ module TurboTests
       ENV["PARALLEL_PID_FILE"]
     end
 
-    def track_parallel_pid(pid)
-      ParallelTests.pids.add(pid) if parallel_pid_file_path
+    def track_parallel_pid(pid, pid_file_path = parallel_pid_file_path)
+      ParallelTests::Pids.new(pid_file_path).add(pid) if pid && pid_file_path
     end
 
-    def untrack_parallel_pid(pid)
-      ParallelTests.pids.delete(pid) if pid && parallel_pid_file_path
+    def untrack_parallel_pid(pid, pid_file_path = parallel_pid_file_path)
+      ParallelTests::Pids.new(pid_file_path).delete(pid) if pid && pid_file_path
     end
 
     def start_copy_thread(src, dst)

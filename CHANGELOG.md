@@ -28,6 +28,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Worker PID cleanup now uses the `parallel_tests` pid file path captured when the subprocess starts, avoiding JRuby failures after the pid-file environment is restored.
+
 ### Security
 
 ## [3.1.1] - 2026-06-02
