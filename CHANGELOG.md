@@ -28,18 +28,13 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
-- Restored Ruby 2.4 compatibility for worker wait-thread cleanup.
-- The coverage workflow now runs `kettle-test` through direct RSpec execution,
-  so hard coverage thresholds are checked against the complete suite result
-  while other gems can still use `turbo_tests2` under `kettle-test`.
-
 ### Security
 
-## [3.1.1] - 2026-06-01
+## [3.1.1] - 2026-06-02
 
 - TAG: [v3.1.1][3.1.1t]
 - COVERAGE: 94.63% -- 634/670 lines in 16 files
-- BRANCH COVERAGE: 78.47% -- 113/144 branches in 16 files
+- BRANCH COVERAGE: 78.17% -- 111/142 branches in 16 files
 - 36.78% documented
 
 ### Fixed
@@ -49,6 +44,11 @@ Please file a bug if you notice a violation of semantic versioning.
 - Worker processes now receive the full `parallel_tests` environment metadata, so SimpleCov
   defers minimum coverage enforcement to the combined final result instead of checking each
   shard independently.
+
+- Restored Ruby 2.4 compatibility for worker wait-thread cleanup.
+- The coverage workflow now runs `kettle-test` through direct RSpec execution,
+  so hard coverage thresholds are checked against the complete suite result
+  while other gems can still use `turbo_tests2` under `kettle-test`.
 
 ## [3.1.0] - 2026-05-28
 

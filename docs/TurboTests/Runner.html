@@ -518,7 +518,7 @@
     <span class='label'>print_failed_group:</span> <span class='id identifier rubyid_print_failed_group'>print_failed_group</span><span class='comma'>,</span>
     <span class='label'>use_runtime_info:</span> <span class='id identifier rubyid_use_runtime_info'>use_runtime_info</span><span class='comma'>,</span>
     <span class='label'>parallel_options:</span> <span class='id identifier rubyid_parallel_options'>parallel_options</span><span class='comma'>,</span>
-    <span class='label'>nice:</span> <span class='id identifier rubyid_nice'>nice</span><span class='comma'>,</span>
+    <span class='label'>nice:</span> <span class='id identifier rubyid_nice'>nice</span>
   <span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_run'>run</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -650,19 +650,19 @@
 <span class='kw'>def</span> <span class='id identifier rubyid_run'>run</span>
   <span class='ivar'>@num_processes</span> <span class='op'>=</span> <span class='lbracket'>[</span>
     <span class='const'>ParallelTests</span><span class='period'>.</span><span class='id identifier rubyid_determine_number_of_processes'>determine_number_of_processes</span><span class='lparen'>(</span><span class='ivar'>@count</span><span class='rparen'>)</span><span class='comma'>,</span>
-    <span class='const'>ParallelTests</span><span class='op'>::</span><span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Runner</span><span class='period'>.</span><span class='id identifier rubyid_tests_with_size'>tests_with_size</span><span class='lparen'>(</span><span class='ivar'>@files</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span><span class='comma'>,</span>
+    <span class='const'>ParallelTests</span><span class='op'>::</span><span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Runner</span><span class='period'>.</span><span class='id identifier rubyid_tests_with_size'>tests_with_size</span><span class='lparen'>(</span><span class='ivar'>@files</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
   <span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_min'>min</span>
 
   <span class='id identifier rubyid_tests_in_groups'>tests_in_groups</span> <span class='op'>=</span>
     <span class='const'>ParallelTests</span><span class='op'>::</span><span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Runner</span><span class='period'>.</span><span class='id identifier rubyid_tests_in_groups'>tests_in_groups</span><span class='lparen'>(</span>
       <span class='ivar'>@files</span><span class='comma'>,</span>
       <span class='ivar'>@num_processes</span><span class='comma'>,</span>
-      <span class='op'>**</span><span class='ivar'>@parallel_options</span><span class='comma'>,</span>
+      <span class='op'>**</span><span class='ivar'>@parallel_options</span>
     <span class='rparen'>)</span>
   <span class='ivar'>@tests_in_groups</span> <span class='op'>=</span> <span class='id identifier rubyid_tests_in_groups'>tests_in_groups</span>
 
   <span class='id identifier rubyid_subprocess_opts'>subprocess_opts</span> <span class='op'>=</span> <span class='lbrace'>{</span>
-    <span class='label'>record_runtime:</span> <span class='ivar'>@record_runtime</span><span class='comma'>,</span>
+    <span class='label'>record_runtime:</span> <span class='ivar'>@record_runtime</span>
   <span class='rbrace'>}</span>
 
   <span class='const'>ParallelTests</span><span class='period'>.</span><span class='id identifier rubyid_with_pid_file'>with_pid_file</span> <span class='kw'>do</span>
@@ -701,7 +701,7 @@
 </div>
 
       <div id="footer">
-  Generated on Mon Jun  1 01:15:25 2026 by
+  Generated on Tue Jun  2 11:31:41 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.44 (ruby-4.0.5).
 </div>

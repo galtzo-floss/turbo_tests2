@@ -84,14 +84,14 @@ Please file a bug if you notice a violation of semantic versioning.</p>
 
 <h3 id="security">Security</h3>
 
-<h2 id="311---2026-06-01">
-<a href="https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.0...v3.1.1">3.1.1</a> - 2026-06-01</h2>
+<h2 id="311---2026-06-02">
+<a href="https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.0...v3.1.1">3.1.1</a> - 2026-06-02</h2>
 
 <ul>
   <li>TAG: <a href="https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.1">v3.1.1</a>
 </li>
   <li>COVERAGE: 94.63% – 634/670 lines in 16 files</li>
-  <li>BRANCH COVERAGE: 78.47% – 113/144 branches in 16 files</li>
+  <li>BRANCH COVERAGE: 78.17% – 111/142 branches in 16 files</li>
   <li>36.78% documented</li>
 </ul>
 
@@ -100,9 +100,15 @@ Please file a bug if you notice a violation of semantic versioning.</p>
 <ul>
   <li>The CLI now honors documented <code>turbo_tests2:setup</code> and <code>turbo_tests2:cleanup</code><br>
 Rake hooks, while still falling back to legacy <code>turbo_tests:*</code> hooks.</li>
-  <li>Worker processes now receive the full <code>parallel_tests</code> environment metadata, so SimpleCov<br>
+  <li>
+    <p>Worker processes now receive the full <code>parallel_tests</code> environment metadata, so SimpleCov<br>
 defers minimum coverage enforcement to the combined final result instead of checking each<br>
-shard independently.</li>
+shard independently.</p>
+  </li>
+  <li>Restored Ruby 2.4 compatibility for worker wait-thread cleanup.</li>
+  <li>The coverage workflow now runs <code>kettle-test</code> through direct RSpec execution,<br>
+so hard coverage thresholds are checked against the complete suite result<br>
+while other gems can still use <code>turbo_tests2</code> under <code>kettle-test</code>.</li>
 </ul>
 
 <h2 id="310---2026-05-28">
@@ -192,7 +198,7 @@ SARIF uploads from advanced configurations.</li>
 </div></div>
 
       <div id="footer">
-  Generated on Mon Jun  1 14:08:39 2026 by
+  Generated on Tue Jun  2 11:31:41 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.44 (ruby-4.0.5).
 </div>
