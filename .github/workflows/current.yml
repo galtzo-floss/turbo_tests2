@@ -39,7 +39,7 @@ jobs:
           # Ruby 4.0
           - ruby: "ruby"
             appraisal: "current"
-            exec_cmd: "env KETTLE_TEST_RUNNER=rspec kettle-test -I ../spec --options ../.rspec ../spec"
+            exec_cmd: "kettle-test"
             rubygems: latest
             bundler: latest
 

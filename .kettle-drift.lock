@@ -1,5 +1,5 @@
 {
-  "appraisal: \"dep-heads\"\nexec_cmd: \"env KETTLE_TEST_RUNNER=rspec kettle-test -I ../spec --options ../.rspec ../spec\"": [
+  "appraisal: \"dep-heads\"\nexec_cmd: \"kettle-test\"": [
     {
       "file": ".github/workflows/dep-heads.yml",
       "lines": [
@@ -9,7 +9,7 @@
       ]
     }
   ],
-  "appraisal: \"head\"\nexec_cmd: \"env KETTLE_TEST_RUNNER=rspec kettle-test -I ../spec --options ../.rspec ../spec\"": [
+  "appraisal: \"head\"\nexec_cmd: \"kettle-test\"": [
     {
       "file": ".github/workflows/heads.yml",
       "lines": [
@@ -19,7 +19,7 @@
       ]
     }
   ],
-  "exec_cmd: \"env KETTLE_TEST_RUNNER=rspec kettle-test -I ../spec --options ../.rspec ../spec\"\nrubygems: default": [
+  "exec_cmd: \"kettle-test\"\nrubygems: default": [
     {
       "file": ".github/workflows/dep-heads.yml",
       "lines": [
