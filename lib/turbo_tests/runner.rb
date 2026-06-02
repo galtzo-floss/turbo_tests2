@@ -70,7 +70,7 @@ module TurboTests
           print_failed_group: print_failed_group,
           use_runtime_info: use_runtime_info,
           parallel_options: parallel_options,
-          nice: nice,
+          nice: nice
         ).run
       end
 
@@ -126,19 +126,19 @@ module TurboTests
     def run
       @num_processes = [
         ParallelTests.determine_number_of_processes(@count),
-        ParallelTests::RSpec::Runner.tests_with_size(@files, {}).size,
+        ParallelTests::RSpec::Runner.tests_with_size(@files, {}).size
       ].min
 
       tests_in_groups =
         ParallelTests::RSpec::Runner.tests_in_groups(
           @files,
           @num_processes,
-          **@parallel_options,
+          **@parallel_options
         )
       @tests_in_groups = tests_in_groups
 
       subprocess_opts = {
-        record_runtime: @record_runtime,
+        record_runtime: @record_runtime
       }
 
       ParallelTests.with_pid_file do
@@ -194,12 +194,12 @@ module TurboTests
         {
           "TEST_ENV_NUMBER" => process_id.to_s,
           "PARALLEL_TEST_GROUPS" => @num_processes.to_s,
-          "PARALLEL_PID_FILE" => parallel_pid_file_path,
+          "PARALLEL_PID_FILE" => parallel_pid_file_path
         },
         @tags.map { |tag| "--tag=#{tag}" },
         tests,
         process_id,
-        **opts,
+        **opts
       )
     end
 
@@ -207,7 +207,7 @@ module TurboTests
       if tests.empty?
         @messages << {
           type: "exit",
-          process_id: process_id,
+          process_id: process_id
         }
 
         nil
@@ -231,7 +231,7 @@ module TurboTests
               "--format",
               "ParallelTests::RSpec::RuntimeLogger",
               "--out",
-              @runtime_log,
+              @runtime_log
             ]
           else
             []
@@ -239,7 +239,7 @@ module TurboTests
 
         seed_option = if @seed_used
           [
-            "--seed", @seed,
+            "--seed", @seed
           ]
         else
           []
@@ -255,14 +255,14 @@ module TurboTests
           "TurboTests::JsonRowsFormatter",
           *record_runtime_options,
           *spec_opts,
-          *tests,
+          *tests
         ]
         command.unshift("nice") if @nice
 
         if @verbose
           command_str = [
             env.map { |k, v| "#{k}=#{v}" }.join(" "),
-            command.join(" "),
+            command.join(" ")
           ].select { |x| x.size > 0 }.join(" ")
 
           warn("Process #{process_id}: #{command_str}")
@@ -298,10 +298,12 @@ module TurboTests
 
         # rubocop:disable ThreadSafety/NewThread
         @threads << Thread.new do
-          status = wait_thr.value
-          @messages << {type: "error"} unless status.success?
-        ensure
-          untrack_parallel_pid(wait_thr.pid)
+          begin
+            status = wait_thr.value
+            @messages << {type: "error"} unless status.success?
+          ensure
+            untrack_parallel_pid(wait_thr.pid)
+          end
         end
         # rubocop:enable ThreadSafety/NewThread
 
@@ -379,9 +381,7 @@ module TurboTests
           @reporter.deprecation(message[:deprecation])
         when "profile"
           @reporter.profile(message[:profile])
-        when "seed"
-        when "close"
-        when "error"
+        when "seed", "close", "error"
           # Do nothing
           nil
         when "exit"
