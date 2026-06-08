@@ -34,8 +34,10 @@ module TurboTests
         verbose = opts.fetch(:verbose, false)
         fail_fast = opts.fetch(:fail_fast, nil)
         count = opts.fetch(:count, nil)
+        order = normalize_order(opts.fetch(:order, nil))
         seed = opts.fetch(:seed, nil)
-        seed_used = !seed.nil?
+        seed_used = order != "defined"
+        seed = generate_seed if seed_used && seed.nil?
         print_failed_group = opts.fetch(:print_failed_group, false)
         nice = opts.fetch(:nice, false)
 
@@ -67,6 +69,7 @@ module TurboTests
           count: count,
           seed: seed,
           seed_used: seed_used,
+          order: order,
           print_failed_group: print_failed_group,
           use_runtime_info: use_runtime_info,
           parallel_options: parallel_options,
@@ -88,6 +91,18 @@ module TurboTests
         File.write(path, runtimes.sort.map { |file, runtime| "#{file}:#{runtime}" }.join("\n"))
         path
       end
+
+      def normalize_order(order)
+        order = order.to_s.strip.downcase
+        return "random" if order.empty?
+        return order if %w[random defined].include?(order)
+
+        raise ArgumentError, "Unsupported order #{order.inspect}; use random or defined"
+      end
+
+      def generate_seed
+        (Random.new_seed % 65_535).to_s
+      end
     end
 
     def initialize(**opts)
@@ -101,6 +116,7 @@ module TurboTests
       @count = opts[:count]
       @seed = opts[:seed]
       @seed_used = opts[:seed_used]
+      @order = opts[:order]
       @nice = opts[:nice]
       @use_runtime_info = opts[:use_runtime_info]
 
@@ -240,6 +256,10 @@ module TurboTests
         seed_option = if @seed_used
           [
             "--seed", @seed
+          ]
+        elsif @order
+          [
+            "--order", @order
           ]
         else
           []

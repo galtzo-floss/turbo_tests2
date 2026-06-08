@@ -63,15 +63,11 @@ An error occurred while loading #{fixture}.
   context "when 'seed' parameter was not used", :check_output do
     context "when errors occur outside of examples" do
       let(:expected_start_of_output) do
-        %(
-1 processes for 1 specs, ~ 1 specs per process
-
-An error occurred while loading #{fixture}.
-).strip
+        /\A1 processes for 1 specs, ~ 1 specs per process\n\nRandomized with seed \d+\n\nAn error occurred while loading #{Regexp.escape(fixture)}\./
       end
 
       let(:expected_end_of_output) do
-        "0 examples, 0 failures, 1 error occurred outside of examples"
+        /0 examples, 0 failures, 1 error occurred outside of examples\n\nRandomized with seed \d+/
       end
 
       let(:fixture) { "./fixtures/rspec/errors_outside_of_examples_spec.rb" }
@@ -79,12 +75,12 @@ An error occurred while loading #{fixture}.
       it "reports" do
         expect($?.exitstatus).to be(1)
 
-        expect(output).to start_with(expected_start_of_output)
-        expect(output).to include(expected_end_of_output)
+        expect(output).to match(expected_start_of_output)
+        expect(output).to match(expected_end_of_output)
       end
 
-      it "exludes the seed message from the output" do
-        expect(output).not_to include("seed")
+      it "includes the generated seed message in the output" do
+        expect(output).to match(/Randomized with seed \d+/)
       end
     end
 
@@ -104,8 +100,20 @@ An error occurred while loading #{fixture}.
           expect(output).to include(part)
         end
 
-        expect(output).to include("3 examples, 0 failures, 3 pending")
+        expect(output).to match(/3 examples, 0 failures, 3 pending\n\nRandomized with seed \d+/)
       end
+    end
+  end
+
+  context "when randomization is disabled", :check_output do
+    subject(:output) { `bundle exec turbo_tests2 -f d #{fixture} --no-random`.strip }
+
+    let(:fixture) { "./fixtures/rspec/passing_spec.rb" }
+
+    it "does not print a seed" do
+      expect($?.exitstatus).to be(0)
+      expect(output).to include("1 example, 0 failures")
+      expect(output).not_to include("Randomized with seed")
     end
   end
 
@@ -295,6 +303,16 @@ An error occurred while loading #{fixture}.
     it "passes seed with --seed" do
       run_cli(["--seed", "42"])
       expect(captured_opts[:seed]).to eq("42")
+    end
+
+    it "passes order with --order" do
+      run_cli(["--order", "defined"])
+      expect(captured_opts[:order]).to eq("defined")
+    end
+
+    it "passes defined order with --no-random" do
+      run_cli(["--no-random"])
+      expect(captured_opts[:order]).to eq("defined")
     end
 
     it "passes print_failed_group: true with --print_failed_group" do

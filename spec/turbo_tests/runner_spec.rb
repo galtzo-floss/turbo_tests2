@@ -82,6 +82,51 @@ RSpec.describe TurboTests::Runner do
       allow(TurboTests::Reporter).to receive(:from_config).and_return(mock_reporter)
     end
 
+    it "generates and reports a seed by default" do
+      runner_double = double("runner", run: 0)
+      allow(described_class).to receive(:generate_seed).and_return("12345")
+      allow(described_class).to receive(:new) do |**opts|
+        expect(opts[:seed]).to eq("12345")
+        expect(opts[:seed_used]).to be true
+        runner_double
+      end
+
+      allow(TurboTests::Reporter).to receive(:from_config).and_return(mock_reporter)
+
+      described_class.run(files: ["spec"], formatters: [], tags: [], parallel_options: {})
+
+      expect(TurboTests::Reporter).to have_received(:from_config).with([], anything, "12345", true, ["spec"], anything)
+    end
+
+    it "uses the explicit seed when provided" do
+      runner_double = double("runner", run: 0)
+      expect(described_class).not_to receive(:generate_seed)
+      allow(described_class).to receive(:new) do |**opts|
+        expect(opts[:seed]).to eq("42")
+        expect(opts[:seed_used]).to be true
+        runner_double
+      end
+
+      described_class.run(files: ["spec"], formatters: [], tags: [], seed: "42", parallel_options: {})
+    end
+
+    it "does not generate a seed for defined order" do
+      runner_double = double("runner", run: 0)
+      expect(described_class).not_to receive(:generate_seed)
+      allow(described_class).to receive(:new) do |**opts|
+        expect(opts[:order]).to eq("defined")
+        expect(opts[:seed]).to be_nil
+        expect(opts[:seed_used]).to be false
+        runner_double
+      end
+
+      allow(TurboTests::Reporter).to receive(:from_config).and_return(mock_reporter)
+
+      described_class.run(files: ["spec"], formatters: [], tags: [], order: "defined", parallel_options: {})
+
+      expect(TurboTests::Reporter).to have_received(:from_config).with([], anything, nil, false, ["spec"], anything)
+    end
+
     context "when files is ['spec'] (use_runtime_info = true)" do
       it "sets runtime_log in parallel_options and passes use_runtime_info: true" do
         runner_double = double("runner", run: 0)
@@ -460,7 +505,7 @@ RSpec.describe TurboTests::Runner do
         old = ENV.delete("RSPEC_EXECUTABLE")
         runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
       ensure
-        ENV["RSPEC_EXECUTABLE"] = old if old
+        ENV.store("RSPEC_EXECUTABLE", old) if old
       end
 
       expect(captured[1]).to eq("nice")
@@ -491,6 +536,24 @@ RSpec.describe TurboTests::Runner do
       end
 
       expect(captured).to include("ParallelTests::RSpec::RuntimeLogger")
+    end
+
+    it "passes defined order without a seed when randomization is disabled" do
+      runner.instance_variable_set(:@order, "defined")
+      runner.instance_variable_set(:@seed, nil)
+      runner.instance_variable_set(:@seed_used, false)
+      captured = []
+      mock_open3(runner) { |*args| captured.replace(args) }
+
+      begin
+        old = ENV.delete("RSPEC_EXECUTABLE")
+        runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
+      ensure
+        ENV["RSPEC_EXECUTABLE"] = old if old
+      end
+
+      expect(captured).to include("--order", "defined")
+      expect(captured).not_to include("--seed")
     end
 
     it "uses plain 'rspec' string when neither RSPEC_EXECUTABLE nor BUNDLE_BIN_PATH is set" do

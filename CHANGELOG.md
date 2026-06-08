@@ -28,6 +28,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- `turbo_tests2` now generates and reports a global random seed by default,
+  passes it to every worker process, and supports `--order defined` /
+  `--no-random` for ordered runs without a seed.
 - Worker PID cleanup now uses the `parallel_tests` pid file path captured when the subprocess starts, avoiding JRuby failures after the pid-file environment is restored.
 
 ### Security

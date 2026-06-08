@@ -82,6 +82,14 @@ Please file a bug if you notice a violation of semantic versioning.</p>
 
 <h3 id="fixed">Fixed</h3>
 
+<ul>
+  <li>
+<code>turbo_tests2</code> now generates and reports a global random seed by default,<br>
+passes it to every worker process, and supports <code>--order defined</code> /<br>
+<code>--no-random</code> for ordered runs without a seed.</li>
+  <li>Worker PID cleanup now uses the <code>parallel_tests</code> pid file path captured when the subprocess starts, avoiding JRuby failures after the pid-file environment is restored.</li>
+</ul>
+
 <h3 id="security">Security</h3>
 
 <h2 id="311---2026-06-02">
@@ -198,7 +206,7 @@ SARIF uploads from advanced configurations.</li>
 </div></div>
 
       <div id="footer">
-  Generated on Tue Jun  2 11:31:41 2026 by
+  Generated on Mon Jun  8 05:17:46 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.44 (ruby-4.0.5).
 </div>

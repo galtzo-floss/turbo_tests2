@@ -21,6 +21,7 @@ module TurboTests
       verbose = false
       fail_fast = nil
       seed = nil
+      order = nil
       print_failed_group = false
       create = false
       nice = false
@@ -99,6 +100,14 @@ module TurboTests
           seed = s
         end
 
+        opts.on("--order ORDER", "RSpec example order: random (default) or defined") do |value|
+          order = value
+        end
+
+        opts.on("--no-random", "Run examples in defined order without passing a seed") do
+          order = "defined"
+        end
+
         opts.on("--create", "Create databases") do
           create = true
         end
@@ -146,6 +155,7 @@ module TurboTests
         fail_fast: fail_fast,
         count: count,
         seed: seed,
+        order: order,
         nice: nice,
         print_failed_group: print_failed_group,
         parallel_options: parallel_options
