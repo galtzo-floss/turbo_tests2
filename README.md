@@ -181,20 +181,28 @@ Usage: turbo_tests2 [options]
   turbo_tests2 spec/bar spec/baz/xxx_spec.rb
 
 Options:
-    -n [PROCESSES]                   How many processes to use, default: available CPUs
+    -n, -w, --workers [PROCESSES]    How many processes to use, default: available CPUs
     -r, --require PATH               Require a file.
     -f, --format FORMATTER           Choose a formatter. Available formatters: progress (p), documentation (d). Default: progress
     -t, --tag TAG                    Run examples with the specified tag.
     -o, --out FILE                   Write output to a file instead of $stdout
         --runtime-log FILE           Location of previously recorded test runtimes
+        --example-status-log FILE    Use RSpec example status persistence timings for grouping
     -v, --verbose                    More output
         --fail-fast=[N]
         --seed SEED                  Seed for rspec
-        --create                     Create test databases
+        --order ORDER                RSpec example order: random (default) or defined
+        --no-random                  Run examples in defined order without passing a seed
+        --create                     Create databases
         --print_failed_group         Prints group that had failures in it
+        --nice                       execute test commands with low priority
 ```
 
-To pass any options supported by paralell_tests, use `--`:
+By default, `turbo_tests2` generates one random RSpec seed, prints it, and passes
+that same seed to every worker process. Use `--seed SEED` to replay a run, or
+`--order defined` / `--no-random` when you want ordered examples without a seed.
+
+To pass any options supported by parallel_tests, use `--`:
 
 ```bash
 bundle exec turbo_tests2 -n 4 -- --only-group 1 --pattern spec/system

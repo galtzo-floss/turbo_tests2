@@ -173,6 +173,14 @@ An error occurred while loading #{fixture}.
       nil
     end
 
+    it "renders help for all documented options" do
+      matcher = RSpec::Matchers::BuiltIn::Output.new(
+        /-n, -w, --workers \[PROCESSES\].*--example-status-log FILE.*--seed SEED.*--order ORDER.*--no-random.*--nice/m
+      ).to_stdout
+
+      expect { run_cli(["--help"]) }.to matcher
+    end
+
     describe "shim commands" do
       around do |example|
         Dir.mktmpdir do |dir|

@@ -59,7 +59,7 @@
         <div class="clear"></div>
       </div>
 
-      <div id="content"><div id='filecontents'><p><a href="https://github.com/galtzo-floss"><img alt="galtzo-floss Logo by Aboling0, CC BY-SA 4.0" src="https://logos.galtzo.com/assets/images/galtzo-floss/avatar-128px.svg" width="12%" align="right"></a> <a href="https://github.com/galtzo-floss/turbo_tests2"><img alt="turbo_tests2 Logo by Aboling0, CC BY-SA 4.0" src="https://logos.galtzo.com/assets/images/galtzo-floss/turbo_tests2/avatar-128px.svg" width="12%" align="right"></a></p>
+      <div id="content"><div id='filecontents'><p><a href="https://github.com/galtzo-floss/turbo_tests2"><img alt="turbo_tests2 Logo by Aboling0, CC BY-SA 4.0" src="https://logos.galtzo.com/assets/images/galtzo-floss/turbo_tests2/avatar-128px.svg" width="20%" align="right"></a></p>
 
 <h1 id="-turbotests">🚀 TurboTests</h1>
 
@@ -379,20 +379,28 @@ Usage: turbo_tests2 [options]
   turbo_tests2 spec/bar spec/baz/xxx_spec.rb
 
 Options:
-    -n [PROCESSES]                   How many processes to use, default: available CPUs
+    -n, -w, --workers [PROCESSES]    How many processes to use, default: available CPUs
     -r, --require PATH               Require a file.
     -f, --format FORMATTER           Choose a formatter. Available formatters: progress (p), documentation (d). Default: progress
     -t, --tag TAG                    Run examples with the specified tag.
     -o, --out FILE                   Write output to a file instead of $stdout
         --runtime-log FILE           Location of previously recorded test runtimes
+        --example-status-log FILE    Use RSpec example status persistence timings for grouping
     -v, --verbose                    More output
         --fail-fast=[N]
         --seed SEED                  Seed for rspec
-        --create                     Create test databases
+        --order ORDER                RSpec example order: random (default) or defined
+        --no-random                  Run examples in defined order without passing a seed
+        --create                     Create databases
         --print_failed_group         Prints group that had failures in it
+        --nice                       execute test commands with low priority
 </code></pre>
 
-<p>To pass any options supported by paralell_tests, use <code>--</code>:</p>
+<p>By default, <code>turbo_tests2</code> generates one random RSpec seed, prints it, and passes<br>
+that same seed to every worker process. Use <code>--seed SEED</code> to replay a run, or<br>
+<code>--order defined</code> / <code>--no-random</code> when you want ordered examples without a seed.</p>
+
+<p>To pass any options supported by parallel_tests, use <code>--</code>:</p>
 
 <pre class="code language-bash"><code class="language-bash">bundle exec turbo_tests2 -n 4 -- --only-group 1 --pattern spec/system
 </code></pre>
@@ -675,7 +683,7 @@ Please consider sponsoring me or the project.</p>
 </div></div>
 
       <div id="footer">
-  Generated on Mon Jun  1 14:08:39 2026 by
+  Generated on Mon Jun  8 17:16:09 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.44 (ruby-4.0.5).
 </div>
