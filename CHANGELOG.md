@@ -28,12 +28,21 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+### Security
+
+## [3.1.2] - 2026-06-08
+
+- TAG: [v3.1.2][3.1.2t]
+- COVERAGE: 94.62% -- 651/688 lines in 16 files
+- BRANCH COVERAGE: 79.33% -- 119/150 branches in 16 files
+- 37.08% documented
+
+### Fixed
+
 - `turbo_tests2` now generates and reports a global random seed by default,
   passes it to every worker process, and supports `--order defined` /
   `--no-random` for ordered runs without a seed.
 - Worker PID cleanup now uses the `parallel_tests` pid file path captured when the subprocess starts, avoiding JRuby failures after the pid-file environment is restored.
-
-### Security
 
 ## [3.1.1] - 2026-06-02
 
@@ -117,7 +126,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.1...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.2...HEAD
+[3.1.2]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.1...v3.1.2
+[3.1.2t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.2
 [3.1.1]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.0...v3.1.1
 [3.1.1t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.1
 [3.1.0]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.0.0...v3.1.0
