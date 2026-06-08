@@ -177,7 +177,7 @@ workflows:
 #   project => related-org,ruby,project
 #   org_and_project => related-org,ruby,org,project
 readme:
-  top_logos: org,project
+  top_logos: project|20%
   h2_synopsis_logos: related-org,ruby
   # Optional package-family README block.
   # Supported values: structuredmerge
