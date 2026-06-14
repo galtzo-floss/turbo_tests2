@@ -28,9 +28,18 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
-- Restored `docs/CNAME` so the generated documentation site keeps its custom domain.
-
 ### Security
+
+## [3.1.3] - 2026-06-14
+
+- TAG: [v3.1.3][3.1.3t]
+- COVERAGE: 94.62% -- 651/688 lines in 16 files
+- BRANCH COVERAGE: 79.33% -- 119/150 branches in 16 files
+- 37.08% documented
+
+### Fixed
+
+- Restored `docs/CNAME` so the generated documentation site keeps its custom domain.
 
 ## [3.1.2] - 2026-06-08
 
@@ -128,7 +137,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.2...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.3...HEAD
+[3.1.3]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.2...v3.1.3
+[3.1.3t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.3
 [3.1.2]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.1...v3.1.2
 [3.1.2t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.2
 [3.1.1]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.0...v3.1.1
