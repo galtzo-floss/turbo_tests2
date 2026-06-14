@@ -30,7 +30,7 @@ RSpec.describe "TurboTests multi-process integration", :check_output do
     end
 
     it "spawns two worker processes" do
-      expect(output).to match(/2 processes for 2 specs/)
+      expect(output).to include("2 processes for 2 specs")
     end
 
     it "streams output from the passing worker" do
@@ -66,7 +66,7 @@ RSpec.describe "TurboTests multi-process integration", :check_output do
     end
 
     it "spawns two worker processes" do
-      expect(output).to match(/2 processes for 2 specs/)
+      expect(output).to include("2 processes for 2 specs")
     end
 
     it "reports the failure from the failing worker" do
@@ -95,7 +95,7 @@ RSpec.describe "TurboTests multi-process integration", :check_output do
     end
 
     it "spawns two worker processes" do
-      expect(output).to match(/2 processes for 2 specs/)
+      expect(output).to include("2 processes for 2 specs")
     end
 
     it "reports the error from the failing worker" do

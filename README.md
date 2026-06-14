@@ -680,7 +680,7 @@ Thanks for RTFM. ☺️
 | Package | turbo_tests2 |
 | Description | 🚀 turbo_tests2` is a drop-in replacement for `serpapi/turbo_tests` and `grosser/parallel_tests` with incremental summarized output. Source code of `turbo_test2` gem is based on Discourse and Rubygems work in this area (see README.md). |
 | Homepage | https://github.com/galtzo-floss/turbo_tests2 |
-| Source | https://github.com/galtzo-floss/turbo_tests2/tree/v3.1.1 |
+| Source | https://github.com/galtzo-floss/turbo_tests2/tree/v3.1.2 |
 | License | `MIT` |
 | Funding | https://github.com/sponsors/pboling, https://issuehunt.io/u/pboling, https://ko-fi.com/pboling, https://liberapay.com/pboling/donate, https://opencollective.com/galtzo-floss, https://patreon.com/galtzo, https://polar.sh/pboling, https://thanks.dev/u/gh/pboling, https://tidelift.com/funding/github/rubygems/turbo_tests2, https://www.buymeacoffee.com/pboling |
 <!-- kettle-jem:metadata:end -->

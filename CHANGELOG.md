@@ -29,6 +29,7 @@ Please file a bug if you notice a violation of semantic versioning.
 ### Fixed
 
 - Restored `docs/CNAME` so the generated documentation site keeps its custom domain.
+
 ### Security
 
 ## [3.1.2] - 2026-06-08
