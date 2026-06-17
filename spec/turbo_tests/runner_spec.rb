@@ -664,6 +664,37 @@ RSpec.describe TurboTests::Runner do
 
       expect { wait_threads.each(&:value) }.not_to raise_error
     end
+
+    it "exits from the waiter thread and closes worker pipes when output remains open" do
+      stdout_reader, stdout_writer = IO.pipe
+      stderr_reader, stderr_writer = IO.pipe
+      begin
+        allow(Open3).to receive(:popen3).and_return([fake_stdin, stdout_reader, stderr_reader, fake_wait_thr])
+        runner.instance_variable_set(:@num_processes, 1)
+
+        runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
+        runner.send(:handle_messages)
+        runner.instance_variable_get(:@threads).each { |thread| thread.join(2) }
+
+        expect(runner.instance_variable_get(:@exited_process_ids)).to eq([1])
+        expect(runner.instance_variable_get(:@threads)).not_to include(be_alive)
+      ensure
+        stdout_writer&.close unless stdout_writer&.closed?
+        stderr_writer&.close unless stderr_writer&.closed?
+      end
+    end
+
+    it "ignores duplicate exit messages from the same process" do
+      runner.instance_variable_set(:@num_processes, 2)
+      queue = runner.instance_variable_get(:@messages)
+      queue << {type: "exit", process_id: 1}
+      queue << {type: "exit", process_id: 1}
+      queue << {type: "exit", process_id: 2}
+
+      runner.send(:handle_messages)
+
+      expect(runner.instance_variable_get(:@exited_process_ids)).to eq([1, 2])
+    end
   end
 
   describe "#start_copy_thread (private)" do

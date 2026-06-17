@@ -294,35 +294,44 @@ module TurboTests
         stdin.close
 
         # rubocop:disable ThreadSafety/NewThread
-        @threads <<
+        stdout_thread =
           Thread.new do
-            stdout.each_line do |line|
-              result = line.split(env["RSPEC_FORMATTER_OUTPUT_ID"])
+            begin
+              stdout.each_line do |line|
+                result = line.split(env["RSPEC_FORMATTER_OUTPUT_ID"])
 
-              initial = result.shift
-              print(initial) unless initial.empty?
+                initial = result.shift
+                print(initial) unless initial.empty?
 
-              message = result.shift
-              next unless message
+                message = result.shift
+                next unless message
 
-              message = JSON.parse(message, symbolize_names: true)
+                message = JSON.parse(message, symbolize_names: true)
 
-              message[:process_id] = process_id
-              @messages << message
+                message[:process_id] = process_id
+                @messages << message
+              end
+            rescue IOError
+              nil
             end
 
             @messages << {type: "exit", process_id: process_id}
           end
         # rubocop:enable ThreadSafety/NewThread
+        @threads << stdout_thread
 
-        @threads << start_copy_thread(stderr, $stderr)
+        stderr_thread = start_copy_thread(stderr, $stderr)
+        @threads << stderr_thread
 
         # rubocop:disable ThreadSafety/NewThread
         @threads << Thread.new do
           begin
             status = wait_thr.value
             @messages << {type: "error"} unless status.success?
+            @messages << {type: "exit", process_id: process_id}
           ensure
+            close_io(stdout) if stdout_thread.join(0.1).nil?
+            close_io(stderr) if stderr_thread.join(0.1).nil?
             untrack_parallel_pid(wait_thr.pid, pid_file_path)
           end
         end
@@ -352,7 +361,9 @@ module TurboTests
           begin
             msg = src.readpartial(4096)
           rescue EOFError
-            src.close
+            close_io(src)
+            break
+          rescue IOError
             break
           else
             dst.write(msg)
@@ -362,7 +373,7 @@ module TurboTests
     end
 
     def handle_messages
-      exited = 0
+      exited_process_ids = {}
 
       loop do
         message = @messages.pop
@@ -406,9 +417,12 @@ module TurboTests
           # Do nothing
           nil
         when "exit"
-          exited += 1
-          @exited_process_ids << message[:process_id]
-          break if exited == @num_processes
+          process_id = message[:process_id]
+          next if exited_process_ids.key?(process_id)
+
+          exited_process_ids[process_id] = true
+          @exited_process_ids << process_id
+          break if exited_process_ids.size == @num_processes
         else
           warn("Unhandled message in main process: #{message}")
         end
@@ -416,6 +430,12 @@ module TurboTests
         $stdout.flush
       end
     rescue Interrupt
+    end
+
+    def close_io(io)
+      io.close unless io.closed?
+    rescue IOError
+      nil
     end
 
     def fail_fast_met

@@ -28,6 +28,10 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Prevented parallel test runs from hanging when a worker process exits but its
+  stdout or stderr pipe remains open, a failure mode observed on JRuby
+  current/head jobs.
+
 ### Security
 
 ## [3.1.3] - 2026-06-14
