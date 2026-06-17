@@ -436,7 +436,6 @@ See [LICENSE.md][📄license] for the official copyright notice.
 - Copyright (c) 2023-2024 Illia
 - Copyright (c) 2023 mrudzki
 - Copyright (c) 2023-2024 Sebastien Savater
-- Copyright (c) 2024 David Rodriguez
 - Copyright (c) 2024 Hiroshi SHIBATA
 - Copyright (c) 2025-2026 Gareth Jones
 - Copyright (c) 2025-2026 Peter H. Boling
@@ -660,7 +659,7 @@ Thanks for RTFM. ☺️
 [📄license-ref]: MIT.md
 [📄license-img]: https://img.shields.io/badge/License-MIT-259D6C.svg
 [📄license-compat]: https://www.apache.org/legal/resolved.html#category-a
-[📄license-compat-img]: https://img.shields.io/badge/Apache_Compatible:_Category_A-✓-259D6C.svg?style=flat&logo=Apache
+[📄license-compat-img]: https://img.shields.io/badge/Apache_Compatible:_Category_A-%E2%9C%93-259D6C.svg?style=flat&logo=Apache
 
 [📄ilo-declaration]: https://www.ilo.org/declaration/lang--en/index.htm
 [📄ilo-declaration-img]: https://img.shields.io/badge/ILO_Fundamental_Principles-✓-259D6C.svg?style=flat
@@ -680,7 +679,7 @@ Thanks for RTFM. ☺️
 | Package | turbo_tests2 |
 | Description | 🚀 turbo_tests2` is a drop-in replacement for `serpapi/turbo_tests` and `grosser/parallel_tests` with incremental summarized output. Source code of `turbo_test2` gem is based on Discourse and Rubygems work in this area (see README.md). |
 | Homepage | https://github.com/galtzo-floss/turbo_tests2 |
-| Source | https://github.com/galtzo-floss/turbo_tests2/tree/v3.1.3 |
+| Source | https://github.com/galtzo-floss/turbo_tests2 |
 | License | `MIT` |
 | Funding | https://github.com/sponsors/pboling, https://issuehunt.io/u/pboling, https://ko-fi.com/pboling, https://liberapay.com/pboling/donate, https://opencollective.com/galtzo-floss, https://patreon.com/galtzo, https://polar.sh/pboling, https://thanks.dev/u/gh/pboling, https://tidelift.com/funding/github/rubygems/turbo_tests2, https://www.buymeacoffee.com/pboling |
 <!-- kettle-jem:metadata:end -->
