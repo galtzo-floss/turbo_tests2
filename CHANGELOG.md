@@ -28,17 +28,13 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
-- Ensured worker stdout/stderr reader threads are force-stopped after worker
-  process exit if an engine keeps them blocked after pipe closure, fixing
-  TruffleRuby 25.0 CI failures in the worker pipe cleanup regression spec.
-
 ### Security
 
 ## [3.1.4] - 2026-06-17
 
 - TAG: [v3.1.4][3.1.4t]
-- COVERAGE: 94.57% -- 662/700 lines in 16 files
-- BRANCH COVERAGE: 79.75% -- 126/158 branches in 16 files
+- COVERAGE: 94.33% -- 666/706 lines in 16 files
+- BRANCH COVERAGE: 79.11% -- 125/158 branches in 16 files
 - 37.08% documented
 
 ### Fixed
@@ -46,6 +42,10 @@ Please file a bug if you notice a violation of semantic versioning.
 - Prevented parallel test runs from hanging when a worker process exits but its
   stdout or stderr pipe remains open, a failure mode observed on JRuby
   current/head jobs.
+
+- Ensured worker stdout/stderr reader threads are force-stopped after worker
+  process exit if an engine keeps them blocked after pipe closure, fixing
+  TruffleRuby 25.0 CI failures in the worker pipe cleanup regression spec.
 
 ## [3.1.3] - 2026-06-14
 

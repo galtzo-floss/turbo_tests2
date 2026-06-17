@@ -82,6 +82,12 @@ Please file a bug if you notice a violation of semantic versioning.</p>
 
 <h3 id="fixed">Fixed</h3>
 
+<ul>
+  <li>Ensured worker stdout/stderr reader threads are force-stopped after worker<br>
+process exit if an engine keeps them blocked after pipe closure, fixing<br>
+TruffleRuby 25.0 CI failures in the worker pipe cleanup regression spec.</li>
+</ul>
+
 <h3 id="security">Security</h3>
 
 <h2 id="314---2026-06-17">
@@ -255,7 +261,7 @@ SARIF uploads from advanced configurations.</li>
 </div></div>
 
       <div id="footer">
-  Generated on Wed Jun 17 04:52:11 2026 by
+  Generated on Wed Jun 17 05:33:15 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.44 (ruby-4.0.5).
 </div>
