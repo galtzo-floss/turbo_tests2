@@ -28,6 +28,10 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Ensured worker stdout/stderr reader threads are force-stopped after worker
+  process exit if an engine keeps them blocked after pipe closure, fixing
+  TruffleRuby 25.0 CI failures in the worker pipe cleanup regression spec.
+
 ### Security
 
 ## [3.1.4] - 2026-06-17

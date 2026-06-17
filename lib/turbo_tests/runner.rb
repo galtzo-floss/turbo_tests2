@@ -330,8 +330,8 @@ module TurboTests
             @messages << {type: "error"} unless status.success?
             @messages << {type: "exit", process_id: process_id}
           ensure
-            close_io(stdout) if stdout_thread.join(0.1).nil?
-            close_io(stderr) if stderr_thread.join(0.1).nil?
+            stop_reader_thread(stdout_thread, stdout)
+            stop_reader_thread(stderr_thread, stderr)
             untrack_parallel_pid(wait_thr.pid, pid_file_path)
           end
         end
@@ -370,6 +370,16 @@ module TurboTests
           end
         end
       end
+    end
+
+    def stop_reader_thread(thread, io)
+      return if thread.join(0.1)
+
+      close_io(io)
+      return if thread.join(0.1)
+
+      thread.kill
+      thread.join(0.1)
     end
 
     def handle_messages
