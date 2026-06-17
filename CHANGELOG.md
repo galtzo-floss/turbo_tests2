@@ -28,11 +28,20 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+### Security
+
+## [3.1.4] - 2026-06-17
+
+- TAG: [v3.1.4][3.1.4t]
+- COVERAGE: 94.57% -- 662/700 lines in 16 files
+- BRANCH COVERAGE: 79.75% -- 126/158 branches in 16 files
+- 37.08% documented
+
+### Fixed
+
 - Prevented parallel test runs from hanging when a worker process exits but its
   stdout or stderr pipe remains open, a failure mode observed on JRuby
   current/head jobs.
-
-### Security
 
 ## [3.1.3] - 2026-06-14
 
@@ -141,7 +150,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.3...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.4...HEAD
+[3.1.4]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.3...v3.1.4
+[3.1.4t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.4
 [3.1.3]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.2...v3.1.3
 [3.1.3t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.3
 [3.1.2]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.1...v3.1.2
