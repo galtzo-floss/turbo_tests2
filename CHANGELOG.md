@@ -20,6 +20,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Added
 
+- Support JRuby 10.1, truffleruby 34.0
+
 ### Changed
 
 ### Deprecated

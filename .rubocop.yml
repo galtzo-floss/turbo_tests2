@@ -1,11 +1,10 @@
 inherit_gem:
   rubocop-lts: config/rubygem_rspec.yml
 
-require:
-  - 'rubocop-packaging'
 inherit_from:
   - .rubocop_rspec.yml
 plugins: rubocop-on-rbs
+
 # This tells RuboCop to add the exclusions in this file
 # to the default exclusions (and those from other inherited files),
 # rather than overwriting them.
