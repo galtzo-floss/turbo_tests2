@@ -10,8 +10,9 @@
 #   and config.rb references Kettle::Soup::Cover::Constants directly.
 #
 #   `require "simplecov"` then loads the local `.simplecov` configuration.
-#   That file configures coverage only; this spawn shim starts coverage for the
-#   subprocess explicitly.
+#   After SimpleCov finishes loading, this file loads kettle-soup-cover's
+#   formatter and threshold config and starts coverage for the subprocess
+#   explicitly.
 #
 #   After that single start, we switch the process into quiet mode and assign a
 #   unique command_name so each spawned process writes its own entry in
@@ -33,6 +34,7 @@
 ENV["K_SOUP_COV_CLEAN_RESULTSET"] = "false"
 require "kettle-soup-cover"
 require "simplecov"
+require "kettle/soup/cover/config"
 
 SimpleCov.start
 

@@ -35,6 +35,8 @@ Please file a bug if you notice a violation of semantic versioning.
 - Fixed subprocess coverage setup for SimpleCov v1 by starting coverage
   explicitly in the spawn shim and detecting active coverage via Ruby's
   `Coverage.running?` API.
+- Fixed SimpleCov boot order so kettle-soup-cover formatter configuration loads
+  after SimpleCov finishes requiring its defaults.
 
 ### Security
 
