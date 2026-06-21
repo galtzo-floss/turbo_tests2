@@ -6,14 +6,14 @@ RSpec.describe("Fixture of spec file with pending failed examples") do
   end
 
   it "is implemented but skipped with 'skip'", skip: "TODO: skipped with 'skip'" do
-    # :nocov:
+    # simplecov:disable
     expect(100).to(eq(500))
-    # :nocov:
+    # simplecov:enable
   end
 
   xit "is implemented but skipped with 'xit'" do
-    # :nocov:
+    # simplecov:disable
     expect(1).to(eq(42))
-    # :nocov:
+    # simplecov:enable
   end
 end

@@ -263,9 +263,9 @@ module TurboTests
       begin
         require "rake"
       rescue LoadError
-        # :nocov:
+        # simplecov:disable
         return # rake is optional
-        # :nocov:
+        # simplecov:enable
       end
 
       # Pass an empty argv so Rake doesn't parse the current process's ARGV,
