@@ -13,8 +13,3 @@ require "kettle/soup/cover/config"
 SimpleCov.configure do
   cover "lib/**/*.rb", "lib/**/*.rake", "exe/*.rb"
 end
-SimpleCov.start do
-  track_files "lib/**/*.rb"
-  track_files "lib/**/*.rake"
-  track_files "exe/*.rb"
-end

@@ -13,7 +13,7 @@ RSpec.shared_context("with simplecov spawn coverage") do
     original_rubyopt = ENV.fetch("RUBYOPT", nil)
     original_cov_min_hard = ENV.fetch("K_SOUP_COV_MIN_HARD", nil)
     begin
-      if defined?(SimpleCov) && SimpleCov.running
+      if defined?(SimpleCov) && defined?(Coverage) && Coverage.respond_to?(:running?) && Coverage.running?
         spawn_path = simplecov_spawn_path
         raise ArgumentError, "Expected SimpleCov spawn shim at #{spawn_path}" unless File.file?(spawn_path)
 

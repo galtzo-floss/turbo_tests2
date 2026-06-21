@@ -9,12 +9,9 @@
 #   is loaded because our `.simplecov` file does `require "kettle/soup/cover/config"`,
 #   and config.rb references Kettle::Soup::Cover::Constants directly.
 #
-#   `require "simplecov"` then causes Ruby to load simplecov's defaults module
-#   (simplecov/defaults.rb), which searches upward from SimpleCov.root for a
-#   `.simplecov` file and loads it immediately at require time. Our `.simplecov`
-#   calls `SimpleCov.start`, so coverage measurement begins in that ONE call —
-#   no second SimpleCov.start is needed or wanted here (calling Coverage.start
-#   twice raises RuntimeError in Ruby 2.5+).
+#   `require "simplecov"` then loads the local `.simplecov` configuration.
+#   That file configures coverage only; this spawn shim starts coverage for the
+#   subprocess explicitly.
 #
 #   After that single start, we switch the process into quiet mode and assign a
 #   unique command_name so each spawned process writes its own entry in
@@ -32,12 +29,13 @@
 #
 # Disable resultset cleaning in spawned processes: each spawned process must NOT wipe
 # .resultset.json or it would erase the accumulated coverage from other workers.
-# Only the parent process (which initialises SimpleCov normally via .simplecov) may clean.
+# Only the parent process (which initialises SimpleCov normally via spec_helper.rb) may clean.
 ENV["K_SOUP_COV_CLEAN_RESULTSET"] = "false"
 require "kettle-soup-cover"
 require "simplecov"
 
-# .simplecov was auto-loaded above and already called SimpleCov.start.
+SimpleCov.start
+
 # Override to quiet mode: the parent process owns the formatted report.
 SimpleCov.print_error_status = false
 SimpleCov.formatter(SimpleCov::Formatter::SimpleFormatter)

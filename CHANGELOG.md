@@ -32,6 +32,10 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Fixed subprocess coverage setup for SimpleCov v1 by starting coverage
+  explicitly in the spawn shim and detecting active coverage via Ruby's
+  `Coverage.running?` API.
+
 ### Security
 
 ## [3.1.4] - 2026-06-17
