@@ -20,15 +20,30 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [3.1.5] - 2026-06-23
+
+- TAG: [v3.1.5][3.1.5t]
+- COVERAGE: 96.93% -- 632/652 lines in 10 files
+- BRANCH COVERAGE: 86.84% -- 132/152 branches in 10 files
+- 37.08% documented
+
+### Added
+
 - Added support for JRuby 10.1 and TruffleRuby 34.0.
 
 ### Changed
 
 - Retemplated project metadata and CI/development automation with `kettle-jem` v7.0.0.
-
-### Deprecated
-
-### Removed
 
 ### Fixed
 
@@ -37,8 +52,6 @@ Please file a bug if you notice a violation of semantic versioning.
   `Coverage.running?` API.
 - Fixed SimpleCov boot order so kettle-soup-cover formatter configuration loads
   after SimpleCov finishes requiring its defaults.
-
-### Security
 
 ## [3.1.4] - 2026-06-17
 
@@ -164,7 +177,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.4...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.5...HEAD
+[3.1.5]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.4...v3.1.5
+[3.1.5t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.5
 [3.1.4]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.3...v3.1.4
 [3.1.4t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.4
 [3.1.3]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.2...v3.1.3
