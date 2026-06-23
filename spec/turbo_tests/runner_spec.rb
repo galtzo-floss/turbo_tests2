@@ -465,13 +465,8 @@ RSpec.describe TurboTests::Runner do
       captured = []
       mock_open3(runner) { |*args| captured.replace(args) }
 
-      begin
-        old = ENV["RSPEC_EXECUTABLE"]
-        ENV["RSPEC_EXECUTABLE"] = "my_rspec --flag"
-        runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
-      ensure
-        old ? ENV["RSPEC_EXECUTABLE"] = old : ENV.delete("RSPEC_EXECUTABLE")
-      end
+      stub_env("RSPEC_EXECUTABLE" => "my_rspec --flag")
+      runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
 
       # env hash is first arg; command args follow
       expect(captured[1]).to eq("my_rspec")
@@ -482,15 +477,9 @@ RSpec.describe TurboTests::Runner do
       captured = []
       mock_open3(runner) { |*args| captured.replace(args) }
 
-      begin
-        old_rspec = ENV.delete("RSPEC_EXECUTABLE")
-        old_bundle = ENV["BUNDLE_BIN_PATH"]
-        ENV["BUNDLE_BIN_PATH"] = "/usr/local/bin/bundle"
-        runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
-      ensure
-        ENV["RSPEC_EXECUTABLE"] = old_rspec if old_rspec
-        old_bundle ? ENV["BUNDLE_BIN_PATH"] = old_bundle : ENV.delete("BUNDLE_BIN_PATH")
-      end
+      hide_env("RSPEC_EXECUTABLE")
+      stub_env("BUNDLE_BIN_PATH" => "/usr/local/bin/bundle")
+      runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
 
       expect(captured[1]).to eq("/usr/local/bin/bundle")
       expect(captured[2]).to eq("exec")
@@ -501,12 +490,8 @@ RSpec.describe TurboTests::Runner do
       captured = []
       mock_open3(runner) { |*args| captured.replace(args) }
 
-      begin
-        old = ENV.delete("RSPEC_EXECUTABLE")
-        runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
-      ensure
-        ENV.store("RSPEC_EXECUTABLE", old) if old
-      end
+      hide_env("RSPEC_EXECUTABLE")
+      runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
 
       expect(captured[1]).to eq("nice")
     end
@@ -515,25 +500,17 @@ RSpec.describe TurboTests::Runner do
       runner.instance_variable_set(:@verbose, true)
       mock_open3(runner)
 
-      begin
-        old = ENV.delete("RSPEC_EXECUTABLE")
-        expect { runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false) }
-          .to output(/Process 1/).to_stderr
-      ensure
-        ENV["RSPEC_EXECUTABLE"] = old if old
-      end
+      hide_env("RSPEC_EXECUTABLE")
+      expect { runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false) }
+        .to output(/Process 1/).to_stderr
     end
 
     it "includes record_runtime options when record_runtime is true" do
       captured = []
       mock_open3(runner) { |*args| captured.replace(args) }
 
-      begin
-        old = ENV.delete("RSPEC_EXECUTABLE")
-        runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: true)
-      ensure
-        ENV["RSPEC_EXECUTABLE"] = old if old
-      end
+      hide_env("RSPEC_EXECUTABLE")
+      runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: true)
 
       expect(captured).to include("ParallelTests::RSpec::RuntimeLogger")
     end
@@ -545,12 +522,8 @@ RSpec.describe TurboTests::Runner do
       captured = []
       mock_open3(runner) { |*args| captured.replace(args) }
 
-      begin
-        old = ENV.delete("RSPEC_EXECUTABLE")
-        runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
-      ensure
-        ENV["RSPEC_EXECUTABLE"] = old if old
-      end
+      hide_env("RSPEC_EXECUTABLE")
+      runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
 
       expect(captured).to include("--order", "defined")
       expect(captured).not_to include("--seed")
@@ -560,14 +533,8 @@ RSpec.describe TurboTests::Runner do
       captured = []
       mock_open3(runner) { |*args| captured.replace(args) }
 
-      begin
-        old_rspec = ENV.delete("RSPEC_EXECUTABLE")
-        old_bundle = ENV.delete("BUNDLE_BIN_PATH")
-        runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
-      ensure
-        ENV["RSPEC_EXECUTABLE"] = old_rspec if old_rspec
-        ENV["BUNDLE_BIN_PATH"] = old_bundle if old_bundle
-      end
+      hide_env("RSPEC_EXECUTABLE", "BUNDLE_BIN_PATH")
+      runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
 
       # command_name = "rspec" (string), [*"rspec"] = ["rspec"], first arg after env hash
       expect(captured[1]).to eq("rspec")
@@ -614,12 +581,8 @@ RSpec.describe TurboTests::Runner do
       captured = []
       mock_open3(runner) { |*args| captured.replace(args) }
 
-      begin
-        old = ENV.delete("RSPEC_EXECUTABLE")
-        runner.send(:start_regular_subprocess, tests, 1, record_runtime: false)
-      ensure
-        ENV["RSPEC_EXECUTABLE"] = old if old
-      end
+      hide_env("RSPEC_EXECUTABLE")
+      runner.send(:start_regular_subprocess, tests, 1, record_runtime: false)
 
       expect(captured).to include("--tag=focus", "--tag=wip")
     end
@@ -629,18 +592,14 @@ RSpec.describe TurboTests::Runner do
       captured = []
       mock_open3(runner) { |*args| captured.replace(args) }
 
-      old = ENV.delete("RSPEC_EXECUTABLE")
-      begin
-        ParallelTests.with_pid_file do
-          runner.send(:start_regular_subprocess, tests, 2, record_runtime: false)
-          expect(captured.first).to include(
-            "TEST_ENV_NUMBER" => "2",
-            "PARALLEL_TEST_GROUPS" => "3",
-            "PARALLEL_PID_FILE" => ParallelTests.pid_file_path
-          )
-        end
-      ensure
-        ENV["RSPEC_EXECUTABLE"] = old if old
+      hide_env("RSPEC_EXECUTABLE")
+      ParallelTests.with_pid_file do
+        runner.send(:start_regular_subprocess, tests, 2, record_runtime: false)
+        expect(captured.first).to include(
+          "TEST_ENV_NUMBER" => "2",
+          "PARALLEL_TEST_GROUPS" => "3",
+          "PARALLEL_PID_FILE" => ParallelTests.pid_file_path
+        )
       end
     end
 

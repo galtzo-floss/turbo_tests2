@@ -8,14 +8,7 @@ RSpec.describe TurboTests::JsonRowsFormatter do
   let(:output) { StringIO.new }
   let(:output_id) { "TEST_OUTPUT_ID_#{SecureRandom.hex(4)}" }
 
-  around do |example|
-    begin
-      ENV["RSPEC_FORMATTER_OUTPUT_ID"] = output_id
-      example.run
-    ensure
-      ENV.delete("RSPEC_FORMATTER_OUTPUT_ID")
-    end
-  end
+  before { stub_env("RSPEC_FORMATTER_OUTPUT_ID" => output_id) }
 
   def parsed_row
     output.rewind
