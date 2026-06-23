@@ -86,10 +86,10 @@ Please file a bug if you notice a violation of semantic versioning.</p>
   <li>Added <code>PARALLEL_PID_FILE</code> to <code>turbo_tests2 fan</code> worker environments so<br>
 SimpleCov parallel result collation does not fail when workers inherit<br>
 <code>PARALLEL_TEST_GROUPS</code>.</li>
-  <li>Added a subprocess coverage fallback <code>PARALLEL_PID_FILE</code> when spawned test<br>
-commands inherit <code>PARALLEL_TEST_GROUPS</code> without a pid-file path.</li>
   <li>Made CLI integration specs assert combined stdout/stderr output so older<br>
 Ruby engines that emit warnings or RSpec load errors on stderr are covered.</li>
+  <li>Relaxed CLI load-error detail expectations only on TruffleRuby, where some<br>
+supported versions exit nonzero but omit the RSpec load-error summary.</li>
 </ul>
 
 <h3 id="security">Security</h3>
@@ -305,7 +305,7 @@ SARIF uploads from advanced configurations.</li>
 </div></div>
 
       <div id="footer">
-  Generated on Tue Jun 23 02:55:18 2026 by
+  Generated on Tue Jun 23 04:12:27 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.44 (ruby-4.0.5).
 </div>

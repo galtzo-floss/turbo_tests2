@@ -31,10 +31,10 @@ Please file a bug if you notice a violation of semantic versioning.
 - Added `PARALLEL_PID_FILE` to `turbo_tests2 fan` worker environments so
   SimpleCov parallel result collation does not fail when workers inherit
   `PARALLEL_TEST_GROUPS`.
-- Added a subprocess coverage fallback `PARALLEL_PID_FILE` when spawned test
-  commands inherit `PARALLEL_TEST_GROUPS` without a pid-file path.
 - Made CLI integration specs assert combined stdout/stderr output so older
   Ruby engines that emit warnings or RSpec load errors on stderr are covered.
+- Relaxed CLI load-error detail expectations only on TruffleRuby, where some
+  supported versions exit nonzero but omit the RSpec load-error summary.
 
 ### Security
 

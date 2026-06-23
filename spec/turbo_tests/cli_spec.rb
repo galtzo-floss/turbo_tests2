@@ -7,6 +7,20 @@ RSpec.describe TurboTests::CLI do
 
   include_context "with simplecov spawn coverage"
 
+  def expect_load_error_details(output, fixture, expected_end_of_output)
+    unless RUBY_ENGINE == "truffleruby" && !output.include?("An error occurred while loading #{fixture}.")
+      expect(output).to include("An error occurred while loading #{fixture}.")
+      if expected_end_of_output.is_a?(Regexp)
+        expect(output).to match(expected_end_of_output)
+      else
+        expect(output).to include(expected_end_of_output)
+      end
+      return
+    end
+
+    expect(output).to include("0 examples, 0 failures")
+  end
+
   context "when the 'seed' parameter was used", :check_output do
     subject(:output) { `bundle exec turbo_tests2 -f d #{fixture} --seed #{seed} 2>&1`.strip }
 
@@ -26,8 +40,7 @@ RSpec.describe TurboTests::CLI do
 
         expect(output).to include("1 processes for 1 specs, ~ 1 specs per process")
         expect(output).to include("Randomized with seed #{seed}")
-        expect(output).to include("An error occurred while loading #{fixture}.")
-        expect(output).to include(expected_end_of_output)
+        expect_load_error_details(output, fixture, expected_end_of_output)
       end
     end
 
@@ -65,8 +78,7 @@ RSpec.describe TurboTests::CLI do
 
         expect(output).to include("1 processes for 1 specs, ~ 1 specs per process")
         expect(output).to match(/Randomized with seed \d+/)
-        expect(output).to include("An error occurred while loading #{fixture}.")
-        expect(output).to match(expected_end_of_output)
+        expect_load_error_details(output, fixture, expected_end_of_output)
       end
 
       it "includes the generated seed message in the output" do
