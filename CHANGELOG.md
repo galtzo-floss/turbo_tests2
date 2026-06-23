@@ -28,21 +28,13 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
-- Added `PARALLEL_PID_FILE` to `turbo_tests2 fan` worker environments so
-  SimpleCov parallel result collation does not fail when workers inherit
-  `PARALLEL_TEST_GROUPS`.
-- Made CLI integration specs assert combined stdout/stderr output so older
-  Ruby engines that emit warnings or RSpec load errors on stderr are covered.
-- Relaxed CLI load-error detail expectations only on TruffleRuby, where some
-  supported versions exit nonzero but omit the RSpec load-error summary.
-
 ### Security
 
 ## [3.1.5] - 2026-06-23
 
 - TAG: [v3.1.5][3.1.5t]
-- COVERAGE: 96.93% -- 632/652 lines in 10 files
-- BRANCH COVERAGE: 86.84% -- 132/152 branches in 10 files
+- COVERAGE: 97.09% -- 634/653 lines in 10 files
+- BRANCH COVERAGE: 88.82% -- 135/152 branches in 10 files
 - 37.08% documented
 
 ### Added
@@ -60,6 +52,14 @@ Please file a bug if you notice a violation of semantic versioning.
   `Coverage.running?` API.
 - Fixed SimpleCov boot order so kettle-soup-cover formatter configuration loads
   after SimpleCov finishes requiring its defaults.
+
+- Added `PARALLEL_PID_FILE` to `turbo_tests2 fan` worker environments so
+  SimpleCov parallel result collation does not fail when workers inherit
+  `PARALLEL_TEST_GROUPS`.
+- Made CLI integration specs assert combined stdout/stderr output so older
+  Ruby engines that emit warnings or RSpec load errors on stderr are covered.
+- Relaxed CLI load-error detail expectations only on TruffleRuby, where some
+  supported versions exit nonzero but omit the RSpec load-error summary.
 
 ## [3.1.4] - 2026-06-17
 

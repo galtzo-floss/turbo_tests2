@@ -82,16 +82,6 @@ Please file a bug if you notice a violation of semantic versioning.</p>
 
 <h3 id="fixed">Fixed</h3>
 
-<ul>
-  <li>Added <code>PARALLEL_PID_FILE</code> to <code>turbo_tests2 fan</code> worker environments so<br>
-SimpleCov parallel result collation does not fail when workers inherit<br>
-<code>PARALLEL_TEST_GROUPS</code>.</li>
-  <li>Made CLI integration specs assert combined stdout/stderr output so older<br>
-Ruby engines that emit warnings or RSpec load errors on stderr are covered.</li>
-  <li>Relaxed CLI load-error detail expectations only on TruffleRuby, where some<br>
-supported versions exit nonzero but omit the RSpec load-error summary.</li>
-</ul>
-
 <h3 id="security">Security</h3>
 
 <h2 id="315---2026-06-23">
@@ -100,8 +90,8 @@ supported versions exit nonzero but omit the RSpec load-error summary.</li>
 <ul>
   <li>TAG: <a href="https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.5">v3.1.5</a>
 </li>
-  <li>COVERAGE: 96.93% – 632/652 lines in 10 files</li>
-  <li>BRANCH COVERAGE: 86.84% – 132/152 branches in 10 files</li>
+  <li>COVERAGE: 97.09% – 634/653 lines in 10 files</li>
+  <li>BRANCH COVERAGE: 88.82% – 135/152 branches in 10 files</li>
   <li>37.08% documented</li>
 </ul>
 
@@ -123,8 +113,17 @@ supported versions exit nonzero but omit the RSpec load-error summary.</li>
   <li>Fixed subprocess coverage setup for SimpleCov v1 by starting coverage<br>
 explicitly in the spawn shim and detecting active coverage via Ruby’s<br>
 <code>Coverage.running?</code> API.</li>
-  <li>Fixed SimpleCov boot order so kettle-soup-cover formatter configuration loads<br>
-after SimpleCov finishes requiring its defaults.</li>
+  <li>
+    <p>Fixed SimpleCov boot order so kettle-soup-cover formatter configuration loads<br>
+after SimpleCov finishes requiring its defaults.</p>
+  </li>
+  <li>Added <code>PARALLEL_PID_FILE</code> to <code>turbo_tests2 fan</code> worker environments so<br>
+SimpleCov parallel result collation does not fail when workers inherit<br>
+<code>PARALLEL_TEST_GROUPS</code>.</li>
+  <li>Made CLI integration specs assert combined stdout/stderr output so older<br>
+Ruby engines that emit warnings or RSpec load errors on stderr are covered.</li>
+  <li>Relaxed CLI load-error detail expectations only on TruffleRuby, where some<br>
+supported versions exit nonzero but omit the RSpec load-error summary.</li>
 </ul>
 
 <h2 id="314---2026-06-17">
@@ -305,7 +304,7 @@ SARIF uploads from advanced configurations.</li>
 </div></div>
 
       <div id="footer">
-  Generated on Tue Jun 23 04:12:27 2026 by
+  Generated on Tue Jun 23 04:57:07 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.44 (ruby-4.0.5).
 </div>
