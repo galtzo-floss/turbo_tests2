@@ -1,14 +1,14 @@
 require "turbo_tests2/rspec/shared_contexts/simplecov_spawn"
 
 RSpec.describe TurboTests::CLI do
-  subject(:output) { `bundle exec turbo_tests2 -f d #{fixture}`.strip }
+  subject(:output) { `bundle exec turbo_tests2 -f d #{fixture} 2>&1`.strip }
 
   before { output }
 
   include_context "with simplecov spawn coverage"
 
   context "when the 'seed' parameter was used", :check_output do
-    subject(:output) { `bundle exec turbo_tests2 -f d #{fixture} --seed #{seed}`.strip }
+    subject(:output) { `bundle exec turbo_tests2 -f d #{fixture} --seed #{seed} 2>&1`.strip }
 
     let(:seed) { 1234 }
 
@@ -106,7 +106,7 @@ An error occurred while loading #{fixture}.
   end
 
   context "when randomization is disabled", :check_output do
-    subject(:output) { `bundle exec turbo_tests2 -f d #{fixture} --no-random`.strip }
+    subject(:output) { `bundle exec turbo_tests2 -f d #{fixture} --no-random 2>&1`.strip }
 
     let(:fixture) { "./fixtures/rspec/passing_spec.rb" }
 
@@ -226,10 +226,27 @@ An error occurred while loading #{fixture}.
 
         run_cli(["fan", "-w", "2", "rake", "db:test:prepare"])
 
+        pid_file_path = spawned.dig(0, 0, "PARALLEL_PID_FILE")
+        expect(pid_file_path).to be_a(String)
+        expect(pid_file_path).not_to be_empty
         expect(spawned).to eq(
           [
-            [{"TEST_ENV_NUMBER" => "1", "PARALLEL_TEST_GROUPS" => "2"}, ["rake", "db:test:prepare"]],
-            [{"TEST_ENV_NUMBER" => "2", "PARALLEL_TEST_GROUPS" => "2"}, ["rake", "db:test:prepare"]]
+            [
+              {
+                "TEST_ENV_NUMBER" => "1",
+                "PARALLEL_TEST_GROUPS" => "2",
+                "PARALLEL_PID_FILE" => pid_file_path
+              },
+              ["rake", "db:test:prepare"]
+            ],
+            [
+              {
+                "TEST_ENV_NUMBER" => "2",
+                "PARALLEL_TEST_GROUPS" => "2",
+                "PARALLEL_PID_FILE" => pid_file_path
+              },
+              ["rake", "db:test:prepare"]
+            ]
           ]
         )
       end

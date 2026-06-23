@@ -194,12 +194,15 @@ module TurboTests
       end
 
       processes = ParallelTests.determine_number_of_processes(count)
-      pids = (1..processes).map do |process_id|
-        env = {
-          "TEST_ENV_NUMBER" => process_id.to_s,
-          "PARALLEL_TEST_GROUPS" => processes.to_s
-        }
-        Process.spawn(env, *args)
+      pids = ParallelTests.with_pid_file do
+        (1..processes).map do |process_id|
+          env = {
+            "TEST_ENV_NUMBER" => process_id.to_s,
+            "PARALLEL_TEST_GROUPS" => processes.to_s,
+            "PARALLEL_PID_FILE" => ParallelTests.pid_file_path
+          }
+          Process.spawn(env, *args)
+        end
       end
       statuses = pids.map { |pid| Process.wait2(pid).last }
 
