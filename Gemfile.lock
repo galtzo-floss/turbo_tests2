@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/kettle-dev/simplecov.git
-  revision: 1a48acc700b53391d95656e44e71c2a24a79e6d0
+  revision: bc14cb6ef921e264332fd7b750bf6fb8916488c1
   branch: fix-final-parallel-worker-formatting
   specs:
     simplecov (1.0.0.rc3)
