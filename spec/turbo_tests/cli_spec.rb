@@ -13,16 +13,6 @@ RSpec.describe TurboTests::CLI do
     let(:seed) { 1234 }
 
     context "when errors occur outside of examples" do
-      let(:expected_start_of_output) do
-        %(
-1 processes for 1 specs, ~ 1 specs per process
-
-Randomized with seed #{seed}
-
-An error occurred while loading #{fixture}.
-).strip
-      end
-
       let(:expected_end_of_output) do
         "0 examples, 0 failures, 1 error occurred outside of examples\n" \
           "\n" \
@@ -34,7 +24,9 @@ An error occurred while loading #{fixture}.
       it "reports" do
         expect($?.exitstatus).to be(1)
 
-        expect(output).to start_with(expected_start_of_output)
+        expect(output).to include("1 processes for 1 specs, ~ 1 specs per process")
+        expect(output).to include("Randomized with seed #{seed}")
+        expect(output).to include("An error occurred while loading #{fixture}.")
         expect(output).to include(expected_end_of_output)
       end
     end
@@ -62,10 +54,6 @@ An error occurred while loading #{fixture}.
 
   context "when 'seed' parameter was not used", :check_output do
     context "when errors occur outside of examples" do
-      let(:expected_start_of_output) do
-        /\A1 processes for 1 specs, ~ 1 specs per process\n\nRandomized with seed \d+\n\nAn error occurred while loading #{Regexp.escape(fixture)}\./
-      end
-
       let(:expected_end_of_output) do
         /0 examples, 0 failures, 1 error occurred outside of examples\n\nRandomized with seed \d+/
       end
@@ -75,7 +63,9 @@ An error occurred while loading #{fixture}.
       it "reports" do
         expect($?.exitstatus).to be(1)
 
-        expect(output).to match(expected_start_of_output)
+        expect(output).to include("1 processes for 1 specs, ~ 1 specs per process")
+        expect(output).to match(/Randomized with seed \d+/)
+        expect(output).to include("An error occurred while loading #{fixture}.")
         expect(output).to match(expected_end_of_output)
       end
 

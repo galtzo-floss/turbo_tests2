@@ -32,6 +32,16 @@
 # .resultset.json or it would erase the accumulated coverage from other workers.
 # Only the parent process (which initialises SimpleCov normally via spec_helper.rb) may clean.
 ENV["K_SOUP_COV_CLEAN_RESULTSET"] = "false"
+
+if ENV["PARALLEL_TEST_GROUPS"] && !ENV["PARALLEL_PID_FILE"]
+  require "fileutils"
+
+  pid_file_path = File.expand_path("tmp/parallel_runtime_pid_#{Process.ppid}.txt", Dir.pwd)
+  FileUtils.mkdir_p(File.dirname(pid_file_path))
+  FileUtils.touch(pid_file_path)
+  ENV["PARALLEL_PID_FILE"] = pid_file_path
+end
+
 require "kettle-soup-cover"
 require "simplecov"
 require "kettle/soup/cover/config"
