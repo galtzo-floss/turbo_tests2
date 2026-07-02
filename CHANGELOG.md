@@ -28,9 +28,18 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
-- Package configured license files in gem release file lists.
-
 ### Security
+
+## [3.1.6] - 2026-07-02
+
+- TAG: [v3.1.6][3.1.6t]
+- COVERAGE: 97.40% -- 636/653 lines in 10 files
+- BRANCH COVERAGE: 89.47% -- 136/152 branches in 10 files
+- 37.08% documented
+
+### Fixed
+
+- Package configured license files in gem release file lists.
 
 ## [3.1.5] - 2026-06-23
 
@@ -187,7 +196,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.5...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.6...HEAD
+[3.1.6]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.5...v3.1.6
+[3.1.6t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.6
 [3.1.5]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.4...v3.1.5
 [3.1.5t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.5
 [3.1.4]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.3...v3.1.4
