@@ -692,7 +692,7 @@ Thanks for RTFM. ☺️
 | Field | Value |
 |---|---|
 | Package | turbo_tests2 |
-| Description | 🚀 `turbo_tests2` is an RSpec parallel test runner built on `parallel_tests`. It uses `parallel_tests` for process counts, file grouping, and runtime balancing, then replaces interleaved worker output with incremental summarized RSpec reporting. Source code of `turbo_test2` gem is based on Discourse and Rubygems work in this area (see README.md). |
+| Description | 🚀 turbo_tests2` is an RSpec parallel test runner built on `parallel_tests`. It uses `parallel_tests` for process counts, file grouping, and runtime balancing, then replaces interleaved worker output with incremental summarized RSpec reporting. Source code of `turbo_test2` gem is based on Discourse and Rubygems work in this area (see README.md). |
 | Homepage | https://github.com/galtzo-floss/turbo_tests2 |
 | Source | https://github.com/galtzo-floss/turbo_tests2 |
 | License | `MIT` |
