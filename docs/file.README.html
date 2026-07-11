@@ -96,13 +96,13 @@
   </tbody>
 </table>
 
-<p><code>turbo_tests2</code> is a drop-in replacement for, and modernization of, <code>turbo_tests</code>, which is a drop-in replacement for <a href="https://github.com/grosser/parallel_tests">grosser/parallel_tests</a>, adding incremental summarized output. Source code of this gem is based on <a href="https://github.com/discourse/discourse/blob/6b9784cf8a18636bce281a7e4d18e65a0cbc6290/lib/turbo_tests.rb">Discourse</a> and <a href="https://github.com/rubygems/rubygems/tree/390335ceb351668cd433bd5bb9823dd021f82533/bundler/tool">RubyGems</a> work in this area.</p>
+<p><code>turbo_tests2</code> is an RSpec parallel test runner built on <a href="https://github.com/grosser/parallel_tests">grosser/parallel_tests</a>. It uses <code>parallel_tests</code> for process counts, file grouping, and runtime balancing, then replaces interleaved worker output with incremental summarized RSpec reporting. Source code of this gem is based on <a href="https://github.com/discourse/discourse/blob/6b9784cf8a18636bce281a7e4d18e65a0cbc6290/lib/turbo_tests.rb">Discourse</a> and <a href="https://github.com/rubygems/rubygems/tree/390335ceb351668cd433bd5bb9823dd021f82533/bundler/tool">RubyGems</a> work in this area.</p>
 
-<p>Incremental summarized output doesn’t <a href="https://github.com/grosser/parallel_tests/issues/708">fit vision</a> of <code>parallel_tests</code> author and <a href="https://github.com/rspec/rspec-rails/issues/2104#issuecomment-658474900">RSpec doesn’t support built-in parallel testing yet</a>. This gem will not be useful once one of the issues above will be implemented.</p>
+<p>Incremental summarized output doesn’t <a href="https://github.com/grosser/parallel_tests/issues/708">fit the vision</a> of the <code>parallel_tests</code> author, and <a href="https://github.com/rspec/rspec-rails/issues/2104#issuecomment-658474900">RSpec doesn’t support built-in parallel testing yet</a>. This gem targets RSpec, not every framework supported by <code>parallel_tests</code>, and may not be useful once one of the issues above is implemented.</p>
 
 <h3 id="why-incremental-output">Why incremental output?</h3>
 
-<p><code>parallel_tests</code> is great, but it messes output:</p>
+<p><code>parallel_tests</code> is great, but parallel RSpec output is hard to read:</p>
 
 <pre class="code language-bash"><code class="language-bash">
 $ bundle exec rake parallel_tests:spec[^spec/search]
@@ -437,7 +437,7 @@ Options:
         --example-status-log FILE    Use RSpec example status persistence timings for grouping
     -v, --verbose                    More output
         --fail-fast=[N]
-        --seed SEED                  Seed for rspec
+        --seed SEED                  Seed for RSpec
         --order ORDER                RSpec example order: random (default) or defined
         --no-random                  Run examples in defined order without passing a seed
         --create                     Create databases
@@ -722,7 +722,7 @@ Please consider sponsoring me or the project.</p>
 <p>| Field | Value |<br>
 |—|—|<br>
 | Package | turbo_tests2 |<br>
-| Description | 🚀 turbo_tests2<code> is a drop-in replacement for </code>serpapi/turbo_tests<code> and </code>grosser/parallel_tests<code> with incremental summarized output. Source code of </code>turbo_test2<code> gem is based on Discourse and Rubygems work in this area (see README.md). |
+| Description | 🚀 turbo_tests2<code> is an RSpec parallel test runner built on </code>parallel_tests<code>. It uses </code>parallel_tests<code> for process counts, file grouping, and runtime balancing, then replaces interleaved worker output with incremental summarized RSpec reporting. Source code of </code>turbo_test2<code> gem is based on Discourse and Rubygems work in this area (see README.md). |
 | Homepage | https://github.com/galtzo-floss/turbo_tests2 |
 | Source | https://github.com/galtzo-floss/turbo_tests2 |
 | License | </code>MIT` |<br>
@@ -731,7 +731,7 @@ Please consider sponsoring me or the project.</p>
 </div></div>
 
       <div id="footer">
-  Generated on Tue Jun 23 04:57:07 2026 by
+  Generated on Sat Jul 11 03:04:07 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.44 (ruby-4.0.5).
 </div>

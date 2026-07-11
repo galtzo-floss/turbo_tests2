@@ -416,9 +416,9 @@
 
   <span class='const'>OptionParser</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_opts'>opts</span><span class='op'>|</span>
     <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_banner'>banner</span> <span class='op'>=</span> <span class='heredoc_beg'>&lt;&lt;~BANNER</span>
-<span class='tstring_content'>      Run all tests in parallel, giving each process ENV[&#39;TEST_ENV_NUMBER&#39;] (&#39;1&#39;, &#39;2&#39;, &#39;3&#39;, ...).
+<span class='tstring_content'>      Run RSpec files in parallel, giving each process ENV[&#39;TEST_ENV_NUMBER&#39;] (&#39;1&#39;, &#39;2&#39;, &#39;3&#39;, ...).
 </span><span class='tstring_content'>
-</span><span class='tstring_content'>      Reports test results incrementally. Uses methods from `parallel_tests` gem to split files to groups.
+</span><span class='tstring_content'>      Uses `parallel_tests` to split files into groups, then reports RSpec results incrementally.
 </span><span class='tstring_content'>
 </span><span class='tstring_content'>      Source code of `turbo_tests2` gem is based on Discourse and RubyGems work in this area (see README file of the source repository).
 </span><span class='tstring_content'>
@@ -484,7 +484,7 @@
       <span class='id identifier rubyid_fail_fast'>fail_fast</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_n'>n</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='id identifier rubyid_n'>n</span> <span class='op'>&lt;</span> <span class='int'>1</span><span class='rparen'>)</span> <span class='op'>?</span> <span class='int'>1</span> <span class='op'>:</span> <span class='id identifier rubyid_n'>n</span>
     <span class='kw'>end</span>
 
-    <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--seed SEED</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Seed for rspec</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
+    <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_on'>on</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--seed SEED</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Seed for RSpec</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span>
       <span class='id identifier rubyid_seed'>seed</span> <span class='op'>=</span> <span class='id identifier rubyid_s'>s</span>
     <span class='kw'>end</span>
 
@@ -564,7 +564,7 @@
 </div>
 
       <div id="footer">
-  Generated on Mon Jun  8 05:17:46 2026 by
+  Generated on Sat Jul 11 03:04:07 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.44 (ruby-4.0.5).
 </div>
