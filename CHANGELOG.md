@@ -28,6 +28,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Fixed generated README metadata backticks around `turbo_tests2` in the
+  package description.
+
 ### Security
 
 ## [3.1.6] - 2026-07-02
