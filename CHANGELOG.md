@@ -22,6 +22,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
+- Clarified project metadata, README, and CLI help to describe `turbo_tests2`
+  as an RSpec parallel runner built on `parallel_tests`.
+
 ### Deprecated
 
 ### Removed

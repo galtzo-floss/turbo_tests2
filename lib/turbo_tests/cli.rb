@@ -28,9 +28,9 @@ module TurboTests
 
       OptionParser.new do |opts|
         opts.banner = <<~BANNER
-          Run all tests in parallel, giving each process ENV['TEST_ENV_NUMBER'] ('1', '2', '3', ...).
+          Run RSpec files in parallel, giving each process ENV['TEST_ENV_NUMBER'] ('1', '2', '3', ...).
 
-          Reports test results incrementally. Uses methods from `parallel_tests` gem to split files to groups.
+          Uses `parallel_tests` to split files into groups, then reports RSpec results incrementally.
 
           Source code of `turbo_tests2` gem is based on Discourse and RubyGems work in this area (see README file of the source repository).
 
@@ -96,7 +96,7 @@ module TurboTests
           fail_fast = (n.nil? || n < 1) ? 1 : n
         end
 
-        opts.on("--seed SEED", "Seed for rspec") do |s|
+        opts.on("--seed SEED", "Seed for RSpec") do |s|
           seed = s
         end
 

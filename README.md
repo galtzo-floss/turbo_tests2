@@ -25,13 +25,13 @@ I've summarized my thoughts in [this blog post](https://dev.to/galtzo/hostile-ta
 |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | I ([@pboling](https://github.com/pboling)) discussed merging this project back into the original `turbo_tests` with [@ilyazub](https://github.com/ilyazub), and we might move in that direction, but it will take time. Since I need this now I'm releasing it as a separate gem/project. We'll be discussing potentially unifying the projects again soon. |
 
-`turbo_tests2` is a drop-in replacement for, and modernization of, `turbo_tests`, which is a drop-in replacement for [grosser/parallel_tests](https://github.com/grosser/parallel_tests), adding incremental summarized output. Source code of this gem is based on [Discourse](https://github.com/discourse/discourse/blob/6b9784cf8a18636bce281a7e4d18e65a0cbc6290/lib/turbo_tests.rb) and [RubyGems](https://github.com/rubygems/rubygems/tree/390335ceb351668cd433bd5bb9823dd021f82533/bundler/tool) work in this area.
+`turbo_tests2` is an RSpec parallel test runner built on [grosser/parallel_tests](https://github.com/grosser/parallel_tests). It uses `parallel_tests` for process counts, file grouping, and runtime balancing, then replaces interleaved worker output with incremental summarized RSpec reporting. Source code of this gem is based on [Discourse](https://github.com/discourse/discourse/blob/6b9784cf8a18636bce281a7e4d18e65a0cbc6290/lib/turbo_tests.rb) and [RubyGems](https://github.com/rubygems/rubygems/tree/390335ceb351668cd433bd5bb9823dd021f82533/bundler/tool) work in this area.
 
-Incremental summarized output doesn't [fit vision](https://github.com/grosser/parallel_tests/issues/708) of `parallel_tests` author and [RSpec doesn't support built-in parallel testing yet](https://github.com/rspec/rspec-rails/issues/2104#issuecomment-658474900). This gem will not be useful once one of the issues above will be implemented.
+Incremental summarized output doesn't [fit the vision](https://github.com/grosser/parallel_tests/issues/708) of the `parallel_tests` author, and [RSpec doesn't support built-in parallel testing yet](https://github.com/rspec/rspec-rails/issues/2104#issuecomment-658474900). This gem targets RSpec, not every framework supported by `parallel_tests`, and may not be useful once one of the issues above is implemented.
 
 ### Why incremental output?
 
-`parallel_tests` is great, but it messes output:
+`parallel_tests` is great, but parallel RSpec output is hard to read:
 
 ```bash
 
@@ -205,7 +205,7 @@ Options:
         --example-status-log FILE    Use RSpec example status persistence timings for grouping
     -v, --verbose                    More output
         --fail-fast=[N]
-        --seed SEED                  Seed for rspec
+        --seed SEED                  Seed for RSpec
         --order ORDER                RSpec example order: random (default) or defined
         --no-random                  Run examples in defined order without passing a seed
         --create                     Create databases
@@ -692,7 +692,7 @@ Thanks for RTFM. ☺️
 | Field | Value |
 |---|---|
 | Package | turbo_tests2 |
-| Description | 🚀 `turbo_tests2` is a drop-in replacement for `serpapi/turbo_tests` and `grosser/parallel_tests` with incremental summarized output. Source code of `turbo_test2` gem is based on Discourse and Rubygems work in this area (see README.md). |
+| Description | 🚀 `turbo_tests2` is an RSpec parallel test runner built on `parallel_tests`. It uses `parallel_tests` for process counts, file grouping, and runtime balancing, then replaces interleaved worker output with incremental summarized RSpec reporting. Source code of `turbo_test2` gem is based on Discourse and Rubygems work in this area (see README.md). |
 | Homepage | https://github.com/galtzo-floss/turbo_tests2 |
 | Source | https://github.com/galtzo-floss/turbo_tests2 |
 | License | `MIT` |
