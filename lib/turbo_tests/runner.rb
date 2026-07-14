@@ -297,8 +297,9 @@ module TurboTests
         stdout_thread =
           Thread.new do
             begin
+              output_id = env["RSPEC_FORMATTER_OUTPUT_ID"].b
               stdout.each_line do |line|
-                result = line.split(env["RSPEC_FORMATTER_OUTPUT_ID"])
+                result = line.b.split(output_id)
 
                 initial = result.shift
                 print(initial) unless initial.empty?
@@ -306,6 +307,7 @@ module TurboTests
                 message = result.shift
                 next unless message
 
+                message = message.dup.force_encoding(Encoding::UTF_8).scrub
                 message = JSON.parse(message, symbolize_names: true)
 
                 message[:process_id] = process_id

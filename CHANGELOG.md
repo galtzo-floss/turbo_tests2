@@ -28,6 +28,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Prevented invalid UTF-8 bytes in worker output from crashing the parent
+  runner on JRuby after the underlying RSpec examples pass.
+
 ### Security
 
 ## [3.1.7] - 2026-07-11

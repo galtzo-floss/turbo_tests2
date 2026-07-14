@@ -210,8 +210,21 @@ module TurboTests
     end
 
     def output_row(obj)
-      output.puts "#{ENV.fetch("RSPEC_FORMATTER_OUTPUT_ID", "")}#{obj.to_json}"
+      output.puts "#{ENV.fetch("RSPEC_FORMATTER_OUTPUT_ID", "")}#{json_ready(obj).to_json}"
       output.flush
+    end
+
+    def json_ready(obj)
+      case obj
+      when Hash
+        obj.transform_values { |value| json_ready(value) }
+      when Array
+        obj.map { |value| json_ready(value) }
+      when String
+        obj.dup.force_encoding(Encoding::UTF_8).scrub
+      else
+        obj
+      end
     end
   end
 end
