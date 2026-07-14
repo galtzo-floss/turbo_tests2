@@ -33,6 +33,13 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Security
 
+## [3.1.8] - 2026-07-14
+
+- TAG: [v3.1.8][3.1.8t]
+- COVERAGE: 97.40% -- 636/653 lines in 10 files
+- BRANCH COVERAGE: 89.47% -- 136/152 branches in 10 files
+- 37.08% documented
+
 ## [3.1.7] - 2026-07-11
 
 - TAG: [v3.1.7][3.1.7t]
@@ -216,7 +223,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.7...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.8...HEAD
+[3.1.8]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.7...v3.1.8
+[3.1.8t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.8
 [3.1.7]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.6...v3.1.7
 [3.1.7t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.7
 [3.1.6]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.5...v3.1.6
