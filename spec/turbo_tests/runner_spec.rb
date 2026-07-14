@@ -571,7 +571,11 @@ RSpec.describe TurboTests::Runner do
 
         expect {
           runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
-          runner.instance_variable_get(:@threads).each(&:value)
+          runner.instance_variable_get(:@threads).each do |thread|
+            thread.join(2)
+            expect(thread).not_to be_alive
+            thread.value
+          end
         }.not_to raise_error
       end
 
