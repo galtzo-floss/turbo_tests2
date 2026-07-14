@@ -571,6 +571,20 @@ RSpec.describe TurboTests::Runner do
 
         expect {
           runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
+          runner.instance_variable_get(:@threads).each(&:value)
+        }.not_to raise_error
+      end
+
+      it "does not crash when worker stdout contains invalid UTF-8 bytes" do
+        json_msg = {type: "seed", seed: 1234}.to_json
+        invalid_output = +"raw output: "
+        invalid_output << [0xC3, 0x28].pack("C*")
+        invalid_output << "#{output_id}#{json_msg}\n"
+        invalid_output.force_encoding(Encoding::UTF_8)
+        mock_open3_with_stdout(invalid_output)
+
+        expect {
+          runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
           runner.instance_variable_get(:@threads).each { |t| t.join(2) }
         }.not_to raise_error
       end

@@ -233,6 +233,19 @@ RSpec.describe TurboTests::JsonRowsFormatter do
     end
   end
 
+  describe "invalid byte output" do
+    it "scrubs invalid UTF-8 strings before serializing JSON rows" do
+      invalid_message = +"bad bytes: "
+      invalid_message << [0xC3, 0x28].pack("C*")
+      invalid_message.force_encoding(Encoding::UTF_8)
+
+      formatter.send(:output_row, type: :message, message: invalid_message)
+
+      row = parsed_row
+      expect(row[:message]).to include("bad bytes: ")
+    end
+  end
+
   describe "RSpecExt#handle_interrupt (prepended to RSpec::Core::Runner)" do
     let(:host) { Class.new { prepend RSpecExt }.new }
 
