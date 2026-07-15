@@ -28,13 +28,22 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+### Security
+
+## [3.1.9] - 2026-07-14
+
+- TAG: [v3.1.9][3.1.9t]
+- COVERAGE: 97.60% -- 692/709 lines in 10 files
+- BRANCH COVERAGE: 89.13% -- 164/184 branches in 10 files
+- 37.08% documented
+
+### Fixed
+
 - Buffered non-RSpec worker stdout/stderr so successful parallel runs no longer
   leak interleaved coverage formatter output, while still reporting a single
   concise coverage summary.
 - Prevented invalid UTF-8 bytes in worker output from crashing the parent
   runner on JRuby after the underlying RSpec examples pass.
-
-### Security
 
 ## [3.1.8] - 2026-07-14
 
@@ -226,7 +235,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.8...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.9...HEAD
+[3.1.9]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.8...v3.1.9
+[3.1.9t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.9
 [3.1.8]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.7...v3.1.8
 [3.1.8t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.8
 [3.1.7]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.6...v3.1.7
