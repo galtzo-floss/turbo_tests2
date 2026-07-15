@@ -554,17 +554,31 @@ RSpec.describe TurboTests::Runner do
         allow(Open3).to receive(:popen3).and_return([fake_stdin, r1, r2, fake_wait_thr])
       end
 
-      it "prints non-blank initial content before the output ID to $stdout" do
+      it "buffers non-blank initial content before the output ID" do
         json_msg = {type: "seed", seed: 1234}.to_json
         mock_open3_with_stdout("prefix_content#{output_id}#{json_msg}\n")
 
         expect {
           runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
           runner.instance_variable_get(:@threads).each { |t| t.join(2) }
-        }.to output("prefix_content").to_stdout
+        }.not_to output.to_stdout
+
+        worker_output = runner.instance_variable_get(:@worker_output)
+        expect(worker_output[1][:stdout]).to eq("prefix_content")
       end
 
-      it "skips lines that contain no formatter output ID (message is nil)" do
+      it "streams non-formatter content immediately in verbose mode" do
+        runner.instance_variable_set(:@verbose, true)
+        json_msg = {type: "seed", seed: 1234}.to_json
+        mock_open3_with_stdout("prefix_content#{output_id}#{json_msg}\n")
+
+        expect {
+          runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
+          runner.instance_variable_get(:@threads).each { |t| t.join(2) }
+        }.to output(/prefix_content/).to_stdout
+      end
+
+      it "buffers lines that contain no formatter output ID without parsing them" do
         # A plain line without the output_id: result.shift(×2) gives initial + nil message
         # → `next unless message` is taken, no JSON parse attempted
         mock_open3_with_stdout("plain rspec output without output id\n")
@@ -577,6 +591,9 @@ RSpec.describe TurboTests::Runner do
             thread.value
           end
         }.not_to raise_error
+
+        worker_output = runner.instance_variable_get(:@worker_output)
+        expect(worker_output[1][:stdout]).to eq("plain rspec output without output id\n")
       end
 
       it "does not crash when worker stdout contains invalid UTF-8 bytes" do
@@ -675,18 +692,66 @@ RSpec.describe TurboTests::Runner do
   end
 
   describe "#start_copy_thread (private)" do
-    it "writes data from src to dst until EOF" do
+    it "buffers data from src until EOF" do
       runner = build_runner
       r, w = IO.pipe
-      dst = StringIO.new
 
       w.write("hello from subprocess")
       w.close
 
-      thread = runner.send(:start_copy_thread, r, dst)
+      thread = runner.send(:start_copy_thread, r, 1, :stderr)
       thread.join(2)
 
-      expect(dst.string).to eq("hello from subprocess")
+      worker_output = runner.instance_variable_get(:@worker_output)
+      expect(worker_output[1][:stderr]).to eq("hello from subprocess")
+    end
+  end
+
+  describe "#flush_coverage_summary (private)" do
+    it "prints one concise coverage summary from buffered worker output" do
+      runner = build_runner
+      worker_output = runner.instance_variable_get(:@worker_output)
+      worker_output[1][:stdout] = <<~OUTPUT
+        Coverage report generated for Test Coverage (turbo_tests2 worker 1) to coverage/index.html
+        Line coverage: 311 / 312 (99.67%)
+        Branch coverage: 28 / 29 (96.55%)
+        Line Coverage: 99.68% (311 / 312)
+        Branch Coverage: 96.55% (28 / 29)
+        JSON Coverage report generated for Test Coverage (turbo_tests2 worker 1) to coverage/coverage.json
+        Line coverage: 311 / 312 (99.67%)
+        Branch coverage: 28 / 29 (96.55%)
+      OUTPUT
+
+      expect {
+        runner.send(:flush_coverage_summary)
+      }.to output(<<~OUTPUT).to_stdout
+
+        Coverage:
+        Line Coverage: 99.68% (311 / 312)
+        Branch Coverage: 96.55% (28 / 29)
+      OUTPUT
+    end
+
+    it "prints nothing when no coverage output was captured" do
+      runner = build_runner
+
+      expect {
+        runner.send(:flush_coverage_summary)
+      }.not_to output.to_stdout
+    end
+  end
+
+  describe "#flush_worker_output (private)" do
+    it "prints buffered worker stdout and stderr with labels" do
+      runner = build_runner
+      worker_output = runner.instance_variable_get(:@worker_output)
+      worker_output[1][:stdout] = "worker stdout\n"
+      worker_output[2][:stderr] = "worker stderr\n"
+
+      expect {
+        runner.send(:flush_worker_output)
+      }.to output(/\nTurboTests worker 1 stdout:\nworker stdout\n/).to_stdout
+        .and output(/\nTurboTests worker 2 stderr:\nworker stderr\n/).to_stderr
     end
   end
 

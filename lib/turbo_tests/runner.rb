@@ -135,6 +135,8 @@ module TurboTests
       @threads = []
       @wait_threads = []
       @exited_process_ids = []
+      @worker_output = Hash.new { |hash, process_id| hash[process_id] = {stdout: +"", stderr: +""} }
+      @worker_output_mutex = Mutex.new
       @error = false
       @print_failed_group = opts[:print_failed_group]
     end
@@ -158,6 +160,9 @@ module TurboTests
       }
 
       ParallelTests.with_pid_file do
+        exit_status = nil
+        report_coverage = false
+
         @reporter.report(tests_in_groups) do |_reporter|
           old_signal = Signal.trap(:INT) { handle_interrupt }
 
@@ -174,13 +179,20 @@ module TurboTests
 
           Signal.trap(:INT, old_signal)
 
-          if @reporter.failed_examples.empty? && @wait_threads.map(&:value).all?(&:success?)
-            0
+          statuses = @wait_threads.map(&:value)
+
+          if @reporter.failed_examples.empty? && statuses.all?(&:success?)
+            report_coverage = true
+            exit_status = 0
           else
+            flush_worker_output
             # From https://github.com/galtzo-floss/turbo_tests2/pull/20/
-            @wait_threads.map { |thread| thread.value.exitstatus }.max
+            exit_status = statuses.map(&:exitstatus).max
           end
         end
+
+        flush_coverage_summary if report_coverage
+        exit_status
       end
     end
 
@@ -302,7 +314,7 @@ module TurboTests
                 result = line.b.split(output_id)
 
                 initial = result.shift
-                print(initial) unless initial.empty?
+                append_worker_output(process_id, :stdout, initial) unless initial.empty?
 
                 message = result.shift
                 next unless message
@@ -322,14 +334,14 @@ module TurboTests
         # rubocop:enable ThreadSafety/NewThread
         @threads << stdout_thread
 
-        stderr_thread = start_copy_thread(stderr, $stderr)
+        stderr_thread = start_copy_thread(stderr, process_id, :stderr)
         @threads << stderr_thread
 
         # rubocop:disable ThreadSafety/NewThread
         @threads << Thread.new do
           begin
             status = wait_thr.value
-            @messages << {type: "error"} unless status.success?
+            @messages << {type: "error", process_id: process_id} unless status.success?
             @messages << {type: "exit", process_id: process_id}
           ensure
             stop_reader_thread(stdout_thread, stdout)
@@ -355,7 +367,7 @@ module TurboTests
       ParallelTests::Pids.new(pid_file_path).delete(pid) if pid && pid_file_path
     end
 
-    def start_copy_thread(src, dst)
+    def start_copy_thread(src, process_id, stream)
       # rubocop:disable ThreadSafety/NewThread
       Thread.new do
         # rubocop:enable ThreadSafety/NewThread
@@ -368,10 +380,73 @@ module TurboTests
           rescue IOError
             break
           else
-            dst.write(msg)
+            append_worker_output(process_id, stream, msg)
           end
         end
       end
+    end
+
+    def append_worker_output(process_id, stream, msg)
+      return if msg.empty?
+
+      msg = msg.dup.force_encoding(Encoding::UTF_8).scrub
+      @worker_output_mutex.synchronize do
+        @worker_output[process_id][stream] << msg
+      end
+
+      io = (stream == :stderr) ? $stderr : $stdout
+      io.write(msg) if @verbose
+    end
+
+    def flush_worker_output
+      output_by_process = @worker_output_mutex.synchronize do
+        @worker_output.transform_values(&:dup)
+      end
+
+      output_by_process.each do |process_id, streams|
+        streams.each do |stream, output|
+          next if output.empty?
+
+          io = (stream == :stderr) ? $stderr : $stdout
+          io.puts
+          io.puts("TurboTests worker #{process_id} #{stream}:")
+          io.write(output)
+          io.puts unless output.end_with?("\n")
+        end
+      end
+    end
+
+    def flush_coverage_summary
+      line_coverage = nil
+      branch_coverage = nil
+      @worker_output_mutex.synchronize do
+        @worker_output.each_value do |streams|
+          streams.each_value do |output|
+            output.each_line do |line|
+              stripped = line.strip
+              line_coverage = coverage_line("Line", stripped, line_coverage)
+              branch_coverage = coverage_line("Branch", stripped, branch_coverage)
+            end
+          end
+        end
+      end
+
+      return unless line_coverage || branch_coverage
+
+      puts
+      puts("Coverage:")
+      puts(line_coverage) if line_coverage
+      puts(branch_coverage) if branch_coverage
+    end
+
+    def coverage_line(kind, line, current)
+      return line if line.start_with?("#{kind} Coverage:")
+      return current if current&.start_with?("#{kind} Coverage:")
+
+      match = line.match(/\A#{kind} coverage:\s*(\d+)\s*\/\s*(\d+)\s*\(([^)]+)\)\z/i)
+      return current unless match
+
+      "#{kind} Coverage: #{match[3]} (#{match[1]} / #{match[2]})"
     end
 
     def stop_reader_thread(thread, io)

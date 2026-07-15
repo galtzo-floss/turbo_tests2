@@ -28,6 +28,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Buffered non-RSpec worker stdout/stderr so successful parallel runs no longer
+  leak interleaved coverage formatter output, while still reporting a single
+  concise coverage summary.
 - Prevented invalid UTF-8 bytes in worker output from crashing the parent
   runner on JRuby after the underlying RSpec examples pass.
 
