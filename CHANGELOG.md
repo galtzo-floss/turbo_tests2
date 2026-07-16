@@ -28,8 +28,6 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
-- Default RSpec file discovery now uses Ruby 2.4-compatible path handling.
-
 ### Security
 
 ## [3.1.11] - 2026-07-16
@@ -43,6 +41,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - No-argument runs once again discover the default `spec` tree while still
   honoring `.rspec` pattern overrides.
+
+- Default RSpec file discovery now uses Ruby 2.4-compatible path handling.
 
 ## [3.1.10] - 2026-07-15
 
