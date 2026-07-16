@@ -24,7 +24,7 @@ module TurboTests
       end
 
       def run(opts = {})
-        default_file_discovery = !opts.key?(:files) || opts[:files].nil? || opts[:files].empty?
+        default_file_discovery = !opts.key?(:files) || opts[:files].nil?
         files = default_file_discovery ? rspec_configured_files_to_run : opts[:files]
         formatters = opts[:formatters]
         tags = opts[:tags]

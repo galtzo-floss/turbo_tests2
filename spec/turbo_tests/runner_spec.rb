@@ -127,6 +127,27 @@ RSpec.describe TurboTests::Runner do
       described_class.run(files: ["spec/turbo_tests/runner_spec.rb"], formatters: [], tags: [], parallel_options: {})
     end
 
+    it "treats an explicit empty files array as a no-op run" do
+      runner_double = double("runner", run: 0)
+      expect(described_class).not_to receive(:rspec_configured_files_to_run)
+      allow(described_class).to receive(:new) do |**opts|
+        expect(opts[:files]).to eq([])
+        expect(opts[:use_runtime_info]).to be false
+        runner_double
+      end
+
+      described_class.run(files: [], formatters: [], tags: [], parallel_options: {})
+
+      expect(TurboTests::Reporter).to have_received(:from_config).with(
+        [],
+        anything,
+        anything,
+        true,
+        [],
+        anything
+      )
+    end
+
     it "uses the explicit seed when provided" do
       runner_double = double("runner", run: 0)
       expect(described_class).not_to receive(:generate_seed)
