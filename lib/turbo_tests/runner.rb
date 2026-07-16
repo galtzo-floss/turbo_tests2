@@ -108,7 +108,7 @@ module TurboTests
 
       def rspec_configured_files_to_run
         configuration = RSpec::Core::Configuration.new
-        RSpec::Core::ConfigurationOptions.new([]).configure(configuration)
+        RSpec::Core::ConfigurationOptions.new(["spec"]).configure(configuration)
         root = "#{Dir.pwd}/"
         configuration.files_to_run.map do |path|
           path = path.to_s
