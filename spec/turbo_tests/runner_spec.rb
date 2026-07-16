@@ -131,7 +131,7 @@ RSpec.describe TurboTests::Runner do
       runner_double = double("runner", run: 0)
       expect(described_class).not_to receive(:rspec_configured_files_to_run)
       allow(described_class).to receive(:new) do |**opts|
-        expect(opts[:files]).to eq([])
+        expect(opts[:files]).to be_empty
         expect(opts[:use_runtime_info]).to be false
         runner_double
       end
@@ -143,7 +143,7 @@ RSpec.describe TurboTests::Runner do
         anything,
         anything,
         true,
-        [],
+        be_empty,
         anything
       )
     end
@@ -292,10 +292,18 @@ RSpec.describe TurboTests::Runner do
           end
         RUBY
 
-        files = nil
-        Dir.chdir(dir) { files = described_class.rspec_configured_files_to_run }
+        stdout, stderr, status = Open3.capture3(
+          RbConfig.ruby,
+          "-I#{File.expand_path("../../lib", __dir__)}",
+          "-rturbo_tests/runner",
+          "-rjson",
+          "-e",
+          "puts JSON.dump(TurboTests::Runner.rspec_configured_files_to_run)",
+          chdir: dir
+        )
 
-        expect(files).to eq(["gems/example/spec/example_spec.rb"])
+        expect(status).to be_success, stderr
+        expect(JSON.parse(stdout)).to eq(["gems/example/spec/example_spec.rb"])
       end
     end
   end

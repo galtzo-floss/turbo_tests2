@@ -82,6 +82,12 @@ Please file a bug if you notice a violation of semantic versioning.</p>
 
 <h3 id="fixed">Fixed</h3>
 
+<ul>
+  <li>No-argument runs now use RSpec configuration for file discovery, including<br>
+<code>.rspec</code> <code>--pattern</code> settings, instead of assuming a top-level <code>spec/</code><br>
+directory.</li>
+</ul>
+
 <h3 id="security">Security</h3>
 
 <h2 id="319---2026-07-14">
@@ -378,7 +384,7 @@ SARIF uploads from advanced configurations.</li>
 </div></div>
 
       <div id="footer">
-  Generated on Tue Jul 14 20:00:19 2026 by
+  Generated on Wed Jul 15 21:45:31 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.45 (ruby-4.0.6).
 </div>
