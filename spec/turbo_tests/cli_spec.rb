@@ -1,3 +1,4 @@
+require "tmpdir"
 require "turbo_tests2/rspec/shared_contexts/simplecov_spawn"
 
 RSpec.describe TurboTests::CLI do
@@ -181,6 +182,18 @@ RSpec.describe TurboTests::CLI do
       ).to_stdout
 
       expect { run_cli(["--help"]) }.to matcher
+    end
+
+    it "passes nil files for no-argument runs so Runner can use RSpec discovery" do
+      run_cli([])
+
+      expect(captured_opts[:files]).to be_nil
+    end
+
+    it "passes explicit file arguments unchanged" do
+      run_cli(["spec/example_spec.rb"])
+
+      expect(captured_opts[:files]).to eq(["spec/example_spec.rb"])
     end
 
     describe "shim commands" do

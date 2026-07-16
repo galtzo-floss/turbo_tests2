@@ -98,6 +98,35 @@ RSpec.describe TurboTests::Runner do
       expect(TurboTests::Reporter).to have_received(:from_config).with([], anything, "12345", true, ["spec"], anything)
     end
 
+    it "uses RSpec configuration for default file discovery" do
+      runner_double = double("runner", run: 0)
+      allow(described_class).to receive(:rspec_configured_files_to_run).and_return(["gems/example/spec/example_spec.rb"])
+      allow(described_class).to receive(:new) do |**opts|
+        expect(opts[:files]).to eq(["gems/example/spec/example_spec.rb"])
+        expect(opts[:use_runtime_info]).to be true
+        runner_double
+      end
+
+      described_class.run(formatters: [], tags: [], parallel_options: {})
+
+      expect(TurboTests::Reporter).to have_received(:from_config).with(
+        [],
+        anything,
+        anything,
+        true,
+        ["gems/example/spec/example_spec.rb"],
+        anything
+      )
+    end
+
+    it "does not use RSpec configuration when explicit files are provided" do
+      runner_double = double("runner", run: 0)
+      expect(described_class).not_to receive(:rspec_configured_files_to_run)
+      allow(described_class).to receive(:new).and_return(runner_double)
+
+      described_class.run(files: ["spec/turbo_tests/runner_spec.rb"], formatters: [], tags: [], parallel_options: {})
+    end
+
     it "uses the explicit seed when provided" do
       runner_double = double("runner", run: 0)
       expect(described_class).not_to receive(:generate_seed)
@@ -127,16 +156,17 @@ RSpec.describe TurboTests::Runner do
       expect(TurboTests::Reporter).to have_received(:from_config).with([], anything, nil, false, ["spec"], anything)
     end
 
-    context "when files is ['spec'] (use_runtime_info = true)" do
+    context "when files are discovered by RSpec configuration (use_runtime_info = true)" do
       it "sets runtime_log in parallel_options and passes use_runtime_info: true" do
         runner_double = double("runner", run: 0)
+        allow(described_class).to receive(:rspec_configured_files_to_run).and_return(["spec/turbo_tests/runner_spec.rb"])
         allow(described_class).to receive(:new) do |**opts|
           expect(opts[:use_runtime_info]).to be true
           expect(opts[:parallel_options]).to have_key(:runtime_log)
           runner_double
         end
 
-        described_class.run(files: ["spec"], formatters: [], tags: [], parallel_options: {})
+        described_class.run(formatters: [], tags: [], parallel_options: {})
       end
     end
 
@@ -213,6 +243,38 @@ RSpec.describe TurboTests::Runner do
         ensure
           FileUtils.rm_f(File.join("tmp", "turbo_tests2_example_status_runtime.log"))
         end
+      end
+    end
+  end
+
+  describe ".rspec_configured_files_to_run" do
+    it "loads RSpec options and returns relative paths" do
+      files = described_class.rspec_configured_files_to_run
+
+      expect(files).to include("spec/turbo_tests/runner_spec.rb")
+      expect(files).to all(satisfy { |path| !path.start_with?(Dir.pwd) })
+    end
+
+    it "honors .rspec --pattern when no root spec directory exists" do
+      Dir.mktmpdir("turbo-tests2-rspec-config") do |dir|
+        File.write(File.join(dir, ".rspec"), <<~RSPEC)
+          --require ./gems/example/spec/spec_helper
+          --pattern gems/*/spec/**/*_spec.rb
+        RSPEC
+        FileUtils.mkdir_p(File.join(dir, "gems", "example", "spec"))
+        File.write(File.join(dir, "gems", "example", "spec", "spec_helper.rb"), "")
+        File.write(File.join(dir, "gems", "example", "spec", "example_spec.rb"), <<~RUBY)
+          RSpec.describe "configured discovery" do
+            it "runs" do
+              expect(true).to be(true)
+            end
+          end
+        RUBY
+
+        files = nil
+        Dir.chdir(dir) { files = described_class.rspec_configured_files_to_run }
+
+        expect(files).to eq(["gems/example/spec/example_spec.rb"])
       end
     end
   end
@@ -761,15 +823,33 @@ RSpec.describe TurboTests::Runner do
         reporter = double("reporter", failed_examples: [])
         runner = build_runner(print_failed_group: true, reporter: reporter)
 
-        allow(ParallelTests).to receive(:determine_number_of_processes).and_return(0)
-        allow(ParallelTests::RSpec::Runner).to receive_messages(tests_with_size: [], tests_in_groups: [])
+        test_groups = [["spec/one_spec.rb"]]
+
+        allow(ParallelTests).to receive(:determine_number_of_processes).and_return(1)
+        allow(ParallelTests::RSpec::Runner).to receive_messages(
+          tests_with_size: [["spec/one_spec.rb", 1]],
+          tests_in_groups: test_groups
+        )
         allow(reporter).to receive(:report).and_yield(reporter)
         allow(Signal).to receive(:trap).and_return(nil)
+        allow(runner).to receive(:start_regular_subprocess).and_return(nil)
         allow(runner).to receive(:handle_messages)
 
-        expect(runner).to receive(:report_failed_group).with([])
+        expect(runner).to receive(:report_failed_group).with(test_groups)
         runner.run
       end
+    end
+
+    it "returns successfully without calling parallel_tests grouping when no files are discovered" do
+      reporter = double("reporter", failed_examples: [], report: nil)
+      runner = build_runner(reporter: reporter, files: [])
+
+      allow(ParallelTests).to receive(:determine_number_of_processes).and_return(22)
+      allow(ParallelTests::RSpec::Runner).to receive(:tests_with_size).and_return([])
+      expect(ParallelTests::RSpec::Runner).not_to receive(:tests_in_groups)
+
+      expect(runner.run).to eq(0)
+      expect(reporter).to have_received(:report).with([])
     end
 
     it "stores test groups for interrupt reporting" do

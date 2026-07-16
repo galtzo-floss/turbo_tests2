@@ -2,6 +2,7 @@
 
 require "json"
 require "parallel_tests/rspec/runner"
+require "rspec/core"
 require "tempfile"
 
 require_relative "../utils/hash_extension"
@@ -23,7 +24,8 @@ module TurboTests
       end
 
       def run(opts = {})
-        files = opts[:files]
+        default_file_discovery = !opts.key?(:files) || opts[:files].nil? || opts[:files].empty?
+        files = default_file_discovery ? rspec_configured_files_to_run : opts[:files]
         formatters = opts[:formatters]
         tags = opts[:tags]
         parallel_options = opts[:parallel_options] || {}
@@ -41,7 +43,7 @@ module TurboTests
         print_failed_group = opts.fetch(:print_failed_group, false)
         nice = opts.fetch(:nice, false)
 
-        use_runtime_info = files == ["spec"]
+        use_runtime_info = default_file_discovery
 
         if example_status_log
           runtime_log = runtime_log_from_example_status(example_status_log)
@@ -103,6 +105,16 @@ module TurboTests
       def generate_seed
         (Random.new_seed % 65_535).to_s
       end
+
+      def rspec_configured_files_to_run
+        configuration = RSpec::Core::Configuration.new
+        RSpec::Core::ConfigurationOptions.new([]).configure(configuration)
+        root = "#{Dir.pwd}/"
+        configuration.files_to_run.map do |path|
+          path = path.to_s
+          path.start_with?(root) ? path.delete_prefix(root) : path
+        end
+      end
     end
 
     def initialize(**opts)
@@ -142,10 +154,17 @@ module TurboTests
     end
 
     def run
+      tests_with_size = ParallelTests::RSpec::Runner.tests_with_size(@files, {})
       @num_processes = [
         ParallelTests.determine_number_of_processes(@count),
-        ParallelTests::RSpec::Runner.tests_with_size(@files, {}).size
+        tests_with_size.size
       ].min
+
+      if @num_processes.zero?
+        @tests_in_groups = []
+        @reporter.report([]) { |_reporter| }
+        return 0
+      end
 
       tests_in_groups =
         ParallelTests::RSpec::Runner.tests_in_groups(
