@@ -177,6 +177,7 @@ module TurboTests
       @exited_process_ids = []
       @worker_output = Hash.new { |hash, process_id| hash[process_id] = {stdout: +"", stderr: +""} }
       @worker_output_mutex = Mutex.new
+      @deferred_run_options_messages = Hash.new { |hash, message| hash[message] = [] }
       @error = false
       @print_failed_group = opts[:print_failed_group]
     end
@@ -544,6 +545,8 @@ module TurboTests
           if message[:message].include?("An error occurred") || message[:message].include?("occurred outside of examples")
             @reporter.error_outside_of_examples(message[:message])
             @error = true
+          elsif run_options_message?(message[:message])
+            defer_run_options_message(message[:message], message[:process_id])
           else
             @reporter.message(message[:message])
           end
@@ -567,7 +570,31 @@ module TurboTests
 
         $stdout.flush
       end
+
+      flush_deferred_run_options_messages
     rescue Interrupt
+    end
+
+    def run_options_message?(message)
+      message.to_s.start_with?("Run options:")
+    end
+
+    def defer_run_options_message(message, process_id)
+      @deferred_run_options_messages[message] << process_id
+    end
+
+    def flush_deferred_run_options_messages
+      return if @deferred_run_options_messages.empty?
+
+      if @deferred_run_options_messages.one?
+        @reporter.message(@deferred_run_options_messages.keys.first)
+      else
+        lines = @deferred_run_options_messages.map do |message, process_ids|
+          "  workers #{process_ids.uniq.sort.join(", ")}: #{message}"
+        end
+        @reporter.message(["Run options by worker:", *lines].join("\n"))
+      end
+      @deferred_run_options_messages.clear
     end
 
     def close_io(io)

@@ -373,6 +373,37 @@ RSpec.describe TurboTests::Runner do
       runner.send(:handle_messages)
     end
 
+    it "collapses duplicate Run options messages from workers" do
+      runner = build_runner_for_messages
+      runner.instance_variable_set(:@num_processes, 2)
+      queue = runner.instance_variable_get(:@messages)
+      expect(reporter).to receive(:message).with("Run options: exclude {skip_ci: true}").once
+      queue << {type: "message", process_id: 1, message: "Run options: exclude {skip_ci: true}"}
+      queue << {type: "message", process_id: 2, message: "Run options: exclude {skip_ci: true}"}
+      queue << {type: "exit", process_id: 1}
+      queue << {type: "exit", process_id: 2}
+
+      runner.send(:handle_messages)
+    end
+
+    it "summarizes distinct Run options messages by worker" do
+      runner = build_runner_for_messages
+      runner.instance_variable_set(:@num_processes, 2)
+      queue = runner.instance_variable_get(:@messages)
+      queue << {type: "message", process_id: 1, message: "Run options: include {locations: {\"./a_spec.rb\" => [1]}}"}
+      queue << {type: "message", process_id: 2, message: "Run options: include {locations: {\"./b_spec.rb\" => [2]}}"}
+      queue << {type: "exit", process_id: 1}
+      queue << {type: "exit", process_id: 2}
+
+      expect(reporter).to receive(:message).with(<<~MESSAGE.chomp)
+        Run options by worker:
+          workers 1: Run options: include {locations: {"./a_spec.rb" => [1]}}
+          workers 2: Run options: include {locations: {"./b_spec.rb" => [2]}}
+      MESSAGE
+
+      runner.send(:handle_messages)
+    end
+
     it "handles 'deprecation' via reporter.deprecation" do
       deprecation = {message: "deprecated"}
       runner = build_runner_for_messages

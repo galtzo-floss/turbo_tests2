@@ -28,6 +28,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Duplicate RSpec `Run options:` messages from parallel workers are now
+  collapsed so they no longer interrupt progress formatter output repeatedly.
+
 ### Security
 
 ## [3.1.12] - 2026-07-16
