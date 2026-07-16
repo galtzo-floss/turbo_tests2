@@ -28,10 +28,19 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+### Security
+
+## [3.1.11] - 2026-07-16
+
+- TAG: [v3.1.11][3.1.11t]
+- COVERAGE: 97.37% -- 704/723 lines in 10 files
+- BRANCH COVERAGE: 88.42% -- 168/190 branches in 10 files
+- 36.67% documented
+
+### Fixed
+
 - No-argument runs once again discover the default `spec` tree while still
   honoring `.rspec` pattern overrides.
-
-### Security
 
 ## [3.1.10] - 2026-07-15
 
@@ -251,7 +260,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.10...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.11...HEAD
+[3.1.11]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.10...v3.1.11
+[3.1.11t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.11
 [3.1.10]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.9...v3.1.10
 [3.1.10t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.10
 [3.1.9]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.8...v3.1.9
