@@ -112,7 +112,7 @@ module TurboTests
         root = "#{Dir.pwd}/"
         configuration.files_to_run.map do |path|
           path = path.to_s
-          path.start_with?(root) ? path.delete_prefix(root) : path
+          path.start_with?(root) ? path[root.length..-1] : path
         end
       end
     end

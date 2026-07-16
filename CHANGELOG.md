@@ -28,6 +28,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Default RSpec file discovery now uses Ruby 2.4-compatible path handling.
+
 ### Security
 
 ## [3.1.11] - 2026-07-16
