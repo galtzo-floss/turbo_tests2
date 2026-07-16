@@ -28,11 +28,20 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+### Security
+
+## [3.1.12] - 2026-07-16
+
+- TAG: [v3.1.12][3.1.12t]
+- COVERAGE: 97.04% -- 722/744 lines in 10 files
+- BRANCH COVERAGE: 85.50% -- 171/200 branches in 10 files
+- 35.87% documented
+
+### Fixed
+
 - `file:line` RSpec selectors are now supported when passed to `turbo_tests2`;
   files are grouped by real path and workers receive the original line-filtered
   selectors.
-
-### Security
 
 ## [3.1.11] - 2026-07-16
 
@@ -266,7 +275,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.11...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.12...HEAD
+[3.1.12]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.11...v3.1.12
+[3.1.12t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.12
 [3.1.11]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.10...v3.1.11
 [3.1.11t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.11
 [3.1.10]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.9...v3.1.10
