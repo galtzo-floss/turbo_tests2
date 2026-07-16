@@ -142,7 +142,7 @@ module TurboTests
 
       invoke_rake_hook("setup")
 
-      files = @argv.empty? ? ["spec"] : @argv
+      files = @argv.empty? ? nil : @argv
       parallel_options = {}
 
       exitstatus = TurboTests::Runner.run(

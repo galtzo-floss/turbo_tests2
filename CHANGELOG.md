@@ -28,6 +28,10 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- No-argument runs now use RSpec configuration for file discovery, including
+  `.rspec` `--pattern` settings, instead of assuming a top-level `spec/`
+  directory.
+
 ### Security
 
 ## [3.1.9] - 2026-07-14
