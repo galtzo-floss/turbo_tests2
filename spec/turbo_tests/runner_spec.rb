@@ -124,7 +124,33 @@ RSpec.describe TurboTests::Runner do
       expect(described_class).not_to receive(:rspec_configured_files_to_run)
       allow(described_class).to receive(:new).and_return(runner_double)
 
-      described_class.run(files: ["spec/turbo_tests/runner_spec.rb"], formatters: [], tags: [], parallel_options: {})
+      described_class.run(
+        files: ["spec/turbo_tests/runner_spec.rb"],
+        formatters: [],
+        tags: [],
+        parallel_options: {}
+      )
+    end
+
+    it "groups file:line selectors by real file path while preserving RSpec locations" do
+      runner_double = double("runner", run: 0)
+      allow(described_class).to receive(:new) do |**opts|
+        expect(opts[:files]).to eq(["spec/turbo_tests/runner_spec.rb"])
+        expect(opts[:test_selectors]).to eq(
+          "spec/turbo_tests/runner_spec.rb" => [
+            "spec/turbo_tests/runner_spec.rb:279",
+            "spec/turbo_tests/runner_spec.rb:884"
+          ]
+        )
+        runner_double
+      end
+
+      described_class.run(
+        files: ["spec/turbo_tests/runner_spec.rb:279", "spec/turbo_tests/runner_spec.rb:884"],
+        formatters: [],
+        tags: [],
+        parallel_options: {}
+      )
     end
 
     it "treats an explicit empty files array as a no-op run" do
@@ -896,6 +922,61 @@ RSpec.describe TurboTests::Runner do
       runner.run
 
       expect(runner.instance_variable_get(:@tests_in_groups)).to eq(test_groups)
+    end
+
+    it "keeps grouped file paths when scheduling workers" do
+      reporter = double("reporter", failed_examples: [])
+      runner = build_runner(
+        reporter: reporter,
+        files: ["spec/turbo_tests/runner_spec.rb"],
+        test_selectors: {
+          "spec/turbo_tests/runner_spec.rb" => [
+            "spec/turbo_tests/runner_spec.rb:279",
+            "spec/turbo_tests/runner_spec.rb:884"
+          ]
+        }
+      )
+      test_groups = [["spec/turbo_tests/runner_spec.rb"]]
+
+      allow(ParallelTests).to receive(:determine_number_of_processes).and_return(1)
+      allow(ParallelTests::RSpec::Runner).to receive_messages(
+        tests_with_size: [["spec/turbo_tests/runner_spec.rb", 1]],
+        tests_in_groups: test_groups
+      )
+      allow(reporter).to receive(:report).and_yield(reporter)
+      allow(Signal).to receive(:trap).and_return(nil)
+      allow(runner).to receive(:handle_messages)
+
+      expect(runner).to receive(:start_regular_subprocess).with(
+        ["spec/turbo_tests/runner_spec.rb"],
+        1,
+        record_runtime: false
+      ).and_return(nil)
+
+      runner.run
+    end
+  end
+
+  describe "#start_regular_subprocess (private)" do
+    it "passes RSpec location selectors to subprocesses after grouping by file" do
+      runner = build_runner(
+        test_selectors: {
+          "spec/turbo_tests/runner_spec.rb" => [
+            "spec/turbo_tests/runner_spec.rb:279",
+            "spec/turbo_tests/runner_spec.rb:884"
+          ]
+        }
+      )
+
+      expect(runner).to receive(:start_subprocess).with(
+        kind_of(Hash),
+        [],
+        ["spec/turbo_tests/runner_spec.rb:279", "spec/turbo_tests/runner_spec.rb:884"],
+        1,
+        record_runtime: false
+      )
+
+      runner.send(:start_regular_subprocess, ["spec/turbo_tests/runner_spec.rb"], 1, record_runtime: false)
     end
   end
 end

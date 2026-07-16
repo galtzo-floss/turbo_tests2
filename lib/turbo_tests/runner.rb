@@ -26,6 +26,7 @@ module TurboTests
       def run(opts = {})
         default_file_discovery = !opts.key?(:files) || opts[:files].nil?
         files = default_file_discovery ? rspec_configured_files_to_run : opts[:files]
+        file_selection = normalize_rspec_file_selection(files)
         formatters = opts[:formatters]
         tags = opts[:tags]
         parallel_options = opts[:parallel_options] || {}
@@ -62,7 +63,8 @@ module TurboTests
           reporter: reporter,
           formatters: formatters,
           start_time: start_time,
-          files: files,
+          files: file_selection.fetch(:files),
+          test_selectors: file_selection.fetch(:selectors),
           tags: tags,
           runtime_log: runtime_log,
           example_status_log: example_status_log,
@@ -77,6 +79,31 @@ module TurboTests
           parallel_options: parallel_options,
           nice: nice
         ).run
+      end
+
+      def normalize_rspec_file_selection(files)
+        selectors = {}
+        files.each do |entry|
+          file, selector = split_rspec_location(entry)
+          selectors[file] ||= []
+          if selector == file
+            selectors[file] = [file]
+          elsif !selectors[file].include?(file)
+            selectors[file] << selector unless selectors[file].include?(selector)
+          end
+        end
+
+        {files: selectors.keys, selectors: selectors}
+      end
+
+      def split_rspec_location(entry)
+        value = entry.to_s
+        return [value, value] if File.exist?(value)
+
+        match = value.match(/\A(.+):(\d+)\z/)
+        return [value, value] unless match && File.exist?(match[1])
+
+        [match[1], value]
       end
 
       def runtime_log_from_example_status(example_status_log)
@@ -121,6 +148,7 @@ module TurboTests
       @formatters = opts[:formatters]
       @reporter = opts[:reporter]
       @files = opts[:files]
+      @test_selectors = opts[:test_selectors] || {}
       @tags = opts[:tags]
       @verbose = opts[:verbose]
       @fail_fast = opts[:fail_fast]
@@ -244,7 +272,7 @@ module TurboTests
           "PARALLEL_PID_FILE" => parallel_pid_file_path
         },
         @tags.map { |tag| "--tag=#{tag}" },
-        tests,
+        tests.flat_map { |test| selectors_for_test(test) },
         process_id,
         **opts
       )
@@ -376,6 +404,10 @@ module TurboTests
 
     def parallel_pid_file_path
       ENV["PARALLEL_PID_FILE"]
+    end
+
+    def selectors_for_test(test)
+      @test_selectors.fetch(test) { [test] }
     end
 
     def track_parallel_pid(pid, pid_file_path = parallel_pid_file_path)

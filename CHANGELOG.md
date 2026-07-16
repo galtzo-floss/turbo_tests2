@@ -28,6 +28,10 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- `file:line` RSpec selectors are now supported when passed to `turbo_tests2`;
+  files are grouped by real path and workers receive the original line-filtered
+  selectors.
+
 ### Security
 
 ## [3.1.11] - 2026-07-16
