@@ -207,6 +207,7 @@ Options:
         --exclude-pattern PATTERN    Exclude spec files matching this regex pattern
         --only-group GROUP_INDEX[,GROUP_INDEX]
                                       Run only the selected 1-based parallel_tests group index(es)
+        --group-by MODE              Group files by runtime, filesize, or found order
     -v, --verbose                    More output
         --fail-fast=[N]
         --seed SEED                  Seed for RSpec
@@ -243,7 +244,21 @@ bundle exec turbo_tests2 -n 4 --only-group 2
 bundle exec turbo_tests2 -n 4 -- --only-group 1,3
 ```
 
-Selected group runs use filesize grouping.
+To choose a supported `parallel_tests` grouping mode explicitly:
+
+```bash
+bundle exec turbo_tests2 -n 4 --group-by runtime
+bundle exec turbo_tests2 -n 4 --group-by filesize
+bundle exec turbo_tests2 -n 4 --group-by found
+```
+
+`runtime` grouping uses the configured runtime log, which `turbo_tests2`
+continues to record by default. `filesize` and `found` do not use runtime
+history for the initial split, but worker runtime recording still runs so
+future runtime-based runs can use the updated log.
+
+Selected group runs default to filesize grouping unless `--group-by` is
+provided.
 
 `turbo_tests2` supports custom formatter such as Fuubar, but you might need to require it:
 

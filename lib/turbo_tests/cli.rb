@@ -97,6 +97,10 @@ module TurboTests
           parallel_options[:only_group] = parse_only_groups(groups)
         end
 
+        opts.on("--group-by MODE", "Group files by runtime, filesize, or found order") do |mode|
+          parallel_options[:group_by] = parse_group_by(mode)
+        end
+
         opts.on("-v", "--verbose", "More output") do
           verbose = true
         end
@@ -215,6 +219,10 @@ module TurboTests
         opts.on("--only-group GROUP_INDEX[,GROUP_INDEX]", "Run only the selected 1-based parallel_tests group index(es)") do |groups|
           parallel_options[:only_group] = parse_only_groups(groups)
         end
+
+        opts.on("--group-by MODE", "Group files by runtime, filesize, or found order") do |mode|
+          parallel_options[:group_by] = parse_group_by(mode)
+        end
       end.parse!(args)
 
       return if args.empty?
@@ -235,6 +243,16 @@ module TurboTests
 
         group.to_i
       end
+    end
+
+    def parse_group_by(mode)
+      value = mode.to_s.strip
+      supported_modes = %w[runtime filesize found]
+      unless supported_modes.include?(value)
+        raise OptionParser::InvalidArgument, "invalid group-by mode #{value.inspect}; expected one of: #{supported_modes.join(", ")}"
+      end
+
+      value.to_sym
     end
 
     def handle_fan_command

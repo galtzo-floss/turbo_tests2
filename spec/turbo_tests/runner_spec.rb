@@ -250,6 +250,24 @@ RSpec.describe TurboTests::Runner do
           parallel_options: {}
         )
       end
+
+      it "preserves explicit group_by while still configuring runtime logging" do
+        runner_double = double("runner", run: 0)
+        allow(described_class).to receive(:new) do |**opts|
+          expect(opts[:use_runtime_info]).to be false
+          expect(opts[:runtime_log]).to eq(TurboTests::Runner::DEFAULT_RUNTIME_LOG)
+          expect(opts[:parallel_options][:runtime_log]).to eq(TurboTests::Runner::DEFAULT_RUNTIME_LOG)
+          expect(opts[:parallel_options][:group_by]).to eq(:runtime)
+          runner_double
+        end
+
+        described_class.run(
+          files: ["spec/turbo_tests/cli_spec.rb"],
+          formatters: [],
+          tags: [],
+          parallel_options: {group_by: :runtime}
+        )
+      end
     end
 
     context "when example_status_log is provided" do

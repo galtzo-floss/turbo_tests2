@@ -172,7 +172,7 @@ RSpec.describe TurboTests::CLI do
 
     it "renders help for all documented options" do
       matcher = RSpec::Matchers::BuiltIn::Output.new(
-        /-n, -w, --workers \[PROCESSES\].*--example-status-log FILE.*--pattern PATTERN.*--exclude-pattern PATTERN.*--only-group GROUP_INDEX\[,GROUP_INDEX\].*--seed SEED.*--order ORDER.*--no-random.*--nice/m
+        /-n, -w, --workers \[PROCESSES\].*--example-status-log FILE.*--pattern PATTERN.*--exclude-pattern PATTERN.*--only-group GROUP_INDEX\[,GROUP_INDEX\].*--group-by MODE.*--seed SEED.*--order ORDER.*--no-random.*--nice/m
       ).to_stdout
 
       expect { run_cli(["--help"]) }.to matcher
@@ -232,10 +232,38 @@ RSpec.describe TurboTests::CLI do
       expect(captured_opts[:parallel_options]).to include(only_group: [2])
     end
 
-    it "rejects unsupported separator arguments" do
+    it "passes explicit runtime grouping to parallel_tests" do
+      run_cli(["--group-by", "runtime"])
+
+      expect(captured_opts[:files]).to be_nil
+      expect(captured_opts[:parallel_options]).to include(group_by: :runtime)
+    end
+
+    it "passes explicit filesize grouping to parallel_tests" do
+      run_cli(["--group-by", "filesize"])
+
+      expect(captured_opts[:files]).to be_nil
+      expect(captured_opts[:parallel_options]).to include(group_by: :filesize)
+    end
+
+    it "passes explicit found-order grouping to parallel_tests" do
+      run_cli(["--group-by", "found"])
+
+      expect(captured_opts[:files]).to be_nil
+      expect(captured_opts[:parallel_options]).to include(group_by: :found)
+    end
+
+    it "passes separator grouping to parallel_tests without treating it as a file" do
+      run_cli(["spec/example_spec.rb", "--", "--group-by", "runtime"])
+
+      expect(captured_opts[:files]).to eq(["spec/example_spec.rb"])
+      expect(captured_opts[:parallel_options]).to include(group_by: :runtime)
+    end
+
+    it "rejects unsupported group-by modes" do
       expect {
-        run_cli(["--", "--group-by", "runtime"])
-      }.to raise_error(OptionParser::ParseError, /--group-by/)
+        run_cli(["--group-by", "alphabetical"])
+      }.to raise_error(OptionParser::InvalidArgument, /invalid group-by mode/)
     end
 
     it "rejects invalid exclude pattern regexes" do

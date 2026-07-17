@@ -20,6 +20,10 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Added
 
+- `--group-by runtime|filesize|found` is now parsed explicitly and mapped to
+  `parallel_tests` grouping modes, including when supplied after the
+  compatibility `--` separator.
+
 ### Changed
 
 - Pull request engine workflows now keep JRuby and TruffleRuby coverage
