@@ -203,6 +203,7 @@ Options:
     -o, --out FILE                   Write output to a file instead of $stdout
         --runtime-log FILE           Location of previously recorded test runtimes
         --example-status-log FILE    Use RSpec example status persistence timings for grouping
+        --pattern PATTERN            Run tests matching this regex pattern
         --exclude-pattern PATTERN    Exclude tests matching this regex pattern
     -v, --verbose                    More output
         --fail-fast=[N]
@@ -219,15 +220,17 @@ that same seed to every worker process. Use `--seed SEED` to replay a run, or
 `--order defined` / `--no-random` when you want ordered examples without a seed.
 
 `turbo_tests2` supports selected `parallel_tests` file discovery options
-explicitly. To exclude files matching a regex:
+explicitly. To select or exclude files matching a regex:
 
 ```bash
+bundle exec turbo_tests2 -n 4 --pattern spec/system
 bundle exec turbo_tests2 -n 4 --exclude-pattern spec/system
 ```
 
 The compatibility separator also accepts supported options:
 
 ```bash
+bundle exec turbo_tests2 -n 4 -- --pattern spec/system
 bundle exec turbo_tests2 -n 4 -- --exclude-pattern spec/system
 ```
 

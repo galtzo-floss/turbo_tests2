@@ -85,6 +85,10 @@ module TurboTests
           example_status_log = filename
         end
 
+        opts.on("--pattern PATTERN", "Run tests matching this regex pattern") do |pattern|
+          parallel_options[:pattern] = compile_pattern(pattern)
+        end
+
         opts.on("--exclude-pattern PATTERN", "Exclude tests matching this regex pattern") do |pattern|
           parallel_options[:exclude_pattern] = compile_pattern(pattern)
         end
@@ -196,6 +200,10 @@ module TurboTests
 
     def parse_parallel_args(args, parallel_options)
       OptionParser.new do |opts|
+        opts.on("--pattern PATTERN", "Run tests matching this regex pattern") do |pattern|
+          parallel_options[:pattern] = compile_pattern(pattern)
+        end
+
         opts.on("--exclude-pattern PATTERN", "Exclude tests matching this regex pattern") do |pattern|
           parallel_options[:exclude_pattern] = compile_pattern(pattern)
         end
