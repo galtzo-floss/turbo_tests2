@@ -36,6 +36,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- `heads.yml` and `dep-heads.yml` now gate JRuby and TruffleRuby PR coverage
+  at the job level, so non-matching PR branches skip those engine jobs before a
+  runner is provisioned.
 - Direct `turbo_tests2` runs now refresh the default
   `tmp/turbo_rspec_runtime.log` timing log, and `--runtime-log` writes the
   requested timing log even when the run groups by filesize.
