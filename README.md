@@ -205,6 +205,8 @@ Options:
         --example-status-log FILE    Use RSpec example status persistence timings for grouping
         --pattern PATTERN            Run spec files matching this regex pattern
         --exclude-pattern PATTERN    Exclude spec files matching this regex pattern
+        --only-group GROUP_INDEX[,GROUP_INDEX]
+                                      Run only the selected 1-based parallel_tests group index(es)
     -v, --verbose                    More output
         --fail-fast=[N]
         --seed SEED                  Seed for RSpec
@@ -233,6 +235,15 @@ The compatibility separator also accepts supported options:
 bundle exec turbo_tests2 -n 4 -- --pattern spec/system
 bundle exec turbo_tests2 -n 4 -- --exclude-pattern spec/system
 ```
+
+To rerun one or more selected 1-based groups from a prior parallel split:
+
+```bash
+bundle exec turbo_tests2 -n 4 --only-group 2
+bundle exec turbo_tests2 -n 4 -- --only-group 1,3
+```
+
+Selected group runs use filesize grouping.
 
 `turbo_tests2` supports custom formatter such as Fuubar, but you might need to require it:
 

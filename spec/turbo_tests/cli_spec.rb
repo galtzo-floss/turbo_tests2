@@ -172,7 +172,7 @@ RSpec.describe TurboTests::CLI do
 
     it "renders help for all documented options" do
       matcher = RSpec::Matchers::BuiltIn::Output.new(
-        /-n, -w, --workers \[PROCESSES\].*--example-status-log FILE.*--pattern PATTERN.*--exclude-pattern PATTERN.*--seed SEED.*--order ORDER.*--no-random.*--nice/m
+        /-n, -w, --workers \[PROCESSES\].*--example-status-log FILE.*--pattern PATTERN.*--exclude-pattern PATTERN.*--only-group GROUP_INDEX\[,GROUP_INDEX\].*--seed SEED.*--order ORDER.*--no-random.*--nice/m
       ).to_stdout
 
       expect { run_cli(["--help"]) }.to matcher
@@ -218,10 +218,24 @@ RSpec.describe TurboTests::CLI do
       expect(captured_opts[:parallel_options]).to include(exclude_pattern: /spec\/system/)
     end
 
+    it "passes explicit selected groups to parallel_tests" do
+      run_cli(["--only-group", "1,3"])
+
+      expect(captured_opts[:files]).to be_nil
+      expect(captured_opts[:parallel_options]).to include(only_group: [1, 3])
+    end
+
+    it "passes separator selected groups to parallel_tests without treating them as files" do
+      run_cli(["spec/example_spec.rb", "--", "--only-group", "2"])
+
+      expect(captured_opts[:files]).to eq(["spec/example_spec.rb"])
+      expect(captured_opts[:parallel_options]).to include(only_group: [2])
+    end
+
     it "rejects unsupported separator arguments" do
       expect {
-        run_cli(["--", "--only-group", "1"])
-      }.to raise_error(OptionParser::ParseError, /--only-group/)
+        run_cli(["--", "--group-by", "runtime"])
+      }.to raise_error(OptionParser::ParseError, /--group-by/)
     end
 
     it "rejects invalid exclude pattern regexes" do
@@ -234,6 +248,12 @@ RSpec.describe TurboTests::CLI do
       expect {
         run_cli(["--pattern", "["])
       }.to raise_error(OptionParser::InvalidArgument, /invalid regex pattern/)
+    end
+
+    it "rejects invalid selected groups" do
+      expect {
+        run_cli(["--only-group", "1,zero"])
+      }.to raise_error(OptionParser::InvalidArgument, /invalid group index/)
     end
 
     describe "shim commands" do
