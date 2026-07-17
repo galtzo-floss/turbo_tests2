@@ -2,7 +2,7 @@
 
 module TurboTests
   module Version
-    VERSION = "3.1.12"
+    VERSION = "3.1.13"
   end
   VERSION = Version::VERSION # Traditional Constant Location
 end

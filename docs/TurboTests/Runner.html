@@ -426,7 +426,8 @@
 179
 180
 181
-182</pre>
+182
+183</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 147</span>
@@ -464,6 +465,7 @@
   <span class='ivar'>@exited_process_ids</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
   <span class='ivar'>@worker_output</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_hash'>hash</span><span class='comma'>,</span> <span class='id identifier rubyid_process_id'>process_id</span><span class='op'>|</span> <span class='id identifier rubyid_hash'>hash</span><span class='lbracket'>[</span><span class='id identifier rubyid_process_id'>process_id</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='label'>stdout:</span> <span class='op'>+</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='label'>stderr:</span> <span class='op'>+</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span><span class='rbrace'>}</span> <span class='rbrace'>}</span>
   <span class='ivar'>@worker_output_mutex</span> <span class='op'>=</span> <span class='const'>Mutex</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='ivar'>@deferred_run_options_messages</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_hash'>hash</span><span class='comma'>,</span> <span class='id identifier rubyid_message'>message</span><span class='op'>|</span> <span class='id identifier rubyid_hash'>hash</span><span class='lbracket'>[</span><span class='id identifier rubyid_message'>message</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
   <span class='ivar'>@error</span> <span class='op'>=</span> <span class='kw'>false</span>
   <span class='ivar'>@print_failed_group</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:print_failed_group</span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
@@ -961,7 +963,6 @@
       <pre class="lines">
 
 
-184
 185
 186
 187
@@ -1021,10 +1022,11 @@
 241
 242
 243
-244</pre>
+244
+245</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 184</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 185</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_run'>run</span>
   <span class='id identifier rubyid_tests_with_size'>tests_with_size</span> <span class='op'>=</span> <span class='const'>ParallelTests</span><span class='op'>::</span><span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Runner</span><span class='period'>.</span><span class='id identifier rubyid_tests_with_size'>tests_with_size</span><span class='lparen'>(</span><span class='ivar'>@files</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
@@ -1097,7 +1099,7 @@
 </div>
 
       <div id="footer">
-  Generated on Thu Jul 16 03:57:07 2026 by
+  Generated on Thu Jul 16 19:00:15 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.45 (ruby-4.0.6).
 </div>

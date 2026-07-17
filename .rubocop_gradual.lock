@@ -1,5 +1,5 @@
 {
-  "spec/turbo_tests/runner_spec.rb:2837851040": [
-    [950, 7, 14, "RSpec/StubbedMock: Prefer `allow` over `expect` when configuring a response.", 1511304555]
+  "spec/turbo_tests/runner_spec.rb:1232381415": [
+    [981, 7, 14, "RSpec/StubbedMock: Prefer `allow` over `expect` when configuring a response.", 1511304555]
   ]
 }

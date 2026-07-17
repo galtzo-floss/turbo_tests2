@@ -28,10 +28,19 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+### Security
+
+## [3.1.13] - 2026-07-16
+
+- TAG: [v3.1.13][3.1.13t]
+- COVERAGE: 97.24% -- 739/760 lines in 10 files
+- BRANCH COVERAGE: 87.86% -- 181/206 branches in 10 files
+- 35.87% documented
+
+### Fixed
+
 - Duplicate RSpec `Run options:` messages from parallel workers are now
   collapsed so they no longer interrupt progress formatter output repeatedly.
-
-### Security
 
 ## [3.1.12] - 2026-07-16
 
@@ -278,7 +287,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.12...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.13...HEAD
+[3.1.13]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.12...v3.1.13
+[3.1.13t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.13
 [3.1.12]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.11...v3.1.12
 [3.1.12t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.12
 [3.1.11]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.10...v3.1.11
