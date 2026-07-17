@@ -93,6 +93,10 @@ module TurboTests
           parallel_options[:exclude_pattern] = compile_pattern(pattern)
         end
 
+        opts.on("--only-group GROUP_INDEX[,GROUP_INDEX]", "Run only the selected 1-based parallel_tests group index(es)") do |groups|
+          parallel_options[:only_group] = parse_only_groups(groups)
+        end
+
         opts.on("-v", "--verbose", "More output") do
           verbose = true
         end
@@ -207,6 +211,10 @@ module TurboTests
         opts.on("--exclude-pattern PATTERN", "Exclude spec files matching this regex pattern") do |pattern|
           parallel_options[:exclude_pattern] = compile_pattern(pattern)
         end
+
+        opts.on("--only-group GROUP_INDEX[,GROUP_INDEX]", "Run only the selected 1-based parallel_tests group index(es)") do |groups|
+          parallel_options[:only_group] = parse_only_groups(groups)
+        end
       end.parse!(args)
 
       return if args.empty?
@@ -218,6 +226,15 @@ module TurboTests
       /#{pattern}/
     rescue RegexpError => error
       raise OptionParser::InvalidArgument, "invalid regex pattern #{pattern.inspect}: #{error.message}"
+    end
+
+    def parse_only_groups(groups)
+      groups.to_s.split(",").map do |group|
+        group = group.strip
+        raise OptionParser::InvalidArgument, "invalid group index #{group.inspect}" unless group.match?(/\A[1-9]\d*\z/)
+
+        group.to_i
+      end
     end
 
     def handle_fan_command

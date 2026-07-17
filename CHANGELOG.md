@@ -31,6 +31,9 @@ Please file a bug if you notice a violation of semantic versioning.
 - Direct `turbo_tests2` runs now refresh the default
   `tmp/turbo_rspec_runtime.log` timing log, and `--runtime-log` writes the
   requested timing log even when the run groups by filesize.
+- `--only-group GROUP_INDEX[,GROUP_INDEX]` is now parsed explicitly and runs
+  only the selected 1-based `parallel_tests` group index(es), using filesize
+  grouping by default for selected-group reruns.
 - `--pattern PATTERN` is now parsed explicitly and mapped to `parallel_tests`
   file discovery instead of being treated as a spec file when supplied after
   `--`.

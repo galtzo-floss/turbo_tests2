@@ -216,6 +216,20 @@ RSpec.describe TurboTests::Runner do
 
         described_class.run(formatters: [], tags: [], parallel_options: {})
       end
+
+      it "uses filesize grouping by default when only_group is selected" do
+        runner_double = double("runner", run: 0)
+        allow(described_class).to receive(:rspec_configured_files_to_run).and_return(["spec/turbo_tests/runner_spec.rb"])
+        allow(described_class).to receive(:new) do |**opts|
+          expect(opts[:parallel_options]).to include(
+            only_group: [2],
+            group_by: :filesize
+          )
+          runner_double
+        end
+
+        described_class.run(formatters: [], tags: [], parallel_options: {only_group: [2]})
+      end
     end
 
     context "when files is specific paths (use_runtime_info = false)" do
@@ -1035,6 +1049,41 @@ RSpec.describe TurboTests::Runner do
 
       expect(ParallelTests::RSpec::Runner).to have_received(:tests_with_size).with(["spec"], parallel_options)
       expect(ParallelTests::RSpec::Runner).to have_received(:tests_in_groups).with(["spec"], 1, **parallel_options)
+    end
+
+    it "runs only selected 1-based groups while preserving the original process count" do
+      reporter = double("reporter", failed_examples: [])
+      parallel_options = {only_group: [2]}
+      runner = build_runner(reporter: reporter, parallel_options: parallel_options)
+      test_groups = [
+        ["spec/one_spec.rb"],
+        ["spec/two_spec.rb"],
+        ["spec/three_spec.rb"]
+      ]
+
+      allow(ParallelTests).to receive(:determine_number_of_processes).and_return(3)
+      allow(ParallelTests::RSpec::Runner).to receive_messages(
+        tests_with_size: [
+          ["spec/one_spec.rb", 1],
+          ["spec/two_spec.rb", 1],
+          ["spec/three_spec.rb", 1]
+        ],
+        tests_in_groups: test_groups
+      )
+      allow(reporter).to receive(:report).and_yield(reporter)
+      allow(Signal).to receive(:trap).and_return(nil)
+      allow(runner).to receive(:start_regular_subprocess).and_return(nil)
+      allow(runner).to receive(:handle_messages)
+
+      runner.run
+
+      expect(reporter).to have_received(:report).with([["spec/two_spec.rb"]])
+      expect(runner).to have_received(:start_regular_subprocess).with(
+        ["spec/two_spec.rb"],
+        1,
+        record_runtime: true
+      )
+      expect(runner.instance_variable_get(:@num_processes)).to eq(3)
     end
 
     it "keeps grouped file paths when scheduling workers" do

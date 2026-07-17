@@ -58,6 +58,7 @@ module TurboTests
         else
           parallel_options[:group_by] = :filesize
         end
+        parallel_options[:group_by] ||= :filesize if parallel_options[:only_group]
 
         warn("VERBOSE") if verbose
 
@@ -238,6 +239,7 @@ module TurboTests
           @num_processes,
           **@parallel_options
         )
+      tests_in_groups = selected_groups(tests_in_groups) if @parallel_options[:only_group]
       @tests_in_groups = tests_in_groups
 
       subprocess_opts = {
@@ -282,6 +284,10 @@ module TurboTests
     end
 
     private
+
+    def selected_groups(tests_in_groups)
+      @parallel_options[:only_group].map { |index| tests_in_groups[index - 1] }.compact
+    end
 
     def handle_interrupt
       if @interrupt_handled
