@@ -203,8 +203,8 @@ Options:
     -o, --out FILE                   Write output to a file instead of $stdout
         --runtime-log FILE           Location of previously recorded test runtimes
         --example-status-log FILE    Use RSpec example status persistence timings for grouping
-        --pattern PATTERN            Run tests matching this regex pattern
-        --exclude-pattern PATTERN    Exclude tests matching this regex pattern
+        --pattern PATTERN            Run spec files matching this regex pattern
+        --exclude-pattern PATTERN    Exclude spec files matching this regex pattern
     -v, --verbose                    More output
         --fail-fast=[N]
         --seed SEED                  Seed for RSpec
