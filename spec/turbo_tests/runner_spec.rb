@@ -978,13 +978,15 @@ RSpec.describe TurboTests::Runner do
       allow(Signal).to receive(:trap).and_return(nil)
       allow(runner).to receive(:handle_messages)
 
-      expect(runner).to receive(:start_regular_subprocess).with(
+      allow(runner).to receive(:start_regular_subprocess).and_return(nil)
+
+      runner.run
+
+      expect(runner).to have_received(:start_regular_subprocess).with(
         ["spec/turbo_tests/runner_spec.rb"],
         1,
         record_runtime: false
-      ).and_return(nil)
-
-      runner.run
+      )
     end
   end
 
