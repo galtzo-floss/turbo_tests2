@@ -3,6 +3,7 @@
 require "json"
 require "parallel_tests/rspec/runner"
 require "rspec/core"
+require "shellwords"
 require "tempfile"
 
 require_relative "../utils/hash_extension"
@@ -140,6 +141,38 @@ module TurboTests
         configuration.files_to_run.map do |path|
           path = path.to_s
           path.start_with?(root) ? path[root.length..-1] : path
+        end
+      end
+
+      def worker_spec_opts(spec_opts)
+        args = project_rspec_options + Array(spec_opts)
+        filtered = []
+        skip_next = false
+
+        args.each do |arg|
+          if skip_next
+            skip_next = false
+            next
+          end
+
+          case arg
+          when "--pattern", "-P", "--default-path"
+            skip_next = true
+          when /\A--pattern=/, /\A-P.+/, /\A--default-path=/
+            next
+          else
+            filtered << arg
+          end
+        end
+
+        filtered
+      end
+
+      def project_rspec_options
+        %w[.rspec .rspec-local].flat_map do |path|
+          next [] unless File.file?(path)
+
+          Shellwords.split(File.read(path))
         end
       end
     end
@@ -325,10 +358,12 @@ module TurboTests
           []
         end
 
-        spec_opts = ParallelTests::RSpec::Runner.send(:spec_opts)
+        spec_opts = self.class.worker_spec_opts(ParallelTests::RSpec::Runner.send(:spec_opts))
 
         command = [
           *command_name,
+          "--options",
+          File::NULL,
           *extra_args,
           *seed_option,
           "--format",

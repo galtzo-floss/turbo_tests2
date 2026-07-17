@@ -28,6 +28,12 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Worker commands now override RSpec's default options file, then explicitly
+  pass filtered project `.rspec` options. File-discovery options such as
+  `--pattern` are dropped after `turbo_tests2` has already selected each shard,
+  preventing aggregate suite patterns from making every worker run the full
+  suite while preserving options like `--require spec_helper`.
+
 ### Security
 
 ## [3.1.13] - 2026-07-16

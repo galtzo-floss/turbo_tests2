@@ -471,6 +471,54 @@ RSpec.describe TurboTests::Runner do
     end
   end
 
+  describe ".worker_spec_opts" do
+    before do
+      allow(described_class).to receive(:project_rspec_options).and_return([])
+    end
+
+    it "removes RSpec file discovery options from worker commands" do
+      expect(
+        described_class.worker_spec_opts(
+          [
+            "--require", "spec_helper",
+            "--pattern", "gems/*/spec/**/*_spec.rb",
+            "-I", "spec",
+            "--default-path", "gems",
+            "--format", "documentation"
+          ]
+        )
+      ).to eq(["--require", "spec_helper", "-I", "spec", "--format", "documentation"])
+    end
+
+    it "removes inline RSpec file discovery options from worker commands" do
+      expect(
+        described_class.worker_spec_opts(
+          [
+            "--pattern=gems/*/spec/**/*_spec.rb",
+            "-Pspec/**/*_spec.rb",
+            "--default-path=gems",
+            "--color"
+          ]
+        )
+      ).to eq(["--color"])
+    end
+  end
+
+  describe ".project_rspec_options" do
+    it "reads shell-style options from project RSpec option files" do
+      Dir.mktmpdir("turbo-tests2-rspec-options") do |dir|
+        Dir.chdir(dir) do
+          File.write(".rspec", "--require spec_helper\n--format documentation\n")
+          File.write(".rspec-local", "--tag ~slow\n")
+
+          expect(described_class.project_rspec_options).to eq(
+            ["--require", "spec_helper", "--format", "documentation", "--tag", "~slow"]
+          )
+        end
+      end
+    end
+  end
+
   describe "#handle_interrupt (private)" do
     it "calls Kernel.exit on second interrupt" do
       runner = build_runner
@@ -686,6 +734,17 @@ RSpec.describe TurboTests::Runner do
 
       # command_name = "rspec" (string), [*"rspec"] = ["rspec"], first arg after env hash
       expect(captured[1]).to eq("rspec")
+    end
+
+    it "prevents worker RSpec processes from loading the project .rspec file" do
+      captured = []
+      mock_open3(runner) { |*args| captured.replace(args) }
+
+      hide_env("RSPEC_EXECUTABLE")
+      runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
+
+      expect(captured).to include("--options", File::NULL)
+      expect(captured.index("--options")).to be < captured.index("spec/turbo_tests/runner_spec.rb")
     end
 
     context "when stdout contains lines with and without the formatter output ID" do
