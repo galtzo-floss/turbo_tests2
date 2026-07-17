@@ -212,6 +212,29 @@
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#project_rspec_options-class_method" title="project_rspec_options (class method)">.<strong>project_rspec_options</strong>(root = Dir.pwd)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#rspec_configured_files_to_run-class_method" title="rspec_configured_files_to_run (class method)">.<strong>rspec_configured_files_to_run</strong>  &#x21d2; Object </a>
     
 
@@ -282,6 +305,29 @@
   <span class="summary_signature">
     
       <a href="#split_rspec_location-class_method" title="split_rspec_location (class method)">.<strong>split_rspec_location</strong>(entry)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#worker_spec_opts-class_method" title="worker_spec_opts (class method)">.<strong>worker_spec_opts</strong>(spec_opts)  &#x21d2; Object </a>
     
 
     
@@ -391,46 +437,46 @@
       <pre class="lines">
 
 
-147
-148
-149
-150
-151
-152
-153
-154
-155
-156
-157
-158
-159
-160
-161
-162
-163
-164
-165
-166
-167
-168
-169
-170
-171
-172
-173
-174
-175
-176
-177
-178
-179
-180
 181
 182
-183</pre>
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 147</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 181</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='op'>**</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
   <span class='ivar'>@formatters</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:formatters</span><span class='rbracket'>]</span>
@@ -496,7 +542,6 @@
       <pre class="lines">
 
 
-15
 16
 17
 18
@@ -505,10 +550,11 @@
 21
 22
 23
-24</pre>
+24
+25</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 15</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 16</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span><span class='id identifier rubyid_count'>count</span><span class='rparen'>)</span>
   <span class='comment'># We are unable to load parallel tests&#39; tasks in the normal way (top of file)
@@ -540,12 +586,12 @@
       <pre class="lines">
 
 
-132
 133
-134</pre>
+134
+135</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 132</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 133</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_generate_seed'>generate_seed</span>
   <span class='lparen'>(</span><span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_new_seed'>new_seed</span> <span class='op'>%</span> <span class='int'>65_535</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
@@ -593,16 +639,16 @@
       <pre class="lines">
 
 
-124
 125
 126
 127
 128
 129
-130</pre>
+130
+131</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 124</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 125</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_normalize_order'>normalize_order</span><span class='lparen'>(</span><span class='id identifier rubyid_order'>order</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_order'>order</span> <span class='op'>=</span> <span class='id identifier rubyid_order'>order</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span>
@@ -631,7 +677,6 @@
       <pre class="lines">
 
 
-84
 85
 86
 87
@@ -644,10 +689,11 @@
 94
 95
 96
-97</pre>
+97
+98</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 84</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 85</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_normalize_rspec_file_selection'>normalize_rspec_file_selection</span><span class='lparen'>(</span><span class='id identifier rubyid_files'>files</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_selectors'>selectors</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
@@ -669,6 +715,46 @@
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="project_rspec_options-class_method">
+  
+    .<strong>project_rspec_options</strong>(root = Dir.pwd)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+171
+172
+173
+174
+175
+176
+177
+178</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 171</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_project_rspec_options'>project_rspec_options</span><span class='lparen'>(</span><span class='id identifier rubyid_root'><span class='object_link'><a href="../top-level-namespace.html" title="Top Level Namespace (root)">root</a></span></span> <span class='op'>=</span> <span class='const'>Dir</span><span class='period'>.</span><span class='id identifier rubyid_pwd'>pwd</span><span class='rparen'>)</span>
+  <span class='qwords_beg'>%w[</span><span class='tstring_content'>.rspec</span><span class='words_sep'> </span><span class='tstring_content'>.rspec-local</span><span class='tstring_end'>]</span></span><span class='period'>.</span><span class='id identifier rubyid_flat_map'>flat_map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_path'>path</span><span class='op'>|</span>
+    <span class='id identifier rubyid_option_file'>option_file</span> <span class='op'>=</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='id identifier rubyid_root'><span class='object_link'><a href="../top-level-namespace.html" title="Top Level Namespace (root)">root</a></span></span><span class='comma'>,</span> <span class='id identifier rubyid_path'>path</span><span class='rparen'>)</span>
+    <span class='kw'>next</span> <span class='lbracket'>[</span><span class='rbracket'>]</span> <span class='kw'>unless</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_file?'>file?</span><span class='lparen'>(</span><span class='id identifier rubyid_option_file'>option_file</span><span class='rparen'>)</span>
+
+    <span class='const'>Shellwords</span><span class='period'>.</span><span class='id identifier rubyid_split'>split</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='lparen'>(</span><span class='id identifier rubyid_option_file'>option_file</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="rspec_configured_files_to_run-class_method">
   
     .<strong>rspec_configured_files_to_run</strong>  &#x21d2; <tt>Object</tt> 
@@ -683,7 +769,6 @@
       <pre class="lines">
 
 
-136
 137
 138
 139
@@ -691,10 +776,11 @@
 141
 142
 143
-144</pre>
+144
+145</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 136</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 137</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_rspec_configured_files_to_run'>rspec_configured_files_to_run</span>
   <span class='id identifier rubyid_configuration'>configuration</span> <span class='op'>=</span> <span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Core</span><span class='op'>::</span><span class='const'>Configuration</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -725,7 +811,6 @@
       <pre class="lines">
 
 
-26
 27
 28
 29
@@ -781,10 +866,11 @@
 79
 80
 81
-82</pre>
+82
+83</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 26</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 27</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_run'>run</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_default_file_discovery'>default_file_discovery</span> <span class='op'>=</span> <span class='op'>!</span><span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_key?'>key?</span><span class='lparen'>(</span><span class='symbol'>:files</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:files</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
@@ -863,7 +949,6 @@
       <pre class="lines">
 
 
-109
 110
 111
 112
@@ -876,10 +961,11 @@
 119
 120
 121
-122</pre>
+122
+123</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 109</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 110</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_runtime_log_from_example_status'>runtime_log_from_example_status</span><span class='lparen'>(</span><span class='id identifier rubyid_example_status_log'>example_status_log</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_statuses'>statuses</span> <span class='op'>=</span> <span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Core</span><span class='op'>::</span><span class='const'>ExampleStatusPersister</span><span class='period'>.</span><span class='id identifier rubyid_load_from'>load_from</span><span class='lparen'>(</span><span class='id identifier rubyid_example_status_log'>example_status_log</span><span class='rparen'>)</span>
@@ -915,7 +1001,6 @@
       <pre class="lines">
 
 
-99
 100
 101
 102
@@ -923,10 +1008,11 @@
 104
 105
 106
-107</pre>
+107
+108</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 99</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 100</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_split_rspec_location'>split_rspec_location</span><span class='lparen'>(</span><span class='id identifier rubyid_entry'>entry</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='id identifier rubyid_entry'>entry</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
@@ -936,6 +1022,76 @@
   <span class='kw'>return</span> <span class='lbracket'>[</span><span class='id identifier rubyid_value'>value</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='rbracket'>]</span> <span class='kw'>unless</span> <span class='id identifier rubyid_match'>match</span> <span class='op'>&amp;&amp;</span> <span class='const'>File</span><span class='period'>.</span><span class='id identifier rubyid_exist?'>exist?</span><span class='lparen'>(</span><span class='id identifier rubyid_match'>match</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='rparen'>)</span>
 
   <span class='lbracket'>[</span><span class='id identifier rubyid_match'>match</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_value'>value</span><span class='rbracket'>]</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="worker_spec_opts-class_method">
+  
+    .<strong>worker_spec_opts</strong>(spec_opts)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 147</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_worker_spec_opts'>worker_spec_opts</span><span class='lparen'>(</span><span class='id identifier rubyid_spec_opts'>spec_opts</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_args'>args</span> <span class='op'>=</span> <span class='id identifier rubyid_project_rspec_options'>project_rspec_options</span> <span class='op'>+</span> <span class='const'>Array</span><span class='lparen'>(</span><span class='id identifier rubyid_spec_opts'>spec_opts</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_filtered'>filtered</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+  <span class='id identifier rubyid_skip_next'>skip_next</span> <span class='op'>=</span> <span class='kw'>false</span>
+
+  <span class='id identifier rubyid_args'>args</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_arg'>arg</span><span class='op'>|</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_skip_next'>skip_next</span>
+      <span class='id identifier rubyid_skip_next'>skip_next</span> <span class='op'>=</span> <span class='kw'>false</span>
+      <span class='kw'>next</span>
+    <span class='kw'>end</span>
+
+    <span class='kw'>case</span> <span class='id identifier rubyid_arg'>arg</span>
+    <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--pattern</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>-P</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--default-path</span><span class='tstring_end'>&quot;</span></span>
+      <span class='id identifier rubyid_skip_next'>skip_next</span> <span class='op'>=</span> <span class='kw'>true</span>
+    <span class='kw'>when</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\A--pattern=</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\A-P.+</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\A--default-path=</span><span class='regexp_end'>/</span></span>
+      <span class='kw'>next</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_filtered'>filtered</span> <span class='op'>&lt;&lt;</span> <span class='id identifier rubyid_arg'>arg</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+
+  <span class='id identifier rubyid_filtered'>filtered</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -963,40 +1119,6 @@
       <pre class="lines">
 
 
-185
-186
-187
-188
-189
-190
-191
-192
-193
-194
-195
-196
-197
-198
-199
-200
-201
-202
-203
-204
-205
-206
-207
-208
-209
-210
-211
-212
-213
-214
-215
-216
-217
-218
 219
 220
 221
@@ -1023,10 +1145,44 @@
 242
 243
 244
-245</pre>
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 185</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 219</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_run'>run</span>
   <span class='id identifier rubyid_tests_with_size'>tests_with_size</span> <span class='op'>=</span> <span class='const'>ParallelTests</span><span class='op'>::</span><span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Runner</span><span class='period'>.</span><span class='id identifier rubyid_tests_with_size'>tests_with_size</span><span class='lparen'>(</span><span class='ivar'>@files</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
@@ -1099,7 +1255,7 @@
 </div>
 
       <div id="footer">
-  Generated on Thu Jul 16 19:00:15 2026 by
+  Generated on Fri Jul 17 09:48:16 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.45 (ruby-4.0.6).
 </div>

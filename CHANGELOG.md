@@ -28,13 +28,22 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+### Security
+
+## [3.1.14] - 2026-07-17
+
+- TAG: [v3.1.14][3.1.14t]
+- COVERAGE: 97.56% -- 760/779 lines in 10 files
+- BRANCH COVERAGE: 88.73% -- 189/213 branches in 10 files
+- 35.11% documented
+
+### Fixed
+
 - Worker commands now override RSpec's default options file, then explicitly
   pass filtered project `.rspec` options. File-discovery options such as
   `--pattern` are dropped after `turbo_tests2` has already selected each shard,
   preventing aggregate suite patterns from making every worker run the full
   suite while preserving options like `--require spec_helper`.
-
-### Security
 
 ## [3.1.13] - 2026-07-16
 
@@ -293,7 +302,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.13...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.14...HEAD
+[3.1.14]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.13...v3.1.14
+[3.1.14t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.14
 [3.1.13]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.12...v3.1.13
 [3.1.13t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.13
 [3.1.12]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.11...v3.1.12
