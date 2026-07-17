@@ -25,6 +25,8 @@ module TurboTests
       print_failed_group = false
       create = false
       nice = false
+      parallel_options = {}
+      cli_args, parallel_args = split_parallel_args(@argv)
 
       OptionParser.new do |opts|
         opts.banner = <<~BANNER
@@ -83,6 +85,10 @@ module TurboTests
           example_status_log = filename
         end
 
+        opts.on("--exclude-pattern PATTERN", "Exclude tests matching this regex pattern") do |pattern|
+          parallel_options[:exclude_pattern] = compile_pattern(pattern)
+        end
+
         opts.on("-v", "--verbose", "More output") do
           verbose = true
         end
@@ -119,7 +125,9 @@ module TurboTests
         opts.on("--nice", "execute test commands with low priority") do
           nice = true
         end
-      end.parse!(@argv)
+      end.parse!(cli_args)
+
+      parse_parallel_args(parallel_args, parallel_options) unless parallel_args.empty?
 
       if create
         return TurboTests::Runner.create(count)
@@ -142,8 +150,7 @@ module TurboTests
 
       invoke_rake_hook("setup")
 
-      files = @argv.empty? ? nil : @argv
-      parallel_options = {}
+      files = cli_args.empty? ? nil : cli_args
 
       exitstatus = TurboTests::Runner.run(
         formatters: formatters,
@@ -175,6 +182,34 @@ module TurboTests
 
     def fan_command?
       @argv.first == "fan"
+    end
+
+    def split_parallel_args(args)
+      separator_index = args.index("--")
+      return [args, []] unless separator_index
+
+      [
+        args[0...separator_index],
+        args[(separator_index + 1)..-1]
+      ]
+    end
+
+    def parse_parallel_args(args, parallel_options)
+      OptionParser.new do |opts|
+        opts.on("--exclude-pattern PATTERN", "Exclude tests matching this regex pattern") do |pattern|
+          parallel_options[:exclude_pattern] = compile_pattern(pattern)
+        end
+      end.parse!(args)
+
+      return if args.empty?
+
+      raise OptionParser::InvalidArgument, "unsupported parallel_tests argument(s): #{args.join(" ")}"
+    end
+
+    def compile_pattern(pattern)
+      /#{pattern}/
+    rescue RegexpError => error
+      raise OptionParser::InvalidArgument, "invalid regex pattern #{pattern.inspect}: #{error.message}"
     end
 
     def handle_fan_command

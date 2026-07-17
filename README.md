@@ -203,6 +203,7 @@ Options:
     -o, --out FILE                   Write output to a file instead of $stdout
         --runtime-log FILE           Location of previously recorded test runtimes
         --example-status-log FILE    Use RSpec example status persistence timings for grouping
+        --exclude-pattern PATTERN    Exclude tests matching this regex pattern
     -v, --verbose                    More output
         --fail-fast=[N]
         --seed SEED                  Seed for RSpec
@@ -217,10 +218,17 @@ By default, `turbo_tests2` generates one random RSpec seed, prints it, and passe
 that same seed to every worker process. Use `--seed SEED` to replay a run, or
 `--order defined` / `--no-random` when you want ordered examples without a seed.
 
-To pass any options supported by parallel_tests, use `--`:
+`turbo_tests2` supports selected `parallel_tests` file discovery options
+explicitly. To exclude files matching a regex:
 
 ```bash
-bundle exec turbo_tests2 -n 4 -- --only-group 1 --pattern spec/system
+bundle exec turbo_tests2 -n 4 --exclude-pattern spec/system
+```
+
+The compatibility separator also accepts supported options:
+
+```bash
+bundle exec turbo_tests2 -n 4 -- --exclude-pattern spec/system
 ```
 
 `turbo_tests2` supports custom formatter such as Fuubar, but you might need to require it:

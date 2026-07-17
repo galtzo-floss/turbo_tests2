@@ -220,7 +220,7 @@ module TurboTests
     end
 
     def run
-      tests_with_size = ParallelTests::RSpec::Runner.tests_with_size(@files, {})
+      tests_with_size = ParallelTests::RSpec::Runner.tests_with_size(@files, @parallel_options)
       @num_processes = [
         ParallelTests.determine_number_of_processes(@count),
         tests_with_size.size
