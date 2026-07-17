@@ -168,11 +168,12 @@ module TurboTests
         filtered
       end
 
-      def project_rspec_options
+      def project_rspec_options(root = Dir.pwd)
         %w[.rspec .rspec-local].flat_map do |path|
-          next [] unless File.file?(path)
+          option_file = File.join(root, path)
+          next [] unless File.file?(option_file)
 
-          Shellwords.split(File.read(path))
+          Shellwords.split(File.read(option_file))
         end
       end
     end

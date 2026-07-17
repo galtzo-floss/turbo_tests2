@@ -507,14 +507,12 @@ RSpec.describe TurboTests::Runner do
   describe ".project_rspec_options" do
     it "reads shell-style options from project RSpec option files" do
       Dir.mktmpdir("turbo-tests2-rspec-options") do |dir|
-        Dir.chdir(dir) do
-          File.write(".rspec", "--require spec_helper\n--format documentation\n")
-          File.write(".rspec-local", "--tag ~slow\n")
+        File.write(File.join(dir, ".rspec"), "--require spec_helper\n--format documentation\n")
+        File.write(File.join(dir, ".rspec-local"), "--tag ~slow\n")
 
-          expect(described_class.project_rspec_options).to eq(
-            ["--require", "spec_helper", "--format", "documentation", "--tag", "~slow"]
-          )
-        end
+        expect(described_class.project_rspec_options(dir)).to eq(
+          ["--require", "spec_helper", "--format", "documentation", "--tag", "~slow"]
+        )
       end
     end
   end
