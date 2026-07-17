@@ -243,8 +243,7 @@ bundle exec turbo_tests2 -n 4 --only-group 2
 bundle exec turbo_tests2 -n 4 -- --only-group 1,3
 ```
 
-Selected group runs use filesize grouping unless another supported grouping
-mode is explicitly provided.
+Selected group runs use filesize grouping.
 
 `turbo_tests2` supports custom formatter such as Fuubar, but you might need to require it:
 

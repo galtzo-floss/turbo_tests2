@@ -221,7 +221,8 @@ module TurboTests
     end
 
     def run
-      tests_with_size = ParallelTests::RSpec::Runner.tests_with_size(@files, @parallel_options)
+      parallel_tests_options = @parallel_options.reject { |key, _value| key == :only_group }
+      tests_with_size = ParallelTests::RSpec::Runner.tests_with_size(@files, parallel_tests_options)
       @num_processes = [
         ParallelTests.determine_number_of_processes(@count),
         tests_with_size.size
@@ -237,7 +238,7 @@ module TurboTests
         ParallelTests::RSpec::Runner.tests_in_groups(
           @files,
           @num_processes,
-          **@parallel_options
+          **parallel_tests_options
         )
       tests_in_groups = selected_groups(tests_in_groups) if @parallel_options[:only_group]
       @tests_in_groups = tests_in_groups
@@ -286,7 +287,15 @@ module TurboTests
     private
 
     def selected_groups(tests_in_groups)
-      @parallel_options[:only_group].map { |index| tests_in_groups[index - 1] }.compact
+      requested_groups = @parallel_options[:only_group]
+      missing_groups = requested_groups.select { |index| index > tests_in_groups.size }
+      unless missing_groups.empty?
+        raise ArgumentError,
+          "Selected group index(es) out of range: #{missing_groups.join(", ")} " \
+          "(available groups: #{tests_in_groups.size})"
+      end
+
+      requested_groups.map { |index| tests_in_groups[index - 1] }
     end
 
     def handle_interrupt
