@@ -22,6 +22,14 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
+- Pull request engine workflows now keep JRuby and TruffleRuby coverage
+  available via branch opt-in prefixes: `jruby/*` runs JRuby workflows,
+  `truffleruby/*` runs TruffleRuby workflows, and `engines/*` runs all engine
+  workflows. Other pull request branches continue to run MRI checks without the
+  alternate engine jobs.
+- The delayed documentation formatter spec now lives under fixtures so the
+  normal suite does not pay its fixed load-time delay.
+
 ### Deprecated
 
 ### Removed
