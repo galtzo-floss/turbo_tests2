@@ -1017,7 +1017,7 @@ RSpec.describe TurboTests::Runner do
 
     it "passes parallel_tests options to discovery and grouping" do
       reporter = double("reporter", failed_examples: [])
-      parallel_options = {exclude_pattern: /system/}
+      parallel_options = {pattern: /unit/, exclude_pattern: /system/}
       runner = build_runner(reporter: reporter, parallel_options: parallel_options)
       test_groups = [["spec/one_spec.rb"]]
 
