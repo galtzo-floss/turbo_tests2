@@ -172,7 +172,7 @@ RSpec.describe TurboTests::CLI do
 
     it "renders help for all documented options" do
       matcher = RSpec::Matchers::BuiltIn::Output.new(
-        /-n, -w, --workers \[PROCESSES\].*--example-status-log FILE.*--seed SEED.*--order ORDER.*--no-random.*--nice/m
+        /-n, -w, --workers \[PROCESSES\].*--example-status-log FILE.*--exclude-pattern PATTERN.*--seed SEED.*--order ORDER.*--no-random.*--nice/m
       ).to_stdout
 
       expect { run_cli(["--help"]) }.to matcher
@@ -188,6 +188,32 @@ RSpec.describe TurboTests::CLI do
       run_cli(["spec/example_spec.rb"])
 
       expect(captured_opts[:files]).to eq(["spec/example_spec.rb"])
+    end
+
+    it "passes an explicit exclude pattern to parallel_tests" do
+      run_cli(["--exclude-pattern", "spec/system"])
+
+      expect(captured_opts[:files]).to be_nil
+      expect(captured_opts[:parallel_options]).to include(exclude_pattern: /spec\/system/)
+    end
+
+    it "passes a separator exclude pattern to parallel_tests without treating it as a file" do
+      run_cli(["spec/example_spec.rb", "--", "--exclude-pattern", "spec/system"])
+
+      expect(captured_opts[:files]).to eq(["spec/example_spec.rb"])
+      expect(captured_opts[:parallel_options]).to include(exclude_pattern: /spec\/system/)
+    end
+
+    it "rejects unsupported separator arguments" do
+      expect {
+        run_cli(["--", "--pattern", "spec/system"])
+      }.to raise_error(OptionParser::ParseError, /--pattern/)
+    end
+
+    it "rejects invalid exclude pattern regexes" do
+      expect {
+        run_cli(["--exclude-pattern", "["])
+      }.to raise_error(OptionParser::InvalidArgument, /invalid regex pattern/)
     end
 
     describe "shim commands" do

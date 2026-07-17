@@ -1015,6 +1015,28 @@ RSpec.describe TurboTests::Runner do
       expect(runner.instance_variable_get(:@tests_in_groups)).to eq(test_groups)
     end
 
+    it "passes parallel_tests options to discovery and grouping" do
+      reporter = double("reporter", failed_examples: [])
+      parallel_options = {exclude_pattern: /system/}
+      runner = build_runner(reporter: reporter, parallel_options: parallel_options)
+      test_groups = [["spec/one_spec.rb"]]
+
+      allow(ParallelTests).to receive(:determine_number_of_processes).and_return(2)
+      allow(ParallelTests::RSpec::Runner).to receive_messages(
+        tests_with_size: [["spec/one_spec.rb", 1]],
+        tests_in_groups: test_groups
+      )
+      allow(reporter).to receive(:report).and_yield(reporter)
+      allow(Signal).to receive(:trap).and_return(nil)
+      allow(runner).to receive(:start_regular_subprocess).and_return(nil)
+      allow(runner).to receive(:handle_messages)
+
+      runner.run
+
+      expect(ParallelTests::RSpec::Runner).to have_received(:tests_with_size).with(["spec"], parallel_options)
+      expect(ParallelTests::RSpec::Runner).to have_received(:tests_in_groups).with(["spec"], 1, **parallel_options)
+    end
+
     it "keeps grouped file paths when scheduling workers" do
       reporter = double("reporter", failed_examples: [])
       runner = build_runner(
