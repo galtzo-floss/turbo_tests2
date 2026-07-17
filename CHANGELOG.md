@@ -28,6 +28,10 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Direct `turbo_tests2` runs now refresh the default
+  `tmp/turbo_rspec_runtime.log` timing log, and `--runtime-log` writes the
+  requested timing log even when the run groups by filesize.
+
 ### Security
 
 ## [3.1.14] - 2026-07-17

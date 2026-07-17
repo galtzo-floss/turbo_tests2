@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "json"
+require "fileutils"
 require "parallel_tests/rspec/runner"
 require "rspec/core"
 require "shellwords"
@@ -11,6 +12,7 @@ require_relative "../utils/hash_extension"
 module TurboTests
   class Runner
     using CoreExtensions
+    DEFAULT_RUNTIME_LOG = "tmp/turbo_rspec_runtime.log"
 
     class << self
       def create(count)
@@ -33,7 +35,7 @@ module TurboTests
         parallel_options = opts[:parallel_options] || {}
 
         start_time = opts.fetch(:start_time) { RSpec::Core::Time.now }
-        runtime_log = opts.fetch(:runtime_log, nil)
+        runtime_log = opts.fetch(:runtime_log, nil) || DEFAULT_RUNTIME_LOG
         example_status_log = opts.fetch(:example_status_log, nil)
         verbose = opts.fetch(:verbose, false)
         fail_fast = opts.fetch(:fail_fast, nil)
@@ -46,12 +48,13 @@ module TurboTests
         nice = opts.fetch(:nice, false)
 
         use_runtime_info = default_file_discovery
+        parallel_options[:runtime_log] ||= runtime_log
 
         if example_status_log
           runtime_log = runtime_log_from_example_status(example_status_log)
           parallel_options[:runtime_log] = runtime_log
         elsif use_runtime_info
-          parallel_options[:runtime_log] = runtime_log
+          parallel_options[:runtime_log] ||= runtime_log
         else
           parallel_options[:group_by] = :filesize
         end
@@ -200,10 +203,10 @@ module TurboTests
 
       # Supports runtime_log as a top level option,
       #   but also nested inside parallel_options
-      @runtime_log = opts[:runtime_log] || "tmp/turbo_rspec_runtime.log"
+      @runtime_log = opts[:runtime_log] || DEFAULT_RUNTIME_LOG
       @parallel_options = opts.fetch(:parallel_options, {})
       @parallel_options[:runtime_log] ||= @runtime_log
-      @record_runtime = @parallel_options[:group_by] == :runtime
+      @record_runtime = true
 
       @messages = Thread::Queue.new
       @threads = []
@@ -337,6 +340,7 @@ module TurboTests
 
         record_runtime_options =
           if record_runtime
+            FileUtils.mkdir_p(File.dirname(@runtime_log))
             [
               "--format",
               "ParallelTests::RSpec::RuntimeLogger",

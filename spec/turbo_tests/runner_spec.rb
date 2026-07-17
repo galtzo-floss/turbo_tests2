@@ -204,12 +204,13 @@ RSpec.describe TurboTests::Runner do
     end
 
     context "when files are discovered by RSpec configuration (use_runtime_info = true)" do
-      it "sets runtime_log in parallel_options and passes use_runtime_info: true" do
+      it "sets the default runtime_log in parallel_options and passes use_runtime_info: true" do
         runner_double = double("runner", run: 0)
         allow(described_class).to receive(:rspec_configured_files_to_run).and_return(["spec/turbo_tests/runner_spec.rb"])
         allow(described_class).to receive(:new) do |**opts|
           expect(opts[:use_runtime_info]).to be true
-          expect(opts[:parallel_options]).to have_key(:runtime_log)
+          expect(opts[:runtime_log]).to eq(TurboTests::Runner::DEFAULT_RUNTIME_LOG)
+          expect(opts[:parallel_options]).to include(runtime_log: TurboTests::Runner::DEFAULT_RUNTIME_LOG)
           runner_double
         end
 
@@ -218,10 +219,12 @@ RSpec.describe TurboTests::Runner do
     end
 
     context "when files is specific paths (use_runtime_info = false)" do
-      it "sets group_by: :filesize in parallel_options and passes use_runtime_info: false" do
+      it "sets group_by: :filesize while still configuring runtime logging" do
         runner_double = double("runner", run: 0)
         allow(described_class).to receive(:new) do |**opts|
           expect(opts[:use_runtime_info]).to be false
+          expect(opts[:runtime_log]).to eq(TurboTests::Runner::DEFAULT_RUNTIME_LOG)
+          expect(opts[:parallel_options][:runtime_log]).to eq(TurboTests::Runner::DEFAULT_RUNTIME_LOG)
           expect(opts[:parallel_options][:group_by]).to eq(:filesize)
           runner_double
         end
@@ -1042,7 +1045,7 @@ RSpec.describe TurboTests::Runner do
       expect(runner).to have_received(:start_regular_subprocess).with(
         ["spec/turbo_tests/runner_spec.rb"],
         1,
-        record_runtime: false
+        record_runtime: true
       )
     end
   end
