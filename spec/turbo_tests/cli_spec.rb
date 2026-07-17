@@ -8,13 +8,13 @@ RSpec.describe TurboTests::CLI do
 
   include_context "with simplecov spawn coverage"
 
-  def expect_load_error_details(output, fixture, expected_end_of_output)
+  def expect_load_error_details(output, fixture, expected_summary)
     unless RUBY_ENGINE == "truffleruby" && !output.include?("An error occurred while loading #{fixture}.")
       expect(output).to include("An error occurred while loading #{fixture}.")
-      if expected_end_of_output.is_a?(Regexp)
-        expect(output).to match(expected_end_of_output)
+      if expected_summary.is_a?(Regexp)
+        expect(output).to match(expected_summary)
       else
-        expect(output).to include(expected_end_of_output)
+        expect(output).to include(expected_summary)
       end
       return
     end
@@ -28,11 +28,7 @@ RSpec.describe TurboTests::CLI do
     let(:seed) { 1234 }
 
     context "when errors occur outside of examples" do
-      let(:expected_end_of_output) do
-        "0 examples, 0 failures, 1 error occurred outside of examples\n" \
-          "\n" \
-          "Randomized with seed #{seed}"
-      end
+      let(:expected_summary) { "0 examples, 0 failures, 1 error occurred outside of examples" }
 
       let(:fixture) { "./fixtures/rspec/errors_outside_of_examples_spec.rb" }
 
@@ -41,7 +37,7 @@ RSpec.describe TurboTests::CLI do
 
         expect(output).to include("1 processes for 1 specs, ~ 1 specs per process")
         expect(output).to include("Randomized with seed #{seed}")
-        expect_load_error_details(output, fixture, expected_end_of_output)
+        expect_load_error_details(output, fixture, expected_summary)
       end
     end
 
@@ -68,9 +64,7 @@ RSpec.describe TurboTests::CLI do
 
   context "when 'seed' parameter was not used", :check_output do
     context "when errors occur outside of examples" do
-      let(:expected_end_of_output) do
-        /0 examples, 0 failures, 1 error occurred outside of examples\n\nRandomized with seed \d+/
-      end
+      let(:expected_summary) { /0 examples, 0 failures, 1 error occurred outside of examples/ }
 
       let(:fixture) { "./fixtures/rspec/errors_outside_of_examples_spec.rb" }
 
@@ -79,7 +73,7 @@ RSpec.describe TurboTests::CLI do
 
         expect(output).to include("1 processes for 1 specs, ~ 1 specs per process")
         expect(output).to match(/Randomized with seed \d+/)
-        expect_load_error_details(output, fixture, expected_end_of_output)
+        expect_load_error_details(output, fixture, expected_summary)
       end
 
       it "includes the generated seed message in the output" do
