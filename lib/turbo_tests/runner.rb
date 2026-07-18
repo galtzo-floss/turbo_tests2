@@ -56,7 +56,7 @@ module TurboTests
         elsif use_runtime_info
           parallel_options[:runtime_log] ||= runtime_log
         else
-          parallel_options[:group_by] = :filesize
+          parallel_options[:group_by] ||= :filesize
         end
         parallel_options[:group_by] ||= :filesize if parallel_options[:only_group]
 
