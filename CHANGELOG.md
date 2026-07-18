@@ -23,6 +23,9 @@ Please file a bug if you notice a violation of semantic versioning.
 - `--group-by runtime|filesize|found` is now parsed explicitly and mapped to
   `parallel_tests` grouping modes, including when supplied after the
   compatibility `--` separator.
+- `--allowed-missing PERCENT` and `--unknown-runtime SECONDS` are now parsed
+  explicitly and mapped to `parallel_tests` runtime grouping tuning options,
+  including when supplied after the compatibility `--` separator.
 
 ### Changed
 

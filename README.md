@@ -208,6 +208,8 @@ Options:
         --only-group GROUP_INDEX[,GROUP_INDEX]
                                       Run only the selected 1-based parallel_tests group index(es)
         --group-by MODE              Group files by runtime, filesize, or found order
+        --allowed-missing PERCENT    Allowed percentage of missing runtimes for runtime grouping
+        --unknown-runtime SECONDS    Runtime in seconds to assign files missing runtime history
     -v, --verbose                    More output
         --fail-fast=[N]
         --seed SEED                  Seed for RSpec
@@ -250,12 +252,22 @@ To choose a supported `parallel_tests` grouping mode explicitly:
 bundle exec turbo_tests2 -n 4 --group-by runtime
 bundle exec turbo_tests2 -n 4 --group-by filesize
 bundle exec turbo_tests2 -n 4 --group-by found
+bundle exec turbo_tests2 -n 4 -- --group-by runtime
 ```
 
 `runtime` grouping uses the configured runtime log, which `turbo_tests2`
 continues to record by default. `filesize` and `found` do not use runtime
 history for the initial split, but worker runtime recording still runs so
 future runtime-based runs can use the updated log.
+
+Runtime grouping also supports the explicit `parallel_tests` tuning flags
+`--allowed-missing PERCENT` and `--unknown-runtime SECONDS`:
+
+```bash
+bundle exec turbo_tests2 -n 4 --group-by runtime --allowed-missing 25
+bundle exec turbo_tests2 -n 4 --group-by runtime --unknown-runtime 0.5
+bundle exec turbo_tests2 -n 4 -- --allowed-missing 25 --unknown-runtime 0.5
+```
 
 Selected group runs default to filesize grouping unless `--group-by` is
 provided.
