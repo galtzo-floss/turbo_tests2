@@ -20,6 +20,7 @@ RSpec.describe TurboTests::Runner do
       use_runtime_info: true,
       parallel_options: {},
       nice: false,
+      worker_output: TurboTests::Runner::DEFAULT_WORKER_OUTPUT_MODE,
       **overrides
     )
   end
@@ -72,6 +73,26 @@ RSpec.describe TurboTests::Runner do
 
       message = runner.instance_variable_get(:@messages).pop
       expect(message[:process_id]).to eq(42)
+    end
+  end
+
+  describe "#initialize" do
+    it "normalizes direct worker output mode strings" do
+      runner = build_runner(worker_output: "stream")
+
+      expect(runner.send(:stream_worker_output?)).to be true
+    end
+
+    it "normalizes direct worker output mode string case" do
+      runner = build_runner(worker_output: "WARNINGS")
+
+      expect(runner.instance_variable_get(:@worker_output_mode)).to eq(:warnings)
+    end
+
+    it "rejects invalid direct worker output modes" do
+      expect {
+        build_runner(worker_output: "loud")
+      }.to raise_error(ArgumentError, /Unsupported worker output mode/)
     end
   end
 
@@ -130,6 +151,47 @@ RSpec.describe TurboTests::Runner do
         tags: [],
         parallel_options: {}
       )
+    end
+
+    it "uses the worker output mode from ENV when no explicit option is given" do
+      runner_double = double("runner", run: 0)
+      allow(described_class).to receive(:new) do |**opts|
+        expect(opts[:worker_output]).to eq(:stream)
+        runner_double
+      end
+
+      allow(ENV).to receive(:[]).and_call_original
+      allow(ENV).to receive(:[]).with("TURBO_TESTS2_WORKER_OUTPUT").and_return("stream")
+
+      described_class.run(files: ["spec"], formatters: [], tags: [], parallel_options: {})
+    end
+
+    it "lets an explicit worker output mode take precedence over ENV" do
+      runner_double = double("runner", run: 0)
+      allow(described_class).to receive(:new) do |**opts|
+        expect(opts[:worker_output]).to eq(:quiet)
+        runner_double
+      end
+
+      allow(ENV).to receive(:[]).and_call_original
+      allow(ENV).to receive(:[]).with("TURBO_TESTS2_WORKER_OUTPUT").and_return("stream")
+
+      described_class.run(
+        files: ["spec"],
+        formatters: [],
+        tags: [],
+        worker_output: "quiet",
+        parallel_options: {}
+      )
+    end
+
+    it "rejects invalid worker output modes" do
+      allow(ENV).to receive(:[]).and_call_original
+      allow(ENV).to receive(:[]).with("TURBO_TESTS2_WORKER_OUTPUT").and_return("loud")
+
+      expect {
+        described_class.run(files: ["spec"], formatters: [], tags: [], parallel_options: {})
+      }.to raise_error(ArgumentError, /Unsupported worker output mode/)
     end
 
     it "groups file:line selectors by real file path while preserving RSpec locations" do
@@ -945,6 +1007,19 @@ RSpec.describe TurboTests::Runner do
       worker_output = runner.instance_variable_get(:@worker_output)
       expect(worker_output[1][:stderr]).to eq("hello from subprocess")
     end
+
+    it "streams data from src when worker output mode is stream" do
+      runner = build_runner(worker_output: :stream)
+      r, w = IO.pipe
+
+      w.write("hello from subprocess")
+      w.close
+
+      expect {
+        thread = runner.send(:start_copy_thread, r, 1, :stderr)
+        thread.join(2)
+      }.to output("hello from subprocess").to_stderr
+    end
   end
 
   describe "#flush_coverage_summary (private)" do
@@ -1023,6 +1098,44 @@ RSpec.describe TurboTests::Runner do
 
       expect {
         runner.send(:flush_worker_warnings)
+      }.not_to output.to_stdout
+    end
+  end
+
+  describe "#flush_successful_worker_output (private)" do
+    it "prints warning lines in warnings mode" do
+      runner = build_runner(worker_output: :warnings)
+      runner.instance_variable_get(:@worker_output)[1][:stderr] = "boot.rb:12: warning: noisy dependency\nordinary noise\n"
+
+      expect {
+        runner.send(:flush_successful_worker_output)
+      }.to output(/\nTurboTests worker 1 stderr warnings:\nboot\.rb:12: warning: noisy dependency\n/).to_stderr
+    end
+
+    it "prints all buffered output in buffered mode" do
+      runner = build_runner(worker_output: :buffered)
+      runner.instance_variable_get(:@worker_output)[1][:stdout] = "ordinary worker noise\n"
+
+      expect {
+        runner.send(:flush_successful_worker_output)
+      }.to output(/\nTurboTests worker 1 stdout:\nordinary worker noise\n/).to_stdout
+    end
+
+    it "prints no successful raw worker output in quiet mode" do
+      runner = build_runner(worker_output: :quiet)
+      runner.instance_variable_get(:@worker_output)[1][:stderr] = "boot.rb:12: warning: noisy dependency\n"
+
+      expect {
+        runner.send(:flush_successful_worker_output)
+      }.not_to output.to_stderr
+    end
+
+    it "does not replay successful raw worker output in stream mode" do
+      runner = build_runner(worker_output: :stream)
+      runner.instance_variable_get(:@worker_output)[1][:stdout] = "already streamed\n"
+
+      expect {
+        runner.send(:flush_successful_worker_output)
       }.not_to output.to_stdout
     end
   end
@@ -1121,6 +1234,27 @@ RSpec.describe TurboTests::Runner do
 
       expect(runner).not_to receive(:flush_worker_warnings)
       expect(runner.run).to eq(0)
+    end
+
+    it "does not replay buffered worker output after a failed stream-mode run" do
+      reporter = double("reporter", failed_examples: [double("example")])
+      status = instance_double(Process::Status, success?: false, exitstatus: 1)
+      runner = build_runner(reporter: reporter, worker_output: :stream)
+      test_groups = [["spec/one_spec.rb"]]
+
+      allow(ParallelTests).to receive(:determine_number_of_processes).and_return(1)
+      allow(ParallelTests::RSpec::Runner).to receive_messages(
+        tests_with_size: [["spec/one_spec.rb", 1]],
+        tests_in_groups: test_groups
+      )
+      allow(reporter).to receive(:report).and_yield(reporter)
+      allow(Signal).to receive(:trap).and_return(nil)
+      allow(runner).to receive(:start_regular_subprocess).and_return(double("wait thread", value: status))
+      allow(runner).to receive(:handle_messages)
+      runner.instance_variable_get(:@worker_output)[1][:stdout] = "already streamed\n"
+
+      expect(runner).not_to receive(:flush_worker_output)
+      expect(runner.run).to eq(1)
     end
 
     it "passes parallel_tests options to discovery and grouping" do

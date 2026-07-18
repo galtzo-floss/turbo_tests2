@@ -25,6 +25,7 @@ module TurboTests
       print_failed_group = false
       create = false
       nice = false
+      worker_output = nil
       parallel_options = {}
       cli_args, parallel_args = split_parallel_args(@argv)
 
@@ -122,6 +123,13 @@ module TurboTests
           verbose = true
         end
 
+        opts.on(
+          "--worker-output MODE",
+          "Raw worker output mode: warnings, stream, buffered, or quiet; env: TURBO_TESTS2_WORKER_OUTPUT"
+        ) do |mode|
+          worker_output = mode
+        end
+
         opts.on("--fail-fast=[N]") do |n|
           n = begin
             Integer(n)
@@ -194,6 +202,7 @@ module TurboTests
         order: order,
         nice: nice,
         print_failed_group: print_failed_group,
+        worker_output: worker_output,
         parallel_options: parallel_options
       )
 

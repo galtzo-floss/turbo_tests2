@@ -13,6 +13,8 @@ module TurboTests
   class Runner
     using CoreExtensions
     DEFAULT_RUNTIME_LOG = "tmp/turbo_rspec_runtime.log"
+    DEFAULT_WORKER_OUTPUT_MODE = :warnings
+    WORKER_OUTPUT_MODES = %i[warnings stream buffered quiet].freeze
 
     class << self
       def create(count)
@@ -46,6 +48,9 @@ module TurboTests
         seed = generate_seed if seed_used && seed.nil?
         print_failed_group = opts.fetch(:print_failed_group, false)
         nice = opts.fetch(:nice, false)
+        worker_output = normalize_worker_output_mode(
+          opts[:worker_output] || ENV["TURBO_TESTS2_WORKER_OUTPUT"]
+        )
 
         use_runtime_info = default_file_discovery
         parallel_options[:runtime_log] ||= runtime_log
@@ -82,8 +87,20 @@ module TurboTests
           print_failed_group: print_failed_group,
           use_runtime_info: use_runtime_info,
           parallel_options: parallel_options,
-          nice: nice
+          nice: nice,
+          worker_output: worker_output
         ).run
+      end
+
+      def normalize_worker_output_mode(mode)
+        value = mode.to_s.strip.downcase.tr("-", "_")
+        return DEFAULT_WORKER_OUTPUT_MODE if value.empty?
+
+        normalized = value.to_sym
+        return normalized if WORKER_OUTPUT_MODES.include?(normalized)
+
+        raise ArgumentError,
+          "Unsupported worker output mode #{mode.inspect}; expected one of: #{WORKER_OUTPUT_MODES.join(", ")}"
       end
 
       def normalize_rspec_file_selection(files)
@@ -218,6 +235,7 @@ module TurboTests
       @deferred_run_options_messages = Hash.new { |hash, message| hash[message] = [] }
       @error = false
       @print_failed_group = opts[:print_failed_group]
+      @worker_output_mode = self.class.normalize_worker_output_mode(opts.fetch(:worker_output, DEFAULT_WORKER_OUTPUT_MODE))
     end
 
     def run
@@ -270,11 +288,11 @@ module TurboTests
           statuses = @wait_threads.map(&:value)
 
           if @reporter.failed_examples.empty? && statuses.all?(&:success?)
-            flush_worker_warnings unless @verbose
+            flush_successful_worker_output
             report_coverage = true
             exit_status = 0
           else
-            flush_worker_output
+            flush_worker_output unless stream_worker_output?
             # From https://github.com/galtzo-floss/turbo_tests2/pull/20/
             exit_status = statuses.map(&:exitstatus).max
           end
@@ -503,7 +521,25 @@ module TurboTests
       end
 
       io = (stream == :stderr) ? $stderr : $stdout
-      io.write(msg) if @verbose
+      io.write(msg) if stream_worker_output?
+    end
+
+    def stream_worker_output?
+      @verbose || @worker_output_mode == :stream
+    end
+
+    def flush_successful_worker_output
+      case @worker_output_mode
+      when :warnings
+        flush_worker_warnings unless stream_worker_output?
+      when :buffered
+        flush_worker_output unless stream_worker_output?
+      when :quiet, :stream
+        nil
+      else
+        raise ArgumentError,
+          "Unsupported worker output mode #{@worker_output_mode.inspect}; expected one of: #{WORKER_OUTPUT_MODES.join(", ")}"
+      end
     end
 
     def flush_worker_output
