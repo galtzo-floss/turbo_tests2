@@ -995,6 +995,38 @@ RSpec.describe TurboTests::Runner do
     end
   end
 
+  describe "#flush_worker_warnings (private)" do
+    it "prints warning and deprecation lines from successful worker output" do
+      runner = build_runner
+      worker_output = runner.instance_variable_get(:@worker_output)
+      worker_output[1][:stdout] = <<~OUTPUT
+        ordinary worker noise
+        DEPRECATION WARNING: old behavior is deprecated
+        Coverage report generated for Test Coverage to coverage/index.html
+        Line coverage: 311 / 312 (99.67%)
+      OUTPUT
+      worker_output[2][:stderr] = <<~OUTPUT
+        boot.rb:12: warning: already initialized constant Example
+        Branch Coverage: 96.55% (28 / 29)
+      OUTPUT
+
+      expect {
+        runner.send(:flush_worker_warnings)
+      }.to output(/\nTurboTests worker 1 stdout warnings:\nDEPRECATION WARNING: old behavior is deprecated\n/).to_stdout
+        .and output(/\nTurboTests worker 2 stderr warnings:\nboot\.rb:12: warning: already initialized constant Example\n/).to_stderr
+    end
+
+    it "prints nothing when buffered output contains no warning lines" do
+      runner = build_runner
+      worker_output = runner.instance_variable_get(:@worker_output)
+      worker_output[1][:stdout] = "ordinary worker noise\n"
+
+      expect {
+        runner.send(:flush_worker_warnings)
+      }.not_to output.to_stdout
+    end
+  end
+
   describe "#run (instance method)" do
     context "when print_failed_group is true" do
       it "calls report_failed_group after messages are handled" do
@@ -1045,6 +1077,50 @@ RSpec.describe TurboTests::Runner do
       runner.run
 
       expect(runner.instance_variable_get(:@tests_in_groups)).to eq(test_groups)
+    end
+
+    it "prints buffered worker warnings on successful non-verbose runs" do
+      reporter = double("reporter", failed_examples: [])
+      status = instance_double(Process::Status, success?: true)
+      runner = build_runner(reporter: reporter)
+      test_groups = [["spec/one_spec.rb"]]
+
+      allow(ParallelTests).to receive(:determine_number_of_processes).and_return(1)
+      allow(ParallelTests::RSpec::Runner).to receive_messages(
+        tests_with_size: [["spec/one_spec.rb", 1]],
+        tests_in_groups: test_groups
+      )
+      allow(reporter).to receive(:report).and_yield(reporter)
+      allow(Signal).to receive(:trap).and_return(nil)
+      allow(runner).to receive(:start_regular_subprocess).and_return(double("wait thread", value: status))
+      allow(runner).to receive(:handle_messages)
+      allow(runner).to receive(:flush_coverage_summary)
+      runner.instance_variable_get(:@worker_output)[1][:stderr] = "boot.rb:12: warning: noisy dependency\n"
+
+      expect {
+        expect(runner.run).to eq(0)
+      }.to output(/\nTurboTests worker 1 stderr warnings:\nboot\.rb:12: warning: noisy dependency\n/).to_stderr
+    end
+
+    it "does not flush buffered worker warnings again when verbose already streamed raw output" do
+      reporter = double("reporter", failed_examples: [])
+      status = instance_double(Process::Status, success?: true)
+      runner = build_runner(reporter: reporter, verbose: true)
+      test_groups = [["spec/one_spec.rb"]]
+
+      allow(ParallelTests).to receive(:determine_number_of_processes).and_return(1)
+      allow(ParallelTests::RSpec::Runner).to receive_messages(
+        tests_with_size: [["spec/one_spec.rb", 1]],
+        tests_in_groups: test_groups
+      )
+      allow(reporter).to receive(:report).and_yield(reporter)
+      allow(Signal).to receive(:trap).and_return(nil)
+      allow(runner).to receive(:start_regular_subprocess).and_return(double("wait thread", value: status))
+      allow(runner).to receive(:handle_messages)
+      allow(runner).to receive(:flush_coverage_summary)
+
+      expect(runner).not_to receive(:flush_worker_warnings)
+      expect(runner.run).to eq(0)
     end
 
     it "passes parallel_tests options to discovery and grouping" do

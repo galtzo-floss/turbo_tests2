@@ -270,6 +270,7 @@ module TurboTests
           statuses = @wait_threads.map(&:value)
 
           if @reporter.failed_examples.empty? && statuses.all?(&:success?)
+            flush_worker_warnings unless @verbose
             report_coverage = true
             exit_status = 0
           else
@@ -521,6 +522,43 @@ module TurboTests
           io.puts unless output.end_with?("\n")
         end
       end
+    end
+
+    def flush_worker_warnings
+      output_by_process = @worker_output_mutex.synchronize do
+        @worker_output.transform_values(&:dup)
+      end
+
+      output_by_process.each do |process_id, streams|
+        streams.each do |stream, output|
+          warnings = warning_lines(output)
+          next if warnings.empty?
+
+          io = (stream == :stderr) ? $stderr : $stdout
+          io.puts
+          io.puts("TurboTests worker #{process_id} #{stream} warnings:")
+          warnings.each { |line| io.puts(line) }
+        end
+      end
+    end
+
+    def warning_lines(output)
+      output.each_line.each_with_object([]) do |line, warnings|
+        stripped = line.strip
+        next if stripped.empty?
+        next unless warning_line?(stripped)
+        next if coverage_output_line?(stripped)
+
+        warnings << stripped
+      end
+    end
+
+    def warning_line?(line)
+      line.match?(/warning:/i) || line.match?(/deprecat/i)
+    end
+
+    def coverage_output_line?(line)
+      line.start_with?("Coverage report generated for ", "JSON Coverage report generated for ", "Line coverage:", "Branch coverage:", "Line Coverage:", "Branch Coverage:")
     end
 
     def flush_coverage_summary
