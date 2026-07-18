@@ -40,6 +40,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Successful non-verbose runs now surface warning and deprecation lines emitted
+  as raw worker stdout/stderr without dumping all buffered worker output.
 - `heads.yml` and `dep-heads.yml` now gate JRuby and TruffleRuby PR coverage
   at the job level, so non-matching PR branches skip those engine jobs before a
   runner is provisioned.

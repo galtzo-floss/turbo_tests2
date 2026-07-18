@@ -260,6 +260,11 @@ future runtime-based runs can use the updated log.
 Selected group runs default to filesize grouping unless `--group-by` is
 provided.
 
+On successful non-verbose runs, raw worker output stays buffered so it does not
+interrupt formatter progress output. Warning and deprecation lines emitted
+outside RSpec formatter events are printed after the workers finish; known
+coverage formatter chatter remains collapsed into the concise coverage summary.
+
 `turbo_tests2` supports custom formatter such as Fuubar, but you might need to require it:
 
 ```bash
