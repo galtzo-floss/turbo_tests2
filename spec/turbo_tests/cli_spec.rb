@@ -172,7 +172,7 @@ RSpec.describe TurboTests::CLI do
 
     it "renders help for all documented options" do
       matcher = RSpec::Matchers::BuiltIn::Output.new(
-        /-n, -w, --workers \[PROCESSES\].*--example-status-log FILE.*--pattern PATTERN.*--exclude-pattern PATTERN.*--only-group GROUP_INDEX\[,GROUP_INDEX\].*--group-by MODE.*--seed SEED.*--order ORDER.*--no-random.*--nice/m
+        /-n, -w, --workers \[PROCESSES\].*--example-status-log FILE.*--pattern PATTERN.*--exclude-pattern PATTERN.*--only-group GROUP_INDEX\[,GROUP_INDEX\].*--group-by MODE.*--allowed-missing PERCENT.*--unknown-runtime SECONDS.*--seed SEED.*--order ORDER.*--no-random.*--nice/m
       ).to_stdout
 
       expect { run_cli(["--help"]) }.to matcher
@@ -260,10 +260,66 @@ RSpec.describe TurboTests::CLI do
       expect(captured_opts[:parallel_options]).to include(group_by: :runtime)
     end
 
+    it "passes allowed missing runtime percent to parallel_tests" do
+      run_cli(["--allowed-missing", "25"])
+
+      expect(captured_opts[:files]).to be_nil
+      expect(captured_opts[:parallel_options]).to include(allowed_missing_percent: 25)
+    end
+
+    it "passes separator allowed missing runtime percent to parallel_tests without treating it as a file" do
+      run_cli(["spec/example_spec.rb", "--", "--allowed-missing", "25"])
+
+      expect(captured_opts[:files]).to eq(["spec/example_spec.rb"])
+      expect(captured_opts[:parallel_options]).to include(allowed_missing_percent: 25)
+    end
+
+    it "passes unknown runtime seconds to parallel_tests" do
+      run_cli(["--unknown-runtime", "1.5"])
+
+      expect(captured_opts[:files]).to be_nil
+      expect(captured_opts[:parallel_options]).to include(unknown_runtime: 1.5)
+    end
+
+    it "passes separator unknown runtime seconds to parallel_tests without treating it as a file" do
+      run_cli(["spec/example_spec.rb", "--", "--unknown-runtime", "1.5"])
+
+      expect(captured_opts[:files]).to eq(["spec/example_spec.rb"])
+      expect(captured_opts[:parallel_options]).to include(unknown_runtime: 1.5)
+    end
+
     it "rejects unsupported group-by modes" do
       expect {
         run_cli(["--group-by", "alphabetical"])
       }.to raise_error(OptionParser::InvalidArgument, /invalid group-by mode/)
+    end
+
+    it "rejects allowed missing runtime percent below zero" do
+      expect {
+        run_cli(["--allowed-missing", "-1"])
+      }.to raise_error(OptionParser::InvalidArgument, /invalid allowed missing percent/)
+    end
+
+    it "rejects allowed missing runtime percent above one hundred" do
+      expect {
+        run_cli(["--allowed-missing", "101"])
+      }.to raise_error(OptionParser::InvalidArgument, /invalid allowed missing percent/)
+    end
+
+    it "rejects unknown runtime seconds below zero" do
+      expect {
+        run_cli(["--unknown-runtime", "-0.1"])
+      }.to raise_error(OptionParser::InvalidArgument, /invalid unknown runtime/)
+    end
+
+    it "rejects unknown runtime seconds that are not finite" do
+      expect {
+        run_cli(["--unknown-runtime", "1e309"])
+      }.to raise_error(OptionParser::InvalidArgument, /invalid unknown runtime/)
+
+      expect {
+        run_cli(["--unknown-runtime", "NaN"])
+      }.to raise_error(OptionParser::InvalidArgument)
     end
 
     it "rejects invalid exclude pattern regexes" do

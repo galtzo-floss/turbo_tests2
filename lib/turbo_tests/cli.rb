@@ -101,6 +101,14 @@ module TurboTests
           parallel_options[:group_by] = parse_group_by(mode)
         end
 
+        opts.on("--allowed-missing PERCENT", Integer, "Allowed percentage of missing runtimes for runtime grouping") do |percent|
+          parallel_options[:allowed_missing_percent] = parse_allowed_missing(percent)
+        end
+
+        opts.on("--unknown-runtime SECONDS", Float, "Runtime in seconds to assign files missing runtime history") do |seconds|
+          parallel_options[:unknown_runtime] = parse_unknown_runtime(seconds)
+        end
+
         opts.on("-v", "--verbose", "More output") do
           verbose = true
         end
@@ -223,6 +231,14 @@ module TurboTests
         opts.on("--group-by MODE", "Group files by runtime, filesize, or found order") do |mode|
           parallel_options[:group_by] = parse_group_by(mode)
         end
+
+        opts.on("--allowed-missing PERCENT", Integer, "Allowed percentage of missing runtimes for runtime grouping") do |percent|
+          parallel_options[:allowed_missing_percent] = parse_allowed_missing(percent)
+        end
+
+        opts.on("--unknown-runtime SECONDS", Float, "Runtime in seconds to assign files missing runtime history") do |seconds|
+          parallel_options[:unknown_runtime] = parse_unknown_runtime(seconds)
+        end
       end.parse!(args)
 
       return if args.empty?
@@ -253,6 +269,22 @@ module TurboTests
       end
 
       value.to_sym
+    end
+
+    def parse_allowed_missing(percent)
+      unless (0..100).cover?(percent)
+        raise OptionParser::InvalidArgument, "invalid allowed missing percent #{percent.inspect}; expected 0 through 100"
+      end
+
+      percent
+    end
+
+    def parse_unknown_runtime(seconds)
+      unless seconds.finite? && !seconds.negative?
+        raise OptionParser::InvalidArgument, "invalid unknown runtime #{seconds.inspect}; expected a finite non-negative number"
+      end
+
+      seconds
     end
 
     def handle_fan_command
