@@ -312,6 +312,16 @@ RSpec.describe TurboTests::CLI do
       }.to raise_error(OptionParser::InvalidArgument, /invalid unknown runtime/)
     end
 
+    it "rejects unknown runtime seconds that are not finite" do
+      expect {
+        run_cli(["--unknown-runtime", "1e309"])
+      }.to raise_error(OptionParser::InvalidArgument, /invalid unknown runtime/)
+
+      expect {
+        run_cli(["--unknown-runtime", "NaN"])
+      }.to raise_error(OptionParser::InvalidArgument)
+    end
+
     it "rejects invalid exclude pattern regexes" do
       expect {
         run_cli(["--exclude-pattern", "["])

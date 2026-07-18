@@ -280,8 +280,8 @@ module TurboTests
     end
 
     def parse_unknown_runtime(seconds)
-      if seconds.negative?
-        raise OptionParser::InvalidArgument, "invalid unknown runtime #{seconds.inspect}; expected a non-negative number"
+      unless seconds.finite? && !seconds.negative?
+        raise OptionParser::InvalidArgument, "invalid unknown runtime #{seconds.inspect}; expected a finite non-negative number"
       end
 
       seconds
