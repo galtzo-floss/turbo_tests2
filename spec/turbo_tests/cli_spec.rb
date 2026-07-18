@@ -172,7 +172,7 @@ RSpec.describe TurboTests::CLI do
 
     it "renders help for all documented options" do
       matcher = RSpec::Matchers::BuiltIn::Output.new(
-        /-n, --count \[PROCESSES\].*-w, --workers \[PROCESSES\].*--example-status-log FILE.*--pattern PATTERN.*--exclude-pattern PATTERN.*--only-group GROUP_INDEX\[,GROUP_INDEX\].*--group-by MODE.*--allowed-missing PERCENT.*--unknown-runtime SECONDS.*--seed SEED.*--order ORDER.*--no-random.*--nice/m
+        /-n, --count \[PROCESSES\].*-w, --workers \[PROCESSES\].*--example-status-log FILE.*--pattern PATTERN.*--exclude-pattern PATTERN.*--only-group GROUP_INDEX\[,GROUP_INDEX\].*--group-by MODE.*--allowed-missing PERCENT.*--unknown-runtime SECONDS.*--worker-output MODE.*--seed SEED.*--order ORDER.*--no-random.*--nice/m
       ).to_stdout
 
       expect { run_cli(["--help"]) }.to matcher
@@ -468,6 +468,16 @@ RSpec.describe TurboTests::CLI do
     it "passes verbose: true with --verbose" do
       run_cli(["--verbose"])
       expect(captured_opts[:verbose]).to be true
+    end
+
+    it "passes worker_output with --worker-output" do
+      run_cli(["--worker-output", "stream"])
+      expect(captured_opts[:worker_output]).to eq("stream")
+    end
+
+    it "leaves worker_output nil when --worker-output is not provided so Runner can use ENV" do
+      run_cli([])
+      expect(captured_opts[:worker_output]).to be_nil
     end
 
     it "passes count with -w" do

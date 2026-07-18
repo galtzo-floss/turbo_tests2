@@ -25,6 +25,9 @@ Please file a bug if you notice a violation of semantic versioning.
   `-w` / `--workers` aliases.
 - Documented the supported `parallel_tests` option subset and clarified that
   unsupported flags are not blindly passed through after `--`.
+- Added `--worker-output MODE` and `TURBO_TESTS2_WORKER_OUTPUT` support for
+  selecting raw worker stdout/stderr handling: `warnings`, `stream`, `buffered`,
+  or `quiet`.
 - `--group-by runtime|filesize|found` is now parsed explicitly and mapped to
   `parallel_tests` grouping modes, including when supplied after the
   compatibility `--` separator.

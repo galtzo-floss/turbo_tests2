@@ -212,6 +212,7 @@ Options:
         --allowed-missing PERCENT    Allowed percentage of missing runtimes for runtime grouping
         --unknown-runtime SECONDS    Runtime in seconds to assign files missing runtime history
     -v, --verbose                    More output
+        --worker-output MODE         Raw worker output mode: warnings, stream, buffered, or quiet; env: TURBO_TESTS2_WORKER_OUTPUT
         --fail-fast=[N]
         --seed SEED                  Seed for RSpec
         --order ORDER                RSpec example order: random (default) or defined
@@ -304,10 +305,24 @@ provided.
 | `--serialize-stdout`, `--prefix-output-with-test-env-number`, `--combine-stderr`, `--quiet`, `--verbose-command`, `--verbose-process-command`, `--verbose-rerun-command` | Not supported | None | `turbo_tests2` owns worker output collection and formatter reporting. |
 | `--no-symlinks`, `--allow-duplicates`, `--first-is-1`, `--highest-exit-status`, `--failure-exit-code`, `--test-file-limit` | Not supported | None | These need explicit design and tests before they can be accepted. |
 
-On successful non-verbose runs, raw worker output stays buffered so it does not
-interrupt formatter progress output. Warning and deprecation lines emitted
-outside RSpec formatter events are printed after the workers finish; known
-coverage formatter chatter remains collapsed into the concise coverage summary.
+### Worker Output Modes
+
+Raw worker stdout/stderr is separate from the parent process formatter output.
+The progress dot parade is reconstructed from JSON formatter events and already
+streams from the parent process as workers report examples. Use
+`--worker-output MODE`, or `TURBO_TESTS2_WORKER_OUTPUT=MODE`, to choose how raw
+worker stdout/stderr is handled. A CLI flag takes precedence over the
+environment variable.
+
+| Mode | Behavior |
+|------|----------|
+| `warnings` | Default. Buffer raw worker output, print warning/deprecation lines after successful runs, and print full buffered raw output on failures. |
+| `stream` | Stream raw worker stdout/stderr immediately without enabling verbose command logging. Buffered output is not replayed at the end. |
+| `buffered` | Buffer raw worker output and print all buffered output after the run completes. |
+| `quiet` | Suppress raw worker output on successful runs. Failed runs still print buffered raw output. |
+
+Known coverage formatter chatter remains collapsed into the concise coverage
+summary.
 
 `turbo_tests2` supports custom formatter such as Fuubar, but you might need to require it:
 
