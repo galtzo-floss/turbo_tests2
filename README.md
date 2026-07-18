@@ -280,7 +280,7 @@ provided.
 
 | `parallel_tests` option | Status | `turbo_tests2` equivalent | Notes |
 |-------------------------|--------|---------------------------|-------|
-| `-n`, `--workers` / `-n PROCESSES` | Supported natively | `-n`, `-w`, `--workers` | Parsed as a `turbo_tests2` option before any `--` separator. |
+| `-n`, `--count PROCESSES` | Supported natively | `-n`, `-w`, `--workers` | Parsed as a `turbo_tests2` option before any `--` separator. |
 | `-p`, `--pattern PATTERN` | Supported | `--pattern PATTERN` | May be supplied before or after `--`; mapped to `parallel_tests` file discovery. |
 | `--exclude-pattern PATTERN` | Supported | `--exclude-pattern PATTERN` | May be supplied before or after `--`; mapped to `parallel_tests` file discovery. |
 | `--only-group GROUP_INDEX[,GROUP_INDEX]` | Supported | `--only-group GROUP_INDEX[,GROUP_INDEX]` | May be supplied before or after `--`; uses 1-based `parallel_tests` group indexes. |
