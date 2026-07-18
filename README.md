@@ -196,7 +196,8 @@ Usage: turbo_tests2 [options]
   turbo_tests2 spec/bar spec/baz/xxx_spec.rb
 
 Options:
-    -n, -w, --workers [PROCESSES]    How many processes to use, default: available CPUs
+    -n, --count [PROCESSES]          How many processes to use, default: available CPUs
+    -w, --workers [PROCESSES]        Alias for -n, --count
     -r, --require PATH               Require a file.
     -f, --format FORMATTER           Choose a formatter. Available formatters: progress (p), documentation (d). Default: progress
     -t, --tag TAG                    Run examples with the specified tag.
@@ -280,7 +281,7 @@ provided.
 
 | `parallel_tests` option | Status | `turbo_tests2` equivalent | Notes |
 |-------------------------|--------|---------------------------|-------|
-| `-n`, `--count PROCESSES` | Supported natively | `-n`, `-w`, `--workers` | Parsed as a `turbo_tests2` option before any `--` separator. |
+| `-n`, `--count PROCESSES` | Supported natively | `-n`, `--count`; `-w`, `--workers` aliases | Parsed as a `turbo_tests2` option before any `--` separator. |
 | `-p`, `--pattern PATTERN` | Supported | `--pattern PATTERN` | May be supplied before or after `--`; mapped to `parallel_tests` file discovery. |
 | `--exclude-pattern PATTERN` | Supported | `--exclude-pattern PATTERN` | May be supplied before or after `--`; mapped to `parallel_tests` file discovery. |
 | `--only-group GROUP_INDEX[,GROUP_INDEX]` | Supported | `--only-group GROUP_INDEX[,GROUP_INDEX]` | May be supplied before or after `--`; uses 1-based `parallel_tests` group indexes. |
@@ -297,7 +298,7 @@ provided.
 | `--group-by default`, `steps`, `scenarios` | Not supported | None | `turbo_tests2` targets RSpec file grouping, not every `parallel_tests` framework mode. |
 | `--single`, `--isolate`, `--isolate-n` | Not supported | None | No first-class mapping yet. |
 | `--specify-groups` | Not supported | None | No first-class mapping yet. |
-| `-m`, `--multiply-processes` | Not supported | None | Use an explicit `-n`/`--workers` value. |
+| `-m`, `--multiply-processes` | Not supported | None | Use an explicit `-n`/`--count` value. |
 | `-e`, `--exec`, `--exec-args`, `--non-parallel` | Not supported | None | `turbo_tests2` runs RSpec workers, not arbitrary command groups. |
 | `--suffix`, `--type`, `--ignore-tags` | Not supported | None | `turbo_tests2` currently targets RSpec. |
 | `--serialize-stdout`, `--prefix-output-with-test-env-number`, `--combine-stderr`, `--quiet`, `--verbose-command`, `--verbose-process-command`, `--verbose-rerun-command` | Not supported | None | `turbo_tests2` owns worker output collection and formatter reporting. |

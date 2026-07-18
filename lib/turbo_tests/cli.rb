@@ -44,7 +44,16 @@ module TurboTests
           Options:
         BANNER
 
-        opts.on("-n [PROCESSES]", "-w [PROCESSES]", "--workers [PROCESSES]", Integer, "How many processes to use, default: available CPUs") do |n|
+        opts.on(
+          "-n [PROCESSES]",
+          "--count [PROCESSES]",
+          Integer,
+          "How many processes to use, default: available CPUs"
+        ) do |n|
+          count = n
+        end
+
+        opts.on("-w [PROCESSES]", "--workers [PROCESSES]", Integer, "Alias for -n, --count") do |n|
           count = n
         end
 
@@ -292,7 +301,16 @@ module TurboTests
       count = nil
       parser = OptionParser.new do |opts|
         opts.banner = "Usage: turbo_tests2 fan [options] COMMAND [ARGS]"
-        opts.on("-n [PROCESSES]", "-w [PROCESSES]", "--workers [PROCESSES]", Integer, "How many processes to use, default: available CPUs") do |n|
+        opts.on(
+          "-n [PROCESSES]",
+          "--count [PROCESSES]",
+          Integer,
+          "How many processes to use, default: available CPUs"
+        ) do |n|
+          count = n
+        end
+
+        opts.on("-w [PROCESSES]", "--workers [PROCESSES]", Integer, "Alias for -n, --count") do |n|
           count = n
         end
       end
