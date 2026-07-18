@@ -224,8 +224,12 @@ By default, `turbo_tests2` generates one random RSpec seed, prints it, and passe
 that same seed to every worker process. Use `--seed SEED` to replay a run, or
 `--order defined` / `--no-random` when you want ordered examples without a seed.
 
-`turbo_tests2` supports selected `parallel_tests` file discovery options
-explicitly. To select or exclude files matching a regex:
+`turbo_tests2` supports selected `parallel_tests` options explicitly. It does
+not invoke the `parallel_tests` CLI directly, and it does not blindly pass
+unknown `parallel_tests` flags through after `--`. Options after `--` are parsed
+only when listed as supported below.
+
+To select or exclude files matching a regex:
 
 ```bash
 bundle exec turbo_tests2 -n 4 --pattern spec/system
@@ -271,6 +275,33 @@ bundle exec turbo_tests2 -n 4 -- --allowed-missing 25 --unknown-runtime 0.5
 
 Selected group runs default to filesize grouping unless `--group-by` is
 provided.
+
+### Supported `parallel_tests` Options
+
+| `parallel_tests` option | Status | `turbo_tests2` equivalent | Notes |
+|-------------------------|--------|---------------------------|-------|
+| `-n`, `--workers` / `-n PROCESSES` | Supported natively | `-n`, `-w`, `--workers` | Parsed as a `turbo_tests2` option before any `--` separator. |
+| `-p`, `--pattern PATTERN` | Supported | `--pattern PATTERN` | May be supplied before or after `--`; mapped to `parallel_tests` file discovery. |
+| `--exclude-pattern PATTERN` | Supported | `--exclude-pattern PATTERN` | May be supplied before or after `--`; mapped to `parallel_tests` file discovery. |
+| `--only-group GROUP_INDEX[,GROUP_INDEX]` | Supported | `--only-group GROUP_INDEX[,GROUP_INDEX]` | May be supplied before or after `--`; uses 1-based `parallel_tests` group indexes. |
+| `--group-by runtime` | Supported | `--group-by runtime` | May be supplied before or after `--`; uses runtime-log grouping. |
+| `--group-by filesize` | Supported | `--group-by filesize` | May be supplied before or after `--`; groups by file size. |
+| `--group-by found` | Supported | `--group-by found` | May be supplied before or after `--`; keeps discovered file order. |
+| `--allowed-missing PERCENT` | Supported | `--allowed-missing PERCENT` | May be supplied before or after `--`; validates `0..100`. |
+| `--unknown-runtime SECONDS` | Supported | `--unknown-runtime SECONDS` | May be supplied before or after `--`; validates finite non-negative seconds. |
+| `--runtime-log PATH` | Supported natively | `--runtime-log FILE` | Parsed as a `turbo_tests2` option before any `--` separator. |
+| `--nice` | Supported natively | `--nice` | Parsed as a `turbo_tests2` option before any `--` separator. |
+| `--fail-fast` | Supported natively | `--fail-fast[=N]` | Uses `turbo_tests2` fail-fast handling and RSpec worker arguments. |
+| `--verbose` | Supported natively | `-v`, `--verbose` | Enables `turbo_tests2` verbose output. |
+| `--test-options`, `-o` | Not supported as pass-through | Use `turbo_tests2` RSpec-facing flags | `turbo_tests2` exposes selected RSpec options directly, such as `--seed`, `--order`, `--no-random`, `--tag`, `--format`, and `--out`. |
+| `--group-by default`, `steps`, `scenarios` | Not supported | None | `turbo_tests2` targets RSpec file grouping, not every `parallel_tests` framework mode. |
+| `--single`, `--isolate`, `--isolate-n` | Not supported | None | No first-class mapping yet. |
+| `--specify-groups` | Not supported | None | No first-class mapping yet. |
+| `-m`, `--multiply-processes` | Not supported | None | Use an explicit `-n`/`--workers` value. |
+| `-e`, `--exec`, `--exec-args`, `--non-parallel` | Not supported | None | `turbo_tests2` runs RSpec workers, not arbitrary command groups. |
+| `--suffix`, `--type`, `--ignore-tags` | Not supported | None | `turbo_tests2` currently targets RSpec. |
+| `--serialize-stdout`, `--prefix-output-with-test-env-number`, `--combine-stderr`, `--quiet`, `--verbose-command`, `--verbose-process-command`, `--verbose-rerun-command` | Not supported | None | `turbo_tests2` owns worker output collection and formatter reporting. |
+| `--no-symlinks`, `--allow-duplicates`, `--first-is-1`, `--highest-exit-status`, `--failure-exit-code`, `--test-file-limit` | Not supported | None | These need explicit design and tests before they can be accepted. |
 
 On successful non-verbose runs, raw worker output stays buffered so it does not
 interrupt formatter progress output. Warning and deprecation lines emitted

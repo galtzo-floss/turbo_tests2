@@ -20,6 +20,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Added
 
+- Documented the supported `parallel_tests` option subset and clarified that
+  unsupported flags are not blindly passed through after `--`.
 - `--group-by runtime|filesize|found` is now parsed explicitly and mapped to
   `parallel_tests` grouping modes, including when supplied after the
   compatibility `--` separator.
