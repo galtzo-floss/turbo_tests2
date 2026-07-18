@@ -172,7 +172,7 @@ RSpec.describe TurboTests::CLI do
 
     it "renders help for all documented options" do
       matcher = RSpec::Matchers::BuiltIn::Output.new(
-        /-n, -w, --workers \[PROCESSES\].*--example-status-log FILE.*--pattern PATTERN.*--exclude-pattern PATTERN.*--only-group GROUP_INDEX\[,GROUP_INDEX\].*--group-by MODE.*--allowed-missing PERCENT.*--unknown-runtime SECONDS.*--seed SEED.*--order ORDER.*--no-random.*--nice/m
+        /-n, --count \[PROCESSES\].*-w, --workers \[PROCESSES\].*--example-status-log FILE.*--pattern PATTERN.*--exclude-pattern PATTERN.*--only-group GROUP_INDEX\[,GROUP_INDEX\].*--group-by MODE.*--allowed-missing PERCENT.*--unknown-runtime SECONDS.*--seed SEED.*--order ORDER.*--no-random.*--nice/m
       ).to_stdout
 
       expect { run_cli(["--help"]) }.to matcher
@@ -410,6 +410,22 @@ RSpec.describe TurboTests::CLI do
         )
       end
 
+      it "accepts --count for process count" do
+        spawned = []
+        statuses = [double("status", success?: true)]
+
+        allow(ParallelTests).to receive(:determine_number_of_processes).with(1).and_return(1)
+        allow(Process).to receive(:spawn) do |env, *command|
+          spawned << [env, command]
+          101
+        end
+        allow(Process).to receive(:wait2).with(101).and_return([101, statuses[0]])
+
+        run_cli(["fan", "--count", "1", "rake", "db:test:prepare"])
+
+        expect(spawned.size).to eq(1)
+      end
+
       it "exits nonzero when a worker command fails" do
         success = double("success", success?: true)
         failure = double("failure", success?: false)
@@ -457,6 +473,11 @@ RSpec.describe TurboTests::CLI do
     it "passes count with -w" do
       run_cli(["-w", "2"])
       expect(captured_opts[:count]).to eq(2)
+    end
+
+    it "passes count with --count" do
+      run_cli(["--count", "3"])
+      expect(captured_opts[:count]).to eq(3)
     end
 
     it "passes count with --workers" do

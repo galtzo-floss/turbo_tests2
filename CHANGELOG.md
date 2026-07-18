@@ -20,6 +20,11 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Added
 
+- `--count` is now accepted as an alias for `-n`, matching the
+  `parallel_tests` process-count option while keeping the existing
+  `-w` / `--workers` aliases.
+- Documented the supported `parallel_tests` option subset and clarified that
+  unsupported flags are not blindly passed through after `--`.
 - `--group-by runtime|filesize|found` is now parsed explicitly and mapped to
   `parallel_tests` grouping modes, including when supplied after the
   compatibility `--` separator.
