@@ -182,7 +182,7 @@ Finished in 2 minute 25.15 seconds (files took 0 seconds to load)
     <tr>
       <td>Source</td>
       <td>
-<a href="https://gitlab.com/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/GitLab-FBA326?style=for-the-badge&amp;logo=Gitlab&amp;logoColor=orange" alt="Source on GitLab.com"></a> <a href="https://codeberg.org/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/CodeBerg-4893CC?style=for-the-badge&amp;logo=CodeBerg&amp;logoColor=blue" alt="Source on CodeBerg.org"></a> <a href="https://github.com/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/GitHub-238636?style=for-the-badge&amp;logo=Github&amp;logoColor=green" alt="Source on Github.com"></a> <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://img.shields.io/badge/KLOC-0.779-FFDD67.svg?style=for-the-badge&amp;logo=YouTube&amp;logoColor=blue" alt="The best SHA: dQw4w9WgXcQ!"></a>
+<a href="https://gitlab.com/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/GitLab-FBA326?style=for-the-badge&amp;logo=Gitlab&amp;logoColor=orange" alt="Source on GitLab.com"></a> <a href="https://codeberg.org/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/CodeBerg-4893CC?style=for-the-badge&amp;logo=CodeBerg&amp;logoColor=blue" alt="Source on CodeBerg.org"></a> <a href="https://github.com/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/GitHub-238636?style=for-the-badge&amp;logo=Github&amp;logoColor=green" alt="Source on Github.com"></a> <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://img.shields.io/badge/KLOC-0.897-FFDD67.svg?style=for-the-badge&amp;logo=YouTube&amp;logoColor=blue" alt="The best SHA: dQw4w9WgXcQ!"></a>
 </td>
     </tr>
     <tr>
@@ -428,14 +428,23 @@ Usage: turbo_tests2 [options]
   turbo_tests2 spec/bar spec/baz/xxx_spec.rb
 
 Options:
-    -n, -w, --workers [PROCESSES]    How many processes to use, default: available CPUs
+    -n, --count [PROCESSES]          How many processes to use, default: available CPUs
+    -w, --workers [PROCESSES]        Alias for -n, --count
     -r, --require PATH               Require a file.
     -f, --format FORMATTER           Choose a formatter. Available formatters: progress (p), documentation (d). Default: progress
     -t, --tag TAG                    Run examples with the specified tag.
     -o, --out FILE                   Write output to a file instead of $stdout
         --runtime-log FILE           Location of previously recorded test runtimes
         --example-status-log FILE    Use RSpec example status persistence timings for grouping
+        --pattern PATTERN            Run spec files matching this regex pattern
+        --exclude-pattern PATTERN    Exclude spec files matching this regex pattern
+        --only-group GROUP_INDEX[,GROUP_INDEX]
+                                      Run only the selected 1-based parallel_tests group index(es)
+        --group-by MODE              Group files by runtime, filesize, or found order
+        --allowed-missing PERCENT    Allowed percentage of missing runtimes for runtime grouping
+        --unknown-runtime SECONDS    Runtime in seconds to assign files missing runtime history
     -v, --verbose                    More output
+        --worker-output MODE         Raw worker output mode: warnings, stream, buffered, or quiet; env: TURBO_TESTS2_WORKER_OUTPUT
         --fail-fast=[N]
         --seed SEED                  Seed for RSpec
         --order ORDER                RSpec example order: random (default) or defined
@@ -449,10 +458,268 @@ Options:
 that same seed to every worker process. Use <code>--seed SEED</code> to replay a run, or<br>
 <code>--order defined</code> / <code>--no-random</code> when you want ordered examples without a seed.</p>
 
-<p>To pass any options supported by parallel_tests, use <code>--</code>:</p>
+<p><code>turbo_tests2</code> supports selected <code>parallel_tests</code> options explicitly. It does<br>
+not invoke the <code>parallel_tests</code> CLI directly, and it does not blindly pass<br>
+unknown <code>parallel_tests</code> flags through after <code>--</code>. Options after <code>--</code> are parsed<br>
+only when listed as supported below.</p>
 
-<pre class="code language-bash"><code class="language-bash">bundle exec turbo_tests2 -n 4 -- --only-group 1 --pattern spec/system
+<p>To select or exclude files matching a regex:</p>
+
+<pre class="code language-bash"><code class="language-bash">bundle exec turbo_tests2 -n 4 --pattern spec/system
+bundle exec turbo_tests2 -n 4 --exclude-pattern spec/system
 </code></pre>
+
+<p>The compatibility separator also accepts supported options:</p>
+
+<pre class="code language-bash"><code class="language-bash">bundle exec turbo_tests2 -n 4 -- --pattern spec/system
+bundle exec turbo_tests2 -n 4 -- --exclude-pattern spec/system
+</code></pre>
+
+<p>To rerun one or more selected 1-based groups from a prior parallel split:</p>
+
+<pre class="code language-bash"><code class="language-bash">bundle exec turbo_tests2 -n 4 --only-group 2
+bundle exec turbo_tests2 -n 4 -- --only-group 1,3
+</code></pre>
+
+<p>To choose a supported <code>parallel_tests</code> grouping mode explicitly:</p>
+
+<pre class="code language-bash"><code class="language-bash">bundle exec turbo_tests2 -n 4 --group-by runtime
+bundle exec turbo_tests2 -n 4 --group-by filesize
+bundle exec turbo_tests2 -n 4 --group-by found
+bundle exec turbo_tests2 -n 4 -- --group-by runtime
+</code></pre>
+
+<p><code>runtime</code> grouping uses the configured runtime log, which <code>turbo_tests2</code><br>
+continues to record by default. <code>filesize</code> and <code>found</code> do not use runtime<br>
+history for the initial split, but worker runtime recording still runs so<br>
+future runtime-based runs can use the updated log.</p>
+
+<p>Runtime grouping also supports the explicit <code>parallel_tests</code> tuning flags<br>
+<code>--allowed-missing PERCENT</code> and <code>--unknown-runtime SECONDS</code>:</p>
+
+<pre class="code language-bash"><code class="language-bash">bundle exec turbo_tests2 -n 4 --group-by runtime --allowed-missing 25
+bundle exec turbo_tests2 -n 4 --group-by runtime --unknown-runtime 0.5
+bundle exec turbo_tests2 -n 4 -- --allowed-missing 25 --unknown-runtime 0.5
+</code></pre>
+
+<p>Selected group runs default to filesize grouping unless <code>--group-by</code> is<br>
+provided.</p>
+
+<h3 id="supported-parallel_tests-options">Supported <code>parallel_tests</code> Options</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>
+<code>parallel_tests</code> option</th>
+      <th>Status</th>
+      <th>
+<code>turbo_tests2</code> equivalent</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+<code>-n</code>, <code>--count PROCESSES</code>
+</td>
+      <td>Supported natively</td>
+      <td>
+<code>-n</code>, <code>--count</code>; <code>-w</code>, <code>--workers</code> aliases</td>
+      <td>Parsed as a <code>turbo_tests2</code> option before any <code>--</code> separator.</td>
+    </tr>
+    <tr>
+      <td>
+<code>-p</code>, <code>--pattern PATTERN</code>
+</td>
+      <td>Supported</td>
+      <td><code>--pattern PATTERN</code></td>
+      <td>May be supplied before or after <code>--</code>; mapped to <code>parallel_tests</code> file discovery.</td>
+    </tr>
+    <tr>
+      <td><code>--exclude-pattern PATTERN</code></td>
+      <td>Supported</td>
+      <td><code>--exclude-pattern PATTERN</code></td>
+      <td>May be supplied before or after <code>--</code>; mapped to <code>parallel_tests</code> file discovery.</td>
+    </tr>
+    <tr>
+      <td><code>--only-group GROUP_INDEX[,GROUP_INDEX]</code></td>
+      <td>Supported</td>
+      <td><code>--only-group GROUP_INDEX[,GROUP_INDEX]</code></td>
+      <td>May be supplied before or after <code>--</code>; uses 1-based <code>parallel_tests</code> group indexes.</td>
+    </tr>
+    <tr>
+      <td><code>--group-by runtime</code></td>
+      <td>Supported</td>
+      <td><code>--group-by runtime</code></td>
+      <td>May be supplied before or after <code>--</code>; uses runtime-log grouping.</td>
+    </tr>
+    <tr>
+      <td><code>--group-by filesize</code></td>
+      <td>Supported</td>
+      <td><code>--group-by filesize</code></td>
+      <td>May be supplied before or after <code>--</code>; groups by file size.</td>
+    </tr>
+    <tr>
+      <td><code>--group-by found</code></td>
+      <td>Supported</td>
+      <td><code>--group-by found</code></td>
+      <td>May be supplied before or after <code>--</code>; keeps discovered file order.</td>
+    </tr>
+    <tr>
+      <td><code>--allowed-missing PERCENT</code></td>
+      <td>Supported</td>
+      <td><code>--allowed-missing PERCENT</code></td>
+      <td>May be supplied before or after <code>--</code>; validates <code>0..100</code>.</td>
+    </tr>
+    <tr>
+      <td><code>--unknown-runtime SECONDS</code></td>
+      <td>Supported</td>
+      <td><code>--unknown-runtime SECONDS</code></td>
+      <td>May be supplied before or after <code>--</code>; validates finite non-negative seconds.</td>
+    </tr>
+    <tr>
+      <td><code>--runtime-log PATH</code></td>
+      <td>Supported natively</td>
+      <td><code>--runtime-log FILE</code></td>
+      <td>Parsed as a <code>turbo_tests2</code> option before any <code>--</code> separator.</td>
+    </tr>
+    <tr>
+      <td><code>--nice</code></td>
+      <td>Supported natively</td>
+      <td><code>--nice</code></td>
+      <td>Parsed as a <code>turbo_tests2</code> option before any <code>--</code> separator.</td>
+    </tr>
+    <tr>
+      <td><code>--fail-fast</code></td>
+      <td>Supported natively</td>
+      <td><code>--fail-fast[=N]</code></td>
+      <td>Uses <code>turbo_tests2</code> fail-fast handling and RSpec worker arguments.</td>
+    </tr>
+    <tr>
+      <td><code>--verbose</code></td>
+      <td>Supported natively</td>
+      <td>
+<code>-v</code>, <code>--verbose</code>
+</td>
+      <td>Enables <code>turbo_tests2</code> verbose output.</td>
+    </tr>
+    <tr>
+      <td>
+<code>--test-options</code>, <code>-o</code>
+</td>
+      <td>Not supported as pass-through</td>
+      <td>Use <code>turbo_tests2</code> RSpec-facing flags</td>
+      <td>
+<code>turbo_tests2</code> exposes selected RSpec options directly, such as <code>--seed</code>, <code>--order</code>, <code>--no-random</code>, <code>--tag</code>, <code>--format</code>, and <code>--out</code>.</td>
+    </tr>
+    <tr>
+      <td>
+<code>--group-by default</code>, <code>steps</code>, <code>scenarios</code>
+</td>
+      <td>Not supported</td>
+      <td>None</td>
+      <td>
+<code>turbo_tests2</code> targets RSpec file grouping, not every <code>parallel_tests</code> framework mode.</td>
+    </tr>
+    <tr>
+      <td>
+<code>--single</code>, <code>--isolate</code>, <code>--isolate-n</code>
+</td>
+      <td>Not supported</td>
+      <td>None</td>
+      <td>No first-class mapping yet.</td>
+    </tr>
+    <tr>
+      <td><code>--specify-groups</code></td>
+      <td>Not supported</td>
+      <td>None</td>
+      <td>No first-class mapping yet.</td>
+    </tr>
+    <tr>
+      <td>
+<code>-m</code>, <code>--multiply-processes</code>
+</td>
+      <td>Not supported</td>
+      <td>None</td>
+      <td>Use an explicit <code>-n</code>/<code>--count</code> value.</td>
+    </tr>
+    <tr>
+      <td>
+<code>-e</code>, <code>--exec</code>, <code>--exec-args</code>, <code>--non-parallel</code>
+</td>
+      <td>Not supported</td>
+      <td>None</td>
+      <td>
+<code>turbo_tests2</code> runs RSpec workers, not arbitrary command groups.</td>
+    </tr>
+    <tr>
+      <td>
+<code>--suffix</code>, <code>--type</code>, <code>--ignore-tags</code>
+</td>
+      <td>Not supported</td>
+      <td>None</td>
+      <td>
+<code>turbo_tests2</code> currently targets RSpec.</td>
+    </tr>
+    <tr>
+      <td>
+<code>--serialize-stdout</code>, <code>--prefix-output-with-test-env-number</code>, <code>--combine-stderr</code>, <code>--quiet</code>, <code>--verbose-command</code>, <code>--verbose-process-command</code>, <code>--verbose-rerun-command</code>
+</td>
+      <td>Not supported</td>
+      <td>None</td>
+      <td>
+<code>turbo_tests2</code> owns worker output collection and formatter reporting.</td>
+    </tr>
+    <tr>
+      <td>
+<code>--no-symlinks</code>, <code>--allow-duplicates</code>, <code>--first-is-1</code>, <code>--highest-exit-status</code>, <code>--failure-exit-code</code>, <code>--test-file-limit</code>
+</td>
+      <td>Not supported</td>
+      <td>None</td>
+      <td>These need explicit design and tests before they can be accepted.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="worker-output-modes">Worker Output Modes</h3>
+
+<p>Raw worker stdout/stderr is separate from the parent process formatter output.<br>
+The progress dot parade is reconstructed from JSON formatter events and already<br>
+streams from the parent process as workers report examples. Use<br>
+<code>--worker-output MODE</code>, or <code>TURBO_TESTS2_WORKER_OUTPUT=MODE</code>, to choose how raw<br>
+worker stdout/stderr is handled. A CLI flag takes precedence over the<br>
+environment variable.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Mode</th>
+      <th>Behavior</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>warnings</code></td>
+      <td>Default. Buffer raw worker output, print warning/deprecation lines after successful runs, and print full buffered raw output on failures.</td>
+    </tr>
+    <tr>
+      <td><code>stream</code></td>
+      <td>Stream raw worker stdout/stderr immediately without enabling verbose command logging. Buffered output is not replayed at the end.</td>
+    </tr>
+    <tr>
+      <td><code>buffered</code></td>
+      <td>Buffer raw worker output and print all buffered output after the run completes.</td>
+    </tr>
+    <tr>
+      <td><code>quiet</code></td>
+      <td>Suppress raw worker output on successful runs. Failed runs still print buffered raw output.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Known coverage formatter chatter remains collapsed into the concise coverage<br>
+summary.</p>
 
 <p><code>turbo_tests2</code> supports custom formatter such as Fuubar, but you might need to require it:</p>
 
@@ -731,7 +998,7 @@ Please consider sponsoring me or the project.</p>
 </div></div>
 
       <div id="footer">
-  Generated on Fri Jul 17 09:48:16 2026 by
+  Generated on Sat Jul 18 19:33:16 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.45 (ruby-4.0.6).
 </div>

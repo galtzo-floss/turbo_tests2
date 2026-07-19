@@ -70,7 +70,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 and <a href="https://tom.preston-werner.com/2022/05/23/major-version-numbers-are-not-sacred.html">yes</a>, platform and engine support are part of the <a href="https://github.com/semver/semver/issues/716#issuecomment-869336139">public API</a>.<br>
 Please file a bug if you notice a violation of semantic versioning.</p>
 
-<h2 id="unreleased"><a href="https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.14...HEAD">Unreleased</a></h2>
+<h2 id="unreleased"><a href="https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.0...HEAD">Unreleased</a></h2>
 
 <h3 id="added">Added</h3>
 
@@ -84,18 +84,89 @@ Please file a bug if you notice a violation of semantic versioning.</p>
 
 <h3 id="security">Security</h3>
 
+<h2 id="320---2026-07-18">
+<a href="https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.14...v3.2.0">3.2.0</a> - 2026-07-18</h2>
+
+<ul>
+  <li>TAG: <a href="https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.0">v3.2.0</a>
+</li>
+  <li>COVERAGE: 96.88% – 869/897 lines in 10 files</li>
+  <li>BRANCH COVERAGE: 84.44% – 217/257 branches in 10 files</li>
+  <li>34.69% documented</li>
+</ul>
+
+<h3 id="added-1">Added</h3>
+
+<ul>
+  <li>
+<code>--count</code> is now accepted as an alias for <code>-n</code>, matching the<br>
+<code>parallel_tests</code> process-count option while keeping the existing<br>
+<code>-w</code> / <code>--workers</code> aliases.</li>
+  <li>Documented the supported <code>parallel_tests</code> option subset and clarified that<br>
+unsupported flags are not blindly passed through after <code>--</code>.</li>
+  <li>Added <code>--worker-output MODE</code> and <code>TURBO_TESTS2_WORKER_OUTPUT</code> support for<br>
+selecting raw worker stdout/stderr handling: <code>warnings</code>, <code>stream</code>, <code>buffered</code>,<br>
+or <code>quiet</code>.</li>
+  <li>
+<code>--group-by runtime|filesize|found</code> is now parsed explicitly and mapped to<br>
+<code>parallel_tests</code> grouping modes, including when supplied after the<br>
+compatibility <code>--</code> separator.</li>
+  <li>
+<code>--allowed-missing PERCENT</code> and <code>--unknown-runtime SECONDS</code> are now parsed<br>
+explicitly and mapped to <code>parallel_tests</code> runtime grouping tuning options,<br>
+including when supplied after the compatibility <code>--</code> separator.</li>
+</ul>
+
+<h3 id="changed-1">Changed</h3>
+
+<ul>
+  <li>Pull request engine workflows now keep JRuby and TruffleRuby coverage<br>
+available via branch opt-in prefixes: <code>jruby/*</code> runs JRuby workflows,<br>
+<code>truffleruby/*</code> runs TruffleRuby workflows, and <code>engines/*</code> runs all engine<br>
+workflows. Other pull request branches continue to run MRI checks without the<br>
+alternate engine jobs.</li>
+  <li>The delayed documentation formatter spec now lives under fixtures so the<br>
+normal suite does not pay its fixed load-time delay.</li>
+</ul>
+
+<h3 id="fixed-1">Fixed</h3>
+
+<ul>
+  <li>Successful non-verbose runs now surface warning and deprecation lines emitted<br>
+as raw worker stdout/stderr without dumping all buffered worker output.</li>
+  <li>
+<code>heads.yml</code> and <code>dep-heads.yml</code> now gate JRuby and TruffleRuby PR coverage<br>
+at the job level, so non-matching PR branches skip those engine jobs before a<br>
+runner is provisioned.</li>
+  <li>Direct <code>turbo_tests2</code> runs now refresh the default<br>
+<code>tmp/turbo_rspec_runtime.log</code> timing log, and <code>--runtime-log</code> writes the<br>
+requested timing log even when the run groups by filesize.</li>
+  <li>
+<code>--only-group GROUP_INDEX[,GROUP_INDEX]</code> is now parsed explicitly and runs<br>
+only the selected 1-based <code>parallel_tests</code> group index(es), using filesize<br>
+grouping by default for selected-group reruns.</li>
+  <li>
+<code>--pattern PATTERN</code> is now parsed explicitly and mapped to <code>parallel_tests</code><br>
+file discovery instead of being treated as a spec file when supplied after<br>
+<code>--</code>.</li>
+  <li>
+<code>--exclude-pattern PATTERN</code> is now parsed explicitly and mapped to<br>
+<code>parallel_tests</code> file discovery instead of being treated as a spec file when<br>
+supplied after <code>--</code>.</li>
+</ul>
+
 <h2 id="3114---2026-07-17">
 <a href="https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.13...v3.1.14">3.1.14</a> - 2026-07-17</h2>
 
 <ul>
   <li>TAG: <a href="https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.14">v3.1.14</a>
 </li>
-  <li>COVERAGE: 97.56% – 760/779 lines in 10 files</li>
-  <li>BRANCH COVERAGE: 88.73% – 189/213 branches in 10 files</li>
+  <li>COVERAGE: 97.30% – 758/779 lines in 10 files</li>
+  <li>BRANCH COVERAGE: 88.26% – 188/213 branches in 10 files</li>
   <li>35.11% documented</li>
 </ul>
 
-<h3 id="fixed-1">Fixed</h3>
+<h3 id="fixed-2">Fixed</h3>
 
 <ul>
   <li>Worker commands now override RSpec’s default options file, then explicitly<br>
@@ -116,7 +187,7 @@ suite while preserving options like <code>--require spec_helper</code>.</li>
   <li>35.87% documented</li>
 </ul>
 
-<h3 id="fixed-2">Fixed</h3>
+<h3 id="fixed-3">Fixed</h3>
 
 <ul>
   <li>Duplicate RSpec <code>Run options:</code> messages from parallel workers are now<br>
@@ -134,7 +205,7 @@ collapsed so they no longer interrupt progress formatter output repeatedly.</li>
   <li>35.87% documented</li>
 </ul>
 
-<h3 id="fixed-3">Fixed</h3>
+<h3 id="fixed-4">Fixed</h3>
 
 <ul>
   <li>
@@ -154,7 +225,7 @@ selectors.</li>
   <li>36.67% documented</li>
 </ul>
 
-<h3 id="fixed-4">Fixed</h3>
+<h3 id="fixed-5">Fixed</h3>
 
 <ul>
   <li>
@@ -177,7 +248,7 @@ honoring <code>.rspec</code> pattern overrides.</p>
   <li>36.67% documented</li>
 </ul>
 
-<h3 id="fixed-5">Fixed</h3>
+<h3 id="fixed-6">Fixed</h3>
 
 <ul>
   <li>No-argument runs now use RSpec configuration for file discovery, including<br>
@@ -196,7 +267,7 @@ directory.</li>
   <li>37.08% documented</li>
 </ul>
 
-<h3 id="fixed-6">Fixed</h3>
+<h3 id="fixed-7">Fixed</h3>
 
 <ul>
   <li>Buffered non-RSpec worker stdout/stderr so successful parallel runs no longer<br>
@@ -228,14 +299,14 @@ runner on JRuby after the underlying RSpec examples pass.</li>
   <li>37.08% documented</li>
 </ul>
 
-<h3 id="changed-1">Changed</h3>
+<h3 id="changed-2">Changed</h3>
 
 <ul>
   <li>Clarified project metadata, README, and CLI help to describe <code>turbo_tests2</code><br>
 as an RSpec parallel runner built on <code>parallel_tests</code>.</li>
 </ul>
 
-<h3 id="fixed-7">Fixed</h3>
+<h3 id="fixed-8">Fixed</h3>
 
 <ul>
   <li>Fixed generated README metadata backticks around <code>turbo_tests2</code> in the<br>
@@ -253,7 +324,7 @@ package description.</li>
   <li>37.08% documented</li>
 </ul>
 
-<h3 id="fixed-8">Fixed</h3>
+<h3 id="fixed-9">Fixed</h3>
 
 <ul>
   <li>Package configured license files in gem release file lists.</li>
@@ -270,19 +341,19 @@ package description.</li>
   <li>37.08% documented</li>
 </ul>
 
-<h3 id="added-1">Added</h3>
+<h3 id="added-2">Added</h3>
 
 <ul>
   <li>Added support for JRuby 10.1 and TruffleRuby 34.0.</li>
 </ul>
 
-<h3 id="changed-2">Changed</h3>
+<h3 id="changed-3">Changed</h3>
 
 <ul>
   <li>Retemplated project metadata and CI/development automation with <code>kettle-jem</code> v7.0.0.</li>
 </ul>
 
-<h3 id="fixed-9">Fixed</h3>
+<h3 id="fixed-10">Fixed</h3>
 
 <ul>
   <li>Fixed subprocess coverage setup for SimpleCov v1 by starting coverage<br>
@@ -312,7 +383,7 @@ supported versions exit nonzero but omit the RSpec load-error summary.</li>
   <li>37.08% documented</li>
 </ul>
 
-<h3 id="fixed-10">Fixed</h3>
+<h3 id="fixed-11">Fixed</h3>
 
 <ul>
   <li>
@@ -338,7 +409,7 @@ TruffleRuby 25.0 CI failures in the worker pipe cleanup regression spec.</p>
   <li>37.08% documented</li>
 </ul>
 
-<h3 id="fixed-11">Fixed</h3>
+<h3 id="fixed-12">Fixed</h3>
 
 <ul>
   <li>Restored <code>docs/CNAME</code> so the generated documentation site keeps its custom domain.</li>
@@ -355,7 +426,7 @@ TruffleRuby 25.0 CI failures in the worker pipe cleanup regression spec.</p>
   <li>37.08% documented</li>
 </ul>
 
-<h3 id="fixed-12">Fixed</h3>
+<h3 id="fixed-13">Fixed</h3>
 
 <ul>
   <li>
@@ -376,7 +447,7 @@ passes it to every worker process, and supports <code>--order defined</code> /<b
   <li>36.78% documented</li>
 </ul>
 
-<h3 id="fixed-13">Fixed</h3>
+<h3 id="fixed-14">Fixed</h3>
 
 <ul>
   <li>The CLI now honors documented <code>turbo_tests2:setup</code> and <code>turbo_tests2:cleanup</code><br>
@@ -403,7 +474,7 @@ while other gems can still use <code>turbo_tests2</code> under <code>kettle-test
   <li>36.78% documented</li>
 </ul>
 
-<h3 id="added-2">Added</h3>
+<h3 id="added-3">Added</h3>
 
 <ul>
   <li>
@@ -417,7 +488,7 @@ worker with <code>TEST_ENV_NUMBER</code> and <code>PARALLEL_TEST_GROUPS</code> s
 <code>parallel_tests</code>-compatible runtime log so grouping can use example-level timing history.</li>
 </ul>
 
-<h3 id="changed-3">Changed</h3>
+<h3 id="changed-4">Changed</h3>
 
 <ul>
   <li>Worker subprocess JSON now forwards RSpec deprecation notifications to the parent reporter.</li>
@@ -426,7 +497,7 @@ worker with <code>TEST_ENV_NUMBER</code> and <code>PARALLEL_TEST_GROUPS</code> s
   <li>Interrupted runs now report spec groups that had not finished before shutdown.</li>
 </ul>
 
-<h3 id="fixed-14">Fixed</h3>
+<h3 id="fixed-15">Fixed</h3>
 
 <ul>
   <li>Reconstructed failure backtraces now filter internal <code>turbo_tests2</code> frames.</li>
@@ -470,7 +541,7 @@ SARIF uploads from advanced configurations.</li>
   <li>37.97% documented</li>
 </ul>
 
-<h3 id="added-3">Added</h3>
+<h3 id="added-4">Added</h3>
 
 <ul>
   <li>Initial release</li>
@@ -479,7 +550,7 @@ SARIF uploads from advanced configurations.</li>
 </div></div>
 
       <div id="footer">
-  Generated on Fri Jul 17 09:48:16 2026 by
+  Generated on Sat Jul 18 19:33:16 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.45 (ruby-4.0.6).
 </div>

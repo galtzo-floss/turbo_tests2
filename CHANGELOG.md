@@ -20,6 +20,25 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [3.2.0] - 2026-07-18
+
+- TAG: [v3.2.0][3.2.0t]
+- COVERAGE: 96.88% -- 869/897 lines in 10 files
+- BRANCH COVERAGE: 84.44% -- 217/257 branches in 10 files
+- 34.69% documented
+
+### Added
+
 - `--count` is now accepted as an alias for `-n`, matching the
   `parallel_tests` process-count option while keeping the existing
   `-w` / `--workers` aliases.
@@ -45,10 +64,6 @@ Please file a bug if you notice a violation of semantic versioning.
 - The delayed documentation formatter spec now lives under fixtures so the
   normal suite does not pay its fixed load-time delay.
 
-### Deprecated
-
-### Removed
-
 ### Fixed
 
 - Successful non-verbose runs now surface warning and deprecation lines emitted
@@ -68,8 +83,6 @@ Please file a bug if you notice a violation of semantic versioning.
 - `--exclude-pattern PATTERN` is now parsed explicitly and mapped to
   `parallel_tests` file discovery instead of being treated as a spec file when
   supplied after `--`.
-
-### Security
 
 ## [3.1.14] - 2026-07-17
 
@@ -343,7 +356,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.14...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.0...HEAD
+[3.2.0]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.14...v3.2.0
+[3.2.0t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.0
 [3.1.14]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.13...v3.1.14
 [3.1.14t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.1.14
 [3.1.13]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.12...v3.1.13

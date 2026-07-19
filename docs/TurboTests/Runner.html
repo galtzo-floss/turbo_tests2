@@ -103,6 +103,32 @@
 </div>
 
 
+  
+    <h2>
+      Constant Summary
+      <small><a href="#" class="constants_summary_toggle">collapse</a></small>
+    </h2>
+
+    <dl class="constants">
+      
+        <dt id="DEFAULT_RUNTIME_LOG-constant" class="">DEFAULT_RUNTIME_LOG =
+          
+        </dt>
+        <dd><pre class="code"><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>tmp/turbo_rspec_runtime.log</span><span class='tstring_end'>&quot;</span></span></pre></dd>
+      
+        <dt id="DEFAULT_WORKER_OUTPUT_MODE-constant" class="">DEFAULT_WORKER_OUTPUT_MODE =
+          
+        </dt>
+        <dd><pre class="code"><span class='symbol'>:warnings</span></pre></dd>
+      
+        <dt id="WORKER_OUTPUT_MODES-constant" class="">WORKER_OUTPUT_MODES =
+          
+        </dt>
+        <dd><pre class="code"><span class='qsymbols_beg'>%i[</span><span class='tstring_content'>warnings</span><span class='words_sep'> </span><span class='tstring_content'>stream</span><span class='words_sep'> </span><span class='tstring_content'>buffered</span><span class='words_sep'> </span><span class='tstring_content'>quiet</span><span class='tstring_end'>]</span></span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span></pre></dd>
+      
+    </dl>
+  
+
 
 
 
@@ -190,6 +216,29 @@
   <span class="summary_signature">
     
       <a href="#normalize_rspec_file_selection-class_method" title="normalize_rspec_file_selection (class method)">.<strong>normalize_rspec_file_selection</strong>(files)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#normalize_worker_output_mode-class_method" title="normalize_worker_output_mode (class method)">.<strong>normalize_worker_output_mode</strong>(mode)  &#x21d2; Object </a>
     
 
     
@@ -437,27 +486,6 @@
       <pre class="lines">
 
 
-181
-182
-183
-184
-185
-186
-187
-188
-189
-190
-191
-192
-193
-194
-195
-196
-197
-198
-199
-200
-201
 202
 203
 204
@@ -473,10 +501,32 @@
 214
 215
 216
-217</pre>
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 181</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 202</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='op'>**</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
   <span class='ivar'>@formatters</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:formatters</span><span class='rbracket'>]</span>
@@ -500,10 +550,10 @@
 
   <span class='comment'># Supports runtime_log as a top level option,
 </span>  <span class='comment'>#   but also nested inside parallel_options
-</span>  <span class='ivar'>@runtime_log</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:runtime_log</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>tmp/turbo_rspec_runtime.log</span><span class='tstring_end'>&quot;</span></span>
+</span>  <span class='ivar'>@runtime_log</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:runtime_log</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='const'><span class='object_link'><a href="#DEFAULT_RUNTIME_LOG-constant" title="TurboTests::Runner::DEFAULT_RUNTIME_LOG (constant)">DEFAULT_RUNTIME_LOG</a></span></span>
   <span class='ivar'>@parallel_options</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:parallel_options</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='ivar'>@parallel_options</span><span class='lbracket'>[</span><span class='symbol'>:runtime_log</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='ivar'>@runtime_log</span>
-  <span class='ivar'>@record_runtime</span> <span class='op'>=</span> <span class='ivar'>@parallel_options</span><span class='lbracket'>[</span><span class='symbol'>:group_by</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='symbol'>:runtime</span>
+  <span class='ivar'>@record_runtime</span> <span class='op'>=</span> <span class='kw'>true</span>
 
   <span class='ivar'>@messages</span> <span class='op'>=</span> <span class='const'>Thread</span><span class='op'>::</span><span class='const'>Queue</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
   <span class='ivar'>@threads</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
@@ -514,6 +564,7 @@
   <span class='ivar'>@deferred_run_options_messages</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_hash'>hash</span><span class='comma'>,</span> <span class='id identifier rubyid_message'>message</span><span class='op'>|</span> <span class='id identifier rubyid_hash'>hash</span><span class='lbracket'>[</span><span class='id identifier rubyid_message'>message</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
   <span class='ivar'>@error</span> <span class='op'>=</span> <span class='kw'>false</span>
   <span class='ivar'>@print_failed_group</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:print_failed_group</span><span class='rbracket'>]</span>
+  <span class='ivar'>@worker_output_mode</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_normalize_worker_output_mode'>normalize_worker_output_mode</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:worker_output</span><span class='comma'>,</span> <span class='const'><span class='object_link'><a href="#DEFAULT_WORKER_OUTPUT_MODE-constant" title="TurboTests::Runner::DEFAULT_WORKER_OUTPUT_MODE (constant)">DEFAULT_WORKER_OUTPUT_MODE</a></span></span><span class='rparen'>)</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -542,19 +593,19 @@
       <pre class="lines">
 
 
-16
-17
-18
-19
 20
 21
 22
 23
 24
-25</pre>
+25
+26
+27
+28
+29</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 16</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 20</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span><span class='id identifier rubyid_count'>count</span><span class='rparen'>)</span>
   <span class='comment'># We are unable to load parallel tests&#39; tasks in the normal way (top of file)
@@ -586,12 +637,12 @@
       <pre class="lines">
 
 
-133
-134
-135</pre>
+154
+155
+156</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 133</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 154</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_generate_seed'>generate_seed</span>
   <span class='lparen'>(</span><span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_new_seed'>new_seed</span> <span class='op'>%</span> <span class='int'>65_535</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
@@ -639,16 +690,16 @@
       <pre class="lines">
 
 
-125
-126
-127
-128
-129
-130
-131</pre>
+146
+147
+148
+149
+150
+151
+152</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 125</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 146</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_normalize_order'>normalize_order</span><span class='lparen'>(</span><span class='id identifier rubyid_order'>order</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_order'>order</span> <span class='op'>=</span> <span class='id identifier rubyid_order'>order</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span>
@@ -677,23 +728,23 @@
       <pre class="lines">
 
 
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-95
-96
-97
-98</pre>
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 85</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 106</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_normalize_rspec_file_selection'>normalize_rspec_file_selection</span><span class='lparen'>(</span><span class='id identifier rubyid_files'>files</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_selectors'>selectors</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
@@ -715,6 +766,73 @@
 </div>
     
       <div class="method_details ">
+  <h3 class="signature " id="normalize_worker_output_mode-class_method">
+  
+    .<strong>normalize_worker_output_mode</strong>(mode)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Raises:</p>
+<ul class="raise">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>ArgumentError</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 95</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_normalize_worker_output_mode'>normalize_worker_output_mode</span><span class='lparen'>(</span><span class='id identifier rubyid_mode'>mode</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='id identifier rubyid_mode'>mode</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span><span class='period'>.</span><span class='id identifier rubyid_tr'>tr</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>-</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>_</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+  <span class='kw'>return</span> <span class='const'><span class='object_link'><a href="#DEFAULT_WORKER_OUTPUT_MODE-constant" title="TurboTests::Runner::DEFAULT_WORKER_OUTPUT_MODE (constant)">DEFAULT_WORKER_OUTPUT_MODE</a></span></span> <span class='kw'>if</span> <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+
+  <span class='id identifier rubyid_normalized'>normalized</span> <span class='op'>=</span> <span class='id identifier rubyid_value'>value</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span>
+  <span class='kw'>return</span> <span class='id identifier rubyid_normalized'>normalized</span> <span class='kw'>if</span> <span class='const'><span class='object_link'><a href="#WORKER_OUTPUT_MODES-constant" title="TurboTests::Runner::WORKER_OUTPUT_MODES (constant)">WORKER_OUTPUT_MODES</a></span></span><span class='period'>.</span><span class='id identifier rubyid_include?'>include?</span><span class='lparen'>(</span><span class='id identifier rubyid_normalized'>normalized</span><span class='rparen'>)</span>
+
+  <span class='id identifier rubyid_raise'>raise</span> <span class='const'>ArgumentError</span><span class='comma'>,</span>
+    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Unsupported worker output mode </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_mode'>mode</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='embexpr_end'>}</span><span class='tstring_content'>; expected one of: </span><span class='embexpr_beg'>#{</span><span class='const'><span class='object_link'><a href="#WORKER_OUTPUT_MODES-constant" title="TurboTests::Runner::WORKER_OUTPUT_MODES (constant)">WORKER_OUTPUT_MODES</a></span></span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>, </span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
   <h3 class="signature " id="project_rspec_options-class_method">
   
     .<strong>project_rspec_options</strong>(root = Dir.pwd)  &#x21d2; <tt>Object</tt> 
@@ -729,17 +847,17 @@
       <pre class="lines">
 
 
-171
-172
-173
-174
-175
-176
-177
-178</pre>
+192
+193
+194
+195
+196
+197
+198
+199</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 171</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 192</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_project_rspec_options'>project_rspec_options</span><span class='lparen'>(</span><span class='id identifier rubyid_root'><span class='object_link'><a href="../top-level-namespace.html" title="Top Level Namespace (root)">root</a></span></span> <span class='op'>=</span> <span class='const'>Dir</span><span class='period'>.</span><span class='id identifier rubyid_pwd'>pwd</span><span class='rparen'>)</span>
   <span class='qwords_beg'>%w[</span><span class='tstring_content'>.rspec</span><span class='words_sep'> </span><span class='tstring_content'>.rspec-local</span><span class='tstring_end'>]</span></span><span class='period'>.</span><span class='id identifier rubyid_flat_map'>flat_map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_path'>path</span><span class='op'>|</span>
@@ -769,18 +887,18 @@
       <pre class="lines">
 
 
-137
-138
-139
-140
-141
-142
-143
-144
-145</pre>
+158
+159
+160
+161
+162
+163
+164
+165
+166</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 137</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 158</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_rspec_configured_files_to_run'>rspec_configured_files_to_run</span>
   <span class='id identifier rubyid_configuration'>configuration</span> <span class='op'>=</span> <span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Core</span><span class='op'>::</span><span class='const'>Configuration</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -811,10 +929,6 @@
       <pre class="lines">
 
 
-27
-28
-29
-30
 31
 32
 33
@@ -867,10 +981,20 @@
 80
 81
 82
-83</pre>
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 27</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 31</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_run'>run</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_default_file_discovery'>default_file_discovery</span> <span class='op'>=</span> <span class='op'>!</span><span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_key?'>key?</span><span class='lparen'>(</span><span class='symbol'>:files</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:files</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
@@ -881,7 +1005,7 @@
   <span class='id identifier rubyid_parallel_options'>parallel_options</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:parallel_options</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
 
   <span class='id identifier rubyid_start_time'>start_time</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:start_time</span><span class='rparen'>)</span> <span class='lbrace'>{</span> <span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Core</span><span class='op'>::</span><span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span> <span class='rbrace'>}</span>
-  <span class='id identifier rubyid_runtime_log'>runtime_log</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:runtime_log</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_runtime_log'>runtime_log</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:runtime_log</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='const'><span class='object_link'><a href="#DEFAULT_RUNTIME_LOG-constant" title="TurboTests::Runner::DEFAULT_RUNTIME_LOG (constant)">DEFAULT_RUNTIME_LOG</a></span></span>
   <span class='id identifier rubyid_example_status_log'>example_status_log</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:example_status_log</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_verbose'>verbose</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:verbose</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_fail_fast'>fail_fast</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:fail_fast</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='rparen'>)</span>
@@ -892,17 +1016,22 @@
   <span class='id identifier rubyid_seed'>seed</span> <span class='op'>=</span> <span class='id identifier rubyid_generate_seed'>generate_seed</span> <span class='kw'>if</span> <span class='id identifier rubyid_seed_used'>seed_used</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_seed'>seed</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
   <span class='id identifier rubyid_print_failed_group'>print_failed_group</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:print_failed_group</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_nice'>nice</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:nice</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_worker_output'>worker_output</span> <span class='op'>=</span> <span class='id identifier rubyid_normalize_worker_output_mode'>normalize_worker_output_mode</span><span class='lparen'>(</span>
+    <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:worker_output</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>TURBO_TESTS2_WORKER_OUTPUT</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+  <span class='rparen'>)</span>
 
   <span class='id identifier rubyid_use_runtime_info'>use_runtime_info</span> <span class='op'>=</span> <span class='id identifier rubyid_default_file_discovery'>default_file_discovery</span>
+  <span class='id identifier rubyid_parallel_options'>parallel_options</span><span class='lbracket'>[</span><span class='symbol'>:runtime_log</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='id identifier rubyid_runtime_log'>runtime_log</span>
 
   <span class='kw'>if</span> <span class='id identifier rubyid_example_status_log'>example_status_log</span>
     <span class='id identifier rubyid_runtime_log'>runtime_log</span> <span class='op'>=</span> <span class='id identifier rubyid_runtime_log_from_example_status'>runtime_log_from_example_status</span><span class='lparen'>(</span><span class='id identifier rubyid_example_status_log'>example_status_log</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_parallel_options'>parallel_options</span><span class='lbracket'>[</span><span class='symbol'>:runtime_log</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_runtime_log'>runtime_log</span>
   <span class='kw'>elsif</span> <span class='id identifier rubyid_use_runtime_info'>use_runtime_info</span>
-    <span class='id identifier rubyid_parallel_options'>parallel_options</span><span class='lbracket'>[</span><span class='symbol'>:runtime_log</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_runtime_log'>runtime_log</span>
+    <span class='id identifier rubyid_parallel_options'>parallel_options</span><span class='lbracket'>[</span><span class='symbol'>:runtime_log</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='id identifier rubyid_runtime_log'>runtime_log</span>
   <span class='kw'>else</span>
-    <span class='id identifier rubyid_parallel_options'>parallel_options</span><span class='lbracket'>[</span><span class='symbol'>:group_by</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='symbol'>:filesize</span>
+    <span class='id identifier rubyid_parallel_options'>parallel_options</span><span class='lbracket'>[</span><span class='symbol'>:group_by</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='symbol'>:filesize</span>
   <span class='kw'>end</span>
+  <span class='id identifier rubyid_parallel_options'>parallel_options</span><span class='lbracket'>[</span><span class='symbol'>:group_by</span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='symbol'>:filesize</span> <span class='kw'>if</span> <span class='id identifier rubyid_parallel_options'>parallel_options</span><span class='lbracket'>[</span><span class='symbol'>:only_group</span><span class='rbracket'>]</span>
 
   <span class='id identifier rubyid_warn'>warn</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>VERBOSE</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_verbose'>verbose</span>
 
@@ -926,7 +1055,8 @@
     <span class='label'>print_failed_group:</span> <span class='id identifier rubyid_print_failed_group'>print_failed_group</span><span class='comma'>,</span>
     <span class='label'>use_runtime_info:</span> <span class='id identifier rubyid_use_runtime_info'>use_runtime_info</span><span class='comma'>,</span>
     <span class='label'>parallel_options:</span> <span class='id identifier rubyid_parallel_options'>parallel_options</span><span class='comma'>,</span>
-    <span class='label'>nice:</span> <span class='id identifier rubyid_nice'>nice</span>
+    <span class='label'>nice:</span> <span class='id identifier rubyid_nice'>nice</span><span class='comma'>,</span>
+    <span class='label'>worker_output:</span> <span class='id identifier rubyid_worker_output'>worker_output</span>
   <span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_run'>run</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -949,23 +1079,23 @@
       <pre class="lines">
 
 
-110
-111
-112
-113
-114
-115
-116
-117
-118
-119
-120
-121
-122
-123</pre>
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 110</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 131</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_runtime_log_from_example_status'>runtime_log_from_example_status</span><span class='lparen'>(</span><span class='id identifier rubyid_example_status_log'>example_status_log</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_statuses'>statuses</span> <span class='op'>=</span> <span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Core</span><span class='op'>::</span><span class='const'>ExampleStatusPersister</span><span class='period'>.</span><span class='id identifier rubyid_load_from'>load_from</span><span class='lparen'>(</span><span class='id identifier rubyid_example_status_log'>example_status_log</span><span class='rparen'>)</span>
@@ -1001,18 +1131,18 @@
       <pre class="lines">
 
 
-100
-101
-102
-103
-104
-105
-106
-107
-108</pre>
+121
+122
+123
+124
+125
+126
+127
+128
+129</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 100</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 121</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_split_rspec_location'>split_rspec_location</span><span class='lparen'>(</span><span class='id identifier rubyid_entry'>entry</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='id identifier rubyid_entry'>entry</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
@@ -1043,32 +1173,32 @@
       <pre class="lines">
 
 
-147
-148
-149
-150
-151
-152
-153
-154
-155
-156
-157
-158
-159
-160
-161
-162
-163
-164
-165
-166
-167
 168
-169</pre>
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 147</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 168</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_worker_spec_opts'>worker_spec_opts</span><span class='lparen'>(</span><span class='id identifier rubyid_spec_opts'>spec_opts</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_args'>args</span> <span class='op'>=</span> <span class='id identifier rubyid_project_rspec_options'>project_rspec_options</span> <span class='op'>+</span> <span class='const'>Array</span><span class='lparen'>(</span><span class='id identifier rubyid_spec_opts'>spec_opts</span><span class='rparen'>)</span>
@@ -1119,28 +1249,6 @@
       <pre class="lines">
 
 
-219
-220
-221
-222
-223
-224
-225
-226
-227
-228
-229
-230
-231
-232
-233
-234
-235
-236
-237
-238
-239
-240
 241
 242
 243
@@ -1179,13 +1287,39 @@
 276
 277
 278
-279</pre>
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 219</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 241</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_run'>run</span>
-  <span class='id identifier rubyid_tests_with_size'>tests_with_size</span> <span class='op'>=</span> <span class='const'>ParallelTests</span><span class='op'>::</span><span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Runner</span><span class='period'>.</span><span class='id identifier rubyid_tests_with_size'>tests_with_size</span><span class='lparen'>(</span><span class='ivar'>@files</span><span class='comma'>,</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_parallel_tests_options'>parallel_tests_options</span> <span class='op'>=</span> <span class='ivar'>@parallel_options</span><span class='period'>.</span><span class='id identifier rubyid_reject'>reject</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid__value'>_value</span><span class='op'>|</span> <span class='id identifier rubyid_key'>key</span> <span class='op'>==</span> <span class='symbol'>:only_group</span> <span class='rbrace'>}</span>
+  <span class='id identifier rubyid_tests_with_size'>tests_with_size</span> <span class='op'>=</span> <span class='const'>ParallelTests</span><span class='op'>::</span><span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Runner</span><span class='period'>.</span><span class='id identifier rubyid_tests_with_size'>tests_with_size</span><span class='lparen'>(</span><span class='ivar'>@files</span><span class='comma'>,</span> <span class='id identifier rubyid_parallel_tests_options'>parallel_tests_options</span><span class='rparen'>)</span>
   <span class='ivar'>@num_processes</span> <span class='op'>=</span> <span class='lbracket'>[</span>
     <span class='const'>ParallelTests</span><span class='period'>.</span><span class='id identifier rubyid_determine_number_of_processes'>determine_number_of_processes</span><span class='lparen'>(</span><span class='ivar'>@count</span><span class='rparen'>)</span><span class='comma'>,</span>
     <span class='id identifier rubyid_tests_with_size'>tests_with_size</span><span class='period'>.</span><span class='id identifier rubyid_size'>size</span>
@@ -1201,8 +1335,9 @@
     <span class='const'>ParallelTests</span><span class='op'>::</span><span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Runner</span><span class='period'>.</span><span class='id identifier rubyid_tests_in_groups'>tests_in_groups</span><span class='lparen'>(</span>
       <span class='ivar'>@files</span><span class='comma'>,</span>
       <span class='ivar'>@num_processes</span><span class='comma'>,</span>
-      <span class='op'>**</span><span class='ivar'>@parallel_options</span>
+      <span class='op'>**</span><span class='id identifier rubyid_parallel_tests_options'>parallel_tests_options</span>
     <span class='rparen'>)</span>
+  <span class='id identifier rubyid_tests_in_groups'>tests_in_groups</span> <span class='op'>=</span> <span class='id identifier rubyid_selected_groups'>selected_groups</span><span class='lparen'>(</span><span class='id identifier rubyid_tests_in_groups'>tests_in_groups</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='ivar'>@parallel_options</span><span class='lbracket'>[</span><span class='symbol'>:only_group</span><span class='rbracket'>]</span>
   <span class='ivar'>@tests_in_groups</span> <span class='op'>=</span> <span class='id identifier rubyid_tests_in_groups'>tests_in_groups</span>
 
   <span class='id identifier rubyid_subprocess_opts'>subprocess_opts</span> <span class='op'>=</span> <span class='lbrace'>{</span>
@@ -1232,10 +1367,11 @@
       <span class='id identifier rubyid_statuses'>statuses</span> <span class='op'>=</span> <span class='ivar'>@wait_threads</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:value</span><span class='rparen'>)</span>
 
       <span class='kw'>if</span> <span class='ivar'>@reporter</span><span class='period'>.</span><span class='id identifier rubyid_failed_examples'>failed_examples</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_statuses'>statuses</span><span class='period'>.</span><span class='id identifier rubyid_all?'>all?</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:success?</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_flush_successful_worker_output'>flush_successful_worker_output</span>
         <span class='id identifier rubyid_report_coverage'>report_coverage</span> <span class='op'>=</span> <span class='kw'>true</span>
         <span class='id identifier rubyid_exit_status'>exit_status</span> <span class='op'>=</span> <span class='int'>0</span>
       <span class='kw'>else</span>
-        <span class='id identifier rubyid_flush_worker_output'>flush_worker_output</span>
+        <span class='id identifier rubyid_flush_worker_output'>flush_worker_output</span> <span class='kw'>unless</span> <span class='id identifier rubyid_stream_worker_output?'>stream_worker_output?</span>
         <span class='comment'># From https://github.com/galtzo-floss/turbo_tests2/pull/20/
 </span>        <span class='id identifier rubyid_exit_status'>exit_status</span> <span class='op'>=</span> <span class='id identifier rubyid_statuses'>statuses</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:exitstatus</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_max'>max</span>
       <span class='kw'>end</span>
@@ -1255,7 +1391,7 @@
 </div>
 
       <div id="footer">
-  Generated on Fri Jul 17 09:48:16 2026 by
+  Generated on Sat Jul 18 19:33:16 2026 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.45 (ruby-4.0.6).
 </div>
