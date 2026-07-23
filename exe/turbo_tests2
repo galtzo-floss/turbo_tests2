@@ -1,7 +1,16 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+script_basename = File.basename(__FILE__)
+require_relative "../lib/turbo_tests/version"
+if ARGV.any? { |arg| arg == "-v" || arg == "--version" }
+  puts TurboTests::Version::VERSION
+  exit(0)
+end
+
 # Alias for `turbo_tests` — turbo_tests2 is a drop-in replacement for turbo_tests.
 require "turbo_tests2"
+
+puts "== #{script_basename} v#{TurboTests::Version::VERSION} =="
 
 TurboTests::CLI.new(ARGV).run
