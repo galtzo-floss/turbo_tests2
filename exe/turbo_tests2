@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 script_basename = File.basename(__FILE__)
-require_relative "../lib/turbo_tests/version"
+require "turbo_tests/version"
 if ARGV.any? { |arg| arg == "-v" || arg == "--version" }
   puts TurboTests::Version::VERSION
   exit(0)
