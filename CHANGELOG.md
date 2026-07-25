@@ -22,6 +22,23 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [3.2.1] - 2026-07-25
+
+- TAG: [v3.2.1][3.2.1t]
+- COVERAGE: 96.88% -- 869/897 lines in 10 files
+- BRANCH COVERAGE: 84.44% -- 217/257 branches in 10 files
+- 34.69% documented
+
+### Changed
+
 - The `turbo_tests2` executable now supports `-v` / `--version` and prints a
   standard startup header on normal runs.
 
@@ -44,10 +61,6 @@ Please file a bug if you notice a violation of semantic versioning.
   so release CI monitoring does not report intentionally skipped engine
   workflows as failures.
 
-### Deprecated
-
-### Removed
-
 ### Fixed
 
 - Worker commands now drop project `.rspec` presentation formatter and output
@@ -56,8 +69,6 @@ Please file a bug if you notice a violation of semantic versioning.
   turbo summary.
 - Runtime-based runs now silence the preliminary sizing probe, so
   `Using recorded test runtime` is printed once by the actual grouping pass.
-
-### Security
 
 ## [3.2.0] - 2026-07-18
 
@@ -385,7 +396,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.0...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.1...HEAD
+[3.2.1]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.0...v3.2.1
+[3.2.1t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.1
 [3.2.0]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.14...v3.2.0
 [3.2.0t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.0
 [3.1.14]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.13...v3.1.14
