@@ -581,10 +581,11 @@ RSpec.describe TurboTests::Runner do
             "--pattern", "gems/*/spec/**/*_spec.rb",
             "-I", "spec",
             "--default-path", "gems",
-            "--format", "documentation"
+            "--format", "documentation",
+            "--out", "results/specs.html"
           ]
         )
-      ).to eq(["--require", "spec_helper", "-I", "spec", "--format", "documentation"])
+      ).to eq(["--require", "spec_helper", "-I", "spec"])
     end
 
     it "removes inline RSpec file discovery options from worker commands" do
@@ -594,6 +595,10 @@ RSpec.describe TurboTests::Runner do
             "--pattern=gems/*/spec/**/*_spec.rb",
             "-Pspec/**/*_spec.rb",
             "--default-path=gems",
+            "--format=progress",
+            "-fdocumentation",
+            "--out=results/specs.html",
+            "-oresults/specs.xml",
             "--color"
           ]
         )
@@ -1275,7 +1280,7 @@ RSpec.describe TurboTests::Runner do
 
       runner.run
 
-      expect(ParallelTests::RSpec::Runner).to have_received(:tests_with_size).with(["spec"], parallel_options)
+      expect(ParallelTests::RSpec::Runner).to have_received(:tests_with_size).with(["spec"], parallel_options.merge(quiet: true))
       expect(ParallelTests::RSpec::Runner).to have_received(:tests_in_groups).with(["spec"], 1, **parallel_options)
     end
 
@@ -1318,7 +1323,9 @@ RSpec.describe TurboTests::Runner do
         record_runtime: true
       )
       expect(tests_with_size_options).not_to include(:only_group)
+      expect(tests_with_size_options).to include(quiet: true)
       expect(tests_in_groups_options).not_to include(:only_group)
+      expect(tests_in_groups_options).not_to include(:quiet)
       expect(runner.instance_variable_get(:@num_processes)).to eq(3)
     end
 

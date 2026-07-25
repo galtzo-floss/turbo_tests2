@@ -177,9 +177,10 @@ module TurboTests
           end
 
           case arg
-          when "--pattern", "-P", "--default-path"
+          when "--pattern", "-P", "--default-path", "--format", "-f", "--out", "-o"
             skip_next = true
-          when /\A--pattern=/, /\A-P.+/, /\A--default-path=/
+          when /\A--pattern=/, /\A-P.+/, /\A--default-path=/,
+            /\A--format=/, /\A-f.+/, /\A--out=/, /\A-o.+/
             next
           else
             filtered << arg
@@ -240,7 +241,7 @@ module TurboTests
 
     def run
       parallel_tests_options = @parallel_options.reject { |key, _value| key == :only_group }
-      tests_with_size = ParallelTests::RSpec::Runner.tests_with_size(@files, parallel_tests_options)
+      tests_with_size = ParallelTests::RSpec::Runner.tests_with_size(@files, parallel_tests_options.merge(quiet: true))
       @num_processes = [
         ParallelTests.determine_number_of_processes(@count),
         tests_with_size.size

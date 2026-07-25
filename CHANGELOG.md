@@ -31,6 +31,13 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Worker commands now drop project `.rspec` presentation formatter and output
+  options after preserving the behavioral options needed by each shard,
+  preventing direct-RSpec formatter output from being replayed alongside the
+  turbo summary.
+- Runtime-based runs now silence the preliminary sizing probe, so
+  `Using recorded test runtime` is printed once by the actual grouping pass.
+
 ### Security
 
 ## [3.2.0] - 2026-07-18
