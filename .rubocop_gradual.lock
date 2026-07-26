@@ -1,0 +1,5 @@
+{
+  "spec/gem/executable_turbo_tests2_spec.rb:3361894428": [
+    [6, 16, 25, "RSpec/DescribeClass: The first argument to describe should be the class or module being tested.", 3985119491]
+  ]
+}

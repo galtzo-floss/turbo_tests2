@@ -22,6 +22,23 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [3.2.2] - 2026-07-25
+
+- TAG: [v3.2.2][3.2.2t]
+- COVERAGE: 96.88% -- 869/897 lines in 10 files
+- BRANCH COVERAGE: 84.44% -- 217/257 branches in 10 files
+- 34.69% documented
+
+### Changed
+
 - The `turbo_tests2` executable startup header is now shown only when
   `--verbose` is passed; `-v` and `--version` still print just the executable
   version and exit.
@@ -31,14 +48,6 @@ Please file a bug if you notice a violation of semantic versioning.
   execute generated `version.rb` files for coverage without redefining package
   constants. Managed version specs are removed when `version_gem` is disabled
   or incompatible with the project's runtime Ruby floor.
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 
 ## [3.2.1] - 2026-07-25
 
@@ -406,7 +415,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.1...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.2...HEAD
+[3.2.2]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.1...v3.2.2
+[3.2.2t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.2
 [3.2.1]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.0...v3.2.1
 [3.2.1t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.1
 [3.2.0]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.1.14...v3.2.0
