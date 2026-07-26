@@ -22,6 +22,10 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
+- The `turbo_tests2` executable startup header is now shown only when
+  `--verbose` is passed; `-v` and `--version` still print just the executable
+  version and exit.
+
 - kettle-jem-template-20260725-002 - Generated gemspec templates now include
   `anonymous_loader` as a development dependency, and version specs use it to
   execute generated `version.rb` files for coverage without redefining package
