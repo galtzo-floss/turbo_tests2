@@ -1,6 +1,6 @@
 <a href="https://github.com/galtzo-floss/turbo_tests2"><img alt="turbo_tests2 Logo by Aboling0, CC BY-SA 4.0" src="https://logos.galtzo.com/assets/images/galtzo-floss/turbo_tests2/avatar-128px.svg" width="20%" align="right"/></a>
 
-# 🚀 TurboTests
+# 🚀 TurboTests née TurboTests2
 
 [![Version][👽versioni]][👽version] [![GitHub tag (latest SemVer)][⛳️tag-img]][⛳️tag] [![License: MIT][📄license-img]][📄license] [![Downloads Rank][👽dl-ranki]][👽dl-rank] [![CodeCov Test Coverage][🏀codecovi]][🏀codecov] [![Coveralls Test Coverage][🏀coveralls-img]][🏀coveralls] [![QLTY Test Coverage][🏀qlty-covi]][🏀qlty-cov] [![QLTY Maintainability][🏀qlty-mnti]][🏀qlty-mnt] [![CI Heads][🚎3-hd-wfi]][🚎3-hd-wf] [![CI Runtime Dependencies @ HEAD][🚎12-crh-wfi]][🚎12-crh-wf] [![CI Current][🚎11-c-wfi]][🚎11-c-wf] [![CI Truffle Ruby][🚎9-t-wfi]][🚎9-t-wf] [![CI JRuby][🚎10-j-wfi]][🚎10-j-wf] [![Deps Locked][🚎13-🔒️-wfi]][🚎13-🔒️-wf] [![Deps Unlocked][🚎14-🔓️-wfi]][🚎14-🔓️-wf] [![CI Test Coverage][🚎2-cov-wfi]][🚎2-cov-wf] [![CI Style][🚎5-st-wfi]][🚎5-st-wf] [![Apache SkyWalking Eyes License Compatibility Check][🚎15-🪪-wfi]][🚎15-🪪-wf]
 
@@ -26,6 +26,7 @@ I've summarized my thoughts in [this blog post](https://dev.to/galtzo/hostile-ta
 | I ([@pboling](https://github.com/pboling)) discussed merging this project back into the original `turbo_tests` with [@ilyazub](https://github.com/ilyazub), and we might move in that direction, but it will take time. Since I need this now I'm releasing it as a separate gem/project. We'll be discussing potentially unifying the projects again soon. |
 
 `turbo_tests2` is an RSpec parallel test runner built on [grosser/parallel_tests](https://github.com/grosser/parallel_tests). It uses `parallel_tests` for process counts, file grouping, and runtime balancing, then replaces interleaved worker output with incremental summarized RSpec reporting. Source code of this gem is based on [Discourse](https://github.com/discourse/discourse/blob/6b9784cf8a18636bce281a7e4d18e65a0cbc6290/lib/turbo_tests.rb) and [RubyGems](https://github.com/rubygems/rubygems/tree/390335ceb351668cd433bd5bb9823dd021f82533/bundler/tool) work in this area.
+The project namespace remains `TurboTests`; the published gem and executable are `turbo_tests2`.
 
 Incremental summarized output doesn't [fit the vision](https://github.com/grosser/parallel_tests/issues/708) of the `parallel_tests` author, and [RSpec doesn't support built-in parallel testing yet](https://github.com/rspec/rspec-rails/issues/2104#issuecomment-658474900). This gem targets RSpec, not every framework supported by `parallel_tests`, and may not be useful once one of the issues above is implemented.
 
@@ -336,7 +337,7 @@ If Rake is present, the CLI will invoke the tasks `turbo_tests2:setup` and `turb
 the test suite. These can be used to do work that should only happen once, such as removing files or collating coverage:
 
 ```ruby
-# lib/tasks/turbo_tests.rake
+# lib/tasks/turbo_tests2.rake
 namespace :turbo_tests2 do
   task setup: :environment do
     # precompile assets once, to avoid doing it per each process
@@ -366,7 +367,7 @@ require "simplecov"
 SimpleCov.start("rails") do
   enable_coverage :branch
 
-  coverage_dir "coverage/turbo_tests/#{ENV["TEST_ENV_NUMBER"]}"
+  coverage_dir "coverage/turbo_tests2/#{ENV["TEST_ENV_NUMBER"]}"
 
   formatter SimpleCov::Formatter::SimpleFormatter
 end
@@ -375,14 +376,14 @@ end
 namespace :turbo_tests2 do
   task setup: :environment do
     # remove any existing coverage files to avoid false reporting
-    FileUtils.rm_rf("coverage/turbo_tests")
+    FileUtils.rm_rf("coverage/turbo_tests2")
   end
 
   task cleanup: :environment do
     require "simplecov"
 
     # report coverage usage based on the results of all tests
-    SimpleCov.collate(Dir["coverage/turbo_tests/*/.resultset.json"]) do
+    SimpleCov.collate(Dir["coverage/turbo_tests2/*/.resultset.json"]) do
       enable_coverage :branch
 
       minimum_coverage line: 100, branch: 100
@@ -795,7 +796,7 @@ Thanks for RTFM. ☺️
 | Field | Value |
 |---|---|
 | Package | turbo_tests2 |
-| Description | 🚀 turbo_tests2` is an RSpec parallel test runner built on `parallel_tests`. It uses `parallel_tests` for process counts, file grouping, and runtime balancing, then replaces interleaved worker output with incremental summarized RSpec reporting. Source code of `turbo_test2` gem is based on Discourse and Rubygems work in this area (see README.md). |
+| Description | 🚀 `turbo_tests2` is an RSpec parallel test runner built on `parallel_tests`. It uses `parallel_tests` for process counts, file grouping, and runtime balancing, then replaces interleaved worker output with incremental summarized RSpec reporting. Source code of the `turbo_tests2` gem is based on Discourse and RubyGems work in this area (see README.md). |
 | Homepage | https://github.com/galtzo-floss/turbo_tests2 |
 | Source | https://github.com/galtzo-floss/turbo_tests2 |
 | License | `MIT` |

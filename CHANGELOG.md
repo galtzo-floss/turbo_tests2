@@ -22,6 +22,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
+- README wording now distinguishes the `TurboTests` namespace from the
+  published `turbo_tests2` gem and executable names.
+
 ### Deprecated
 
 ### Removed
