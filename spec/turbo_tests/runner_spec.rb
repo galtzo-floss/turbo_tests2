@@ -25,6 +25,17 @@ RSpec.describe TurboTests::Runner do
     )
   end
 
+  def queued_messages(queue)
+    messages = []
+    loop do
+      begin
+        messages << queue.pop(true)
+      rescue ThreadError
+        break messages
+      end
+    end
+  end
+
   describe "#fail_fast_met (private)" do
     context "when fail_fast is nil" do
       it "returns false regardless of failure count" do
@@ -901,6 +912,51 @@ RSpec.describe TurboTests::Runner do
 
         worker_output = runner.instance_variable_get(:@worker_output)
         expect(worker_output[1][:stdout]).to eq("plain rspec output without output id\n")
+      end
+
+      it "does not parse output ID appearances inside ordinary worker output" do
+        json_msg = {type: "seed", seed: 1234}.to_json
+        plain_env_output = {
+          "RSPEC_FORMATTER_OUTPUT_ID" => output_id,
+          "ANDROID_NDK_HOME" => "/opt/android"
+        }.to_json
+        mock_open3_with_stdout("#{plain_env_output}\n#{output_id}#{json_msg}\n")
+
+        expect {
+          runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
+          runner.instance_variable_get(:@threads).each do |thread|
+            thread.join(2)
+            expect(thread).not_to be_alive
+            thread.value
+          end
+        }.not_to raise_error
+
+        worker_output = runner.instance_variable_get(:@worker_output)
+        expect(worker_output[1][:stdout]).to eq("#{plain_env_output}\n")
+        messages = queued_messages(runner.instance_variable_get(:@messages))
+        seed_message = messages.find { |message| message[:type] == "seed" }
+        expect(seed_message).to include(type: "seed", seed: 1234, process_id: 1)
+      end
+
+      it "does not parse valid non-formatter JSON after the output ID as a formatter message" do
+        json_msg = {type: "seed", seed: 1234}.to_json
+        ordinary_json = {message: "ordinary worker JSON"}.to_json
+        mock_open3_with_stdout("#{output_id}#{ordinary_json}\n#{output_id}#{json_msg}\n")
+
+        expect {
+          runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
+          runner.instance_variable_get(:@threads).each do |thread|
+            thread.join(2)
+            expect(thread).not_to be_alive
+            thread.value
+          end
+        }.not_to raise_error
+
+        worker_output = runner.instance_variable_get(:@worker_output)
+        expect(worker_output[1][:stdout]).to eq("#{output_id}#{ordinary_json}\n")
+        messages = queued_messages(runner.instance_variable_get(:@messages))
+        seed_message = messages.find { |message| message[:type] == "seed" }
+        expect(seed_message).to include(type: "seed", seed: 1234, process_id: 1)
       end
 
       it "does not crash when worker stdout contains invalid UTF-8 bytes" do

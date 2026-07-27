@@ -22,6 +22,11 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
+- README guidance now distinguishes the `TurboTests` namespace from the
+  published `turbo_tests2` gem and executable names, and its Rake/SimpleCov
+  examples now use `turbo_tests2` task filenames while keeping SimpleCov's
+  default `coverage/` base directory.
+
 ### Deprecated
 
 ### Removed
@@ -29,6 +34,32 @@ Please file a bug if you notice a violation of semantic versioning.
 ### Fixed
 
 ### Security
+
+## [3.2.3] - 2026-07-26
+
+- TAG: [v3.2.3][3.2.3t]
+- COVERAGE: 96.81% -- 879/908 lines in 10 files
+- BRANCH COVERAGE: 84.67% -- 221/261 branches in 10 files
+- 36.73% documented
+
+### Added
+
+- Documentation linting now has its generated `yard-lint` dependency and severity config available in the local bundle.
+
+- kettle-jem-template-20260726-001 - Projects now include YARD lint
+  configuration and documentation dependencies so documentation issues fail
+  before generated docs are refreshed.
+
+### Fixed
+
+- Worker stdout that happens to contain `RSPEC_FORMATTER_OUTPUT_ID` is now kept
+  as ordinary output instead of being parsed as an internal formatter message.
+- kettle-jem-template-20260726-002 - Generated version files now document their
+  version namespace and constants, reducing warning-only YARD lint output.
+
+- kettle-jem-template-20260726-003 - Coverage upload steps now treat Coveralls,
+  QLTY, and Codecov as optional, so provider outages do not fail CI when local
+  coverage thresholds still pass.
 
 ## [3.2.2] - 2026-07-25
 
@@ -415,7 +446,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.2...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.3...HEAD
+[3.2.3]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.2...v3.2.3
+[3.2.3t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.3
 [3.2.2]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.1...v3.2.2
 [3.2.2t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.2
 [3.2.1]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.0...v3.2.1
