@@ -34,6 +34,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Worker stdout that happens to contain `RSPEC_FORMATTER_OUTPUT_ID` is now kept
+  as ordinary output instead of being parsed as an internal formatter message.
 - kettle-jem-template-20260726-002 - Generated version files now document their
   version namespace and constants, reducing warning-only YARD lint output.
 

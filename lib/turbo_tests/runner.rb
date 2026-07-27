@@ -434,19 +434,7 @@ module TurboTests
             begin
               output_id = env["RSPEC_FORMATTER_OUTPUT_ID"].b
               stdout.each_line do |line|
-                result = line.b.split(output_id)
-
-                initial = result.shift
-                append_worker_output(process_id, :stdout, initial) unless initial.empty?
-
-                message = result.shift
-                next unless message
-
-                message = message.dup.force_encoding(Encoding::UTF_8).scrub
-                message = JSON.parse(message, symbolize_names: true)
-
-                message[:process_id] = process_id
-                @messages << message
+                parse_worker_stdout_line(line, output_id, process_id)
               end
             rescue IOError
               nil
@@ -523,6 +511,35 @@ module TurboTests
 
       io = (stream == :stderr) ? $stderr : $stdout
       io.write(msg) if stream_worker_output?
+    end
+
+    def parse_worker_stdout_line(line, output_id, process_id)
+      remaining = line.b.dup
+      loop do
+        before, separator, after = remaining.partition(output_id)
+        append_worker_output(process_id, :stdout, before) unless before.empty?
+        break if separator.empty?
+
+        if after.start_with?("{")
+          message = parse_worker_json_message(after, process_id)
+          if message
+            @messages << message
+            break
+          end
+        end
+
+        append_worker_output(process_id, :stdout, separator)
+        remaining = after
+      end
+    end
+
+    def parse_worker_json_message(raw_message, process_id)
+      message = raw_message.dup.force_encoding(Encoding::UTF_8).scrub
+      message = JSON.parse(message, symbolize_names: true)
+      message[:process_id] = process_id
+      message
+    rescue JSON::ParserError
+      nil
     end
 
     def stream_worker_output?
