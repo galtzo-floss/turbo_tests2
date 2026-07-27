@@ -20,17 +20,30 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Added
 
-- Documentation linting now has its generated `yard-lint` dependency and severity config available in the local bundle.
-
-- kettle-jem-template-20260726-001 - Projects now include YARD lint
-  configuration and documentation dependencies so documentation issues fail
-  before generated docs are refreshed.
-
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+### Security
+
+## [3.2.3] - 2026-07-26
+
+- TAG: [v3.2.3][3.2.3t]
+- COVERAGE: 96.81% -- 879/908 lines in 10 files
+- BRANCH COVERAGE: 84.67% -- 221/261 branches in 10 files
+- 36.73% documented
+
+### Added
+
+- Documentation linting now has its generated `yard-lint` dependency and severity config available in the local bundle.
+
+- kettle-jem-template-20260726-001 - Projects now include YARD lint
+  configuration and documentation dependencies so documentation issues fail
+  before generated docs are refreshed.
 
 ### Fixed
 
@@ -42,8 +55,6 @@ Please file a bug if you notice a violation of semantic versioning.
 - kettle-jem-template-20260726-003 - Coverage upload steps now treat Coveralls,
   QLTY, and Codecov as optional, so provider outages do not fail CI when local
   coverage thresholds still pass.
-
-### Security
 
 ## [3.2.2] - 2026-07-25
 
@@ -430,7 +441,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.2...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.3...HEAD
+[3.2.3]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.2...v3.2.3
+[3.2.3t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.3
 [3.2.2]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.1...v3.2.2
 [3.2.2t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.2
 [3.2.1]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.0...v3.2.1
