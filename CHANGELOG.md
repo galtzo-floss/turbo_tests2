@@ -22,8 +22,10 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
-- README wording now distinguishes the `TurboTests` namespace from the
-  published `turbo_tests2` gem and executable names.
+- README guidance now distinguishes the `TurboTests` namespace from the
+  published `turbo_tests2` gem and executable names, and its Rake/SimpleCov
+  examples now use `turbo_tests2` task filenames and coverage directories
+  instead of legacy `turbo_tests` paths.
 
 ### Deprecated
 
