@@ -22,11 +22,6 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
-- README guidance now distinguishes the `TurboTests` namespace from the
-  published `turbo_tests2` gem and executable names, and its Rake/SimpleCov
-  examples now use `turbo_tests2` task filenames while keeping SimpleCov's
-  default `coverage/` base directory.
-
 ### Deprecated
 
 ### Removed
@@ -38,8 +33,8 @@ Please file a bug if you notice a violation of semantic versioning.
 ## [3.2.3] - 2026-07-26
 
 - TAG: [v3.2.3][3.2.3t]
-- COVERAGE: 96.81% -- 879/908 lines in 10 files
-- BRANCH COVERAGE: 84.67% -- 221/261 branches in 10 files
+- COVERAGE: 96.81% -- 880/909 lines in 10 files
+- BRANCH COVERAGE: 85.17% -- 224/263 branches in 10 files
 - 36.73% documented
 
 ### Added
@@ -60,6 +55,13 @@ Please file a bug if you notice a violation of semantic versioning.
 - kettle-jem-template-20260726-003 - Coverage upload steps now treat Coveralls,
   QLTY, and Codecov as optional, so provider outages do not fail CI when local
   coverage thresholds still pass.
+
+### Changed
+
+- README guidance now distinguishes the `TurboTests` namespace from the
+  published `turbo_tests2` gem and executable names, and its Rake/SimpleCov
+  examples now use `turbo_tests2` task filenames while keeping SimpleCov's
+  default `coverage/` base directory.
 
 ## [3.2.2] - 2026-07-25
 

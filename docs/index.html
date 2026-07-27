@@ -61,7 +61,7 @@
 
       <div id="content"><div id='filecontents'><p><a href="https://github.com/galtzo-floss/turbo_tests2"><img alt="turbo_tests2 Logo by Aboling0, CC BY-SA 4.0" src="https://logos.galtzo.com/assets/images/galtzo-floss/turbo_tests2/avatar-128px.svg" width="20%" align="right"></a></p>
 
-<h1 id="-turbotests">🚀 TurboTests</h1>
+<h1 id="-turbotests-née-turbotests2">🚀 TurboTests née TurboTests2</h1>
 
 <p><a href="https://bestgems.org/gems/turbo_tests2"><img src="https://img.shields.io/gem/v/turbo_tests2.svg" alt="Version"></a> <a href="https://github.com/galtzo-floss/turbo_tests2/releases"><img src="https://img.shields.io/github/tag/galtzo-floss/turbo_tests2.svg" alt="GitHub tag (latest SemVer)"></a> <a href="LICENSE.md"><img src="https://img.shields.io/badge/License-MIT-259D6C.svg" alt="License: MIT"></a> <a href="https://bestgems.org/gems/turbo_tests2"><img src="https://img.shields.io/gem/rd/turbo_tests2.svg" alt="Downloads Rank"></a> <a href="https://codecov.io/gh/galtzo-floss/turbo_tests2"><img src="https://codecov.io/gh/galtzo-floss/turbo_tests2/graph/badge.svg" alt="CodeCov Test Coverage"></a> <a href="https://coveralls.io/github/galtzo-floss/turbo_tests2?branch=main"><img src="https://coveralls.io/repos/github/galtzo-floss/turbo_tests2/badge.svg?branch=main" alt="Coveralls Test Coverage"></a> <a href="https://qlty.sh/gh/galtzo-floss/projects/turbo_tests2/metrics/code?sort=coverageRating"><img src="https://qlty.sh/gh/galtzo-floss/projects/turbo_tests2/coverage.svg" alt="QLTY Test Coverage"></a> <a href="https://qlty.sh/gh/galtzo-floss/projects/turbo_tests2"><img src="https://qlty.sh/gh/galtzo-floss/projects/turbo_tests2/maintainability.svg" alt="QLTY Maintainability"></a> <a href="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/heads.yml"><img src="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/heads.yml/badge.svg" alt="CI Heads"></a> <a href="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/dep-heads.yml"><img src="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/dep-heads.yml/badge.svg" alt="CI Runtime Dependencies @ HEAD"></a> <a href="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/current.yml"><img src="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/current.yml/badge.svg" alt="CI Current"></a> <a href="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/truffle.yml"><img src="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/truffle.yml/badge.svg" alt="CI Truffle Ruby"></a> <a href="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/jruby.yml"><img src="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/jruby.yml/badge.svg" alt="CI JRuby"></a> <a href="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/locked_deps.yml"><img src="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/locked_deps.yml/badge.svg" alt="Deps Locked"></a> <a href="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/unlocked_deps.yml"><img src="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/unlocked_deps.yml/badge.svg" alt="Deps Unlocked"></a> <a href="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/coverage.yml"><img src="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/coverage.yml/badge.svg" alt="CI Test Coverage"></a> <a href="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/style.yml"><img src="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/style.yml/badge.svg" alt="CI Style"></a> <a href="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/license-eye.yml"><img src="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/license-eye.yml/badge.svg" alt="Apache SkyWalking Eyes License Compatibility Check"></a></p>
 
@@ -96,7 +96,8 @@
   </tbody>
 </table>
 
-<p><code>turbo_tests2</code> is an RSpec parallel test runner built on <a href="https://github.com/grosser/parallel_tests">grosser/parallel_tests</a>. It uses <code>parallel_tests</code> for process counts, file grouping, and runtime balancing, then replaces interleaved worker output with incremental summarized RSpec reporting. Source code of this gem is based on <a href="https://github.com/discourse/discourse/blob/6b9784cf8a18636bce281a7e4d18e65a0cbc6290/lib/turbo_tests.rb">Discourse</a> and <a href="https://github.com/rubygems/rubygems/tree/390335ceb351668cd433bd5bb9823dd021f82533/bundler/tool">RubyGems</a> work in this area.</p>
+<p><code>turbo_tests2</code> is an RSpec parallel test runner built on <a href="https://github.com/grosser/parallel_tests">grosser/parallel_tests</a>. It uses <code>parallel_tests</code> for process counts, file grouping, and runtime balancing, then replaces interleaved worker output with incremental summarized RSpec reporting. Source code of this gem is based on <a href="https://github.com/discourse/discourse/blob/6b9784cf8a18636bce281a7e4d18e65a0cbc6290/lib/turbo_tests.rb">Discourse</a> and <a href="https://github.com/rubygems/rubygems/tree/390335ceb351668cd433bd5bb9823dd021f82533/bundler/tool">RubyGems</a> work in this area.<br>
+The project namespace remains <code>TurboTests</code>; the published gem and executable are <code>turbo_tests2</code>.</p>
 
 <p>Incremental summarized output doesn’t <a href="https://github.com/grosser/parallel_tests/issues/708">fit the vision</a> of the <code>parallel_tests</code> author, and <a href="https://github.com/rspec/rspec-rails/issues/2104#issuecomment-658474900">RSpec doesn’t support built-in parallel testing yet</a>. This gem targets RSpec, not every framework supported by <code>parallel_tests</code>, and may not be useful once one of the issues above is implemented.</p>
 
@@ -182,7 +183,7 @@ Finished in 2 minute 25.15 seconds (files took 0 seconds to load)
     <tr>
       <td>Source</td>
       <td>
-<a href="https://gitlab.com/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/GitLab-FBA326?style=for-the-badge&amp;logo=Gitlab&amp;logoColor=orange" alt="Source on GitLab.com"></a> <a href="https://codeberg.org/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/CodeBerg-4893CC?style=for-the-badge&amp;logo=CodeBerg&amp;logoColor=blue" alt="Source on CodeBerg.org"></a> <a href="https://github.com/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/GitHub-238636?style=for-the-badge&amp;logo=GitHub&amp;logoColor=green" alt="Source on GitHub.com"></a> <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://img.shields.io/badge/KLOC-0.908-FFDD67.svg?style=for-the-badge&amp;logo=YouTube&amp;logoColor=blue" alt="The best SHA: dQw4w9WgXcQ!"></a>
+<a href="https://gitlab.com/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/GitLab-FBA326?style=for-the-badge&amp;logo=Gitlab&amp;logoColor=orange" alt="Source on GitLab.com"></a> <a href="https://codeberg.org/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/CodeBerg-4893CC?style=for-the-badge&amp;logo=CodeBerg&amp;logoColor=blue" alt="Source on CodeBerg.org"></a> <a href="https://github.com/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/GitHub-238636?style=for-the-badge&amp;logo=GitHub&amp;logoColor=green" alt="Source on GitHub.com"></a> <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://img.shields.io/badge/KLOC-0.909-FFDD67.svg?style=for-the-badge&amp;logo=YouTube&amp;logoColor=blue" alt="The best SHA: dQw4w9WgXcQ!"></a>
 </td>
     </tr>
     <tr>
@@ -731,7 +732,7 @@ summary.</p>
 <p>If Rake is present, the CLI will invoke the tasks <code>turbo_tests2:setup</code> and <code>turbo_tests2:cleanup</code> before and after running<br>
 the test suite. These can be used to do work that should only happen once, such as removing files or collating coverage:</p>
 
-<pre class="code language-ruby"><code class="language-ruby"># lib/tasks/turbo_tests.rake
+<pre class="code language-ruby"><code class="language-ruby"># lib/tasks/turbo_tests2.rake
 namespace :turbo_tests2 do
   task setup: :environment do
     # precompile assets once, to avoid doing it per each process
@@ -760,7 +761,7 @@ require &quot;simplecov&quot;
 SimpleCov.start(&quot;rails&quot;) do
   enable_coverage :branch
 
-  coverage_dir &quot;coverage/turbo_tests/#{ENV[&quot;TEST_ENV_NUMBER&quot;]}&quot;
+  coverage_dir &quot;coverage/#{ENV[&quot;TEST_ENV_NUMBER&quot;]}&quot;
 
   formatter SimpleCov::Formatter::SimpleFormatter
 end
@@ -769,14 +770,14 @@ end
 namespace :turbo_tests2 do
   task setup: :environment do
     # remove any existing coverage files to avoid false reporting
-    FileUtils.rm_rf(&quot;coverage/turbo_tests&quot;)
+    FileUtils.rm_rf(&quot;coverage&quot;)
   end
 
   task cleanup: :environment do
     require &quot;simplecov&quot;
 
     # report coverage usage based on the results of all tests
-    SimpleCov.collate(Dir[&quot;coverage/turbo_tests/*/.resultset.json&quot;]) do
+    SimpleCov.collate(Dir[&quot;coverage/*/.resultset.json&quot;]) do
       enable_coverage :branch
 
       minimum_coverage line: 100, branch: 100
@@ -989,10 +990,10 @@ Please consider sponsoring me or the project.</p>
 <p>| Field | Value |<br>
 |—|—|<br>
 | Package | turbo_tests2 |<br>
-| Description | 🚀 turbo_tests2<code> is an RSpec parallel test runner built on </code>parallel_tests<code>. It uses </code>parallel_tests<code> for process counts, file grouping, and runtime balancing, then replaces interleaved worker output with incremental summarized RSpec reporting. Source code of </code>turbo_test2<code> gem is based on Discourse and Rubygems work in this area (see README.md). |
-| Homepage | https://github.com/galtzo-floss/turbo_tests2 |
-| Source | https://github.com/galtzo-floss/turbo_tests2 |
-| License | </code>MIT` |<br>
+| Description | 🚀 <code>turbo_tests2</code> is an RSpec parallel test runner built on <code>parallel_tests</code>. It uses <code>parallel_tests</code> for process counts, file grouping, and runtime balancing, then replaces interleaved worker output with incremental summarized RSpec reporting. Source code of the <code>turbo_tests2</code> gem is based on Discourse and RubyGems work in this area (see README.md). |<br>
+| Homepage | https://github.com/galtzo-floss/turbo_tests2 |<br>
+| Source | https://github.com/galtzo-floss/turbo_tests2 |<br>
+| License | <code>MIT</code> |<br>
 | Funding | https://github.com/sponsors/pboling, https://ko-fi.com/pboling, https://liberapay.com/pboling/donate, https://opencollective.com/galtzo-floss, https://thanks.dev/u/gh/pboling, https://tidelift.com/funding/github/rubygems/turbo_tests2, https://www.buymeacoffee.com/pboling |<br>
 <!-- kettle-jem:metadata:end --></p>
 </div></div>

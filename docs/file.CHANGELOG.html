@@ -90,8 +90,8 @@ Please file a bug if you notice a violation of semantic versioning.</p>
 <ul>
   <li>TAG: <a href="https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.3">v3.2.3</a>
 </li>
-  <li>COVERAGE: 96.81% – 879/908 lines in 10 files</li>
-  <li>BRANCH COVERAGE: 84.67% – 221/261 branches in 10 files</li>
+  <li>COVERAGE: 96.81% – 880/909 lines in 10 files</li>
+  <li>BRANCH COVERAGE: 85.17% – 224/263 branches in 10 files</li>
   <li>36.73% documented</li>
 </ul>
 
@@ -122,6 +122,15 @@ QLTY, and Codecov as optional, so provider outages do not fail CI when local<br>
 coverage thresholds still pass.</li>
 </ul>
 
+<h3 id="changed-1">Changed</h3>
+
+<ul>
+  <li>README guidance now distinguishes the <code>TurboTests</code> namespace from the<br>
+published <code>turbo_tests2</code> gem and executable names, and its Rake/SimpleCov<br>
+examples now use <code>turbo_tests2</code> task filenames while keeping SimpleCov’s<br>
+default <code>coverage/</code> base directory.</li>
+</ul>
+
 <h2 id="322---2026-07-25">
 <a href="https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.1...v3.2.2">3.2.2</a> - 2026-07-25</h2>
 
@@ -133,7 +142,7 @@ coverage thresholds still pass.</li>
   <li>34.69% documented</li>
 </ul>
 
-<h3 id="changed-1">Changed</h3>
+<h3 id="changed-2">Changed</h3>
 
 <ul>
   <li>
@@ -161,7 +170,7 @@ or incompatible with the project’s runtime Ruby floor.</p>
   <li>34.69% documented</li>
 </ul>
 
-<h3 id="changed-2">Changed</h3>
+<h3 id="changed-3">Changed</h3>
 
 <ul>
   <li>
@@ -232,7 +241,7 @@ explicitly and mapped to <code>parallel_tests</code> runtime grouping tuning opt
 including when supplied after the compatibility <code>--</code> separator.</li>
 </ul>
 
-<h3 id="changed-3">Changed</h3>
+<h3 id="changed-4">Changed</h3>
 
 <ul>
   <li>Pull request engine workflows now keep JRuby and TruffleRuby coverage<br>
@@ -414,7 +423,7 @@ runner on JRuby after the underlying RSpec examples pass.</li>
   <li>37.08% documented</li>
 </ul>
 
-<h3 id="changed-4">Changed</h3>
+<h3 id="changed-5">Changed</h3>
 
 <ul>
   <li>Clarified project metadata, README, and CLI help to describe <code>turbo_tests2</code><br>
@@ -462,7 +471,7 @@ package description.</li>
   <li>Added support for JRuby 10.1 and TruffleRuby 34.0.</li>
 </ul>
 
-<h3 id="changed-5">Changed</h3>
+<h3 id="changed-6">Changed</h3>
 
 <ul>
   <li>Retemplated project metadata and CI/development automation with <code>kettle-jem</code> v7.0.0.</li>
@@ -603,7 +612,7 @@ worker with <code>TEST_ENV_NUMBER</code> and <code>PARALLEL_TEST_GROUPS</code> s
 <code>parallel_tests</code>-compatible runtime log so grouping can use example-level timing history.</li>
 </ul>
 
-<h3 id="changed-6">Changed</h3>
+<h3 id="changed-7">Changed</h3>
 
 <ul>
   <li>Worker subprocess JSON now forwards RSpec deprecation notifications to the parent reporter.</li>
