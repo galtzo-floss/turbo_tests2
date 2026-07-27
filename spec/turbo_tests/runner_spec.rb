@@ -28,9 +28,11 @@ RSpec.describe TurboTests::Runner do
   def queued_messages(queue)
     messages = []
     loop do
-      messages << queue.pop(true)
-    rescue ThreadError
-      break messages
+      begin
+        messages << queue.pop(true)
+      rescue ThreadError
+        break messages
+      end
     end
   end
 
