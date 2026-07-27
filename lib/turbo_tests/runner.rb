@@ -536,6 +536,8 @@ module TurboTests
     def parse_worker_json_message(raw_message, process_id)
       message = raw_message.dup.force_encoding(Encoding::UTF_8).scrub
       message = JSON.parse(message, symbolize_names: true)
+      return unless message.is_a?(Hash) && message[:type].is_a?(String)
+
       message[:process_id] = process_id
       message
     rescue JSON::ParserError

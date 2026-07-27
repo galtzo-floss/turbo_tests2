@@ -926,6 +926,26 @@ RSpec.describe TurboTests::Runner do
         expect(seed_message).to include(type: "seed", seed: 1234, process_id: 1)
       end
 
+      it "does not parse valid non-formatter JSON after the output ID as a formatter message" do
+        json_msg = {type: "seed", seed: 1234}.to_json
+        ordinary_json = {message: "ordinary worker JSON"}.to_json
+        mock_open3_with_stdout("#{output_id}#{ordinary_json}\n#{output_id}#{json_msg}\n")
+
+        expect {
+          runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
+          runner.instance_variable_get(:@threads).each do |thread|
+            thread.join(2)
+            expect(thread).not_to be_alive
+            thread.value
+          end
+        }.not_to raise_error
+
+        worker_output = runner.instance_variable_get(:@worker_output)
+        expect(worker_output[1][:stdout]).to eq("#{output_id}#{ordinary_json}\n")
+        seed_message = runner.instance_variable_get(:@messages).pop
+        expect(seed_message).to include(type: "seed", seed: 1234, process_id: 1)
+      end
+
       it "does not crash when worker stdout contains invalid UTF-8 bytes" do
         json_msg = {type: "seed", seed: 1234}.to_json
         invalid_output = +"raw output: "
