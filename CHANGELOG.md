@@ -24,8 +24,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - README guidance now distinguishes the `TurboTests` namespace from the
   published `turbo_tests2` gem and executable names, and its Rake/SimpleCov
-  examples now use `turbo_tests2` task filenames and coverage directories
-  instead of legacy `turbo_tests` paths.
+  examples now use `turbo_tests2` task filenames while keeping SimpleCov's
+  default `coverage/` base directory.
 
 ### Deprecated
 

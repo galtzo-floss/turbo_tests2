@@ -367,7 +367,7 @@ require "simplecov"
 SimpleCov.start("rails") do
   enable_coverage :branch
 
-  coverage_dir "coverage/turbo_tests2/#{ENV["TEST_ENV_NUMBER"]}"
+  coverage_dir "coverage/#{ENV["TEST_ENV_NUMBER"]}"
 
   formatter SimpleCov::Formatter::SimpleFormatter
 end
@@ -376,14 +376,14 @@ end
 namespace :turbo_tests2 do
   task setup: :environment do
     # remove any existing coverage files to avoid false reporting
-    FileUtils.rm_rf("coverage/turbo_tests2")
+    FileUtils.rm_rf("coverage")
   end
 
   task cleanup: :environment do
     require "simplecov"
 
     # report coverage usage based on the results of all tests
-    SimpleCov.collate(Dir["coverage/turbo_tests2/*/.resultset.json"]) do
+    SimpleCov.collate(Dir["coverage/*/.resultset.json"]) do
       enable_coverage :branch
 
       minimum_coverage line: 100, branch: 100
