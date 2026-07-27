@@ -39,6 +39,10 @@ Please file a bug if you notice a violation of semantic versioning.
 - kettle-jem-template-20260726-002 - Generated version files now document their
   version namespace and constants, reducing warning-only YARD lint output.
 
+- kettle-jem-template-20260726-003 - Coverage upload steps now treat Coveralls,
+  QLTY, and Codecov as optional, so provider outages do not fail CI when local
+  coverage thresholds still pass.
+
 ### Security
 
 ## [3.2.2] - 2026-07-25

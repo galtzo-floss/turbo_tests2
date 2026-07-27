@@ -96,6 +96,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           file: coverage/lcov.info
           format: lcov
+          fail-on-error: false
         continue-on-error: ${{ matrix.experimental || endsWith(matrix.ruby, 'head') }}
 
       - name: Upload coverage to QLTY
@@ -119,6 +120,7 @@ jobs:
           fail_ci_if_error: true
           files: coverage/lcov.info,coverage/coverage.xml
           verbose: true
+        continue-on-error: true
 
       # Then PR comments
       - name: Code Coverage Summary Report
