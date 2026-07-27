@@ -25,6 +25,15 @@ RSpec.describe TurboTests::Runner do
     )
   end
 
+  def queued_messages(queue)
+    messages = []
+    loop do
+      messages << queue.pop(true)
+    rescue ThreadError
+      break messages
+    end
+  end
+
   describe "#fail_fast_met (private)" do
     context "when fail_fast is nil" do
       it "returns false regardless of failure count" do
@@ -922,7 +931,8 @@ RSpec.describe TurboTests::Runner do
 
         worker_output = runner.instance_variable_get(:@worker_output)
         expect(worker_output[1][:stdout]).to eq("#{plain_env_output}\n")
-        seed_message = runner.instance_variable_get(:@messages).pop
+        messages = queued_messages(runner.instance_variable_get(:@messages))
+        seed_message = messages.find { |message| message[:type] == "seed" }
         expect(seed_message).to include(type: "seed", seed: 1234, process_id: 1)
       end
 
@@ -942,7 +952,8 @@ RSpec.describe TurboTests::Runner do
 
         worker_output = runner.instance_variable_get(:@worker_output)
         expect(worker_output[1][:stdout]).to eq("#{output_id}#{ordinary_json}\n")
-        seed_message = runner.instance_variable_get(:@messages).pop
+        messages = queued_messages(runner.instance_variable_get(:@messages))
+        seed_message = messages.find { |message| message[:type] == "seed" }
         expect(seed_message).to include(type: "seed", seed: 1234, process_id: 1)
       end
 
