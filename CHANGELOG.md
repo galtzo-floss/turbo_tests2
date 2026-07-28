@@ -20,13 +20,27 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Added
 
+- kettle-jem-template-20260727-001 - Spec harness documentation now lists the
+  RSpec helpers provided by `kettle-test`.
+
 ### Changed
+
+- kettle-jem-template-20260728-001 - Generated Ruby workflows now use clearer
+  setup-ruby-flash planning and can prepare appraisal-only jobs without
+  installing the main Gemfile bundle.
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+- kettle-jem-template-20260728-002 - Generated RuboCop configs now ignore the
+  same `gemfiles/vendor/bundle` tree as `.gitignore`, so vendored dependency
+  installs are not reported as project lint debt.
+- kettle-jem-template-20260728-003 - Generated dep-heads workflows now run
+  TruffleRuby jobs with current RubyGems and Bundler, avoiding setup failures
+  before the test suite starts.
 
 ### Security
 

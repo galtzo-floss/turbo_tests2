@@ -1,6 +1,6 @@
 <a href="https://github.com/galtzo-floss/turbo_tests2"><img alt="turbo_tests2 Logo by Aboling0, CC BY-SA 4.0" src="https://logos.galtzo.com/assets/images/galtzo-floss/turbo_tests2/avatar-128px.svg" width="20%" align="right"/></a>
 
-# 🚀 TurboTests née TurboTests2
+# 🚀 TurboTests
 
 [![Version][👽versioni]][👽version] [![GitHub tag (latest SemVer)][⛳️tag-img]][⛳️tag] [![License: MIT][📄license-img]][📄license] [![Downloads Rank][👽dl-ranki]][👽dl-rank] [![CodeCov Test Coverage][🏀codecovi]][🏀codecov] [![Coveralls Test Coverage][🏀coveralls-img]][🏀coveralls] [![QLTY Test Coverage][🏀qlty-covi]][🏀qlty-cov] [![QLTY Maintainability][🏀qlty-mnti]][🏀qlty-mnt] [![CI Heads][🚎3-hd-wfi]][🚎3-hd-wf] [![CI Runtime Dependencies @ HEAD][🚎12-crh-wfi]][🚎12-crh-wf] [![CI Current][🚎11-c-wfi]][🚎11-c-wf] [![CI Truffle Ruby][🚎9-t-wfi]][🚎9-t-wf] [![CI JRuby][🚎10-j-wfi]][🚎10-j-wf] [![Deps Locked][🚎13-🔒️-wfi]][🚎13-🔒️-wf] [![Deps Unlocked][🚎14-🔓️-wfi]][🚎14-🔓️-wf] [![CI Test Coverage][🚎2-cov-wfi]][🚎2-cov-wf] [![CI Style][🚎5-st-wfi]][🚎5-st-wf] [![Apache SkyWalking Eyes License Compatibility Check][🚎15-🪪-wfi]][🚎15-🪪-wf]
 
@@ -796,7 +796,7 @@ Thanks for RTFM. ☺️
 | Field | Value |
 |---|---|
 | Package | turbo_tests2 |
-| Description | 🚀 `turbo_tests2` is an RSpec parallel test runner built on `parallel_tests`. It uses `parallel_tests` for process counts, file grouping, and runtime balancing, then replaces interleaved worker output with incremental summarized RSpec reporting. Source code of the `turbo_tests2` gem is based on Discourse and RubyGems work in this area (see README.md). |
+| Description | 🚀 turbo_tests2` is an RSpec parallel test runner built on `parallel_tests`. It uses `parallel_tests` for process counts, file grouping, and runtime balancing, then replaces interleaved worker output with incremental summarized RSpec reporting. Source code of `turbo_test2` gem is based on Discourse and Rubygems work in this area (see README.md). |
 | Homepage | https://github.com/galtzo-floss/turbo_tests2 |
 | Source | https://github.com/galtzo-floss/turbo_tests2 |
 | License | `MIT` |

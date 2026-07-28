@@ -21,6 +21,7 @@ end
 # External RSpec & related config
 require "parallel_tests/tasks"
 require "kettle/test/rspec"
+# `kettle/test/rspec` installs harness helpers documented in spec/README.md.
 
 # RSpec Configs
 require_relative "config/debug"
