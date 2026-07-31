@@ -20,6 +20,25 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [3.2.4] - 2026-07-31
+
+- TAG: [v3.2.4][3.2.4t]
+- COVERAGE: 96.81% -- 880/909 lines in 10 files
+- BRANCH COVERAGE: 85.17% -- 224/263 branches in 10 files
+- 36.73% documented
+
+### Added
+
 - kettle-jem-template-20260727-001 - Spec harness documentation now lists the
   RSpec helpers provided by `kettle-test`.
 
@@ -32,10 +51,6 @@ Please file a bug if you notice a violation of semantic versioning.
 - kettle-jem-template-20260728-001 - Generated Ruby workflows now use clearer
   setup-ruby-flash planning and can prepare appraisal-only jobs without
   installing the main Gemfile bundle.
-
-### Deprecated
-
-### Removed
 
 ### Fixed
 
@@ -69,8 +84,6 @@ Please file a bug if you notice a violation of semantic versioning.
 - kettle-jem-template-20260730-001 - Gemspec package file enumeration now runs
   relative to the gemspec directory, so packaged template assets are included
   even when the gemspec is loaded from another working directory.
-
-### Security
 
 ## [3.2.3] - 2026-07-26
 
@@ -490,7 +503,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.3...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.4...HEAD
+[3.2.4]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.3...v3.2.4
+[3.2.4t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.4
 [3.2.3]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.2...v3.2.3
 [3.2.3t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.3
 [3.2.2]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.1...v3.2.2
