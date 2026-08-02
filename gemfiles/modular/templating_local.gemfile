@@ -63,8 +63,8 @@ kettle_dev_local_gems = %w[
   kettle-dev kettle-family kettle-test kettle-soup-cover kettle-drift
 ]
 declared_gems = instance_variable_get(:@dependencies).to_a.map(&:name)
-structuredmerge_local_gems_to_eval = structuredmerge_local_gems - %w[turbo_tests2] - declared_gems
-kettle_dev_local_gems_to_eval = kettle_dev_local_gems - %w[turbo_tests2] - (declared_gems - %w[kettle-dev])
+structuredmerge_local_gems_to_eval = structuredmerge_local_gems - %w[] - declared_gems
+kettle_dev_local_gems_to_eval = kettle_dev_local_gems - %w[] - (declared_gems - %w[kettle-dev])
 
 platform :mri do
   if ENV.fetch("STRUCTUREDMERGE_DEV", "false").casecmp("false") != 0
