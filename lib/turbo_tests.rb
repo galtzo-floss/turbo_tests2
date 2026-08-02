@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "version_gem"
-require_relative "turbo_tests/version"
 
 TurboTests::Version.class_eval do
   extend VersionGem::Basic
@@ -19,6 +18,7 @@ require "parallel_tests/rspec/runner"
 require "turbo_tests/reporter"
 require "turbo_tests/runner"
 require "turbo_tests/json_rows_formatter"
+require_relative "turbo_tests/version"
 
 module TurboTests
   autoload :CLI, "turbo_tests/cli"
