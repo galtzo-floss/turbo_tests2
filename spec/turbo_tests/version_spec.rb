@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "anonymous_loader"
+require "turbo_tests2"
 RSpec.describe TurboTests::Version do
   it_behaves_like "a Version module", described_class
 
