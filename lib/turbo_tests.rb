@@ -1,11 +1,5 @@
 # frozen_string_literal: true
 
-require "version_gem"
-require_relative "turbo_tests/version"
-
-TurboTests::Version.class_eval do
-  extend VersionGem::Basic
-end
 require "securerandom"
 require "open3"
 require "fileutils"

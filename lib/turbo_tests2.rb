@@ -4,3 +4,9 @@
 # Bottom-line: Do not use Zeitwerk in this gem.
 # Hook for other libraries to load this library (e.g. via bundler)
 require_relative "turbo_tests"
+require "version_gem"
+require_relative "turbo_tests/version"
+
+TurboTests::Version.class_eval do
+  extend VersionGem::Basic
+end
