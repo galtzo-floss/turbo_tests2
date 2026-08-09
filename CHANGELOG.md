@@ -22,12 +22,25 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
-- kettle-jem-template-20260801-001 - Generated README gem dashboard links now
-  use ClickGems instead of BestGems.
-
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+### Security
+
+## [3.2.5] - 2026-08-08
+
+- TAG: [v3.2.5][3.2.5t]
+- COVERAGE: 96.81% -- 880/909 lines in 10 files
+- BRANCH COVERAGE: 85.17% -- 224/263 branches in 10 files
+- 36.73% documented
+
+### Changed
+
+- kettle-jem-template-20260801-001 - Generated README gem dashboard links now
+  use ClickGems instead of BestGems.
 
 ### Fixed
 
@@ -43,8 +56,6 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - kettle-jem-template-20260802-001 - Devcontainer JSON files now merge as JSONC,
   preserving comments and trailing commas during template updates.
-
-### Security
 
 ## [3.2.4] - 2026-07-31
 
@@ -505,7 +516,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.4...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.5...HEAD
+[3.2.5]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.4...v3.2.5
+[3.2.5t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.5
 [3.2.4]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.3...v3.2.4
 [3.2.4t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.4
 [3.2.3]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.2...v3.2.3
