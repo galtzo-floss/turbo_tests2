@@ -172,7 +172,7 @@ RSpec.describe TurboTests::CLI do
 
     it "renders help for all documented options" do
       matcher = RSpec::Matchers::BuiltIn::Output.new(
-        /-n, --count \[PROCESSES\].*-w, --workers \[PROCESSES\].*--example-status-log FILE.*--pattern PATTERN.*--exclude-pattern PATTERN.*--only-group GROUP_INDEX\[,GROUP_INDEX\].*--group-by MODE.*--allowed-missing PERCENT.*--unknown-runtime SECONDS.*--worker-output MODE.*--seed SEED.*--order ORDER.*--no-random.*--nice/m
+        /-n, --count \[PROCESSES\].*-w, --workers \[PROCESSES\].*--example-status-log FILE.*--pattern PATTERN.*--exclude-pattern PATTERN.*--only-group GROUP_INDEX\[,GROUP_INDEX\].*--group-by MODE.*--allowed-missing PERCENT.*--unknown-runtime SECONDS.*--worker-output MODE.*--seed SEED.*--order ORDER.*--no-random.*--no-rake-hooks.*--nice/m
       ).to_stdout
 
       expect { run_cli(["--help"]) }.to matcher
@@ -596,6 +596,29 @@ RSpec.describe TurboTests::CLI do
       it "passes -n count to Runner.create" do
         run_cli(["--create", "-n", "4"])
         expect(TurboTests::Runner).to have_received(:create).with(4)
+      end
+    end
+
+    describe "--no-rake-hooks" do
+      it "loads and invokes Rake hooks by default" do
+        cli = described_class.new([])
+        allow(cli).to receive(:load_rake)
+        allow(cli).to receive(:invoke_rake_hook)
+
+        expect { cli.run }.to raise_error(SystemExit)
+        expect(cli).to have_received(:load_rake)
+        expect(cli).to have_received(:invoke_rake_hook).with("setup")
+        expect(cli).to have_received(:invoke_rake_hook).with("cleanup")
+      end
+
+      it "skips loading and invoking Rake hooks" do
+        cli = described_class.new(["--no-rake-hooks"])
+        allow(cli).to receive(:load_rake)
+        allow(cli).to receive(:invoke_rake_hook)
+
+        expect { cli.run }.to raise_error(SystemExit)
+        expect(cli).not_to have_received(:load_rake)
+        expect(cli).not_to have_received(:invoke_rake_hook)
       end
     end
 

@@ -20,6 +20,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Added
 
+- Added `--no-rake-hooks` to run without loading a discoverable Rakefile or
+  invoking the `turbo_tests2:setup` and `turbo_tests2:cleanup` hooks.
+
 ### Changed
 
 ### Deprecated

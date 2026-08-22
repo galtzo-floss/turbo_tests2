@@ -25,6 +25,7 @@ module TurboTests
       print_failed_group = false
       create = false
       nice = false
+      rake_hooks = true
       worker_output = nil
       parallel_options = {}
       cli_args, parallel_args = split_parallel_args(@argv)
@@ -159,6 +160,10 @@ module TurboTests
           print_failed_group = true
         end
 
+        opts.on("--no-rake-hooks", "Do not load a Rakefile or invoke setup and cleanup hooks") do
+          rake_hooks = false
+        end
+
         opts.on("--nice", "execute test commands with low priority") do
           nice = true
         end
@@ -183,9 +188,10 @@ module TurboTests
         formatter[:outputs] << "-" if formatter[:outputs].empty?
       end
 
-      load_rake
-
-      invoke_rake_hook("setup")
+      if rake_hooks
+        load_rake
+        invoke_rake_hook("setup")
+      end
 
       files = cli_args.empty? ? nil : cli_args
 
@@ -206,7 +212,7 @@ module TurboTests
         parallel_options: parallel_options
       )
 
-      invoke_rake_hook("cleanup")
+      invoke_rake_hook("cleanup") if rake_hooks
 
       # From https://github.com/galtzo-floss/turbo_tests2/pull/20/
       exit(exitstatus)
