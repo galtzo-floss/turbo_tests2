@@ -120,7 +120,9 @@ The _amazing_ test matrix is powered by the kettle-dev stack.
 
 </details>
 
-### Enterprise Support [![Tidelift](https://tidelift.com/badges/package/rubygems/turbo_tests2)](https://tidelift.com/subscription/pkg/rubygems-turbo_tests2?utm_source=rubygems-turbo_tests2&utm_medium=referral&utm_campaign=readme)
+### Enterprise Support
+
+[![Tidelift](https://tidelift.com/badges/package/rubygems/turbo_tests2)](https://tidelift.com/subscription/pkg/rubygems-turbo_tests2?utm_source=rubygems-turbo_tests2&utm_medium=referral&utm_campaign=readme)
 
 Available as part of the Tidelift Subscription.
 
@@ -539,13 +541,12 @@ See [LICENSE.md][📄license] for the official copyright notice.
 <details markdown="1">
 <summary>Copyright holders</summary>
 
-- Copyright (c) 2020-2023 Illia
+- Copyright (c) 2020-2024 Illia
 - Copyright (c) 2020 Ilya Zub
 - Copyright (c) 2021 AMHOL
 - Copyright (c) 2021 Serge Bedzhyk
 - Copyright (c) 2023 Bo Anderson
 - Copyright (c) 2023 Dmitiry Zub☀️
-- Copyright (c) 2023-2024 Illia
 - Copyright (c) 2023 mrudzki
 - Copyright (c) 2023-2024 Sebastien Savater
 - Copyright (c) 2024 Hiroshi SHIBATA
