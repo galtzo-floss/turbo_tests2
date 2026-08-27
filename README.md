@@ -218,6 +218,7 @@ Options:
         --no-random                  Run examples in defined order without passing a seed
         --create                     Create databases
         --print_failed_group         Prints group that had failures in it
+        --no-rake-hooks              Do not load a Rakefile or invoke setup and cleanup hooks
         --nice                       execute test commands with low priority
 ```
 
@@ -350,6 +351,14 @@ namespace :turbo_tests2 do
   end
 end
 ```
+
+Projects with a discoverable Rakefile can disable this integration explicitly:
+
+```bash
+bundle exec turbo_tests2 --no-rake-hooks
+```
+
+This prevents the Rakefile from being loaded and skips both hooks.
 
 ### SimpleCov
 
