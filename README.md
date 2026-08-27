@@ -331,8 +331,10 @@ bundle exec turbo_tests2 -r fuubar -f Fuubar spec/whatever
 
 ### Rake Hooks
 
-If Rake is present, the CLI will invoke the tasks `turbo_tests2:setup` and `turbo_tests2:cleanup` before and after running
-the test suite. These can be used to do work that should only happen once, such as removing files or collating coverage:
+If Rake and a Rakefile are present, the CLI will invoke the tasks `turbo_tests2:setup` and
+`turbo_tests2:cleanup` before and after running the test suite. If no Rakefile is discoverable,
+the test suite runs without hooks. These tasks can be used to do work that should only happen
+once, such as removing files or collating coverage:
 
 ```ruby
 # lib/tasks/turbo_tests2.rake

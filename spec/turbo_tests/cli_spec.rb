@@ -599,6 +599,37 @@ RSpec.describe TurboTests::CLI do
       end
     end
 
+    describe "#load_rake" do
+      subject(:cli) { described_class.new([]) }
+
+      before do
+        allow(Rake.application).to receive(:init)
+        allow(Rake.application).to receive(:load_rakefile)
+      end
+
+      context "when no Rakefile is discoverable" do
+        before { allow(Rake.application).to receive(:find_rakefile_location).and_return(nil) }
+
+        it "does not load a Rakefile" do
+          cli.send(:load_rake)
+
+          expect(Rake.application).not_to have_received(:load_rakefile)
+        end
+      end
+
+      context "when a Rakefile is discoverable" do
+        before do
+          allow(Rake.application).to receive(:find_rakefile_location).and_return(["Rakefile", Dir.pwd])
+        end
+
+        it "loads the Rakefile" do
+          cli.send(:load_rake)
+
+          expect(Rake.application).to have_received(:load_rakefile)
+        end
+      end
+    end
+
     describe "#invoke_rake_task" do
       subject(:cli) { described_class.new([]) }
 

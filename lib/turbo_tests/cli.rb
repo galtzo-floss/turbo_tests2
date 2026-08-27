@@ -412,6 +412,8 @@ module TurboTests
       # which may contain non-Rake arguments (e.g. RSpec's --pattern flag when
       # tests are run via `rake spec`).
       Rake.application.init("rake", [])
+      return unless Rake.application.find_rakefile_location
+
       Rake.application.load_rakefile
     end
 

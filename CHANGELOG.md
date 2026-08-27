@@ -28,6 +28,10 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Running `turbo_tests2` no longer requires a Rakefile merely because the
+  `rake` gem is installed; Rake hooks are skipped when no Rakefile is
+  discoverable.
+
 ### Security
 
 ## [3.2.6] - 2026-08-13
