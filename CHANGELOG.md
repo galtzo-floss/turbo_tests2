@@ -20,6 +20,25 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [3.2.7] - 2026-08-28
+
+- TAG: [v3.2.7][3.2.7t]
+- COVERAGE: 96.83% -- 885/914 lines in 10 files
+- BRANCH COVERAGE: 85.50% -- 230/269 branches in 10 files
+- 36.73% documented
+
+### Added
+
 - Added `--no-rake-hooks` to run without loading a discoverable Rakefile or
   invoking the `turbo_tests2:setup` and `turbo_tests2:cleanup` hooks.
 
@@ -30,17 +49,15 @@ Please file a bug if you notice a violation of semantic versioning.
   - dependencies (26)
   - other (3)
 
-### Deprecated
-
-### Removed
+- [kc] kettle-jem/template: updated 2 project files:
+  - dependencies (1)
+  - other (1)
 
 ### Fixed
 
 - Running `turbo_tests2` no longer requires a Rakefile merely because the
   `rake` gem is installed; Rake hooks are skipped when no Rakefile is
   discoverable.
-
-### Security
 
 ## [3.2.6] - 2026-08-13
 
@@ -547,7 +564,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.6...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.7...HEAD
+[3.2.7]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.6...v3.2.7
+[3.2.7t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.7
 [3.2.6]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.5...v3.2.6
 [3.2.6t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.6
 [3.2.5]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.4...v3.2.5

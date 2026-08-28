@@ -183,7 +183,7 @@ Finished in 2 minute 25.15 seconds (files took 0 seconds to load)
     <tr>
       <td>Source</td>
       <td>
-<a href="https://gitlab.com/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/GitLab-FBA326?style=for-the-badge&amp;logo=Gitlab&amp;logoColor=orange" alt="Source on GitLab.com"></a> <a href="https://codeberg.org/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/CodeBerg-4893CC?style=for-the-badge&amp;logo=CodeBerg&amp;logoColor=blue" alt="Source on CodeBerg.org"></a> <a href="https://github.com/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/GitHub-238636?style=for-the-badge&amp;logo=GitHub&amp;logoColor=green" alt="Source on GitHub.com"></a> <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://img.shields.io/badge/KLOC-0.909-FFDD67.svg?style=for-the-badge&amp;logo=YouTube&amp;logoColor=blue" alt="The best SHA: dQw4w9WgXcQ!"></a>
+<a href="https://gitlab.com/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/GitLab-FBA326?style=for-the-badge&amp;logo=Gitlab&amp;logoColor=orange" alt="Source on GitLab.com"></a> <a href="https://codeberg.org/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/CodeBerg-4893CC?style=for-the-badge&amp;logo=CodeBerg&amp;logoColor=blue" alt="Source on CodeBerg.org"></a> <a href="https://github.com/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/GitHub-238636?style=for-the-badge&amp;logo=GitHub&amp;logoColor=green" alt="Source on GitHub.com"></a> <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://img.shields.io/badge/KLOC-0.914-FFDD67.svg?style=for-the-badge&amp;logo=YouTube&amp;logoColor=blue" alt="The best SHA: dQw4w9WgXcQ!"></a>
 </td>
     </tr>
     <tr>
@@ -341,8 +341,9 @@ not practical for the current toolchain.</p>
 
 </details>
 
-<h3 id="enterprise-support-">Enterprise Support <a href="https://tidelift.com/subscription/pkg/rubygems-turbo_tests2?utm_source=rubygems-turbo_tests2&amp;utm_medium=referral&amp;utm_campaign=readme"><img src="https://tidelift.com/badges/package/rubygems/turbo_tests2" alt="Tidelift"></a>
-</h3>
+<h3 id="enterprise-support">Enterprise Support</h3>
+
+<p><a href="https://tidelift.com/subscription/pkg/rubygems-turbo_tests2?utm_source=rubygems-turbo_tests2&amp;utm_medium=referral&amp;utm_campaign=readme"><img src="https://tidelift.com/badges/package/rubygems/turbo_tests2" alt="Tidelift"></a></p>
 
 <p>Available as part of the Tidelift Subscription.</p>
 
@@ -439,6 +440,7 @@ Options:
         --no-random                  Run examples in defined order without passing a seed
         --create                     Create databases
         --print_failed_group         Prints group that had failures in it
+        --no-rake-hooks              Do not load a Rakefile or invoke setup and cleanup hooks
         --nice                       execute test commands with low priority
 </code></pre>
 
@@ -716,8 +718,10 @@ summary.</p>
 
 <h3 id="rake-hooks">Rake Hooks</h3>
 
-<p>If Rake is present, the CLI will invoke the tasks <code>turbo_tests2:setup</code> and <code>turbo_tests2:cleanup</code> before and after running<br>
-the test suite. These can be used to do work that should only happen once, such as removing files or collating coverage:</p>
+<p>If Rake and a Rakefile are present, the CLI will invoke the tasks <code>turbo_tests2:setup</code> and<br>
+<code>turbo_tests2:cleanup</code> before and after running the test suite. If no Rakefile is discoverable,<br>
+the test suite runs without hooks. These tasks can be used to do work that should only happen<br>
+once, such as removing files or collating coverage:</p>
 
 <pre class="code language-ruby"><code class="language-ruby"># lib/tasks/turbo_tests2.rake
 namespace :turbo_tests2 do
@@ -732,6 +736,13 @@ namespace :turbo_tests2 do
   end
 end
 </code></pre>
+
+<p>Projects with a discoverable Rakefile can disable this integration explicitly:</p>
+
+<pre class="code language-bash"><code class="language-bash">bundle exec turbo_tests2 --no-rake-hooks
+</code></pre>
+
+<p>This prevents the Rakefile from being loaded and skips both hooks.</p>
 
 <h3 id="simplecov">SimpleCov</h3>
 
@@ -920,18 +931,18 @@ the <a href="https://github.com/galtzo-floss/turbo_tests2/blob/main/MIT.md">MIT<
   <summary>Copyright holders</summary>
 
   <ul>
-    <li>Copyright (c) 2020-2023 Illia</li>
+    <li>Copyright (c) 2020-2024 Illia</li>
     <li>Copyright (c) 2020 Ilya Zub</li>
     <li>Copyright (c) 2021 AMHOL</li>
     <li>Copyright (c) 2021 Serge Bedzhyk</li>
     <li>Copyright (c) 2023 Bo Anderson</li>
     <li>Copyright (c) 2023 Dmitiry Zub☀️</li>
-    <li>Copyright (c) 2023-2024 Illia</li>
     <li>Copyright (c) 2023 mrudzki</li>
     <li>Copyright (c) 2023-2024 Sebastien Savater</li>
     <li>Copyright (c) 2024 Hiroshi SHIBATA</li>
     <li>Copyright (c) 2025-2026 Gareth Jones</li>
     <li>Copyright (c) 2025-2026 Peter H. Boling</li>
+    <li>Copyright (c) 2026 Jeff Widman</li>
   </ul>
 
 </details>
