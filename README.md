@@ -552,6 +552,7 @@ See [LICENSE.md][📄license] for the official copyright notice.
 - Copyright (c) 2024 Hiroshi SHIBATA
 - Copyright (c) 2025-2026 Gareth Jones
 - Copyright (c) 2025-2026 Peter H. Boling
+- Copyright (c) 2026 Jeff Widman
 
 </details>
 

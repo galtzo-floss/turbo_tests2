@@ -20,7 +20,7 @@ gem_version =
 Gem::Specification.new do |spec|
   spec.name = "turbo_tests2"
   spec.version = gem_version
-  spec.authors = ["Illia", "Ilya Zub", "AMHOL", "Serge Bedzhyk", "Bo Anderson", "Dmitiry Zub☀️", "mrudzki", "Sebastien Savater", "Hiroshi SHIBATA", "Gareth Jones", "Peter H. Boling"]
+  spec.authors = ["Illia", "Ilya Zub", "AMHOL", "Serge Bedzhyk", "Bo Anderson", "Dmitiry Zub☀️", "mrudzki", "Sebastien Savater", "Hiroshi SHIBATA", "Gareth Jones", "Peter H. Boling", "Jeff Widman"]
   spec.email = ["floss@galtzo.com"]
 
   spec.summary = "🚀 RSpec parallel test runner built on `parallel_tests`, with incremental summarized output"
