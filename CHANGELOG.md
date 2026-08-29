@@ -44,23 +44,14 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
-- [kc] kettle-jem/prepare: updated 30 project files:
+- [kc] kettle-jem/prepare: updated 40 project files:
   - configuration (1)
-  - dependencies (26)
-  - other (3)
-
-- [kc] kettle-jem/template: updated 2 project files:
-  - dependencies (1)
-  - other (1)
-
-- [kc] kettle-jem/prepare: updated 10 project files:
-  - dependencies (9)
-  - other (1)
-
-- [kc] kettle-jem/template: updated 4 project files:
+  - dependencies (35)
+  - other (4)
+- [kc] kettle-jem/template: updated 6 project files:
   - code and tests (1)
-  - dependencies (1)
-  - other (1)
+  - dependencies (2)
+  - other (2)
   - workflows (1)
 
 ### Fixed
