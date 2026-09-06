@@ -10,7 +10,7 @@ GIT
 PATH
   remote: .
   specs:
-    turbo_tests2 (3.2.7)
+    turbo_tests2 (3.2.8)
       parallel_tests (>= 3.3.0, < 6)
       rspec (>= 3.10)
       version_gem (~> 1.1, >= 1.1.15)
@@ -794,7 +794,7 @@ CHECKSUMS
   tty-cursor (0.7.1)
   tty-progressbar (0.18.3)
   tty-screen (0.8.2)
-  turbo_tests2 (3.2.7)
+  turbo_tests2 (3.2.8)
   unicode-display_width (2.6.0)
   version_gem (1.1.15)
   webrick (1.9.2)
