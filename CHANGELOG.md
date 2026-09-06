@@ -20,6 +20,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Added
 
+- Support TURBO_TESTS2_MAX_PROCESSES as an orchestration process ceiling.
+
 ### Changed
 
 - [kc] kettle-jem/prepare: updated 18 project files:

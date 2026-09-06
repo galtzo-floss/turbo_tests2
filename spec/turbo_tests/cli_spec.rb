@@ -495,6 +495,28 @@ RSpec.describe TurboTests::CLI do
       expect(captured_opts[:count]).to eq(3)
     end
 
+    it "uses the inherited maximum process ceiling when no explicit count is given" do
+      stub_env("TURBO_TESTS2_MAX_PROCESSES" => "4")
+
+      run_cli([])
+
+      expect(captured_opts[:count]).to eq(4)
+    end
+
+    it "lets an explicit count override the inherited maximum process ceiling" do
+      stub_env("TURBO_TESTS2_MAX_PROCESSES" => "4")
+
+      run_cli(["--count", "2"])
+
+      expect(captured_opts[:count]).to eq(2)
+    end
+
+    it "rejects an invalid inherited maximum process ceiling" do
+      stub_env("TURBO_TESTS2_MAX_PROCESSES" => "zero")
+
+      expect { run_cli([]) }.to raise_error(OptionParser::InvalidArgument, /TURBO_TESTS2_MAX_PROCESSES/)
+    end
+
     it "passes nice: true with --nice" do
       run_cli(["--nice"])
       expect(captured_opts[:nice]).to be true

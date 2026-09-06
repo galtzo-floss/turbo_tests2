@@ -316,6 +316,12 @@ streams from the parent process as workers report examples. Use
 worker stdout/stderr is handled. A CLI flag takes precedence over the
 environment variable.
 
+`TURBO_TESTS2_MAX_PROCESSES=N` supplies a positive inclusive process ceiling
+when neither `--count` nor `--workers` is present. This is intended for an
+outer orchestrator such as `kettle-family`; explicit CLI process counts always
+take precedence. As with `--count`, the runner also caps the actual process
+count at the number of discovered test groups.
+
 | Mode | Behavior |
 |------|----------|
 | `warnings` | Default. Buffer raw worker output, print warning/deprecation lines after successful runs, and print full buffered raw output on failures. |

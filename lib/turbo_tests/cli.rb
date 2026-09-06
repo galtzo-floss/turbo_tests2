@@ -175,6 +175,11 @@ module TurboTests
         return TurboTests::Runner.create(count)
       end
 
+      # Family orchestration supplies an inclusive ceiling for the complete
+      # test process pool. A command-line count remains the explicit operator
+      # choice, so it always wins over the inherited budget.
+      count ||= max_processes_from_environment
+
       requires.each { |f| require(f) }
 
       if formatters.empty?
@@ -236,6 +241,18 @@ module TurboTests
         args[0...separator_index],
         args[(separator_index + 1)..-1]
       ]
+    end
+
+    def max_processes_from_environment
+      value = ENV.fetch("TURBO_TESTS2_MAX_PROCESSES", "").strip
+      return if value.empty?
+
+      count = Integer(value, 10)
+      return count if count.positive?
+
+      raise OptionParser::InvalidArgument, "invalid TURBO_TESTS2_MAX_PROCESSES #{value.inspect}; expected a positive integer"
+    rescue ArgumentError
+      raise OptionParser::InvalidArgument, "invalid TURBO_TESTS2_MAX_PROCESSES #{value.inspect}; expected a positive integer"
     end
 
     def parse_parallel_args(args, parallel_options)
