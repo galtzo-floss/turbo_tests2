@@ -11,11 +11,12 @@ RSpec.describe TurboTests::CLI do
   # upstream, so we skip rather than block releases. See CHANGELOG "Ensured
   # worker stdout/stderr reader threads are force-stopped..." (TruffleRuby
   # 25.0) for the related, narrower issue this class of test already caught.
-  before { skip_for(engine: "truffleruby", versions: "3.0", reason: "hangs indefinitely spawning nested turbo_tests2 subprocesses on TruffleRuby 23.0 (EOL); see spec comment") }
-
   subject(:output) { `bundle exec turbo_tests2 -f d #{fixture} 2>&1`.strip }
 
-  before { output }
+  before {
+    skip_for(engine: "truffleruby", versions: "3.0", reason: "hangs indefinitely spawning nested turbo_tests2 subprocesses on TruffleRuby 23.0 (EOL); see spec comment")
+    output
+  }
 
   include_context "with simplecov spawn coverage"
 

@@ -174,12 +174,12 @@
   "spec/gem/executable_turbo_tests2_spec.rb:3361894428": [
     [6, 16, 25, "RSpec/DescribeClass: The first argument to describe should be the class or module being tested.", 3985119491]
   ],
-  "spec/turbo_tests/cli_spec.rb:2053467111": [
-    [380, 19, 2, "Lint/LtsRuby/UnavailableMethod: Method/Proc#<< is unavailable before Ruby 2.6.", 5859461],
-    [381, 19, 4, "Lint/LtsRuby/UnavailableMethod: StringScanner#size is unavailable before Ruby 2.5.", 2088346912],
-    [381, 24, 1, "Lint/LtsRuby/UnavailableMethod: Enumerator#+ is unavailable before Ruby 2.6.", 177550],
-    [419, 19, 2, "Lint/LtsRuby/UnavailableMethod: Method/Proc#<< is unavailable before Ruby 2.6.", 5859461],
-    [426, 24, 4, "Lint/LtsRuby/UnavailableMethod: StringScanner#size is unavailable before Ruby 2.5.", 2088346912]
+  "spec/turbo_tests/cli_spec.rb:3464521839": [
+    [392, 19, 2, "Lint/LtsRuby/UnavailableMethod: Method/Proc#<< is unavailable before Ruby 2.6.", 5859461],
+    [393, 19, 4, "Lint/LtsRuby/UnavailableMethod: StringScanner#size is unavailable before Ruby 2.5.", 2088346912],
+    [393, 24, 1, "Lint/LtsRuby/UnavailableMethod: Enumerator#+ is unavailable before Ruby 2.6.", 177550],
+    [431, 19, 2, "Lint/LtsRuby/UnavailableMethod: Method/Proc#<< is unavailable before Ruby 2.6.", 5859461],
+    [438, 24, 4, "Lint/LtsRuby/UnavailableMethod: StringScanner#size is unavailable before Ruby 2.5.", 2088346912]
   ],
   "spec/turbo_tests/fake_example_spec.rb:4179982236": [
     [63, 30, 4, "Lint/LtsRuby/UnavailableMethod: Symbol#name is unavailable before Ruby 3.0.", 2087876002],
@@ -240,7 +240,7 @@
   "spec/utils/hash_extension_spec.rb:3932256302": [
     [14, 21, 4, "Lint/LtsRuby/UnavailableMethod: Symbol#name is unavailable before Ruby 3.0.", 2087876002]
   ],
-  "turbo_tests2.gemspec:2635746946": [
+  "turbo_tests2.gemspec:622519330": [
     [44, 24, 9, "Lint/LtsRuby/UnavailableMethod: Symbol#end_with? is unavailable before Ruby 2.7.", 308216808],
     [50, 16, 16, "Lint/LtsRuby/UnavailableMethod: Matrix/Vector#[]= is unavailable before Ruby 2.6.", 3147164910],
     [51, 16, 19, "Lint/LtsRuby/UnavailableMethod: Matrix/Vector#[]= is unavailable before Ruby 2.6.", 279056797],
