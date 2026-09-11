@@ -24,14 +24,12 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
-- [kc] kettle-jem/prepare: updated 18 project files:
-  - dependencies (16)
-  - other (2)
+- [kc] kettle-jem/prepare: updated 8 project files:
+  - dependencies (8)
 
-- [kc] kettle-jem/template: updated 6 project files:
-  - code and tests (2)
-  - dependencies (2)
-  - other (2)
+- [kc] kettle-jem/template: updated 4 project files:
+  - dependencies (3)
+  - other (1)
 
 ### Deprecated
 
