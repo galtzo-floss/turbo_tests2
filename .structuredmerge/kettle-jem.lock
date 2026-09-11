@@ -19,6 +19,7 @@ template_state:
     kettle-jem/template:
     - ".simplecov"
     - Gemfile
+    - Rakefile
     - gemfiles/modular/templating.gemfile
     - turbo_tests2.gemspec
   checksums:
