@@ -30,6 +30,15 @@ jobs:
     if: "(github.event_name != 'push' || (!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]'))) && (github.event_name != 'pull_request' || startsWith(github.head_ref, 'engines/') || startsWith(github.head_ref, 'truffleruby/') || startsWith(github.head_ref, 'feature/release'))"
     name: Specs ${{ matrix.ruby }}@${{ matrix.appraisal }}
     runs-on: ubuntu-22.04
+    # TruffleRuby 23.0 has a known, EOL-and-won't-be-fixed bug where a hung
+    # worker-pipe reader thread (see spec/turbo_tests/cli_spec.rb and
+    # spec/integration/multi_process_spec.rb) can block the job indefinitely.
+    # This job has historically finished in 5-7 minutes, but sibling
+    # TruffleRuby jobs on shared runners have taken up to ~24 minutes on a
+    # single busy release push; cap comfortably above that observed ceiling
+    # so a regression fails fast instead of blocking a release for hours,
+    # without flagging an ordinary slow-CI day as a hang.
+    timeout-minutes: 30
     continue-on-error: ${{ matrix.experimental || endsWith(matrix.ruby, 'head') }}
     env: # $BUNDLE_GEMFILE must be set at job level, so it is set for all steps
       BUNDLE_GEMFILE: ${{ github.workspace }}/Appraisal.root.gemfile

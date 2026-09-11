@@ -17,6 +17,13 @@ require "turbo_tests2/rspec/shared_contexts/simplecov_spawn"
 #   4. Exit codes match the outcome of the run.
 #
 RSpec.describe "TurboTests multi-process integration", :check_output do
+  # See the matching comment in spec/turbo_tests/cli_spec.rb: these specs
+  # spawn real nested turbo_tests2 worker processes, which can hang
+  # indefinitely on TruffleRuby 23.0 (EOL, targets Ruby 3.0 compat) due to
+  # unreliable Thread#kill/IO interruption of worker-pipe reader threads.
+  # Not reproducible on 22.3 or 23.1+.
+  before { skip_for(engine: "truffleruby", versions: "3.0", reason: "hangs indefinitely spawning nested turbo_tests2 subprocesses on TruffleRuby 23.0 (EOL); see spec comment") }
+
   subject(:output) { `bundle exec turbo_tests2 -f d -n 2 #{fixtures}`.strip }
 
   include_context "with simplecov spawn coverage"

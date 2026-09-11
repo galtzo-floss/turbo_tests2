@@ -2,6 +2,17 @@ require "tmpdir"
 require "turbo_tests2/rspec/shared_contexts/simplecov_spawn"
 
 RSpec.describe TurboTests::CLI do
+  # TruffleRuby 23.0 (targets Ruby 3.0 compat) can hang indefinitely on these
+  # specs: each one shells out to a real, nested `turbo_tests2` process whose
+  # own worker-pipe reader threads rely on Thread#kill/IO interruption to
+  # unblock on subprocess exit. That interruption is unreliable on 23.0 in a
+  # way it is not on 22.3 or 23.1+, so a stuck reader thread here can cascade
+  # into a CI job that never finishes. 23.0 is EOL and won't receive a fix
+  # upstream, so we skip rather than block releases. See CHANGELOG "Ensured
+  # worker stdout/stderr reader threads are force-stopped..." (TruffleRuby
+  # 25.0) for the related, narrower issue this class of test already caught.
+  before { skip_for(engine: "truffleruby", versions: "3.0", reason: "hangs indefinitely spawning nested turbo_tests2 subprocesses on TruffleRuby 23.0 (EOL); see spec comment") }
+
   subject(:output) { `bundle exec turbo_tests2 -f d #{fixture} 2>&1`.strip }
 
   before { output }
