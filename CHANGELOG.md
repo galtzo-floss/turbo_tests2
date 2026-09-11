@@ -20,6 +20,25 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [3.2.8] - 2026-09-11
+
+- TAG: [v3.2.8][3.2.8t]
+- COVERAGE: 96.75% -- 892/922 lines in 10 files
+- BRANCH COVERAGE: 84.98% -- 232/273 branches in 10 files
+- 36.73% documented
+
+### Added
+
 - Support TURBO_TESTS2_MAX_PROCESSES as an orchestration process ceiling.
 
 ### Changed
@@ -31,14 +50,6 @@ Please file a bug if you notice a violation of semantic versioning.
   - code and tests (1)
   - dependencies (3)
   - other (1)
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 
 ## [3.2.7] - 2026-08-29
 
@@ -575,7 +586,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.7...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.8...HEAD
+[3.2.8]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.7...v3.2.8
+[3.2.8t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.8
 [3.2.7]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.6...v3.2.7
 [3.2.7t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.7
 [3.2.6]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.5...v3.2.6

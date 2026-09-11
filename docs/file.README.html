@@ -183,7 +183,7 @@ Finished in 2 minute 25.15 seconds (files took 0 seconds to load)
     <tr>
       <td>Source</td>
       <td>
-<a href="https://gitlab.com/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/GitLab-FBA326?style=for-the-badge&amp;logo=Gitlab&amp;logoColor=orange" alt="Source on GitLab.com"></a> <a href="https://codeberg.org/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/CodeBerg-4893CC?style=for-the-badge&amp;logo=CodeBerg&amp;logoColor=blue" alt="Source on CodeBerg.org"></a> <a href="https://github.com/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/GitHub-238636?style=for-the-badge&amp;logo=GitHub&amp;logoColor=green" alt="Source on GitHub.com"></a> <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://img.shields.io/badge/KLOC-0.914-FFDD67.svg?style=for-the-badge&amp;logo=YouTube&amp;logoColor=blue" alt="The best SHA: dQw4w9WgXcQ!"></a>
+<a href="https://gitlab.com/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/GitLab-FBA326?style=for-the-badge&amp;logo=Gitlab&amp;logoColor=orange" alt="Source on GitLab.com"></a> <a href="https://codeberg.org/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/CodeBerg-4893CC?style=for-the-badge&amp;logo=CodeBerg&amp;logoColor=blue" alt="Source on CodeBerg.org"></a> <a href="https://github.com/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/GitHub-238636?style=for-the-badge&amp;logo=GitHub&amp;logoColor=green" alt="Source on GitHub.com"></a> <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://img.shields.io/badge/KLOC-0.922-FFDD67.svg?style=for-the-badge&amp;logo=YouTube&amp;logoColor=blue" alt="The best SHA: dQw4w9WgXcQ!"></a>
 </td>
     </tr>
     <tr>
@@ -680,6 +680,12 @@ streams from the parent process as workers report examples. Use<br>
 <code>--worker-output MODE</code>, or <code>TURBO_TESTS2_WORKER_OUTPUT=MODE</code>, to choose how raw<br>
 worker stdout/stderr is handled. A CLI flag takes precedence over the<br>
 environment variable.</p>
+
+<p><code>TURBO_TESTS2_MAX_PROCESSES=N</code> supplies a positive inclusive process ceiling<br>
+when neither <code>--count</code> nor <code>--workers</code> is present. This is intended for an<br>
+outer orchestrator such as <code>kettle-family</code>; explicit CLI process counts always<br>
+take precedence. As with <code>--count</code>, the runner also caps the actual process<br>
+count at the number of discovered test groups.</p>
 
 <table>
   <thead>

@@ -442,7 +442,12 @@
 216
 217
 218
-219</pre>
+219
+220
+221
+222
+223
+224</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/turbo_tests/cli.rb', line 11</span>
@@ -613,6 +618,11 @@
   <span class='kw'>if</span> <span class='id identifier rubyid_create'>create</span>
     <span class='kw'>return</span> <span class='const'><span class='object_link'><a href="../TurboTests.html" title="TurboTests (module)">TurboTests</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Runner.html" title="TurboTests::Runner (class)">Runner</a></span></span><span class='period'>.</span><span class='id identifier rubyid_create'><span class='object_link'><a href="Runner.html#create-class_method" title="TurboTests::Runner.create (method)">create</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_count'>count</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
+
+  <span class='comment'># Family orchestration supplies an inclusive ceiling for the complete
+</span>  <span class='comment'># test process pool. A command-line count remains the explicit operator
+</span>  <span class='comment'># choice, so it always wins over the inherited budget.
+</span>  <span class='id identifier rubyid_count'>count</span> <span class='op'>||=</span> <span class='id identifier rubyid_max_processes_from_environment'>max_processes_from_environment</span>
 
   <span class='id identifier rubyid_requires'>requires</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_f'>f</span><span class='op'>|</span> <span class='id identifier rubyid_require'>require</span><span class='lparen'>(</span><span class='id identifier rubyid_f'>f</span><span class='rparen'>)</span> <span class='rbrace'>}</span>
 
