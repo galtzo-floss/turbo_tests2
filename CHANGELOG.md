@@ -28,14 +28,23 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+### Security
+
+## [3.2.9] - 2026-09-13
+
+- TAG: [v3.2.9][3.2.9t]
+- COVERAGE: 96.79% -- 905/935 lines in 10 files
+- BRANCH COVERAGE: 84.75% -- 239/282 branches in 10 files
+- 36.73% documented
+
+### Fixed
+
 - Workers that exit unsuccessfully before reporting any results (for example
   after crashing while loading) are now reported as errors outside of examples,
   instead of silently dropping out of the summary.
 - JSON rows are serialized with `JSON.generate`, so ActiveSupport's `#to_json`
   override (which fails for ActiveSupport < 8.1 with json >= 3.0) can no longer
   crash workers.
-
-### Security
 
 ## [3.2.8] - 2026-09-11
 
@@ -593,7 +602,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.8...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.9...HEAD
+[3.2.9]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.8...v3.2.9
+[3.2.9t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.9
 [3.2.8]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.7...v3.2.8
 [3.2.8t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.8
 [3.2.7]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.6...v3.2.7
