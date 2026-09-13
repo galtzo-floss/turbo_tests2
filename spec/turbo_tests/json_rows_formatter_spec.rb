@@ -247,10 +247,18 @@ RSpec.describe TurboTests::JsonRowsFormatter do
   end
 
   describe "JSON row serialization" do
-    it "does not rely on #to_json, which ActiveSupport overrides" do
+    it "does not route rows through ActiveSupport's #to_json encoder" do
+      # ActiveSupport's #to_json override uses its own encoder unless it receives a
+      # JSON::State. Generators that call #to_json (e.g. TruffleRuby's pure json
+      # generator) always pass one, so only a State-less call reaches the encoder.
       # rubocop:disable RSpec/AnyInstance -- simulates ActiveSupport's #to_json override
-      allow_any_instance_of(Hash).to receive(:to_json).and_raise("Hash#to_json called")
-      allow_any_instance_of(Symbol).to receive(:to_json).and_raise("Symbol#to_json called")
+      [Hash, Symbol].each do |klass|
+        allow_any_instance_of(klass).to receive(:to_json).and_wrap_original do |original, *args|
+          raise "#{klass}#to_json called without a JSON::State" unless args.first.is_a?(JSON::State)
+
+          original.call(*args)
+        end
+      end
       # rubocop:enable RSpec/AnyInstance
 
       formatter.send(:output_row, type: :message, message: "hello")
