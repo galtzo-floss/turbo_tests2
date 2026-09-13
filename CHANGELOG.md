@@ -28,6 +28,13 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Workers that exit unsuccessfully before reporting any results (for example
+  after crashing while loading) are now reported as errors outside of examples,
+  instead of silently dropping out of the summary.
+- JSON rows are serialized with `JSON.generate`, so ActiveSupport's `#to_json`
+  override (which fails for ActiveSupport < 8.1 with json >= 3.0) can no longer
+  crash workers.
+
 ### Security
 
 ## [3.2.8] - 2026-09-11

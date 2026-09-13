@@ -82,6 +82,15 @@ Please file a bug if you notice a violation of semantic versioning.</p>
 
 <h3 id="fixed">Fixed</h3>
 
+<ul>
+  <li>Workers that exit unsuccessfully before reporting any results (for example<br>
+after crashing while loading) are now reported as errors outside of examples,<br>
+instead of silently dropping out of the summary.</li>
+  <li>JSON rows are serialized with <code>JSON.generate</code>, so ActiveSupport’s <code>#to_json</code><br>
+override (which fails for ActiveSupport &lt; 8.1 with json &gt;= 3.0) can no longer<br>
+crash workers.</li>
+</ul>
+
 <h3 id="security">Security</h3>
 
 <h2 id="328---2026-09-11">

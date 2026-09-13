@@ -442,6 +442,38 @@ RSpec.describe TurboTests::Runner do
     end
   end
 
+  describe "#report_workers_without_results (private)" do
+    let(:reporter) { double("reporter", error_outside_of_examples: nil) }
+    let(:failed_status) { instance_double(Process::Status, exitstatus: 1, success?: false) }
+
+    it "reports a failed worker that never closed its formatter" do
+      runner = build_runner(reporter: reporter)
+      runner.instance_variable_set(:@failed_worker_statuses, {2 => failed_status})
+
+      runner.send(:report_workers_without_results)
+
+      expect(reporter).to have_received(:error_outside_of_examples).with(/Worker 2 exited with status 1 before reporting results/)
+    end
+
+    it "does not report a failed worker that reported its results" do
+      runner = build_runner(reporter: reporter)
+      runner.instance_variable_set(:@failed_worker_statuses, {2 => failed_status})
+      runner.instance_variable_set(:@closed_process_ids, {2 => true})
+
+      runner.send(:report_workers_without_results)
+
+      expect(reporter).not_to have_received(:error_outside_of_examples)
+    end
+
+    it "marks a worker closed when its formatter close row is parsed" do
+      runner = build_runner(reporter: reporter)
+
+      runner.send(:parse_worker_json_message, %({"type":"close"}), 3)
+
+      expect(runner.instance_variable_get(:@closed_process_ids)).to eq(3 => true)
+    end
+  end
+
   describe "#handle_messages (private)" do
     let(:reporter) { double("reporter", message: nil, error_outside_of_examples: nil, deprecation: nil, profile: nil) }
 

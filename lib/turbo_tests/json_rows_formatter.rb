@@ -210,7 +210,9 @@ module TurboTests
     end
 
     def output_row(obj)
-      output.puts "#{ENV.fetch("RSPEC_FORMATTER_OUTPUT_ID", "")}#{json_ready(obj).to_json}"
+      # JSON.generate instead of #to_json: ActiveSupport overrides #to_json, and its
+      # encoder can fail (e.g. ActiveSupport < 8.1 with json >= 3.0).
+      output.puts "#{ENV.fetch("RSPEC_FORMATTER_OUTPUT_ID", "")}#{JSON.generate(json_ready(obj))}"
       output.flush
     end
 
@@ -222,6 +224,8 @@ module TurboTests
         obj.map { |value| json_ready(value) }
       when String
         obj.dup.force_encoding(Encoding::UTF_8).scrub
+      when Symbol
+        obj.id2name
       else
         obj
       end
