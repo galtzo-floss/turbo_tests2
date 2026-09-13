@@ -235,6 +235,8 @@ module TurboTests
       @worker_output_mutex = Mutex.new
       @deferred_run_options_messages = Hash.new { |hash, message| hash[message] = [] }
       @error = false
+      @closed_process_ids = {}
+      @failed_worker_statuses = {}
       @print_failed_group = opts[:print_failed_group]
       @worker_output_mode = self.class.normalize_worker_output_mode(opts.fetch(:worker_output, DEFAULT_WORKER_OUTPUT_MODE))
     end
@@ -281,6 +283,8 @@ module TurboTests
           handle_messages
 
           @threads.each(&:join)
+
+          report_workers_without_results
 
           report_failed_group(tests_in_groups) if @print_failed_group
 
@@ -452,6 +456,7 @@ module TurboTests
         @threads << Thread.new do
           begin
             status = wait_thr.value
+            @failed_worker_statuses.store(process_id, status) unless status.success?
             @messages << {type: "error", process_id: process_id} unless status.success?
             @messages << {type: "exit", process_id: process_id}
           ensure
@@ -539,6 +544,7 @@ module TurboTests
       return unless message.is_a?(Hash) && message[:type].is_a?(String)
 
       message[:process_id] = process_id
+      @closed_process_ids.store(process_id, true) if message[:type] == "close"
       message
     rescue JSON::ParserError
       nil
@@ -754,6 +760,24 @@ module TurboTests
 
     def fail_fast_met
       !@fail_fast.nil? && @failure_count >= @fail_fast
+    end
+
+    # A worker that exits unsuccessfully without its formatter closing (for example
+    # one that crashed while loading spec_helper or while RSpec set up) reports no
+    # examples at all. Surface it as an error outside of examples so the summary
+    # reflects the failure instead of only counting the workers that reported.
+    def report_workers_without_results
+      return if fail_fast_met || @interrupt_handled
+
+      @failed_worker_statuses.keys.sort.each do |process_id|
+        next if @closed_process_ids[process_id]
+
+        status = @failed_worker_statuses[process_id]
+        @reporter.error_outside_of_examples(
+          "Worker #{process_id} exited with status #{status.exitstatus.inspect} before reporting results; see its output above."
+        )
+        @error = true
+      end
     end
 
     def report_failed_group(tests_in_groups)

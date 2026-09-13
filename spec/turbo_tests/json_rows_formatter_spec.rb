@@ -246,6 +246,19 @@ RSpec.describe TurboTests::JsonRowsFormatter do
     end
   end
 
+  describe "JSON row serialization" do
+    it "does not rely on #to_json, which ActiveSupport overrides" do
+      # rubocop:disable RSpec/AnyInstance -- simulates ActiveSupport's #to_json override
+      allow_any_instance_of(Hash).to receive(:to_json).and_raise("Hash#to_json called")
+      allow_any_instance_of(Symbol).to receive(:to_json).and_raise("Symbol#to_json called")
+      # rubocop:enable RSpec/AnyInstance
+
+      formatter.send(:output_row, type: :message, message: "hello")
+
+      expect(parsed_row).to eq(type: "message", message: "hello")
+    end
+  end
+
   describe "RSpecExt#handle_interrupt (prepended to RSpec::Core::Runner)" do
     let(:host) { Class.new { prepend RSpecExt }.new }
 

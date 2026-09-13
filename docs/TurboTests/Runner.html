@@ -523,7 +523,9 @@
 237
 238
 239
-240</pre>
+240
+241
+242</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 203</span>
@@ -563,6 +565,8 @@
   <span class='ivar'>@worker_output_mutex</span> <span class='op'>=</span> <span class='const'>Mutex</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
   <span class='ivar'>@deferred_run_options_messages</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_hash'>hash</span><span class='comma'>,</span> <span class='id identifier rubyid_message'>message</span><span class='op'>|</span> <span class='id identifier rubyid_hash'>hash</span><span class='lbracket'>[</span><span class='id identifier rubyid_message'>message</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span> <span class='rbrace'>}</span>
   <span class='ivar'>@error</span> <span class='op'>=</span> <span class='kw'>false</span>
+  <span class='ivar'>@closed_process_ids</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
+  <span class='ivar'>@failed_worker_statuses</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
   <span class='ivar'>@print_failed_group</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:print_failed_group</span><span class='rbracket'>]</span>
   <span class='ivar'>@worker_output_mode</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_normalize_worker_output_mode'>normalize_worker_output_mode</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='symbol'>:worker_output</span><span class='comma'>,</span> <span class='const'><span class='object_link'><a href="#DEFAULT_WORKER_OUTPUT_MODE-constant" title="TurboTests::Runner::DEFAULT_WORKER_OUTPUT_MODE (constant)">DEFAULT_WORKER_OUTPUT_MODE</a></span></span><span class='rparen'>)</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
@@ -1251,8 +1255,6 @@
       <pre class="lines">
 
 
-242
-243
 244
 245
 246
@@ -1314,10 +1316,14 @@
 302
 303
 304
-305</pre>
+305
+306
+307
+308
+309</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 242</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 244</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_run'>run</span>
   <span class='id identifier rubyid_parallel_tests_options'>parallel_tests_options</span> <span class='op'>=</span> <span class='ivar'>@parallel_options</span><span class='period'>.</span><span class='id identifier rubyid_reject'>reject</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid__value'>_value</span><span class='op'>|</span> <span class='id identifier rubyid_key'>key</span> <span class='op'>==</span> <span class='symbol'>:only_group</span> <span class='rbrace'>}</span>
@@ -1361,6 +1367,8 @@
       <span class='id identifier rubyid_handle_messages'>handle_messages</span>
 
       <span class='ivar'>@threads</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:join</span><span class='rparen'>)</span>
+
+      <span class='id identifier rubyid_report_workers_without_results'>report_workers_without_results</span>
 
       <span class='id identifier rubyid_report_failed_group'>report_failed_group</span><span class='lparen'>(</span><span class='id identifier rubyid_tests_in_groups'>tests_in_groups</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='ivar'>@print_failed_group</span>
 
