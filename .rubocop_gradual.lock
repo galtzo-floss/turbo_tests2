@@ -186,7 +186,7 @@
     [64, 24, 9, "Lint/LtsRuby/UnavailableMethod: Fiber#backtrace is unavailable before Ruby 3.0.", 2410411503],
     [66, 36, 4, "Lint/LtsRuby/UnavailableMethod: Symbol#name is unavailable before Ruby 3.0.", 2087876002]
   ],
-  "spec/turbo_tests/json_rows_formatter_spec.rb:2417817340": [
+  "spec/turbo_tests/json_rows_formatter_spec.rb:4154576951": [
     [239, 23, 2, "Lint/LtsRuby/UnavailableMethod: Method/Proc#<< is unavailable before Ruby 2.6.", 5859461]
   ],
   "spec/turbo_tests/reporter_spec.rb:2251908942": [
