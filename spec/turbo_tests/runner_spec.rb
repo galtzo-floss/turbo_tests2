@@ -485,7 +485,7 @@ RSpec.describe TurboTests::Runner do
 
     def enqueue_then_exit(runner, *messages)
       messages.each { |m| runner.instance_variable_get(:@messages) << m }
-      runner.instance_variable_get(:@messages) << {type: "exit", process_id: 1}
+      runner.instance_variable_get(:@messages).push(type: "exit", process_id: 1)
     end
 
     it "handles 'seed' message (no-op)" do
@@ -574,6 +574,15 @@ RSpec.describe TurboTests::Runner do
       # Second exit: exited==2, @num_processes==2 → break
       queue << {type: "exit", process_id: 1}
       queue << {type: "exit", process_id: 2}
+      expect { runner.send(:handle_messages) }.not_to raise_error
+    end
+
+    it "stops when all selected groups have exited" do
+      runner = build_runner_for_messages
+      runner.instance_variable_set(:@num_processes, 2)
+      runner.instance_variable_set(:@tests_in_groups, [["spec/one_spec.rb"]])
+      runner.instance_variable_get(:@messages) << {type: "exit", process_id: 1}
+
       expect { runner.send(:handle_messages) }.not_to raise_error
     end
 

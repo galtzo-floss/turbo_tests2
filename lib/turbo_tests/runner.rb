@@ -668,6 +668,7 @@ module TurboTests
 
     def handle_messages
       exited_process_ids = {}
+      process_count = @tests_in_groups&.size || @num_processes
 
       loop do
         message = @messages.pop
@@ -718,7 +719,7 @@ module TurboTests
 
           exited_process_ids[process_id] = true
           @exited_process_ids << process_id
-          break if exited_process_ids.size == @num_processes
+          break if exited_process_ids.size == process_count
         else
           warn("Unhandled message in main process: #{message}")
         end
