@@ -29,15 +29,27 @@ concurrency:
 jobs:
   test:
     if: "github.event_name != 'push' || (!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]'))"
-    name: Specs ${{ matrix.ruby }}@${{ matrix.appraisal }}
-    runs-on: ubuntu-latest
+    name: Specs ${{ matrix.os }} ${{ matrix.ruby }}@${{ matrix.appraisal }}
+    runs-on: ${{ matrix.os }}
     env: # $BUNDLE_GEMFILE must be set at job level, so it is set for all steps
       BUNDLE_GEMFILE: ${{ github.workspace }}/Appraisal.root.gemfile
     strategy:
       matrix:
         include:
-          # Ruby 4.0
-          - ruby: "ruby"
+          - os: ubuntu-latest
+            ruby: "ruby"
+            appraisal: "current"
+            exec_cmd: "kettle-test"
+            rubygems: latest
+            bundler: latest
+          - os: macos-latest
+            ruby: "ruby"
+            appraisal: "current"
+            exec_cmd: "kettle-test"
+            rubygems: latest
+            bundler: latest
+          - os: windows-latest
+            ruby: "ruby"
             appraisal: "current"
             exec_cmd: "kettle-test"
             rubygems: latest

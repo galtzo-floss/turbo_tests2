@@ -22,6 +22,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
+- Current MRI CI now exercises turbo_tests2 through kettle-test on Ubuntu, macOS, and Windows.
+
 ### Deprecated
 
 ### Removed
