@@ -60,7 +60,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Ruby & RubyGems
-        uses: ruby/setup-ruby@984c0c890880bbf811283d6f09c4607c62d210a4 # v1.323.0
+        uses: ruby/setup-ruby@a0102e0972be65f351c307e2d64b9314a57c8073 # v1.324.0
         with:
           ruby-version: "${{ matrix.ruby }}"
           rubygems: "${{ matrix.rubygems }}"
@@ -115,7 +115,7 @@ jobs:
       #   which will hopefully be noticed for the lack of code coverage comments
       - name: Upload coverage to CodeCov
         if: ${{ !env.ACT }}
-        uses: codecov/codecov-action@0b35c9ecc4f0529d0eb674914510c22f85b196b4 # v7.1.0
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
           use_oidc: true
           disable_search: true
