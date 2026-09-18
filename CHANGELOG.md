@@ -22,8 +22,6 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
-- Current MRI CI now exercises turbo_tests2 through kettle-test on Ubuntu, macOS, and Windows.
-
 ### Deprecated
 
 ### Removed
@@ -31,6 +29,17 @@ Please file a bug if you notice a violation of semantic versioning.
 ### Fixed
 
 ### Security
+
+## [3.2.11] - 2026-09-18
+
+- TAG: [v3.2.11][3.2.11t]
+- COVERAGE: 96.79% -- 906/936 lines in 10 files
+- BRANCH COVERAGE: 84.86% -- 241/284 branches in 10 files
+- 36.73% documented
+
+### Changed
+
+- Current MRI CI now exercises turbo_tests2 through kettle-test on Ubuntu, macOS, and Windows.
 
 ## [3.2.10] - 2026-09-15
 
@@ -611,7 +620,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.10...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.11...HEAD
+[3.2.11]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.10...v3.2.11
+[3.2.11t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.11
 [3.2.10]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.9...v3.2.10
 [3.2.10t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.10
 [3.2.9]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.8...v3.2.9
