@@ -62,6 +62,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Ruby & RubyGems
+        if: matrix.os != 'windows-latest'
         uses: appraisal-rb/setup-ruby-flash@e009a79ff77e8104a7354204baf2de2831e86f7b # v2.3
         with:
           ruby-version: ${{ matrix.ruby }}
@@ -70,6 +71,15 @@ jobs:
           bundler-cache: true
           manual-compatibility-bundle: true
           gem-install-retries: 7
+
+      - name: Setup Ruby & RubyGems (Windows)
+        if: matrix.os == 'windows-latest'
+        uses: ruby/setup-ruby@a0102e0972be65f351c307e2d64b9314a57c8073 # v1.324.0
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          rubygems: ${{ matrix.rubygems }}
+          bundler: ${{ matrix.bundler }}
+          bundler-cache: true
 
       - name: "[Attempt 1] Appraisal for ${{ matrix.ruby }}@${{ matrix.appraisal }}"
         id: bundleAppraisalAttempt1
