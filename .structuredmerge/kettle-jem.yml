@@ -473,9 +473,7 @@ files:
       codeql-analysis.yml:
         strategy: keep_destination
       current.yml:
-        strategy: merge
-        preference: destination
-        file_type: yaml
+        strategy: accept_template
       coverage.yml:
         strategy: merge
         preference: destination
