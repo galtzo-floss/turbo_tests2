@@ -182,8 +182,8 @@ template_state:
     gemfiles/modular/x_std_libs/vHEAD.gemfile.example: d3133ec4c0638363a7fb025d19be7e95a615fd61c35ddb8d17f2280ee74a7486
     lib/gem/version.rb.example: 15e219ac3a928b5580035f891e415551213175020f1131f6e7ca0ccd55a1b2d6
     lib/gem/version_gem.rb.example: 0c86551349f6b6571b61019b1a5618ecdab4a0d1c25cc21abe8866dfdcbfde9b
-    mise.toml.example: b2eb06f7daaf0c3916bba155f463e166bd1de218637ba82e636c528c077c8d6d
-    mise.toml.no-osc.example: 35ec90d3c67b74e0014876dccad14f5883fdad88036f6b0cf5d29ea181e132ac
+    mise.toml.example: 3debd904c8dc4089d0cdbc3a1ba6d8821f7844185cdbb025bb1d173985583086
+    mise.toml.no-osc.example: da5c390ded365a6d63679c258ec4ad2f0b14c7e5e8acd096b27fdb1ea787e124
     parsers.toml.example: f0538ae7ad8596be2dc39b3ea663f1164dec21fb0457233c1885097e774aff6f
     readme/partials/basic_usage.md.example: adaa8f9de9768d1f29cb15d957404004715e7687db68c29b121d6467db13158a
     readme/partials/configuration.md.example: 9a73d59b862fadeae877680e7f4944779d81953cfcd8cf0d0276e1854ef79f5a
@@ -691,7 +691,7 @@ files:
   CHANGELOG.md:
     recipe: template_source_application_CHANGELOG_md
     action: write
-    dest_sha256: 2c999514d1c7fd7c300383969aa74b210ac29fae0be9566c4b0a334cfa22d03b
+    dest_sha256: 17788b4b6cf0b3d242608e690d5375df275354c03aa88567f6d9848c9f6b121d
     input_fingerprint: 283619e813818c2c39d8f53d8ff5ec33c1c7ca5d6ed1eeefd0a406bd0028d4b6
     template_sources:
     - CHANGELOG.md.example
@@ -1139,8 +1139,8 @@ files:
   mise.toml:
     recipe: template_source_application_mise_toml
     action: write
-    dest_sha256: e8891d82d6cf9efece8feedc62fdf5ae9c394032b3e8480190a2362abb884205
-    input_fingerprint: 83e30e74a3956e7e450c2452766e46702540011d8d763ed350a3ce089fd0efad
+    dest_sha256: e84e288335e069a7e050028923b1cf75dc59396c15a221f44d5adc495dcf0263
+    input_fingerprint: 63d8f7782e72e7a17f667a957d86220796863b814306633c8203dc58952656f8
     template_sources:
     - mise.toml.example
   parsers.toml:
