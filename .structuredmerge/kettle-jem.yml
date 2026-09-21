@@ -455,9 +455,13 @@ files:
   AGENTS.md:
     strategy: accept_template
   Appraisal.root.gemfile:
-    strategy: accept_template
+    strategy: merge
+    preference: destination
+    file_type: gemfile
   Gemfile:
-    strategy: accept_template
+    strategy: merge
+    preference: destination
+    file_type: gemfile
   Rakefile:
     strategy: accept_template
     preference: destination
@@ -468,7 +472,15 @@ files:
     workflows:
       codeql-analysis.yml:
         strategy: keep_destination
+      current.yml:
+        strategy: merge
+        preference: destination
+        file_type: yaml
       coverage.yml:
+        strategy: merge
+        preference: destination
+        file_type: yaml
+      truffleruby-23.0.yml:
         strategy: merge
         preference: destination
         file_type: yaml
