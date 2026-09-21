@@ -29,9 +29,7 @@ concurrency:
 jobs:
   test:
     if: "github.event_name != 'push' || (!contains(github.event.head_commit.message, '[ci skip]') && !contains(github.event.head_commit.message, '[skip ci]'))"
-    # kettle-jem:freeze
     name: Specs ${{ matrix.os }} ${{ matrix.ruby }}@${{ matrix.appraisal }}
-    # kettle-jem:unfreeze
     runs-on: ${{ matrix.os }}
     env: # $BUNDLE_GEMFILE must be set at job level, so it is set for all steps
       BUNDLE_GEMFILE: ${{ github.workspace }}/Appraisal.root.gemfile
@@ -91,12 +89,10 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: .rspec_status
-          # kettle-jem:freeze
           key: rspec-status-current-${{matrix.os}}-${{matrix.ruby}}-${{matrix.appraisal}}-${{hashFiles('**/Gemfile.lock','Appraisal.root.gemfile','gemfiles/**/*.gemfile')}}-${{github.run_id}}-${{github.run_attempt}}
           restore-keys: |
             rspec-status-current-${{matrix.os}}-${{matrix.ruby}}-${{matrix.appraisal}}-${{hashFiles('**/Gemfile.lock','Appraisal.root.gemfile','gemfiles/**/*.gemfile')}}-\
             rspec-status-current-${{matrix.os}}-${{matrix.ruby}}-${{matrix.appraisal}}-
-          # kettle-jem:unfreeze
 
       - name: Tests for ${{ matrix.os }} ${{ matrix.ruby }} via ${{ matrix.exec_cmd }}
         run: bundle exec appraisal ${{ matrix.appraisal }} bundle exec ${{ matrix.exec_cmd }}
