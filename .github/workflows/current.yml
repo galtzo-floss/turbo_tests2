@@ -36,21 +36,22 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
-            ruby: "ruby"
+          # Ruby 4.0
+          - ruby: "ruby"
             appraisal: "current"
+            os: ubuntu-latest
             exec_cmd: "kettle-test"
             rubygems: latest
             bundler: latest
-          - os: macos-latest
-            ruby: "ruby"
+          - ruby: "ruby"
             appraisal: "current"
+            os: macos-latest
             exec_cmd: "kettle-test"
             rubygems: latest
             bundler: latest
-          - os: windows-latest
-            ruby: "ruby"
+          - ruby: "ruby"
             appraisal: "current"
+            os: windows-latest
             exec_cmd: "kettle-test"
             rubygems: latest
             bundler: latest
@@ -91,7 +92,7 @@ jobs:
           path: .rspec_status
           key: rspec-status-current-${{matrix.os}}-${{matrix.ruby}}-${{matrix.appraisal}}-${{hashFiles('**/Gemfile.lock','Appraisal.root.gemfile','gemfiles/**/*.gemfile')}}-${{github.run_id}}-${{github.run_attempt}}
           restore-keys: |
-            rspec-status-current-${{matrix.os}}-${{matrix.ruby}}-${{matrix.appraisal}}-${{hashFiles('**/Gemfile.lock','Appraisal.root.gemfile','gemfiles/**/*.gemfile')}}-\
+            rspec-status-current-${{matrix.os}}-${{matrix.ruby}}-${{matrix.appraisal}}-${{hashFiles('**/Gemfile.lock','Appraisal.root.gemfile','gemfiles/**/*.gemfile')}}-
             rspec-status-current-${{matrix.os}}-${{matrix.ruby}}-${{matrix.appraisal}}-
 
       - name: Tests for ${{ matrix.os }} ${{ matrix.ruby }} via ${{ matrix.exec_cmd }}
