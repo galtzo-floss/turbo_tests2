@@ -15,6 +15,7 @@ source "https://gem.coop"
 
 gemspec
 
+# kettle-jem:freeze
 # TruffleRuby ships older json default gems; keep the root bundle on those versions.
 if respond_to?(:generator_only)
   generator_only do
@@ -27,6 +28,7 @@ else
   eval_gemfile "gemfiles/modular/json/truffleruby_23_0.gemfile"
   eval_gemfile "gemfiles/modular/json/truffleruby_23_1.gemfile"
 end
+# kettle-jem:unfreeze
 
 if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.2")
   if respond_to?(:generator_only)
