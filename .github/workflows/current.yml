@@ -50,9 +50,7 @@ jobs:
             bundler: latest
           - os: windows-latest
             ruby: "ruby"
-            # Use 'unlocked_deps' on Windows to avoid stdlib gem (erb, mutex_m, stringio) install issues
-            # These are already part of Ruby 3.2+ stdlib on Windows
-            appraisal: "unlocked_deps"
+            appraisal: "current"
             exec_cmd: "kettle-test"
             rubygems: latest
             bundler: latest
@@ -75,8 +73,6 @@ jobs:
 
       - name: "[Attempt 1] Appraisal for ${{ matrix.ruby }}@${{ matrix.appraisal }}"
         id: bundleAppraisalAttempt1
-        # Skip appraisal install on Windows - stdlib gems (erb, mutex_m, stringio) are built-in
-        if: ${{ runner.os != 'Windows' }}
         run: bundle exec appraisal ${{ matrix.appraisal }} install
         # Continue to the next step on failure
         continue-on-error: true
@@ -84,8 +80,8 @@ jobs:
       # Effectively an automatic retry of the previous step.
       - name: "[Attempt 2] Appraisal for ${{ matrix.ruby }}@${{ matrix.appraisal }}"
         id: bundleAppraisalAttempt2
-        # Skip appraisal install on Windows - stdlib gems (erb, mutex_m, stringio) are built-in
-        if: ${{ runner.os != 'Windows' && steps.bundleAppraisalAttempt1.outcome == 'failure' }}
+        # If bundleAppraisalAttempt1 failed, try again here; Otherwise skip.
+        if: ${{ steps.bundleAppraisalAttempt1.outcome == 'failure' }}
         run: bundle exec appraisal ${{ matrix.appraisal }} install
 
       - name: Restore RSpec status log
@@ -93,10 +89,10 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: .rspec_status
-          key: rspec-status-current-${{matrix.ruby}}-${{matrix.appraisal}}-${{hashFiles('**/Gemfile.lock','Appraisal.root.gemfile','gemfiles/**/*.gemfile')}}-${{github.run_id}}-${{github.run_attempt}}
+          key: rspec-status-current-${{matrix.os}}-${{matrix.ruby}}-${{matrix.appraisal}}-${{hashFiles('**/Gemfile.lock','Appraisal.root.gemfile','gemfiles/**/*.gemfile')}}-${{github.run_id}}-${{github.run_attempt}}
           restore-keys: |
-            rspec-status-current-${{matrix.ruby}}-${{matrix.appraisal}}-${{hashFiles('**/Gemfile.lock','Appraisal.root.gemfile','gemfiles/**/*.gemfile')}}-
-            rspec-status-current-${{matrix.ruby}}-${{matrix.appraisal}}-
+            rspec-status-current-${{matrix.os}}-${{matrix.ruby}}-${{matrix.appraisal}}-${{hashFiles('**/Gemfile.lock','Appraisal.root.gemfile','gemfiles/**/*.gemfile')}}-\
+            rspec-status-current-${{matrix.os}}-${{matrix.ruby}}-${{matrix.appraisal}}-
 
-      - name: Tests for ${{ matrix.ruby }} via ${{ matrix.exec_cmd }}
+      - name: Tests for ${{ matrix.os }} ${{ matrix.ruby }} via ${{ matrix.exec_cmd }}
         run: bundle exec appraisal ${{ matrix.appraisal }} bundle exec ${{ matrix.exec_cmd }}
