@@ -90,8 +90,8 @@ Please file a bug if you notice a violation of semantic versioning.</p>
 <ul>
   <li>TAG: <a href="https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.11">v3.2.11</a>
 </li>
-  <li>COVERAGE: 96.79% – 906/936 lines in 10 files</li>
-  <li>BRANCH COVERAGE: 84.86% – 241/284 branches in 10 files</li>
+  <li>COVERAGE: 96.81% – 909/939 lines in 10 files</li>
+  <li>BRANCH COVERAGE: 84.97% – 243/286 branches in 10 files</li>
   <li>36.73% documented</li>
 </ul>
 
@@ -130,7 +130,12 @@ engine support needs.</li>
 <h3 id="fixed-1">Fixed</h3>
 
 <ul>
-  <li>The multi-process integration summary assertion now supports RSpec’s Ruby 3.0-compatible pending-example totals.</li>
+  <li>
+    <p>The multi-process integration summary assertion now supports RSpec’s Ruby 3.0-compatible pending-example totals.</p>
+  </li>
+  <li>
+    <p>Windows turbo_tests2 workers now invoke Bundler through Ruby instead of executing BUNDLE_BIN_PATH directly.</p>
+  </li>
 </ul>
 
 <h2 id="3210---2026-09-15">

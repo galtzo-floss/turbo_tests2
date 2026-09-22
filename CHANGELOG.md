@@ -28,15 +28,13 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
-- Windows turbo_tests2 workers now invoke Bundler through Ruby instead of executing BUNDLE_BIN_PATH directly.
-
 ### Security
 
 ## [3.2.11] - 2026-09-22
 
 - TAG: [v3.2.11][3.2.11t]
-- COVERAGE: 96.79% -- 906/936 lines in 10 files
-- BRANCH COVERAGE: 84.86% -- 241/284 branches in 10 files
+- COVERAGE: 96.81% -- 909/939 lines in 10 files
+- BRANCH COVERAGE: 84.97% -- 243/286 branches in 10 files
 - 36.73% documented
 
 ### Changed
@@ -64,6 +62,8 @@ Please file a bug if you notice a violation of semantic versioning.
 ### Fixed
 
 - The multi-process integration summary assertion now supports RSpec's Ruby 3.0-compatible pending-example totals.
+
+- Windows turbo_tests2 workers now invoke Bundler through Ruby instead of executing BUNDLE_BIN_PATH directly.
 
 ## [3.2.10] - 2026-09-15
 
