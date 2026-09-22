@@ -28,8 +28,6 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
-- The multi-process integration summary assertion now supports RSpec's Ruby 3.0-compatible pending-example totals.
-
 ### Security
 
 ## [3.2.11] - 2026-09-21
@@ -60,6 +58,10 @@ Please file a bug if you notice a violation of semantic versioning.
   `engines:` and has no template-managed modular home (e.g. `sqlite3` on
   `jruby`). Review each entry and pick a resolution per the project's own
   engine support needs.
+
+### Fixed
+
+- The multi-process integration summary assertion now supports RSpec's Ruby 3.0-compatible pending-example totals.
 
 ## [3.2.10] - 2026-09-15
 
