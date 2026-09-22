@@ -28,8 +28,6 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
-- Current MRI Windows CI now reconciles native gems after setup-ruby-flash before running Appraisal.
-
 ### Security
 
 ## [3.2.11] - 2026-09-21
