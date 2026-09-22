@@ -28,6 +28,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- The multi-process integration summary assertion now supports RSpec's Ruby 3.0-compatible pending-example totals.
+
 ### Security
 
 ## [3.2.11] - 2026-09-21
