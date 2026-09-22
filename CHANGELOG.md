@@ -28,6 +28,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Windows turbo_tests2 workers now invoke Bundler through Ruby instead of executing BUNDLE_BIN_PATH directly.
+
 ### Security
 
 ## [3.2.11] - 2026-09-22

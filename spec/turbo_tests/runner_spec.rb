@@ -833,6 +833,18 @@ RSpec.describe TurboTests::Runner do
       expect(captured[2]).to eq("exec")
     end
 
+    it "uses Ruby to invoke Bundler on Windows" do
+      captured = []
+      mock_open3(runner) { |*args| captured.replace(args) }
+
+      hide_env("RSPEC_EXECUTABLE")
+      stub_env("BUNDLE_BIN_PATH" => "C:/Ruby/bin/bundle")
+      allow(Gem).to receive(:win_platform?).and_return(true)
+      runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
+
+      expect(captured[1..4]).to eq([RbConfig.ruby, "-S", "bundle", "exec"])
+    end
+
     it "prepends 'nice' when @nice is true" do
       runner.instance_variable_set(:@nice, true)
       captured = []
