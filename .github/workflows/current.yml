@@ -52,7 +52,7 @@ jobs:
           - ruby: "ruby"
             appraisal: "current"
             os: windows-latest
-            exec_cmd: "kettle-test"
+            exec_cmd: "ruby -S kettle-test"
             rubygems: latest
             bundler: latest
 
