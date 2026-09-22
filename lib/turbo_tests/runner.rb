@@ -371,10 +371,12 @@ module TurboTests
         command_name =
           if ENV["RSPEC_EXECUTABLE"]
             ENV["RSPEC_EXECUTABLE"].split
-          elsif ENV["BUNDLE_BIN_PATH"] && Gem.win_platform?
-            [Gem.ruby, Gem.bin_path("bundler", "bundle"), "exec", "rspec"]
           elsif ENV["BUNDLE_BIN_PATH"]
-            [ENV["BUNDLE_BIN_PATH"], "exec", "rspec"]
+            if Gem.win_platform?
+              [Gem.ruby, Gem.bin_path("bundler", "bundle"), "exec", "rspec"]
+            else
+              [ENV["BUNDLE_BIN_PATH"], "exec", "rspec"]
+            end
           else
             "rspec"
           end
