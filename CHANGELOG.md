@@ -20,23 +20,7 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Added
 
-- kettle-jem-template-20260913-001 - Templating now also surfaces a review
-  entry in `dependency_conflicts.resolve` when a direct development
-  dependency doesn't support one or more of this project's declared
-  `engines:` and has no template-managed modular home (e.g. `sqlite3` on
-  `jruby`). Review each entry and pick a resolution per the project's own
-  engine support needs.
-
 ### Changed
-
-- [kc] kettle-jem/prepare: updated 11 project files:
-  - dependencies (11)
-
-- [kc] kettle-jem/template: updated 5 project files:
-  - code and tests (1)
-  - dependencies (2)
-  - other (1)
-  - workflows (1)
 
 ### Deprecated
 
@@ -56,6 +40,24 @@ Please file a bug if you notice a violation of semantic versioning.
 ### Changed
 
 - Current MRI CI now exercises turbo_tests2 through kettle-test on Ubuntu, macOS, and Windows.
+
+- [kc] kettle-jem/prepare: updated 11 project files:
+  - dependencies (11)
+
+- [kc] kettle-jem/template: updated 5 project files:
+  - code and tests (1)
+  - dependencies (2)
+  - other (1)
+  - workflows (1)
+
+### Added
+
+- kettle-jem-template-20260913-001 - Templating now also surfaces a review
+  entry in `dependency_conflicts.resolve` when a direct development
+  dependency doesn't support one or more of this project's declared
+  `engines:` and has no template-managed modular home (e.g. `sqlite3` on
+  `jruby`). Review each entry and pick a resolution per the project's own
+  engine support needs.
 
 ## [3.2.10] - 2026-09-15
 
