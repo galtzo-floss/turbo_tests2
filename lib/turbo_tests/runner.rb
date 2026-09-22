@@ -3,7 +3,6 @@
 require "json"
 require "fileutils"
 require "parallel_tests/rspec/runner"
-require "rbconfig"
 require "rspec/core"
 require "shellwords"
 require "tempfile"
@@ -373,7 +372,7 @@ module TurboTests
           if ENV["RSPEC_EXECUTABLE"]
             ENV["RSPEC_EXECUTABLE"].split
           elsif ENV["BUNDLE_BIN_PATH"] && Gem.win_platform?
-            [RbConfig.ruby, "-S", "bundle", "exec", "rspec"]
+            [Gem.ruby, Gem.bin_path("bundler", "bundle"), "exec", "rspec"]
           elsif ENV["BUNDLE_BIN_PATH"]
             [ENV["BUNDLE_BIN_PATH"], "exec", "rspec"]
           else

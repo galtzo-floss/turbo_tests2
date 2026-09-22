@@ -28,6 +28,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Windows turbo_tests2 workers now resolve Bundler through RubyGems instead of relying on the Windows command shim.
+
 ### Security
 
 ## [3.2.11] - 2026-09-22
