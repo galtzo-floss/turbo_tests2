@@ -72,6 +72,13 @@ jobs:
           manual-compatibility-bundle: true
           gem-install-retries: 7
 
+      # The Windows rv fast-install path can leave bundled native gems marked
+      # as installed while their extensions are absent. Reconcile that bundle
+      # before Appraisal resolves the generated Gemfile.
+      - name: Reconcile Windows native gems
+        if: matrix.os == 'windows-latest'
+        run: bundle install --jobs 4
+
       - name: "[Attempt 1] Appraisal for ${{ matrix.ruby }}@${{ matrix.appraisal }}"
         id: bundleAppraisalAttempt1
         run: bundle exec appraisal ${{ matrix.appraisal }} install
