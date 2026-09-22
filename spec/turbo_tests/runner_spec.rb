@@ -839,8 +839,7 @@ RSpec.describe TurboTests::Runner do
 
       hide_env("RSPEC_EXECUTABLE")
       stub_env("BUNDLE_BIN_PATH" => "C:/Ruby/bin/bundle")
-      allow(Gem).to receive(:win_platform?).and_return(true)
-      allow(Gem).to receive(:ruby).and_return("C:/Ruby/bin/ruby.exe")
+      allow(Gem).to receive_messages(win_platform?: true, ruby: "C:/Ruby/bin/ruby.exe")
       allow(Gem).to receive(:bin_path).with("bundler", "bundle").and_return("C:/Ruby/gems/bundler/exe/bundle")
       runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
 
