@@ -827,6 +827,7 @@ RSpec.describe TurboTests::Runner do
 
       hide_env("RSPEC_EXECUTABLE")
       stub_env("BUNDLE_BIN_PATH" => "/usr/local/bin/bundle")
+      allow(Gem).to receive(:win_platform?).and_return(false)
       runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
 
       expect(captured[1]).to eq("/usr/local/bin/bundle")
