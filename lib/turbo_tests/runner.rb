@@ -158,11 +158,23 @@ module TurboTests
       def rspec_configured_files_to_run
         configuration = RSpec::Core::Configuration.new
         RSpec::Core::ConfigurationOptions.new(["spec"]).configure(configuration)
-        root = File.expand_path(Dir.pwd).tr("\\", "/")
-        root_prefix = "#{root}/"
         configuration.files_to_run.map do |path|
-          expanded_path = File.expand_path(path.to_s, root).tr("\\", "/")
+          expanded_path = File.expand_path(path.to_s).tr("\\", "/")
+          root = rspec_root_for(expanded_path)
+          root_prefix = "#{root}/"
           expanded_path.start_with?(root_prefix) ? expanded_path[root_prefix.length..-1] : expanded_path
+        end
+      end
+
+      def rspec_root_for(path)
+        root = File.dirname(path)
+        loop do
+          return root.tr("\\", "/") if File.file?(File.join(root, ".rspec"))
+
+          parent = File.dirname(root)
+          return File.expand_path(Dir.pwd).tr("\\", "/") if parent == root
+
+          root = parent
         end
       end
 
