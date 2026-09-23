@@ -30,12 +30,12 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Security
 
-## [3.2.11] - 2026-09-22
+## [3.2.11] - 2026-09-23
 
 - TAG: [v3.2.11][3.2.11t]
-- COVERAGE: 96.80% -- 908/938 lines in 10 files
-- BRANCH COVERAGE: 84.97% -- 243/286 branches in 10 files
-- 36.73% documented
+- COVERAGE: 96.83% -- 916/946 lines in 10 files
+- BRANCH COVERAGE: 84.83% -- 246/290 branches in 10 files
+- 36.36% documented
 
 ### Changed
 
