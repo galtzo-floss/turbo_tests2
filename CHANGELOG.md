@@ -63,9 +63,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - The multi-process integration summary assertion now supports RSpec's Ruby 3.0-compatible pending-example totals.
 
-- Windows turbo_tests2 workers now invoke Bundler through Ruby instead of executing BUNDLE_BIN_PATH directly.
-
-- Windows turbo_tests2 workers now resolve Bundler through RubyGems instead of relying on the Windows command shim.
+- Windows turbo_tests2 workers now invoke Bundler through RubyGems using the
+  Ruby executable and Bundler's resolved executable path, avoiding direct
+  execution of the Windows command shim from `BUNDLE_BIN_PATH`.
 
 ## [3.2.10] - 2026-09-15
 
