@@ -263,10 +263,15 @@ bundle exec turbo_tests2 -n 4 --group-by found
 bundle exec turbo_tests2 -n 4 -- --group-by runtime
 ```
 
-`runtime` grouping uses the configured runtime log, which `turbo_tests2`
-continues to record by default. `filesize` and `found` do not use runtime
-history for the initial split, but worker runtime recording still runs so
-future runtime-based runs can use the updated log.
+`runtime` grouping uses the configured runtime log. On platforms other than
+Windows, `turbo_tests2` records runtimes by default. `filesize` and `found` do
+not use runtime history for the initial split, but worker runtime recording
+still runs so future runtime-based runs can use the updated log.
+
+On Windows, default file discovery uses filesize grouping and runtime recording
+is disabled because the runtime logger requires file locking that is not
+supported reliably there. An existing runtime log can still be selected
+explicitly with `--group-by runtime`, but Windows runs will not update it.
 
 Runtime grouping also supports the explicit `parallel_tests` tuning flags
 `--allowed-missing PERCENT` and `--unknown-runtime SECONDS`:
