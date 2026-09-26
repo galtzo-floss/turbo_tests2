@@ -1,0 +1,94 @@
+{
+  "- [kc] kettle-jem/prepare: updated 11 project files:\n- dependencies (11)": [
+    {
+      "file": "CHANGELOG.md",
+      "lines": [
+        54,
+        163
+      ]
+    }
+  ],
+  "- [kc] kettle-jem/template: updated 5 project files:\n- code and tests (1)": [
+    {
+      "file": "CHANGELOG.md",
+      "lines": [
+        57,
+        119
+      ]
+    }
+  ],
+  "- code and tests (1)\n- dependencies (2)": [
+    {
+      "file": "CHANGELOG.md",
+      "lines": [
+        58,
+        143
+      ]
+    }
+  ],
+  "eval_gemfile \"gemfiles/modular/json/truffleruby_22_3.gemfile\"\neval_gemfile \"gemfiles/modular/json/truffleruby_23_0.gemfile\"": [
+    {
+      "file": "Appraisal.root.gemfile",
+      "lines": [
+        21,
+        26
+      ]
+    }
+  ],
+  "eval_gemfile \"gemfiles/modular/json/truffleruby_23_0.gemfile\"\neval_gemfile \"gemfiles/modular/json/truffleruby_23_1.gemfile\"": [
+    {
+      "file": "Appraisal.root.gemfile",
+      "lines": [
+        22,
+        27
+      ]
+    }
+  ],
+  "exec_cmd: \"kettle-test\"\nrubygems: latest": [
+    {
+      "file": ".github/workflows/current.yml",
+      "lines": [
+        43,
+        49
+      ]
+    }
+  ],
+  "if respond_to?(:generator_only)\ngenerator_only do": [
+    {
+      "file": "Appraisal.root.gemfile",
+      "lines": [
+        19,
+        33
+      ]
+    }
+  ],
+  "preference: destination\nfile_type: gemfile": [
+    {
+      "file": ".structuredmerge/kettle-jem.yml",
+      "lines": [
+        459,
+        463
+      ]
+    }
+  ],
+  "preference: destination\nfile_type: yaml": [
+    {
+      "file": ".structuredmerge/kettle-jem.yml",
+      "lines": [
+        479,
+        483
+      ]
+    }
+  ],
+  "strategy: merge\npreference: destination": [
+    {
+      "file": ".structuredmerge/kettle-jem.yml",
+      "lines": [
+        458,
+        462,
+        478,
+        482
+      ]
+    }
+  ]
+}
