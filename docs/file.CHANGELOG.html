@@ -70,7 +70,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 and <a href="https://tom.preston-werner.com/2022/05/23/major-version-numbers-are-not-sacred.html">yes</a>, platform and engine support are part of the <a href="https://github.com/semver/semver/issues/716#issuecomment-869336139">public API</a>.<br>
 Please file a bug if you notice a violation of semantic versioning.</p>
 
-<h2 id="unreleased"><a href="https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.11...HEAD">Unreleased</a></h2>
+<h2 id="unreleased"><a href="https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.12...HEAD">Unreleased</a></h2>
 
 <h3 id="added">Added</h3>
 
@@ -84,6 +84,40 @@ Please file a bug if you notice a violation of semantic versioning.</p>
 
 <h3 id="security">Security</h3>
 
+<h2 id="3212---2026-09-26">
+<a href="https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.11...v3.2.12">3.2.12</a> - 2026-09-26</h2>
+
+<ul>
+  <li>TAG: <a href="https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.12">v3.2.12</a>
+</li>
+  <li>COVERAGE: 96.83% – 917/947 lines in 10 files</li>
+  <li>BRANCH COVERAGE: 84.59% – 247/292 branches in 10 files</li>
+  <li>36.36% documented</li>
+</ul>
+
+<h3 id="changed-1">Changed</h3>
+
+<ul>
+  <li>[kc] kettle-jem/prepare: updated 7 project files:
+    <ul>
+      <li>dependencies (7)</li>
+    </ul>
+  </li>
+  <li>[kc] kettle-jem/template: updated 33 project files:
+    <ul>
+      <li>code and tests (2)</li>
+      <li>other (1)</li>
+      <li>workflows (30)</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="fixed-1">Fixed</h3>
+
+<ul>
+  <li>Windows runs use size-based worker grouping and skip the runtime logger that requires file locking.</li>
+</ul>
+
 <h2 id="3211---2026-09-23">
 <a href="https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.10...v3.2.11">3.2.11</a> - 2026-09-23</h2>
 
@@ -95,7 +129,7 @@ Please file a bug if you notice a violation of semantic versioning.</p>
   <li>36.36% documented</li>
 </ul>
 
-<h3 id="changed-1">Changed</h3>
+<h3 id="changed-2">Changed</h3>
 
 <ul>
   <li>
@@ -127,17 +161,16 @@ dependency doesn’t support one or more of this project’s declared<br>
 engine support needs.</li>
 </ul>
 
-<h3 id="fixed-1">Fixed</h3>
+<h3 id="fixed-2">Fixed</h3>
 
 <ul>
   <li>
     <p>The multi-process integration summary assertion now supports RSpec’s Ruby 3.0-compatible pending-example totals.</p>
   </li>
   <li>
-    <p>Windows turbo_tests2 workers now invoke Bundler through Ruby instead of executing BUNDLE_BIN_PATH directly.</p>
-  </li>
-  <li>
-    <p>Windows turbo_tests2 workers now resolve Bundler through RubyGems instead of relying on the Windows command shim.</p>
+    <p>Windows turbo_tests2 workers now invoke Bundler through RubyGems using the<br>
+Ruby executable and Bundler’s resolved executable path, avoiding direct<br>
+execution of the Windows command shim from <code>BUNDLE_BIN_PATH</code>.</p>
   </li>
 </ul>
 
@@ -163,7 +196,7 @@ engine support needs.</li>
   <li>36.73% documented</li>
 </ul>
 
-<h3 id="fixed-2">Fixed</h3>
+<h3 id="fixed-3">Fixed</h3>
 
 <ul>
   <li>Workers that exit unsuccessfully before reporting any results (for example<br>
@@ -191,7 +224,7 @@ crash workers.</li>
   <li>Support TURBO_TESTS2_MAX_PROCESSES as an orchestration process ceiling.</li>
 </ul>
 
-<h3 id="changed-2">Changed</h3>
+<h3 id="changed-3">Changed</h3>
 
 <ul>
   <li>[kc] kettle-jem/prepare: updated 8 project files:
@@ -226,7 +259,7 @@ crash workers.</li>
 invoking the <code>turbo_tests2:setup</code> and <code>turbo_tests2:cleanup</code> hooks.</li>
 </ul>
 
-<h3 id="changed-3">Changed</h3>
+<h3 id="changed-4">Changed</h3>
 
 <ul>
   <li>[kc] kettle-jem/prepare: updated 40 project files:
@@ -246,7 +279,7 @@ invoking the <code>turbo_tests2:setup</code> and <code>turbo_tests2:cleanup</cod
   </li>
 </ul>
 
-<h3 id="fixed-3">Fixed</h3>
+<h3 id="fixed-4">Fixed</h3>
 
 <ul>
   <li>Running <code>turbo_tests2</code> no longer requires a Rakefile merely because the<br>
@@ -265,7 +298,7 @@ discoverable.</li>
   <li>36.73% documented</li>
 </ul>
 
-<h3 id="changed-4">Changed</h3>
+<h3 id="changed-5">Changed</h3>
 
 <ul>
   <li>[kc] kettle-jem/prepare: updated 11 project files:
@@ -295,14 +328,14 @@ discoverable.</li>
   <li>36.73% documented</li>
 </ul>
 
-<h3 id="changed-5">Changed</h3>
+<h3 id="changed-6">Changed</h3>
 
 <ul>
   <li>kettle-jem-template-20260801-001 - Generated README gem dashboard links now<br>
 use ClickGems instead of BestGems.</li>
 </ul>
 
-<h3 id="fixed-4">Fixed</h3>
+<h3 id="fixed-5">Fixed</h3>
 
 <ul>
   <li>kettle-jem-template-20260801-002 - Generated RSpec helpers now normalize<br>
@@ -345,7 +378,7 @@ tagged RubyForum community alongside Discord.</p>
   </li>
 </ul>
 
-<h3 id="changed-6">Changed</h3>
+<h3 id="changed-7">Changed</h3>
 
 <ul>
   <li>kettle-jem-template-20260728-001 - Generated Ruby workflows now use clearer<br>
@@ -353,7 +386,7 @@ setup-ruby-flash planning and can prepare appraisal-only jobs without<br>
 installing the main Gemfile bundle.</li>
 </ul>
 
-<h3 id="fixed-5">Fixed</h3>
+<h3 id="fixed-6">Fixed</h3>
 
 <ul>
   <li>kettle-jem-template-20260728-002 - Generated RuboCop configs now ignore the<br>
@@ -408,7 +441,7 @@ before generated docs are refreshed.</p>
   </li>
 </ul>
 
-<h3 id="fixed-6">Fixed</h3>
+<h3 id="fixed-7">Fixed</h3>
 
 <ul>
   <li>Worker stdout that happens to contain <code>RSPEC_FORMATTER_OUTPUT_ID</code> is now kept<br>
@@ -422,7 +455,7 @@ QLTY, and Codecov as optional, so provider outages do not fail CI when local<br>
 coverage thresholds still pass.</li>
 </ul>
 
-<h3 id="changed-7">Changed</h3>
+<h3 id="changed-8">Changed</h3>
 
 <ul>
   <li>README guidance now distinguishes the <code>TurboTests</code> namespace from the<br>
@@ -442,7 +475,7 @@ default <code>coverage/</code> base directory.</li>
   <li>34.69% documented</li>
 </ul>
 
-<h3 id="changed-8">Changed</h3>
+<h3 id="changed-9">Changed</h3>
 
 <ul>
   <li>
@@ -470,7 +503,7 @@ or incompatible with the project’s runtime Ruby floor.</p>
   <li>34.69% documented</li>
 </ul>
 
-<h3 id="changed-9">Changed</h3>
+<h3 id="changed-10">Changed</h3>
 
 <ul>
   <li>
@@ -491,7 +524,7 @@ so release CI monitoring does not report intentionally skipped engine<br>
 workflows as failures.</li>
 </ul>
 
-<h3 id="fixed-7">Fixed</h3>
+<h3 id="fixed-8">Fixed</h3>
 
 <ul>
   <li>Worker commands now drop project <code>.rspec</code> presentation formatter and output<br>
@@ -535,7 +568,7 @@ explicitly and mapped to <code>parallel_tests</code> runtime grouping tuning opt
 including when supplied after the compatibility <code>--</code> separator.</li>
 </ul>
 
-<h3 id="changed-10">Changed</h3>
+<h3 id="changed-11">Changed</h3>
 
 <ul>
   <li>Pull request engine workflows now keep JRuby and TruffleRuby coverage<br>
@@ -547,7 +580,7 @@ alternate engine jobs.</li>
 normal suite does not pay its fixed load-time delay.</li>
 </ul>
 
-<h3 id="fixed-8">Fixed</h3>
+<h3 id="fixed-9">Fixed</h3>
 
 <ul>
   <li>Successful non-verbose runs now surface warning and deprecation lines emitted<br>
@@ -584,7 +617,7 @@ supplied after <code>--</code>.</li>
   <li>35.11% documented</li>
 </ul>
 
-<h3 id="fixed-9">Fixed</h3>
+<h3 id="fixed-10">Fixed</h3>
 
 <ul>
   <li>Worker commands now override RSpec’s default options file, then explicitly<br>
@@ -605,7 +638,7 @@ suite while preserving options like <code>--require spec_helper</code>.</li>
   <li>35.87% documented</li>
 </ul>
 
-<h3 id="fixed-10">Fixed</h3>
+<h3 id="fixed-11">Fixed</h3>
 
 <ul>
   <li>Duplicate RSpec <code>Run options:</code> messages from parallel workers are now<br>
@@ -623,7 +656,7 @@ collapsed so they no longer interrupt progress formatter output repeatedly.</li>
   <li>35.87% documented</li>
 </ul>
 
-<h3 id="fixed-11">Fixed</h3>
+<h3 id="fixed-12">Fixed</h3>
 
 <ul>
   <li>
@@ -643,7 +676,7 @@ selectors.</li>
   <li>36.67% documented</li>
 </ul>
 
-<h3 id="fixed-12">Fixed</h3>
+<h3 id="fixed-13">Fixed</h3>
 
 <ul>
   <li>
@@ -666,7 +699,7 @@ honoring <code>.rspec</code> pattern overrides.</p>
   <li>36.67% documented</li>
 </ul>
 
-<h3 id="fixed-13">Fixed</h3>
+<h3 id="fixed-14">Fixed</h3>
 
 <ul>
   <li>No-argument runs now use RSpec configuration for file discovery, including<br>
@@ -685,7 +718,7 @@ directory.</li>
   <li>37.08% documented</li>
 </ul>
 
-<h3 id="fixed-14">Fixed</h3>
+<h3 id="fixed-15">Fixed</h3>
 
 <ul>
   <li>Buffered non-RSpec worker stdout/stderr so successful parallel runs no longer<br>
@@ -717,14 +750,14 @@ runner on JRuby after the underlying RSpec examples pass.</li>
   <li>37.08% documented</li>
 </ul>
 
-<h3 id="changed-11">Changed</h3>
+<h3 id="changed-12">Changed</h3>
 
 <ul>
   <li>Clarified project metadata, README, and CLI help to describe <code>turbo_tests2</code><br>
 as an RSpec parallel runner built on <code>parallel_tests</code>.</li>
 </ul>
 
-<h3 id="fixed-15">Fixed</h3>
+<h3 id="fixed-16">Fixed</h3>
 
 <ul>
   <li>Fixed generated README metadata backticks around <code>turbo_tests2</code> in the<br>
@@ -742,7 +775,7 @@ package description.</li>
   <li>37.08% documented</li>
 </ul>
 
-<h3 id="fixed-16">Fixed</h3>
+<h3 id="fixed-17">Fixed</h3>
 
 <ul>
   <li>Package configured license files in gem release file lists.</li>
@@ -765,13 +798,13 @@ package description.</li>
   <li>Added support for JRuby 10.1 and TruffleRuby 34.0.</li>
 </ul>
 
-<h3 id="changed-12">Changed</h3>
+<h3 id="changed-13">Changed</h3>
 
 <ul>
   <li>Retemplated project metadata and CI/development automation with <code>kettle-jem</code> v7.0.0.</li>
 </ul>
 
-<h3 id="fixed-17">Fixed</h3>
+<h3 id="fixed-18">Fixed</h3>
 
 <ul>
   <li>Fixed subprocess coverage setup for SimpleCov v1 by starting coverage<br>
@@ -801,7 +834,7 @@ supported versions exit nonzero but omit the RSpec load-error summary.</li>
   <li>37.08% documented</li>
 </ul>
 
-<h3 id="fixed-18">Fixed</h3>
+<h3 id="fixed-19">Fixed</h3>
 
 <ul>
   <li>
@@ -827,7 +860,7 @@ TruffleRuby 25.0 CI failures in the worker pipe cleanup regression spec.</p>
   <li>37.08% documented</li>
 </ul>
 
-<h3 id="fixed-19">Fixed</h3>
+<h3 id="fixed-20">Fixed</h3>
 
 <ul>
   <li>Restored <code>docs/CNAME</code> so the generated documentation site keeps its custom domain.</li>
@@ -844,7 +877,7 @@ TruffleRuby 25.0 CI failures in the worker pipe cleanup regression spec.</p>
   <li>37.08% documented</li>
 </ul>
 
-<h3 id="fixed-20">Fixed</h3>
+<h3 id="fixed-21">Fixed</h3>
 
 <ul>
   <li>
@@ -865,7 +898,7 @@ passes it to every worker process, and supports <code>--order defined</code> /<b
   <li>36.78% documented</li>
 </ul>
 
-<h3 id="fixed-21">Fixed</h3>
+<h3 id="fixed-22">Fixed</h3>
 
 <ul>
   <li>The CLI now honors documented <code>turbo_tests2:setup</code> and <code>turbo_tests2:cleanup</code><br>
@@ -906,7 +939,7 @@ worker with <code>TEST_ENV_NUMBER</code> and <code>PARALLEL_TEST_GROUPS</code> s
 <code>parallel_tests</code>-compatible runtime log so grouping can use example-level timing history.</li>
 </ul>
 
-<h3 id="changed-13">Changed</h3>
+<h3 id="changed-14">Changed</h3>
 
 <ul>
   <li>Worker subprocess JSON now forwards RSpec deprecation notifications to the parent reporter.</li>
@@ -915,7 +948,7 @@ worker with <code>TEST_ENV_NUMBER</code> and <code>PARALLEL_TEST_GROUPS</code> s
   <li>Interrupted runs now report spec groups that had not finished before shutdown.</li>
 </ul>
 
-<h3 id="fixed-22">Fixed</h3>
+<h3 id="fixed-23">Fixed</h3>
 
 <ul>
   <li>Reconstructed failure backtraces now filter internal <code>turbo_tests2</code> frames.</li>

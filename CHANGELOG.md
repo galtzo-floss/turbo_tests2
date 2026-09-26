@@ -22,6 +22,23 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [3.2.12] - 2026-09-26
+
+- TAG: [v3.2.12][3.2.12t]
+- COVERAGE: 96.83% -- 917/947 lines in 10 files
+- BRANCH COVERAGE: 84.59% -- 247/292 branches in 10 files
+- 36.36% documented
+
+### Changed
+
 - [kc] kettle-jem/prepare: updated 7 project files:
   - dependencies (7)
 
@@ -30,15 +47,9 @@ Please file a bug if you notice a violation of semantic versioning.
   - other (1)
   - workflows (30)
 
-### Deprecated
-
-### Removed
-
 ### Fixed
 
 - Windows runs use size-based worker grouping and skip the runtime logger that requires file locking.
-
-### Security
 
 ## [3.2.11] - 2026-09-23
 
@@ -656,7 +667,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.11...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.12...HEAD
+[3.2.12]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.11...v3.2.12
+[3.2.12t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.12
 [3.2.11]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.10...v3.2.11
 [3.2.11t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.11
 [3.2.10]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.9...v3.2.10
