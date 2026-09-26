@@ -145,7 +145,7 @@ RSpec.describe TurboTests::Runner do
         [],
         anything,
         anything,
-        !Gem.win_platform?,
+        true,
         ["gems/example/spec/example_spec.rb"],
         anything
       )

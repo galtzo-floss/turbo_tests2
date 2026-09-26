@@ -189,7 +189,7 @@
   "spec/turbo_tests/reporter_spec.rb:2251908942": [
     [11, 52, 9, "Lint/LtsRuby/UnavailableMethod: StringScanner#values_at is unavailable before Ruby 2.5.", 386741047]
   ],
-  "spec/turbo_tests/runner_spec.rb:1909202379": [
+  "spec/turbo_tests/runner_spec.rb:3462652530": [
     [32, 18, 2, "Lint/LtsRuby/UnavailableMethod: Method/Proc#<< is unavailable before Ruby 2.6.", 5859461],
     [424, 51, 11, "Lint/LtsRuby/UnavailableMethod: Symbol#start_with? is unavailable before Ruby 2.7.", 1795111591],
     [501, 68, 2, "Lint/LtsRuby/UnavailableMethod: Method/Proc#<< is unavailable before Ruby 2.6.", 5859461],
