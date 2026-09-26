@@ -151,6 +151,20 @@ RSpec.describe TurboTests::Runner do
       )
     end
 
+    it "uses size-based grouping without runtime logging on Windows" do
+      runner_double = double("runner", run: 0)
+      allow(Gem).to receive(:win_platform?).and_return(true)
+      allow(described_class).to receive(:rspec_configured_files_to_run).and_return(["spec/turbo_tests/runner_spec.rb"])
+      allow(described_class).to receive(:new) do |**opts|
+        expect(opts[:use_runtime_info]).to be false
+        expect(opts[:record_runtime]).to be false
+        expect(opts[:parallel_options]).to include(group_by: :filesize)
+        runner_double
+      end
+
+      described_class.run(formatters: [], tags: [], parallel_options: {})
+    end
+
     it "does not use RSpec configuration when explicit files are provided" do
       runner_double = double("runner", run: 0)
       expect(described_class).not_to receive(:rspec_configured_files_to_run)

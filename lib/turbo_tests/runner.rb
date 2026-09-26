@@ -52,7 +52,8 @@ module TurboTests
           opts[:worker_output] || ENV["TURBO_TESTS2_WORKER_OUTPUT"]
         )
 
-        use_runtime_info = default_file_discovery
+        use_runtime_info = default_file_discovery && !Gem.win_platform?
+        record_runtime = !Gem.win_platform?
         parallel_options[:runtime_log] ||= runtime_log
 
         if example_status_log
@@ -88,7 +89,8 @@ module TurboTests
           use_runtime_info: use_runtime_info,
           parallel_options: parallel_options,
           nice: nice,
-          worker_output: worker_output
+          worker_output: worker_output,
+          record_runtime: record_runtime
         ).run
       end
 
@@ -238,7 +240,7 @@ module TurboTests
       @runtime_log = opts[:runtime_log] || DEFAULT_RUNTIME_LOG
       @parallel_options = opts.fetch(:parallel_options, {})
       @parallel_options[:runtime_log] ||= @runtime_log
-      @record_runtime = true
+      @record_runtime = opts.key?(:record_runtime) ? opts[:record_runtime] : true
 
       @messages = Thread::Queue.new
       @threads = []

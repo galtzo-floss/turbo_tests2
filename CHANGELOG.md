@@ -28,6 +28,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Windows runs use size-based worker grouping and skip the runtime logger that requires file locking.
+
 ### Security
 
 ## [3.2.11] - 2026-09-23
