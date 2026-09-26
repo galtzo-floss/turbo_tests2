@@ -135,7 +135,7 @@ RSpec.describe TurboTests::Runner do
       allow(described_class).to receive(:rspec_configured_files_to_run).and_return(["gems/example/spec/example_spec.rb"])
       allow(described_class).to receive(:new) do |**opts|
         expect(opts[:files]).to eq(["gems/example/spec/example_spec.rb"])
-        expect(opts[:use_runtime_info]).to be true
+        expect(opts[:use_runtime_info]).to eq(!Gem.win_platform?)
         runner_double
       end
 
@@ -145,7 +145,7 @@ RSpec.describe TurboTests::Runner do
         [],
         anything,
         anything,
-        true,
+        !Gem.win_platform?,
         ["gems/example/spec/example_spec.rb"],
         anything
       )
@@ -290,12 +290,12 @@ RSpec.describe TurboTests::Runner do
       expect(TurboTests::Reporter).to have_received(:from_config).with([], anything, nil, false, ["spec"], anything)
     end
 
-    context "when files are discovered by RSpec configuration (use_runtime_info = true)" do
-      it "sets the default runtime_log in parallel_options and passes use_runtime_info: true" do
+    context "when files are discovered by RSpec configuration" do
+      it "sets the default runtime_log in parallel_options and selects runtime info by platform" do
         runner_double = double("runner", run: 0)
         allow(described_class).to receive(:rspec_configured_files_to_run).and_return(["spec/turbo_tests/runner_spec.rb"])
         allow(described_class).to receive(:new) do |**opts|
-          expect(opts[:use_runtime_info]).to be true
+          expect(opts[:use_runtime_info]).to eq(!Gem.win_platform?)
           expect(opts[:runtime_log]).to eq(TurboTests::Runner::DEFAULT_RUNTIME_LOG)
           expect(opts[:parallel_options]).to include(runtime_log: TurboTests::Runner::DEFAULT_RUNTIME_LOG)
           runner_double
