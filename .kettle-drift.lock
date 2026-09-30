@@ -3,8 +3,8 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        54,
-        163
+        74,
+        183
       ]
     }
   ],
@@ -12,8 +12,8 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        57,
-        119
+        77,
+        139
       ]
     }
   ],
@@ -21,8 +21,8 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        58,
-        143
+        78,
+        163
       ]
     }
   ],
@@ -30,8 +30,8 @@
     {
       "file": "Appraisal.root.gemfile",
       "lines": [
-        21,
-        26
+        31,
+        36
       ]
     }
   ],
@@ -39,8 +39,8 @@
     {
       "file": "Appraisal.root.gemfile",
       "lines": [
-        22,
-        27
+        32,
+        37
       ]
     }
   ],
@@ -53,12 +53,22 @@
       ]
     }
   ],
+  "generator_only do\neval_gemfile \"gemfiles/modular/style.gemfile\"": [
+    {
+      "file": "Appraisal.root.gemfile",
+      "lines": [
+        21,
+        44
+      ]
+    }
+  ],
   "if respond_to?(:generator_only)\ngenerator_only do": [
     {
       "file": "Appraisal.root.gemfile",
       "lines": [
-        19,
-        33
+        20,
+        29,
+        43
       ]
     }
   ],
