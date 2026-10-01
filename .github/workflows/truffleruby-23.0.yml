@@ -42,6 +42,10 @@ jobs:
     continue-on-error: ${{ matrix.experimental || endsWith(matrix.ruby, 'head') }}
     env: # $BUNDLE_GEMFILE must be set at job level, so it is set for all steps
       BUNDLE_GEMFILE: ${{ github.workspace }}/Appraisal.root.gemfile
+      # TruffleRuby 23.0 intermittently stalls when the suite runs parallel
+      # workers; keep this EOL compatibility job serial while maintained
+      # runtimes continue to exercise the parallel runner.
+      TURBO_TESTS2_MAX_PROCESSES: 1
     strategy:
       matrix:
         include:

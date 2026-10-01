@@ -28,6 +28,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Cap the TruffleRuby 23.0 compatibility workflow at one test worker after an intermittent parallel-run hang; maintained runtimes retain parallel test coverage.
+
 ### Security
 
 ## [3.2.13] - 2026-09-30
