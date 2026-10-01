@@ -22,19 +22,15 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
-- Documented runtime and platform support tiers, including the TruffleRuby single-worker CI exception and skipped process-spec groups.
-
 ### Deprecated
 
 ### Removed
 
 ### Fixed
 
-- Cap the TruffleRuby 23.0 compatibility workflow at one test worker after an intermittent parallel-run hang; maintained runtimes retain parallel test coverage.
-
 ### Security
 
-## [3.2.13] - 2026-09-30
+## [3.2.13] - 2026-10-01
 
 - TAG: [v3.2.13][3.2.13t]
 - COVERAGE: 96.83% -- 917/947 lines in 10 files
@@ -50,6 +46,12 @@ Please file a bug if you notice a violation of semantic versioning.
   - dependencies (1)
   - other (3)
   - workflows (29)
+
+- Documented runtime and platform support tiers, including the TruffleRuby single-worker CI exception and skipped process-spec groups.
+
+### Fixed
+
+- Cap the TruffleRuby 23.0 compatibility workflow at one test worker after an intermittent parallel-run hang; maintained runtimes retain parallel test coverage.
 
 ## [3.2.12] - 2026-09-26
 

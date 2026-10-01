@@ -101,6 +101,113 @@ The project namespace remains <code>TurboTests</code>; the published gem and exe
 
 <p>Incremental summarized output doesn’t <a href="https://github.com/grosser/parallel_tests/issues/708">fit the vision</a> of the <code>parallel_tests</code> author, and <a href="https://github.com/rspec/rspec-rails/issues/2104#issuecomment-658474900">RSpec doesn’t support built-in parallel testing yet</a>. This gem targets RSpec, not every framework supported by <code>parallel_tests</code>, and may not be useful once one of the issues above is implemented.</p>
 
+<h3 id="runtime-and-platform-support">Runtime and Platform Support</h3>
+
+<p>Support tiers describe what this project’s CI actually exercises, not what may<br>
+work in an untested environment:</p>
+
+<ul>
+  <li>
+<strong>Parallel support</strong>: CI runs the test suite with multiple workers available.</li>
+  <li>
+<strong>Single-worker support</strong>: CI runs the suite with one worker; parallel runner<br>
+behavior is not validated for that combination.</li>
+  <li>
+<strong>Unsupported</strong>: the engine/platform combination is not covered by CI and is<br>
+not a project compatibility claim.</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>Ruby engine/version</th>
+      <th>Linux</th>
+      <th>macOS</th>
+      <th>Windows</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>MRI 2.4-3.4</td>
+      <td>Parallel support</td>
+      <td>Unsupported</td>
+      <td>Unsupported</td>
+      <td>Versioned Ruby workflows run on Linux.</td>
+    </tr>
+    <tr>
+      <td>MRI current</td>
+      <td>Parallel support</td>
+      <td>Parallel support</td>
+      <td>Parallel support</td>
+      <td>Current Ruby workflow covers all three platforms.</td>
+    </tr>
+    <tr>
+      <td>MRI head</td>
+      <td>Parallel support</td>
+      <td>Unsupported</td>
+      <td>Unsupported</td>
+      <td>CI is allowed to fail while Ruby is in development.</td>
+    </tr>
+    <tr>
+      <td>JRuby 9.2-9.4</td>
+      <td>Parallel support</td>
+      <td>Unsupported</td>
+      <td>Unsupported</td>
+      <td>Versioned JRuby workflows run on Linux.</td>
+    </tr>
+    <tr>
+      <td>JRuby 10.0/current/head</td>
+      <td>Parallel support</td>
+      <td>Unsupported</td>
+      <td>Unsupported</td>
+      <td>Experimental/current and head jobs are non-blocking in CI.</td>
+    </tr>
+    <tr>
+      <td>TruffleRuby 22.3</td>
+      <td>Parallel support</td>
+      <td>Unsupported</td>
+      <td>Unsupported</td>
+      <td>Experimental. The CLI and multi-process spec groups are skipped because this release reports Ruby compatibility version 3.0.</td>
+    </tr>
+    <tr>
+      <td>TruffleRuby 23.0</td>
+      <td>Single-worker support</td>
+      <td>Unsupported</td>
+      <td>Unsupported</td>
+      <td>Experimental and end-of-life; CI caps workers at one. The CLI and multi-process spec groups are also skipped.</td>
+    </tr>
+    <tr>
+      <td>TruffleRuby 23.1</td>
+      <td>Parallel support</td>
+      <td>Unsupported</td>
+      <td>Unsupported</td>
+      <td>Experimental.</td>
+    </tr>
+    <tr>
+      <td>TruffleRuby 24.2/25.0/33.0/current</td>
+      <td>Parallel support</td>
+      <td>Unsupported</td>
+      <td>Unsupported</td>
+      <td>Linux workflows run the suite with parallel workers.</td>
+    </tr>
+    <tr>
+      <td>TruffleRuby head</td>
+      <td>Parallel support</td>
+      <td>Unsupported</td>
+      <td>Unsupported</td>
+      <td>CI is allowed to fail while TruffleRuby is in development.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The TruffleRuby 22.3/23.0 spec exclusions use <code>rspec-pending_for</code>’s Ruby<br>
+compatibility-version matching (<code>3.0</code>), not TruffleRuby’s release number. They<br>
+exclude the complete CLI spec group and multi-process integration group; the<br>
+remaining suite still runs in parallel on 22.3 and serially on 23.0. The<br>
+Windows current-Ruby job also runs in parallel, but runtime-log recording is<br>
+disabled there because Windows file locking is unreliable (see below).</p>
+
 <h3 id="why-incremental-output">Why incremental output?</h3>
 
 <p><code>parallel_tests</code> is great, but parallel RSpec output is hard to read:</p>
