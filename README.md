@@ -30,6 +30,37 @@ The project namespace remains `TurboTests`; the published gem and executable are
 
 Incremental summarized output doesn't [fit the vision](https://github.com/grosser/parallel_tests/issues/708) of the `parallel_tests` author, and [RSpec doesn't support built-in parallel testing yet](https://github.com/rspec/rspec-rails/issues/2104#issuecomment-658474900). This gem targets RSpec, not every framework supported by `parallel_tests`, and may not be useful once one of the issues above is implemented.
 
+### Runtime and Platform Support
+
+Support tiers describe what this project's CI actually exercises, not what may
+work in an untested environment:
+
+- **Parallel support**: CI runs the test suite with multiple workers available.
+- **Single-worker support**: CI runs the suite with one worker; parallel runner
+  behavior is not validated for that combination.
+- **Unsupported**: the engine/platform combination is not covered by CI and is
+  not a project compatibility claim.
+
+| Ruby engine/version | Linux | macOS | Windows | Notes |
+|---------------------|-------|-------|---------|-------|
+| MRI 2.4-3.4 | Parallel support | Unsupported | Unsupported | Versioned Ruby workflows run on Linux. |
+| MRI current | Parallel support | Parallel support | Parallel support | Current Ruby workflow covers all three platforms. |
+| MRI head | Parallel support | Unsupported | Unsupported | CI is allowed to fail while Ruby is in development. |
+| JRuby 9.2-9.4 | Parallel support | Unsupported | Unsupported | Versioned JRuby workflows run on Linux. |
+| JRuby 10.0/current/head | Parallel support | Unsupported | Unsupported | Experimental/current and head jobs are non-blocking in CI. |
+| TruffleRuby 22.3 | Parallel support | Unsupported | Unsupported | Experimental. The CLI and multi-process spec groups are skipped because this release reports Ruby compatibility version 3.0. |
+| TruffleRuby 23.0 | Single-worker support | Unsupported | Unsupported | Experimental and end-of-life; CI caps workers at one. The CLI and multi-process spec groups are also skipped. |
+| TruffleRuby 23.1 | Parallel support | Unsupported | Unsupported | Experimental. |
+| TruffleRuby 24.2/25.0/33.0/current | Parallel support | Unsupported | Unsupported | Linux workflows run the suite with parallel workers. |
+| TruffleRuby head | Parallel support | Unsupported | Unsupported | CI is allowed to fail while TruffleRuby is in development. |
+
+The TruffleRuby 22.3/23.0 spec exclusions use `rspec-pending_for`'s Ruby
+compatibility-version matching (`3.0`), not TruffleRuby's release number. They
+exclude the complete CLI spec group and multi-process integration group; the
+remaining suite still runs in parallel on 22.3 and serially on 23.0. The
+Windows current-Ruby job also runs in parallel, but runtime-log recording is
+disabled there because Windows file locking is unreliable (see below).
+
 ### Why incremental output?
 
 `parallel_tests` is great, but parallel RSpec output is hard to read:

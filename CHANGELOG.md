@@ -22,6 +22,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
+- Documented runtime and platform support tiers, including the TruffleRuby single-worker CI exception and skipped process-spec groups.
+
 ### Deprecated
 
 ### Removed
