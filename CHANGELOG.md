@@ -28,6 +28,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- rspec_configured_files_to_run: normalize discovered spec paths against the root cwd instead of the nearest ancestor .rspec. In stacked monorepos (root .rspec aggregating gems/*/spec via --pattern, where each gem also has its own .rspec), the nearest-ancestor walk stripped aggregated specs to bare member-relative spec/... paths that do not exist at the root, crashing parallel_tests File.stat during group sizing and aborting the whole run. Regression introduced in 3.2.13.
+
 ### Security
 
 ## [3.2.13] - 2026-10-01

@@ -454,6 +454,45 @@ RSpec.describe TurboTests::Runner do
         expect(JSON.parse(stdout)).to eq(["gems/example/spec/example_spec.rb"])
       end
     end
+
+    it "keeps aggregated gem specs relative to the root cwd when each gem also has its own .rspec" do
+      # Stacked-monorepo regression: the root .rspec aggregates per-gem specs
+      # via --pattern, and each gem is independently runnable with its own
+      # .rspec. Discovered paths must stay relative to the ROOT cwd (where
+      # parallel_tests stats them and spawns workers), never stripped to a bare
+      # member-relative "spec/..." by walking to the nearest .rspec ancestor.
+      Dir.mktmpdir("turbo-tests2-stacked-monorepo") do |dir|
+        File.write(File.join(dir, ".rspec"), <<~RSPEC)
+          --require ./gems/example/spec/spec_helper
+          --pattern gems/*/spec/**/*_spec.rb
+        RSPEC
+        FileUtils.mkdir_p(File.join(dir, "gems", "example", "spec"))
+        # The gem-level .rspec is what previously caused nearest-ancestor
+        # stripping to produce "spec/example_spec.rb".
+        File.write(File.join(dir, "gems", "example", ".rspec"), "--require spec_helper\n")
+        File.write(File.join(dir, "gems", "example", "spec", "spec_helper.rb"), "")
+        File.write(File.join(dir, "gems", "example", "spec", "example_spec.rb"), <<~RUBY)
+          RSpec.describe "configured discovery" do
+            it "runs" do
+              expect(true).to be(true)
+            end
+          end
+        RUBY
+
+        stdout, stderr, status = Open3.capture3(
+          RbConfig.ruby,
+          "-I#{File.expand_path("../../lib", __dir__)}",
+          "-rturbo_tests/runner",
+          "-rjson",
+          "-e",
+          "puts JSON.dump(TurboTests::Runner.rspec_configured_files_to_run)",
+          chdir: dir
+        )
+
+        expect(status).to be_success, stderr
+        expect(JSON.parse(stdout)).to eq(["gems/example/spec/example_spec.rb"])
+      end
+    end
   end
 
   describe "#report_workers_without_results (private)" do

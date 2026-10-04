@@ -160,23 +160,19 @@ module TurboTests
       def rspec_configured_files_to_run
         configuration = RSpec::Core::Configuration.new
         RSpec::Core::ConfigurationOptions.new(["spec"]).configure(configuration)
+        # Normalize against the cwd that owns the RSpec configuration being
+        # read, NOT the nearest .rspec ancestor of each file. parallel_tests
+        # stats these paths and spawns workers from this cwd, so the returned
+        # paths must resolve from here. In a stacked monorepo the root .rspec
+        # aggregates per-gem specs (each gem may also have its own .rspec);
+        # walking to the nearest .rspec would strip those to bare
+        # member-relative "spec/..." paths that do not exist at the root,
+        # crashing File.stat during group sizing.
+        root = File.expand_path(Dir.pwd).tr("\\", "/")
+        root_prefix = "#{root}/"
         configuration.files_to_run.map do |path|
-          expanded_path = File.expand_path(path.to_s).tr("\\", "/")
-          root = rspec_root_for(expanded_path)
-          root_prefix = "#{root}/"
+          expanded_path = File.expand_path(path.to_s, root).tr("\\", "/")
           expanded_path.start_with?(root_prefix) ? expanded_path[root_prefix.length..-1] : expanded_path
-        end
-      end
-
-      def rspec_root_for(path)
-        root = File.dirname(path)
-        loop do
-          return root.tr("\\", "/") if File.file?(File.join(root, ".rspec"))
-
-          parent = File.dirname(root)
-          return File.expand_path(Dir.pwd).tr("\\", "/") if parent == root
-
-          root = parent
         end
       end
 
