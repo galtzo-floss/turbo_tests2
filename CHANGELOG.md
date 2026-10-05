@@ -22,6 +22,23 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [3.2.14] - 2026-10-05
+
+- TAG: [v3.2.14][3.2.14t]
+- COVERAGE: 96.81% -- 910/940 lines in 10 files
+- BRANCH COVERAGE: 84.72% -- 244/288 branches in 10 files
+- 36.73% documented
+
+### Changed
+
 - [kc] kettle-jem/prepare: updated 6 project files:
   - dependencies (6)
 
@@ -31,15 +48,9 @@ Please file a bug if you notice a violation of semantic versioning.
   - other (1)
   - workflows (1)
 
-### Deprecated
-
-### Removed
-
 ### Fixed
 
 - rspec_configured_files_to_run: normalize discovered spec paths against the root cwd instead of the nearest ancestor .rspec. In stacked monorepos (root .rspec aggregating gems/*/spec via --pattern, where each gem also has its own .rspec), the nearest-ancestor walk stripped aggregated specs to bare member-relative spec/... paths that do not exist at the root, crashing parallel_tests File.stat during group sizing and aborting the whole run. Regression introduced in 3.2.13.
-
-### Security
 
 ## [3.2.13] - 2026-10-01
 
@@ -701,7 +712,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.13...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.14...HEAD
+[3.2.14]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.13...v3.2.14
+[3.2.14t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.14
 [3.2.13]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.12...v3.2.13
 [3.2.13t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.13
 [3.2.12]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.11...v3.2.12
