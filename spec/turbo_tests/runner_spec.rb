@@ -862,6 +862,81 @@ RSpec.describe TurboTests::Runner do
       runner.instance_variable_get(:@threads).each { |t| t.join(2) }
     end
 
+    it "queues a worker's rows before its exit signal while the reader is still draining" do
+      # Regression: the exit-watcher used to push {type: "exit"} as soon as the
+      # child was reaped, before the stdout reader had drained the pipe. Under
+      # CI contention handle_messages could reach process_count exits and break
+      # while that worker's rows were still queued behind the exit signal, so
+      # they were never reported (nested run reported "1 example, 0 failures"
+      # instead of "4 examples, 0 failures, 3 pending", and which worker
+      # vanished flipped run to run).
+      #
+      # The interleaving is forced with Queue barriers rather than sleeps, so
+      # the broken ordering cannot pass by luck:
+      #   1. the reader blocks mid-drain, after queueing row-1 but before row-2;
+      #   2. wait_thr.value only returns once the reader is provably blocked,
+      #      so the watcher always proceeds with rows still pending;
+      #   3. stop_reader_thread is replaced by a deterministic drain, making
+      #      exit-vs-rows ordering the only variable under test.
+      # The bounded force-stop itself is covered by the wedged-pipe spec below.
+      output_id = "OID"
+      allow(SecureRandom).to receive(:uuid).and_return(output_id)
+
+      reader_blocked = Queue.new
+      release_reader = Queue.new
+
+      parse_calls = 0
+      allow(runner).to receive(:parse_worker_stdout_line).and_wrap_original do |original, line, oid, pid|
+        parse_calls += 1
+        if parse_calls == 2
+          reader_blocked << :blocked
+          release_reader.pop
+        end
+        original.call(line, oid, pid)
+      end
+
+      reaped_status = double("status", success?: true)
+      allow(fake_wait_thr).to receive(:value) do
+        reader_blocked.pop
+        reaped_status
+      end
+
+      allow(runner).to receive(:stop_reader_thread) do |thread, _io, *_deadline|
+        release_reader << :go
+        thread.join(2)
+      end
+
+      row = ->(text) { "#{output_id}{\"type\":\"message\",\"message\":\"#{text}\"}\n" }
+      stdout_reader, stdout_writer = IO.pipe
+      stderr_reader, stderr_writer = IO.pipe
+      begin
+        stdout_writer.write(row.call("row-1"))
+        stdout_writer.write(row.call("row-2"))
+        stdout_writer.close # EOF lets the reader finish and push its own exit
+        stderr_writer.close # stderr EOFs immediately
+        allow(Open3).to receive(:popen3)
+          .and_return([fake_stdin, stdout_reader, stderr_reader, fake_wait_thr])
+
+        runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
+        runner.instance_variable_get(:@threads).each { |thread| thread.join(5) }
+
+        messages = runner.instance_variable_get(:@messages)
+        drained = []
+        drained << messages.pop until messages.empty?
+        labels = drained.map { |message| message[:message] || message[:type] }
+
+        # Both worker rows must be queued ahead of the first exit signal. The
+        # broken ordering yields ["row-1", "exit", ...] because the watcher
+        # signals exit before the reader finishes draining.
+        first_exit = labels.index("exit")
+        expect(first_exit).not_to be_nil
+        expect(labels[0...first_exit]).to eq(%w[row-1 row-2])
+      ensure
+        stdout_writer.close unless stdout_writer.closed?
+        stderr_writer.close unless stderr_writer.closed?
+      end
+    end
+
     it "uses RSPEC_EXECUTABLE as the command when set" do
       captured = []
       mock_open3(runner) { |*args| captured.replace(args) }

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
 require "utils/hash_extension"
 
 # rubocop:disable RSpec/SpecFilePathFormat
