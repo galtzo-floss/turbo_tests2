@@ -138,7 +138,7 @@ GEM
     geom2d (0.4.1)
     gitmoji-regex (2.0.15)
       version_gem (~> 1.1, >= 1.1.15)
-    hexapdf (1.11.0)
+    hexapdf (1.11.1)
       cmdparse (~> 3.0, >= 3.0.3)
       geom2d (~> 0.4, >= 0.4.1)
       openssl (>= 2.2.1)
@@ -682,7 +682,7 @@ CHECKSUMS
   gem_bench (2.0.5) sha256=0dc0fb44a5a5eb7b2f5c1c68a5b0164d72007132822c012bac3abe976b199ead
   geom2d (0.4.1) sha256=ea0998ea90c4f2752e24fe13d85a4f89bee689d151316140ebcc6369bf634ed9
   gitmoji-regex (2.0.15) sha256=c6571bffd757f95c06d84a7d2d0b3f180eca7fe576882c371cee1f1a081cd968
-  hexapdf (1.11.0) sha256=72e0459dd2482ec1791f9a44a97144566a00188889cc8742dda97413ca679c62
+  hexapdf (1.11.1) sha256=914578c3b2024f76b533144344379c7123d3eaa3ea586f4d98add59534b783a9
   io-console (0.9.4) sha256=a403304f32928ee85e56d457b4612ca43f2703b561a3258844992bd24085fbb1
   irb (1.18.0) sha256=de9454a0703a54704b9811a5ef31a60c86949fbf4013fcf244fabc7c775248e3
   json (2.21.2) sha256=1f1d3b7cf2b3ba1a69beca0bb6db13d5438b80bff3cd54cdaaa620b9b07c1c6a
