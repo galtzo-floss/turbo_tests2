@@ -15,6 +15,16 @@ module TurboTests
     DEFAULT_RUNTIME_LOG = "tmp/turbo_rspec_runtime.log"
     DEFAULT_WORKER_OUTPUT_MODE = :warnings
     WORKER_OUTPUT_MODES = %i[warnings stream buffered quiet].freeze
+    # Shared wall-clock budget, in seconds, for draining a worker's stdout and
+    # stderr readers after the child has exited. Normally the pipe EOFs in
+    # milliseconds, so this is not on the hot path; the bound exists only for a
+    # wedged pipe whose write end is still held open (e.g. by a grandchild),
+    # which can never EOF. Shared across both streams so teardown cannot take
+    # twice the budget.
+    READER_DRAIN_TIMEOUT = 1
+    # Short join used only after the pipe is force-closed, to give the reader a
+    # moment to notice EOF before it is killed.
+    FORCE_STOP_JOIN = 0.1
 
     class << self
       def create(count)
@@ -473,10 +483,21 @@ module TurboTests
             status = wait_thr.value
             @failed_worker_statuses.store(process_id, status) unless status.success?
             @messages << {type: "error", process_id: process_id} unless status.success?
-            @messages << {type: "exit", process_id: process_id}
           ensure
-            stop_reader_thread(stdout_thread, stdout)
-            stop_reader_thread(stderr_thread, stderr)
+            # Drain BOTH readers before signaling this process's exit. The
+            # stdout reader parses the pipe into @messages rows and pushes its
+            # own {type: "exit"} at EOF; the stderr copy thread only buffers
+            # text into @worker_output and queues nothing, but it is drained
+            # too so no buffered warning output is lost. Signaling exit here
+            # first let handle_messages reach process_count exits and break
+            # while this worker's stdout rows were still queued behind that
+            # exit, silently dropping them (intermittent example undercount
+            # and missing streamed output under CI contention). The exit below
+            # is a deduped fallback for a stdout reader that was force-stopped
+            # before reaching EOF, and being in ensure also prevents a hang if
+            # wait_thr.value raises.
+            drain_worker_readers(stdout_thread, stdout, stderr_thread, stderr)
+            @messages << {type: "exit", process_id: process_id}
             untrack_parallel_pid(wait_thr.pid, pid_file_path)
           end
         end
@@ -671,14 +692,29 @@ module TurboTests
       "#{kind} Coverage: #{match[3]} (#{match[1]} / #{match[2]})"
     end
 
-    def stop_reader_thread(thread, io)
-      return if thread.join(0.1)
+    def drain_worker_readers(stdout_thread, stdout, stderr_thread, stderr)
+      # One shared deadline across both streams so a wedged pipe cannot double
+      # teardown time or hang the watcher. stdout carries the worker's JSON
+      # rows; stderr only carries buffered text.
+      deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + READER_DRAIN_TIMEOUT
+      stop_reader_thread(stdout_thread, stdout, deadline)
+      stop_reader_thread(stderr_thread, stderr, deadline)
+    end
+
+    def stop_reader_thread(thread, io, deadline)
+      # Let the reader reach EOF and queue any buffered worker rows BEFORE any
+      # force-stop. Closing the pipe while the child's output is still
+      # kernel-buffered would discard it and silently drop that worker's
+      # results (intermittent example undercount / missing streamed output).
+      # The shared deadline bounds teardown when a pipe can never EOF because
+      # its write end is still held open (e.g. by a grandchild).
+      remaining = deadline - Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      return if remaining.positive? && thread.join(remaining)
 
       close_io(io)
-      return if thread.join(0.1)
+      return if thread.join(FORCE_STOP_JOIN)
 
-      thread.kill
-      thread.join(0.1)
+      thread.kill.join(FORCE_STOP_JOIN)
     end
 
     def handle_messages

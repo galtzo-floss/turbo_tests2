@@ -28,6 +28,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Fix a teardown race that intermittently dropped a worker's results. The exit-watcher thread previously signaled process exit as soon as the child was reaped, before the stdout/stderr readers had drained the pipe. Under CI contention handle_messages could reach process_count exits and stop while that worker's rows were still queued behind the exit signal, so they were never reported. Symptom was a nested run reporting "1 example, 0 failures" instead of "4 examples, 0 failures, 3 pending", with which worker vanished varying run to run (spec/integration/multi_process_spec.rb failed at :46 on one run and :52-54 on the next). Readers are now drained to EOF before the watcher signals exit, and the exit/error messages are a deduped fallback for a reader force-stopped before EOF. Drain uses one shared monotonic deadline across both streams (READER_DRAIN_TIMEOUT) so a wedged pipe whose write end stays open cannot double teardown time or hang; force-stop still closes the pipe and kills the reader as before.
+
 ### Security
 
 ## [3.2.14] - 2026-10-05
