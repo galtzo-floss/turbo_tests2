@@ -8,6 +8,7 @@ require "shellwords"
 require "tempfile"
 
 require_relative "../utils/hash_extension"
+require_relative "utils/paths"
 
 module TurboTests
   class Runner
@@ -178,11 +179,18 @@ module TurboTests
         # walking to the nearest .rspec would strip those to bare
         # member-relative "spec/..." paths that do not exist at the root,
         # crashing File.stat during group sizing.
-        root = File.expand_path(Dir.pwd).tr("\\", "/")
-        root_prefix = "#{root}/"
+        #
+        # Compare paths by filesystem identity (File.identical?) rather than by
+        # string. On the Windows CI runner Dir.pwd reports the 8.3 short name
+        # (C:/Users/RUNNER~1/...) while Dir.glob, which RSpec uses to expand
+        # --pattern, reports the long name (C:/Users/runneradmin/...). Both
+        # spellings name the same directory, but File.realpath does NOT expand
+        # 8.3 names, so neither a string prefix nor Pathname#relative_path_from
+        # can reconcile them. The same class of mismatch arises from a symlinked
+        # ancestor. See TurboTests::Utils::Paths.
+        root = File.expand_path(Dir.pwd)
         configuration.files_to_run.map do |path|
-          expanded_path = File.expand_path(path.to_s, root).tr("\\", "/")
-          expanded_path.start_with?(root_prefix) ? expanded_path[root_prefix.length..-1] : expanded_path
+          TurboTests::Utils::Paths.relative_from(File.expand_path(path.to_s, root), root)
         end
       end
 
