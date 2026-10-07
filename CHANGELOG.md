@@ -28,18 +28,14 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
-- Fix a teardown race that intermittently dropped a worker's results. The exit-watcher thread previously signaled process exit as soon as the child was reaped, before the stdout/stderr readers had drained the pipe. Under CI contention handle_messages could reach process_count exits and stop while that worker's rows were still queued behind the exit signal, so they were never reported. Symptom was a nested run reporting "1 example, 0 failures" instead of "4 examples, 0 failures, 3 pending", with which worker vanished varying run to run (spec/integration/multi_process_spec.rb failed at :46 on one run and :52-54 on the next). Readers are now drained to EOF before the watcher signals exit, and the exit/error messages are a deduped fallback for a reader force-stopped before EOF. Drain uses one shared monotonic deadline across both streams (READER_DRAIN_TIMEOUT) so a wedged pipe whose write end stays open cannot double teardown time or hang; force-stop still closes the pipe and kills the reader as before.
-
-- Fix spec discovery returning absolute paths on Windows, which crashed parallel_tests' File.stat during group sizing. rspec_configured_files_to_run made discovered paths relative to the cwd with a string prefix check. On Windows the cwd and the discovered files can name the same directory with two different spellings: Dir.pwd and ENV["TEMP"] report the 8.3 short name (C:/Users/RUNNER~1/AppData/Local/Temp) while Dir.glob, which RSpec uses to expand --pattern, reports the long name (C:/Users/runneradmin/AppData/Local/Temp). The prefix therefore never matched and the absolute temp path leaked through. File.realpath does not expand 8.3 short names, so canonicalizing first cannot reconcile the two spellings, and Pathname#relative_path_from returns nonsense such as "../../../../../runneradmin/...". The same class of mismatch arises from a symlinked ancestor on any platform, e.g. a Dir.pwd of /var/home/u/proj against a path spelled /home/u/proj/... Discovered paths are now made relative by walking up from the file and comparing each ancestor with File.identical?, which compares by filesystem identity (inode on Unix, file index on Windows) and so treats every spelling of one directory as equal. Extracted as TurboTests::Utils::Paths.relative_from/.within?.
-
 ### Security
 
-## [3.2.14] - 2026-10-05
+## [3.2.14] - 2026-10-07
 
 - TAG: [v3.2.14][3.2.14t]
-- COVERAGE: 96.81% -- 910/940 lines in 10 files
-- BRANCH COVERAGE: 84.72% -- 244/288 branches in 10 files
-- 36.73% documented
+- COVERAGE: 96.93% -- 947/977 lines in 11 files
+- BRANCH COVERAGE: 85.57% -- 255/298 branches in 11 files
+- 39.42% documented
 
 ### Changed
 
@@ -55,6 +51,10 @@ Please file a bug if you notice a violation of semantic versioning.
 ### Fixed
 
 - rspec_configured_files_to_run: normalize discovered spec paths against the root cwd instead of the nearest ancestor .rspec. In stacked monorepos (root .rspec aggregating gems/*/spec via --pattern, where each gem also has its own .rspec), the nearest-ancestor walk stripped aggregated specs to bare member-relative spec/... paths that do not exist at the root, crashing parallel_tests File.stat during group sizing and aborting the whole run. Regression introduced in 3.2.13.
+
+- Fix a teardown race that intermittently dropped a worker's results. The exit-watcher thread previously signaled process exit as soon as the child was reaped, before the stdout/stderr readers had drained the pipe. Under CI contention handle_messages could reach process_count exits and stop while that worker's rows were still queued behind the exit signal, so they were never reported. Symptom was a nested run reporting "1 example, 0 failures" instead of "4 examples, 0 failures, 3 pending", with which worker vanished varying run to run (spec/integration/multi_process_spec.rb failed at :46 on one run and :52-54 on the next). Readers are now drained to EOF before the watcher signals exit, and the exit/error messages are a deduped fallback for a reader force-stopped before EOF. Drain uses one shared monotonic deadline across both streams (READER_DRAIN_TIMEOUT) so a wedged pipe whose write end stays open cannot double teardown time or hang; force-stop still closes the pipe and kills the reader as before.
+
+- Fix spec discovery returning absolute paths on Windows, which crashed parallel_tests' File.stat during group sizing. rspec_configured_files_to_run made discovered paths relative to the cwd with a string prefix check. On Windows the cwd and the discovered files can name the same directory with two different spellings: Dir.pwd and ENV["TEMP"] report the 8.3 short name (C:/Users/RUNNER~1/AppData/Local/Temp) while Dir.glob, which RSpec uses to expand --pattern, reports the long name (C:/Users/runneradmin/AppData/Local/Temp). The prefix therefore never matched and the absolute temp path leaked through. File.realpath does not expand 8.3 short names, so canonicalizing first cannot reconcile the two spellings, and Pathname#relative_path_from returns nonsense such as "../../../../../runneradmin/...". The same class of mismatch arises from a symlinked ancestor on any platform, e.g. a Dir.pwd of /var/home/u/proj against a path spelled /home/u/proj/... Discovered paths are now made relative by walking up from the file and comparing each ancestor with File.identical?, which compares by filesystem identity (inode on Unix, file index on Windows) and so treats every spelling of one directory as equal. Extracted as TurboTests::Utils::Paths.relative_from/.within?.
 
 ## [3.2.13] - 2026-10-01
 
