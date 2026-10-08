@@ -84,15 +84,15 @@ Please file a bug if you notice a violation of semantic versioning.</p>
 
 <h3 id="security">Security</h3>
 
-<h2 id="3214---2026-10-05">
-<a href="https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.13...v3.2.14">3.2.14</a> - 2026-10-05</h2>
+<h2 id="3214---2026-10-08">
+<a href="https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.13...v3.2.14">3.2.14</a> - 2026-10-08</h2>
 
 <ul>
   <li>TAG: <a href="https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.14">v3.2.14</a>
 </li>
-  <li>COVERAGE: 96.81% – 910/940 lines in 10 files</li>
-  <li>BRANCH COVERAGE: 84.72% – 244/288 branches in 10 files</li>
-  <li>36.73% documented</li>
+  <li>COVERAGE: 96.93% – 947/977 lines in 11 files</li>
+  <li>BRANCH COVERAGE: 85.57% – 255/298 branches in 11 files</li>
+  <li>39.42% documented</li>
 </ul>
 
 <h3 id="changed-1">Changed</h3>
@@ -116,7 +116,18 @@ Please file a bug if you notice a violation of semantic versioning.</p>
 <h3 id="fixed-1">Fixed</h3>
 
 <ul>
-  <li>rspec_configured_files_to_run: normalize discovered spec paths against the root cwd instead of the nearest ancestor .rspec. In stacked monorepos (root .rspec aggregating gems/*/spec via –pattern, where each gem also has its own .rspec), the nearest-ancestor walk stripped aggregated specs to bare member-relative spec/… paths that do not exist at the root, crashing parallel_tests File.stat during group sizing and aborting the whole run. Regression introduced in 3.2.13.</li>
+  <li>
+    <p>rspec_configured_files_to_run: normalize discovered spec paths against the root cwd instead of the nearest ancestor .rspec. In stacked monorepos (root .rspec aggregating gems/*/spec via –pattern, where each gem also has its own .rspec), the nearest-ancestor walk stripped aggregated specs to bare member-relative spec/… paths that do not exist at the root, crashing parallel_tests File.stat during group sizing and aborting the whole run. Regression introduced in 3.2.13.</p>
+  </li>
+  <li>
+    <p>Fix a teardown race that intermittently dropped a worker’s results. The exit-watcher thread previously signaled process exit as soon as the child was reaped, before the stdout/stderr readers had drained the pipe. Under CI contention handle_messages could reach process_count exits and stop while that worker’s rows were still queued behind the exit signal, so they were never reported. Symptom was a nested run reporting “1 example, 0 failures” instead of “4 examples, 0 failures, 3 pending”, with which worker vanished varying run to run (spec/integration/multi_process_spec.rb failed at :46 on one run and :52-54 on the next). Readers are now drained to EOF before the watcher signals exit, and the exit/error messages are a deduped fallback for a reader force-stopped before EOF. Drain uses one shared monotonic deadline across both streams (READER_DRAIN_TIMEOUT) so a wedged pipe whose write end stays open cannot double teardown time or hang; force-stop still closes the pipe and kills the reader as before.</p>
+  </li>
+  <li>
+    <p>Fix spec discovery returning absolute paths on Windows, which crashed parallel_tests’ File.stat during group sizing. rspec_configured_files_to_run made discovered paths relative to the cwd with a string prefix check. On Windows the cwd and the discovered files can name the same directory with two different spellings: Dir.pwd and ENV[“TEMP”] report the 8.3 short name (C:/Users/RUNNER~1/AppData/Local/Temp) while Dir.glob, which RSpec uses to expand –pattern, reports the long name (C:/Users/runneradmin/AppData/Local/Temp). The prefix therefore never matched and the absolute temp path leaked through. File.realpath does not expand 8.3 short names, so canonicalizing first cannot reconcile the two spellings, and Pathname#relative_path_from returns nonsense such as “../../../../../runneradmin/…”. The same class of mismatch arises from a symlinked ancestor on any platform, e.g. a Dir.pwd of /var/home/u/proj against a path spelled /home/u/proj/… Discovered paths are now made relative by walking up from the file and comparing each ancestor with File.identical?, which compares by filesystem identity (inode on Unix, file index on Windows) and so treats every spelling of one directory as equal. Extracted as TurboTests::Utils::Paths.relative_from/.within?.</p>
+  </li>
+  <li>
+    <p>[kc] license-eye-workflow-retry: The Apache SkyWalking Eyes workflow retries the license check once before failing. The pinned <code>apache/skywalking-eyes/dependency</code> action is a composite that builds license-eye from source on every run, and its own dependency cache is broken upstream: <code>dependency/action.yml</code> passes <code>cache-dependency-path: ${{ github.action_path }}/go.sum</code>, but <code>go.sum</code> lives at the action’s repository root rather than in <code>dependency/</code> (404 versus 200). setup-go therefore logs “Restore cache failed: Some specified paths were not resolved”, the module cache never restores, and each run re-downloads roughly 35 Go modules and re-runs <code>make</code>. Every run is consequently exposed to a transient <code>proxy.golang.org</code> error — one such run failed with <code>stream error: stream ID 133; INTERNAL_ERROR; received from peer</code> after eleven consecutive successes. The retry follows the existing <code>[Attempt 1]</code>/<code>[Attempt 2]</code> idiom used by the Ruby matrix workflows.</p>
+  </li>
 </ul>
 
 <h2 id="3213---2026-10-01">
