@@ -478,6 +478,19 @@ files:
         strategy: merge
         preference: destination
         file_type: yaml
+      # TruffleRuby 22.3 is deliberately not built. Its job deadlocked the
+      # parallel worker runner twice on release pushes: once hanging 6h2m before
+      # being cancelled, and once for ~56m, which stalled the release CI monitor
+      # and blocked publishing v3.2.14. The job is `experimental` with
+      # `continue-on-error`, so a *failure* never blocks a release, but a *hang*
+      # never completes, and the workflow carried no `timeout-minutes` — GitHub's
+      # 6h ceiling was the only backstop. TruffleRuby 22.3 is EOL and Ruby 3.0
+      # compatibility is still exercised by TruffleRuby 23.0 (serial workers via
+      # TURBO_TESTS2_MAX_PROCESSES) plus the maintained MRI/JRuby runtimes.
+      # `keep_destination` means no merge and no creation, so templating will not
+      # resurrect the deleted workflow.
+      truffleruby-22.3.yml:
+        strategy: keep_destination
       truffleruby-23.0.yml:
         strategy: merge
         preference: destination
