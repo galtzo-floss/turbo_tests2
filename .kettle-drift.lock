@@ -3,8 +3,8 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        99,
-        208
+        125,
+        234
       ]
     }
   ],
@@ -12,8 +12,9 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        102,
-        164
+        28,
+        128,
+        190
       ]
     }
   ],
@@ -21,8 +22,26 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        103,
-        188
+        129,
+        214
+      ]
+    }
+  ],
+  "- code and tests (1)\n- documentation (1)": [
+    {
+      "file": "CHANGELOG.md",
+      "lines": [
+        29,
+        55
+      ]
+    }
+  ],
+  "- documentation (1)\n- other (1)": [
+    {
+      "file": "CHANGELOG.md",
+      "lines": [
+        30,
+        56
       ]
     }
   ],
@@ -30,8 +49,17 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        31,
-        105
+        57,
+        131
+      ]
+    }
+  ],
+  "config: .licenserc.yaml\nmode: \"check\"": [
+    {
+      "file": ".github/workflows/license-eye.yml",
+      "lines": [
+        49,
+        62
       ]
     }
   ],
@@ -95,7 +123,7 @@
       "file": ".structuredmerge/kettle-jem.yml",
       "lines": [
         479,
-        483
+        496
       ]
     }
   ],
@@ -106,7 +134,7 @@
         458,
         462,
         478,
-        482
+        495
       ]
     }
   ]
