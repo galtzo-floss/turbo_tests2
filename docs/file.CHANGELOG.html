@@ -76,11 +76,31 @@ Please file a bug if you notice a violation of semantic versioning.</p>
 
 <h3 id="changed">Changed</h3>
 
+<ul>
+  <li>[kc] kettle-jem/prepare: updated 5 project files:
+    <ul>
+      <li>dependencies (5)</li>
+    </ul>
+  </li>
+  <li>[kc] kettle-jem/template: updated 5 project files:
+    <ul>
+      <li>code and tests (1)</li>
+      <li>documentation (1)</li>
+      <li>other (1)</li>
+      <li>workflows (2)</li>
+    </ul>
+  </li>
+</ul>
+
 <h3 id="deprecated">Deprecated</h3>
 
 <h3 id="removed">Removed</h3>
 
 <h3 id="fixed">Fixed</h3>
+
+<ul>
+  <li>The “Runtime and Platform Support” table in the README listed TruffleRuby 22.3, 23.0 and TruffleRuby-head as covered by CI, and described <code>rspec-pending_for</code> spec exclusions for 22.3/23.0. No workflow runs those engines (CI covers TruffleRuby 23.1, 24.2, 25.0, 33.0 and current), <code>heads.yml</code> runs <code>ruby-head</code> and <code>jruby-head</code> only, and <code>rspec-pending_for</code> is neither a dependency nor referenced by any spec. The badge rows for 22.3/23.0 had already been removed by templating, leaving the prose table describing CI that no longer runs.</li>
+</ul>
 
 <h3 id="security">Security</h3>
 

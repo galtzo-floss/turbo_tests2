@@ -48,18 +48,17 @@ work in an untested environment:
 | MRI head | Parallel support | Unsupported | Unsupported | CI is allowed to fail while Ruby is in development. |
 | JRuby 9.2-9.4 | Parallel support | Unsupported | Unsupported | Versioned JRuby workflows run on Linux. |
 | JRuby 10.0/current/head | Parallel support | Unsupported | Unsupported | Experimental/current and head jobs are non-blocking in CI. |
-| TruffleRuby 22.3 | Parallel support | Unsupported | Unsupported | Experimental. The CLI and multi-process spec groups are skipped because this release reports Ruby compatibility version 3.0. |
-| TruffleRuby 23.0 | Single-worker support | Unsupported | Unsupported | Experimental and end-of-life; CI caps workers at one. The CLI and multi-process spec groups are also skipped. |
 | TruffleRuby 23.1 | Parallel support | Unsupported | Unsupported | Experimental. |
 | TruffleRuby 24.2/25.0/33.0/current | Parallel support | Unsupported | Unsupported | Linux workflows run the suite with parallel workers. |
-| TruffleRuby head | Parallel support | Unsupported | Unsupported | CI is allowed to fail while TruffleRuby is in development. |
 
-The TruffleRuby 22.3/23.0 spec exclusions use `rspec-pending_for`'s Ruby
-compatibility-version matching (`3.0`), not TruffleRuby's release number. They
-exclude the complete CLI spec group and multi-process integration group; the
-remaining suite still runs in parallel on 22.3 and serially on 23.0. The
-Windows current-Ruby job also runs in parallel, but runtime-log recording is
-disabled there because Windows file locking is unreliable (see below).
+The Windows current-Ruby job runs in parallel, but runtime-log recording is
+disabled there because the runtime logger needs file locking that Windows does
+not provide reliably (`record_runtime = !Gem.win_platform?`); see below.
+
+TruffleRuby 22.3, 23.0 and TruffleRuby-head are not listed because no workflow
+covers them. `heads.yml` runs `ruby-head` and `jruby-head` only, and
+`dep-heads.yml` runs the released `truffleruby` engine against head-of-branch
+dependencies, which is not a head engine build.
 
 ### Why incremental output?
 

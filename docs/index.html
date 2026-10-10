@@ -164,20 +164,6 @@ not a project compatibility claim.</li>
       <td>Experimental/current and head jobs are non-blocking in CI.</td>
     </tr>
     <tr>
-      <td>TruffleRuby 22.3</td>
-      <td>Parallel support</td>
-      <td>Unsupported</td>
-      <td>Unsupported</td>
-      <td>Experimental. The CLI and multi-process spec groups are skipped because this release reports Ruby compatibility version 3.0.</td>
-    </tr>
-    <tr>
-      <td>TruffleRuby 23.0</td>
-      <td>Single-worker support</td>
-      <td>Unsupported</td>
-      <td>Unsupported</td>
-      <td>Experimental and end-of-life; CI caps workers at one. The CLI and multi-process spec groups are also skipped.</td>
-    </tr>
-    <tr>
       <td>TruffleRuby 23.1</td>
       <td>Parallel support</td>
       <td>Unsupported</td>
@@ -191,22 +177,17 @@ not a project compatibility claim.</li>
       <td>Unsupported</td>
       <td>Linux workflows run the suite with parallel workers.</td>
     </tr>
-    <tr>
-      <td>TruffleRuby head</td>
-      <td>Parallel support</td>
-      <td>Unsupported</td>
-      <td>Unsupported</td>
-      <td>CI is allowed to fail while TruffleRuby is in development.</td>
-    </tr>
   </tbody>
 </table>
 
-<p>The TruffleRuby 22.3/23.0 spec exclusions use <code>rspec-pending_for</code>’s Ruby<br>
-compatibility-version matching (<code>3.0</code>), not TruffleRuby’s release number. They<br>
-exclude the complete CLI spec group and multi-process integration group; the<br>
-remaining suite still runs in parallel on 22.3 and serially on 23.0. The<br>
-Windows current-Ruby job also runs in parallel, but runtime-log recording is<br>
-disabled there because Windows file locking is unreliable (see below).</p>
+<p>The Windows current-Ruby job runs in parallel, but runtime-log recording is<br>
+disabled there because the runtime logger needs file locking that Windows does<br>
+not provide reliably (<code>record_runtime = !Gem.win_platform?</code>); see below.</p>
+
+<p>TruffleRuby 22.3, 23.0 and TruffleRuby-head are not listed because no workflow<br>
+covers them. <code>heads.yml</code> runs <code>ruby-head</code> and <code>jruby-head</code> only, and<br>
+<code>dep-heads.yml</code> runs the released <code>truffleruby</code> engine against head-of-branch<br>
+dependencies, which is not a head engine build.</p>
 
 <h3 id="why-incremental-output">Why incremental output?</h3>
 
@@ -260,7 +241,7 @@ Finished in 2 minute 25.15 seconds (files took 0 seconds to load)
     <tr>
       <td>Works with Truffle Ruby</td>
       <td>
-<a href="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/truffleruby-22.3.yml"><img src="https://img.shields.io/badge/Truffle_Ruby-22.3-34BCB1?style=for-the-badge&amp;logo=ruby&amp;logoColor=pink" alt="Truffle Ruby 22.3 Compat"></a> <a href="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/truffleruby-23.0.yml"><img src="https://img.shields.io/badge/Truffle_Ruby-23.0-34BCB1?style=for-the-badge&amp;logo=ruby&amp;logoColor=pink" alt="Truffle Ruby 23.0 Compat"></a> <a href="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/truffleruby-23.1.yml"><img src="https://img.shields.io/badge/Truffle_Ruby-23.1-34BCB1?style=for-the-badge&amp;logo=ruby&amp;logoColor=pink" alt="Truffle Ruby 23.1 Compat"></a> <br> <a href="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/truffleruby-24.2.yml"><img src="https://img.shields.io/badge/Truffle_Ruby-24.2-34BCB1?style=for-the-badge&amp;logo=ruby&amp;logoColor=pink" alt="Truffle Ruby 24.2 Compat"></a> <a href="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/truffleruby-25.0.yml"><img src="https://img.shields.io/badge/Truffle_Ruby-25.0-34BCB1?style=for-the-badge&amp;logo=ruby&amp;logoColor=pink" alt="Truffle Ruby 25.0 Compat"></a> <a href="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/truffleruby-33.0.yml"><img src="https://img.shields.io/badge/Truffle_Ruby-33.0-34BCB1?style=for-the-badge&amp;logo=ruby&amp;logoColor=pink" alt="Truffle Ruby 33.0 Compat"></a> <a href="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/truffle.yml"><img src="https://img.shields.io/badge/Truffle_Ruby-current-34BCB1?style=for-the-badge&amp;logo=ruby&amp;logoColor=green" alt="Truffle Ruby current Compat"></a> <a href="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/heads.yml"><img src="https://img.shields.io/badge/Truffle_Ruby-HEAD-34BCB1?style=for-the-badge&amp;logo=ruby&amp;logoColor=blue" alt="Truffle Ruby HEAD Compat"></a>
+<a href="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/truffleruby-23.1.yml"><img src="https://img.shields.io/badge/Truffle_Ruby-23.1-34BCB1?style=for-the-badge&amp;logo=ruby&amp;logoColor=pink" alt="Truffle Ruby 23.1 Compat"></a> <br> <a href="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/truffleruby-24.2.yml"><img src="https://img.shields.io/badge/Truffle_Ruby-24.2-34BCB1?style=for-the-badge&amp;logo=ruby&amp;logoColor=pink" alt="Truffle Ruby 24.2 Compat"></a> <a href="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/truffleruby-25.0.yml"><img src="https://img.shields.io/badge/Truffle_Ruby-25.0-34BCB1?style=for-the-badge&amp;logo=ruby&amp;logoColor=pink" alt="Truffle Ruby 25.0 Compat"></a> <a href="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/truffleruby-33.0.yml"><img src="https://img.shields.io/badge/Truffle_Ruby-33.0-34BCB1?style=for-the-badge&amp;logo=ruby&amp;logoColor=pink" alt="Truffle Ruby 33.0 Compat"></a> <a href="https://github.com/galtzo-floss/turbo_tests2/actions/workflows/truffle.yml"><img src="https://img.shields.io/badge/Truffle_Ruby-current-34BCB1?style=for-the-badge&amp;logo=ruby&amp;logoColor=green" alt="Truffle Ruby current Compat"></a>
 </td>
     </tr>
     <tr>

@@ -37,6 +37,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- The “Runtime and Platform Support” table in the README listed TruffleRuby 22.3, 23.0 and TruffleRuby-head as covered by CI, and described `rspec-pending_for` spec exclusions for 22.3/23.0. No workflow runs those engines (CI covers TruffleRuby 23.1, 24.2, 25.0, 33.0 and current), `heads.yml` runs `ruby-head` and `jruby-head` only, and `rspec-pending_for` is neither a dependency nor referenced by any spec. The badge rows for 22.3/23.0 had already been removed by templating, leaving the prose table describing CI that no longer runs.
+
 ### Security
 
 ## [3.2.14] - 2026-10-08
