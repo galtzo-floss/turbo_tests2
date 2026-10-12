@@ -1,10 +1,19 @@
 {
+  "- **Unsupported**: the engine/platform combination is not covered by CI and is\nnot a project compatibility claim.": [
+    {
+      "file": "README.md",
+      "lines": [
+        41,
+        146
+      ]
+    }
+  ],
   "- [kc] kettle-jem/prepare: updated 11 project files:\n- dependencies (11)": [
     {
       "file": "CHANGELOG.md",
       "lines": [
-        125,
-        234
+        128,
+        237
       ]
     }
   ],
@@ -12,9 +21,9 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        28,
-        128,
-        190
+        29,
+        131,
+        193
       ]
     }
   ],
@@ -22,8 +31,8 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        129,
-        214
+        132,
+        217
       ]
     }
   ],
@@ -31,8 +40,8 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        29,
-        55
+        30,
+        58
       ]
     }
   ],
@@ -40,8 +49,8 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        30,
-        56
+        31,
+        59
       ]
     }
   ],
@@ -49,8 +58,26 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        57,
-        131
+        60,
+        134
+      ]
+    }
+  ],
+  "- ruby: \"ruby\"\nappraisal: \"current\"": [
+    {
+      "file": ".github/workflows/current.yml",
+      "lines": [
+        40,
+        46
+      ]
+    }
+  ],
+  "Support tiers describe what this project's CI actually exercises, not what may\nwork in an untested environment:": [
+    {
+      "file": "README.md",
+      "lines": [
+        35,
+        142
       ]
     }
   ],
@@ -113,8 +140,8 @@
     {
       "file": ".structuredmerge/kettle-jem.yml",
       "lines": [
-        459,
-        463
+        472,
+        476
       ]
     }
   ],
@@ -122,8 +149,8 @@
     {
       "file": ".structuredmerge/kettle-jem.yml",
       "lines": [
-        479,
-        496
+        492,
+        509
       ]
     }
   ],
@@ -131,10 +158,10 @@
     {
       "file": ".structuredmerge/kettle-jem.yml",
       "lines": [
-        458,
-        462,
-        478,
-        495
+        471,
+        475,
+        491,
+        508
       ]
     }
   ]

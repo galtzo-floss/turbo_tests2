@@ -18,10 +18,10 @@ git_source(:gitlab) { |repo_name| "https://gitlab.com/#{repo_name}" }
 # Include dependencies from turbo_tests2.gemspec
 gemspec
 
-gem "kettle-family", "~> 1.3", ">= 1.3.6"
+gem "kettle-family", "~> 1.3", ">= 1.3.10"
 
 # Local workspace dependency wiring for *_local.gemfile overrides
-gem "nomono", "~> 1.1", ">= 1.1.6", require: false # ruby >= 3.2.0
+gem "nomono", "~> 1.1", ">= 1.1.7", require: false # ruby >= 3.2.0
 
 # Templating and the StructuredMerge family share this modular Gemfile.
 # kettle-jem needs StructuredMerge to template, and kettle-changelog needs it at
