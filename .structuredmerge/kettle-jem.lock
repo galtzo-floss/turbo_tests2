@@ -19,6 +19,8 @@ template_state:
     - gemfiles/modular/templating_local.gemfile
     - turbo_tests2.gemspec
     kettle-jem/template:
+    - ".github/workflows/coverage.yml"
+    - ".github/workflows/current.yml"
     - ".github/workflows/heads.yml"
     - ".github/workflows/truffleruby-23.0.yml"
     - ".simplecov"
