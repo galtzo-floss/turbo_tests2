@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "json"
+require "timeout"
 require "fileutils"
 require "parallel_tests/rspec/runner"
 require "rspec/core"
@@ -248,6 +249,8 @@ module TurboTests
       @load_time = 0
       @load_count = 0
       @failure_count = 0
+      @watchdog_seconds = Float(ENV.fetch("TURBO_TESTS2_WATCHDOG_SECONDS", "900"))
+      @last_message_monotonic = nil
 
       # Supports runtime_log as a top level option,
       #   but also nested inside parallel_options
@@ -725,12 +728,78 @@ module TurboTests
       thread.kill.join(FORCE_STOP_JOIN)
     end
 
+    # Blocks for the next worker message, enforcing a stall watchdog. A
+    # worker whose stdout reader and exit-ensuring thread both fail to
+    # deliver an exit message (process killed by the OOM killer, forked
+    # child wedged in a native call) used to leave handle_messages blocked
+    # on the queue forever — CI jobs hung for hours with no diagnostics.
+    # On a stall we kill the surviving worker pids, report which groups
+    # never finished, and fail the run instead.
+    def pop_message_with_watchdog
+      loop do
+        timeout = [@watchdog_seconds - (Process.clock_gettime(Process::CLOCK_MONOTONIC) - @last_message_monotonic), 1.0].max
+        begin
+          message = Timeout.timeout(timeout) { @messages.pop }
+          @last_message_monotonic = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+          return message
+        rescue Timeout::Error
+          stall_report = remaining_workers_report
+          warn("turbo_tests2: no worker messages for #{@watchdog_seconds}s; killing stalled workers and failing the run")
+          warn(stall_report)
+          kill_remaining_workers
+          @reporter.error_outside_of_examples(
+            "turbo_tests2: watchdog fired after #{@watchdog_seconds}s without worker messages; workers killed\n#{stall_report}"
+          )
+          @error = true
+          return {type: "exit", process_id: :watchdog}
+        end
+      end
+    end
+
+    def remaining_workers_report
+      pids = tracked_pids
+      live = []
+      pids.each do |pid|
+        begin
+          Process.kill(0, pid)
+          live << pid
+        rescue
+          nil
+        end
+      end
+      lines = ["Workers total: #{@num_processes}; tracked pids: #{pids.inspect}; live: #{live.inspect}"]
+      (@tests_in_groups || []).each_with_index do |group, idx|
+        lines << "group #{idx + 1}: #{Array(group).join(", ")}" unless group.nil?
+      end
+      lines.join("\n")
+    end
+
+    def tracked_pids
+      path = ParallelTests.pid_file_path
+      return [] unless path && File.file?(path)
+
+      File.read(path).lines.map { |l| l.strip.to_i }.reject(&:zero?)
+    rescue
+      []
+    end
+
+    def kill_remaining_workers
+      tracked_pids.each do |pid|
+        begin
+          Process.kill("KILL", pid)
+        rescue
+          nil
+        end
+      end
+    end
+
     def handle_messages
       exited_process_ids = {}
       process_count = @tests_in_groups&.size || @num_processes
 
+      @last_message_monotonic = Process.clock_gettime(Process::CLOCK_MONOTONIC)
       loop do
-        message = @messages.pop
+        message = pop_message_with_watchdog
         case message[:type]
         when "example_passed"
           example = FakeExample.from_obj(message[:example])

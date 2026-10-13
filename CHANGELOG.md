@@ -28,6 +28,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Watchdog on the worker message queue: if no worker message arrives within TURBO_TESTS2_WATCHDOG_SECONDS (default 900), remaining workers are killed, unfinished groups reported, and the run fails — instead of blocking forever when a worker dies without an exit message (the parallel-worker CI hang class on 4-core runners)
+
 ### Security
 
 ## [3.2.15] - 2026-10-12

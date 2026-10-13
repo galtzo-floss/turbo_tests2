@@ -559,6 +559,51 @@ RSpec.describe TurboTests::Runner do
       expect { runner.send(:handle_messages) }.not_to raise_error
     end
 
+    describe "stall watchdog" do
+      def build_watchdog_runner(watchdog_seconds)
+        runner = build_runner_for_messages
+        runner.instance_variable_set(:@watchdog_seconds, watchdog_seconds)
+        runner.instance_variable_set(:@last_message_monotonic, Process.clock_gettime(Process::CLOCK_MONOTONIC))
+        runner.instance_variable_set(:@tests_in_groups, [["spec/a_spec.rb"]])
+        runner
+      end
+
+      it "returns the stalled-exit sentinel and fails the run when no messages arrive" do
+        runner = build_watchdog_runner(0.05)
+        allow(runner).to receive(:tracked_pids).and_return([4_242_424])
+        allow(Process).to receive(:kill)
+        expect(reporter).to receive(:error_outside_of_examples).with(/watchdog fired after 0.05s/)
+
+        message = nil
+        expect { message = runner.send(:pop_message_with_watchdog) }.to output(/killing stalled workers/).to_stderr
+        expect(message).to include(type: "exit", process_id: :watchdog)
+        expect(runner.instance_variable_get(:@error)).to be(true)
+        expect(Process).to have_received(:kill).with("KILL", 4_242_424)
+      end
+
+      it "returns queued messages without tripping the watchdog" do
+        runner = build_watchdog_runner(5)
+        runner.instance_variable_get(:@messages) << {type: "close"}
+
+        expect(runner.send(:pop_message_with_watchdog)).to include(type: "close")
+      end
+
+      it "reports unfinished groups in the stall report" do
+        runner = build_watchdog_runner(0.05)
+        allow(runner).to receive(:tracked_pids).and_return([])
+
+        expect(runner.send(:remaining_workers_report)).to include("group 1: spec/a_spec.rb")
+      end
+
+      it "survives an unreadable pid file" do
+        runner = build_watchdog_runner(0.05)
+        allow(ParallelTests).to receive(:pid_file_path).and_return("/nonexistent/pids")
+        allow(reporter).to receive(:error_outside_of_examples)
+
+        expect { runner.send(:pop_message_with_watchdog) }.not_to raise_error
+      end
+    end
+
     it "handles 'message' with a regular (non-error) message via reporter.message" do
       runner = build_runner_for_messages
       expect(reporter).to receive(:message).with("some regular message")
