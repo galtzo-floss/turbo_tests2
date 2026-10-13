@@ -522,7 +522,6 @@ moment to notice EOF before it is killed.</p>
       <pre class="lines">
 
 
-232
 233
 234
 235
@@ -561,10 +560,17 @@ moment to notice EOF before it is killed.</p>
 268
 269
 270
-271</pre>
+271
+272
+273
+274
+275
+276
+277
+278</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 232</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 233</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='op'>**</span><span class='id identifier rubyid_opts'>opts</span><span class='rparen'>)</span>
   <span class='ivar'>@formatters</span> <span class='op'>=</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:formatters</span><span class='rbracket'>]</span>
@@ -585,6 +591,12 @@ moment to notice EOF before it is killed.</p>
   <span class='ivar'>@load_time</span> <span class='op'>=</span> <span class='int'>0</span>
   <span class='ivar'>@load_count</span> <span class='op'>=</span> <span class='int'>0</span>
   <span class='ivar'>@failure_count</span> <span class='op'>=</span> <span class='int'>0</span>
+  <span class='comment'># Deprecation-period default: disabled. In 4.0 the kill behavior
+</span>  <span class='comment'># becomes the default (TURBO_TESTS2_WATCHDOG_SECONDS=900) and this
+</span>  <span class='comment'># warning is removed. See README &quot;Stall watchdog&quot;.
+</span>  <span class='ivar'>@watchdog_seconds</span> <span class='op'>=</span> <span class='const'>Float</span><span class='lparen'>(</span><span class='const'>ENV</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>TURBO_TESTS2_WATCHDOG_SECONDS</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>0</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='ivar'>@watchdog_warned</span> <span class='op'>=</span> <span class='kw'>false</span>
+  <span class='ivar'>@last_message_monotonic</span> <span class='op'>=</span> <span class='kw'>nil</span>
 
   <span class='comment'># Supports runtime_log as a top level option,
 </span>  <span class='comment'>#   but also nested inside parallel_options
@@ -633,7 +645,6 @@ moment to notice EOF before it is killed.</p>
       <pre class="lines">
 
 
-31
 32
 33
 34
@@ -642,10 +653,11 @@ moment to notice EOF before it is killed.</p>
 37
 38
 39
-40</pre>
+40
+41</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 31</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 32</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span><span class='id identifier rubyid_count'>count</span><span class='rparen'>)</span>
   <span class='comment'># We are unable to load parallel tests&#39; tasks in the normal way (top of file)
@@ -677,12 +689,12 @@ moment to notice EOF before it is killed.</p>
       <pre class="lines">
 
 
-167
 168
-169</pre>
+169
+170</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 167</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 168</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_generate_seed'>generate_seed</span>
   <span class='lparen'>(</span><span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_new_seed'>new_seed</span> <span class='op'>%</span> <span class='int'>65_535</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
@@ -730,16 +742,16 @@ moment to notice EOF before it is killed.</p>
       <pre class="lines">
 
 
-159
 160
 161
 162
 163
 164
-165</pre>
+165
+166</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 159</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 160</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_normalize_order'>normalize_order</span><span class='lparen'>(</span><span class='id identifier rubyid_order'>order</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_order'>order</span> <span class='op'>=</span> <span class='id identifier rubyid_order'>order</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span>
@@ -768,7 +780,6 @@ moment to notice EOF before it is killed.</p>
       <pre class="lines">
 
 
-119
 120
 121
 122
@@ -781,10 +792,11 @@ moment to notice EOF before it is killed.</p>
 129
 130
 131
-132</pre>
+132
+133</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 119</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 120</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_normalize_rspec_file_selection'>normalize_rspec_file_selection</span><span class='lparen'>(</span><span class='id identifier rubyid_files'>files</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_selectors'>selectors</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span>
@@ -843,7 +855,6 @@ moment to notice EOF before it is killed.</p>
       <pre class="lines">
 
 
-108
 109
 110
 111
@@ -852,10 +863,11 @@ moment to notice EOF before it is killed.</p>
 114
 115
 116
-117</pre>
+117
+118</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 108</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 109</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_normalize_worker_output_mode'>normalize_worker_output_mode</span><span class='lparen'>(</span><span class='id identifier rubyid_mode'>mode</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='id identifier rubyid_mode'>mode</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_strip'>strip</span><span class='period'>.</span><span class='id identifier rubyid_downcase'>downcase</span><span class='period'>.</span><span class='id identifier rubyid_tr'>tr</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>-</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>_</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
@@ -887,17 +899,17 @@ moment to notice EOF before it is killed.</p>
       <pre class="lines">
 
 
-222
 223
 224
 225
 226
 227
 228
-229</pre>
+229
+230</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 222</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 223</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_project_rspec_options'>project_rspec_options</span><span class='lparen'>(</span><span class='id identifier rubyid_root'><span class='object_link'><a href="../top-level-namespace.html" title="Top Level Namespace (root)">root</a></span></span> <span class='op'>=</span> <span class='const'>Dir</span><span class='period'>.</span><span class='id identifier rubyid_pwd'>pwd</span><span class='rparen'>)</span>
   <span class='qwords_beg'>%w[</span><span class='tstring_content'>.rspec</span><span class='words_sep'> </span><span class='tstring_content'>.rspec-local</span><span class='tstring_end'>]</span></span><span class='period'>.</span><span class='id identifier rubyid_flat_map'>flat_map</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_path'>path</span><span class='op'>|</span>
@@ -927,7 +939,6 @@ moment to notice EOF before it is killed.</p>
       <pre class="lines">
 
 
-171
 172
 173
 174
@@ -951,10 +962,11 @@ moment to notice EOF before it is killed.</p>
 192
 193
 194
-195</pre>
+195
+196</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 171</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 172</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_rspec_configured_files_to_run'>rspec_configured_files_to_run</span>
   <span class='id identifier rubyid_configuration'>configuration</span> <span class='op'>=</span> <span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Core</span><span class='op'>::</span><span class='const'>Configuration</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
@@ -1001,7 +1013,6 @@ moment to notice EOF before it is killed.</p>
       <pre class="lines">
 
 
-42
 43
 44
 45
@@ -1065,10 +1076,11 @@ moment to notice EOF before it is killed.</p>
 103
 104
 105
-106</pre>
+106
+107</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 43</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_run'>run</span><span class='lparen'>(</span><span class='id identifier rubyid_opts'>opts</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_default_file_discovery'>default_file_discovery</span> <span class='op'>=</span> <span class='op'>!</span><span class='id identifier rubyid_opts'>opts</span><span class='period'>.</span><span class='id identifier rubyid_key?'>key?</span><span class='lparen'>(</span><span class='symbol'>:files</span><span class='rparen'>)</span> <span class='op'>||</span> <span class='id identifier rubyid_opts'>opts</span><span class='lbracket'>[</span><span class='symbol'>:files</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
@@ -1155,7 +1167,6 @@ moment to notice EOF before it is killed.</p>
       <pre class="lines">
 
 
-144
 145
 146
 147
@@ -1168,10 +1179,11 @@ moment to notice EOF before it is killed.</p>
 154
 155
 156
-157</pre>
+157
+158</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 144</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 145</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_runtime_log_from_example_status'>runtime_log_from_example_status</span><span class='lparen'>(</span><span class='id identifier rubyid_example_status_log'>example_status_log</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_statuses'>statuses</span> <span class='op'>=</span> <span class='const'>RSpec</span><span class='op'>::</span><span class='const'>Core</span><span class='op'>::</span><span class='const'>ExampleStatusPersister</span><span class='period'>.</span><span class='id identifier rubyid_load_from'>load_from</span><span class='lparen'>(</span><span class='id identifier rubyid_example_status_log'>example_status_log</span><span class='rparen'>)</span>
@@ -1207,7 +1219,6 @@ moment to notice EOF before it is killed.</p>
       <pre class="lines">
 
 
-134
 135
 136
 137
@@ -1215,10 +1226,11 @@ moment to notice EOF before it is killed.</p>
 139
 140
 141
-142</pre>
+142
+143</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 134</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 135</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_split_rspec_location'>split_rspec_location</span><span class='lparen'>(</span><span class='id identifier rubyid_entry'>entry</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_value'>value</span> <span class='op'>=</span> <span class='id identifier rubyid_entry'>entry</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span>
@@ -1249,7 +1261,6 @@ moment to notice EOF before it is killed.</p>
       <pre class="lines">
 
 
-197
 198
 199
 200
@@ -1272,10 +1283,11 @@ moment to notice EOF before it is killed.</p>
 217
 218
 219
-220</pre>
+220
+221</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 197</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 198</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_worker_spec_opts'>worker_spec_opts</span><span class='lparen'>(</span><span class='id identifier rubyid_spec_opts'>spec_opts</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_args'>args</span> <span class='op'>=</span> <span class='id identifier rubyid_project_rspec_options'>project_rspec_options</span> <span class='op'>+</span> <span class='const'>Array</span><span class='lparen'>(</span><span class='id identifier rubyid_spec_opts'>spec_opts</span><span class='rparen'>)</span>
@@ -1327,13 +1339,6 @@ moment to notice EOF before it is killed.</p>
       <pre class="lines">
 
 
-273
-274
-275
-276
-277
-278
-279
 280
 281
 282
@@ -1392,10 +1397,17 @@ moment to notice EOF before it is killed.</p>
 335
 336
 337
-338</pre>
+338
+339
+340
+341
+342
+343
+344
+345</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 273</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 280</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_run'>run</span>
   <span class='id identifier rubyid_parallel_tests_options'>parallel_tests_options</span> <span class='op'>=</span> <span class='ivar'>@parallel_options</span><span class='period'>.</span><span class='id identifier rubyid_reject'>reject</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='id identifier rubyid__value'>_value</span><span class='op'>|</span> <span class='id identifier rubyid_key'>key</span> <span class='op'>==</span> <span class='symbol'>:only_group</span> <span class='rbrace'>}</span>

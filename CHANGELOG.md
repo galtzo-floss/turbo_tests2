@@ -28,15 +28,13 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
-- Watchdog on the worker message queue: if no worker message arrives within TURBO_TESTS2_WATCHDOG_SECONDS (default 900), remaining workers are killed, unfinished groups reported, and the run fails — instead of blocking forever when a worker dies without an exit message (the parallel-worker CI hang class on 4-core runners)
-
 ### Security
 
-## [3.2.15] - 2026-10-12
+## [3.2.15] - 2026-10-13
 
 - TAG: [v3.2.15][3.2.15t]
-- COVERAGE: 96.93% -- 947/977 lines in 11 files
-- BRANCH COVERAGE: 85.57% -- 255/298 branches in 11 files
+- COVERAGE: 96.67% -- 988/1022 lines in 11 files
+- BRANCH COVERAGE: 85.06% -- 262/308 branches in 11 files
 - 39.42% documented
 
 ### Changed
@@ -53,6 +51,8 @@ Please file a bug if you notice a violation of semantic versioning.
 ### Fixed
 
 - The “Runtime and Platform Support” table in the README listed TruffleRuby 22.3, 23.0 and TruffleRuby-head as covered by CI, and described `rspec-pending_for` spec exclusions for 22.3/23.0. No workflow runs those engines (CI covers TruffleRuby 23.1, 24.2, 25.0, 33.0 and current), `heads.yml` runs `ruby-head` and `jruby-head` only, and `rspec-pending_for` is neither a dependency nor referenced by any spec. The badge rows for 22.3/23.0 had already been removed by templating, leaving the prose table describing CI that no longer runs.
+
+- Watchdog on the worker message queue: if no worker message arrives within TURBO_TESTS2_WATCHDOG_SECONDS (default 900), remaining workers are killed, unfinished groups reported, and the run fails — instead of blocking forever when a worker dies without an exit message (the parallel-worker CI hang class on 4-core runners)
 
 ## [3.2.14] - 2026-10-08
 

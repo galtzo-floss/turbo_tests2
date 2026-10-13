@@ -84,14 +84,14 @@ Please file a bug if you notice a violation of semantic versioning.</p>
 
 <h3 id="security">Security</h3>
 
-<h2 id="3215---2026-10-12">
-<a href="https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.14...v3.2.15">3.2.15</a> - 2026-10-12</h2>
+<h2 id="3215---2026-10-13">
+<a href="https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.14...v3.2.15">3.2.15</a> - 2026-10-13</h2>
 
 <ul>
   <li>TAG: <a href="https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.15">v3.2.15</a>
 </li>
-  <li>COVERAGE: 96.93% – 947/977 lines in 11 files</li>
-  <li>BRANCH COVERAGE: 85.57% – 255/298 branches in 11 files</li>
+  <li>COVERAGE: 96.67% – 988/1022 lines in 11 files</li>
+  <li>BRANCH COVERAGE: 85.06% – 262/308 branches in 11 files</li>
   <li>39.42% documented</li>
 </ul>
 
@@ -117,7 +117,12 @@ Please file a bug if you notice a violation of semantic versioning.</p>
 <h3 id="fixed-1">Fixed</h3>
 
 <ul>
-  <li>The “Runtime and Platform Support” table in the README listed TruffleRuby 22.3, 23.0 and TruffleRuby-head as covered by CI, and described <code>rspec-pending_for</code> spec exclusions for 22.3/23.0. No workflow runs those engines (CI covers TruffleRuby 23.1, 24.2, 25.0, 33.0 and current), <code>heads.yml</code> runs <code>ruby-head</code> and <code>jruby-head</code> only, and <code>rspec-pending_for</code> is neither a dependency nor referenced by any spec. The badge rows for 22.3/23.0 had already been removed by templating, leaving the prose table describing CI that no longer runs.</li>
+  <li>
+    <p>The “Runtime and Platform Support” table in the README listed TruffleRuby 22.3, 23.0 and TruffleRuby-head as covered by CI, and described <code>rspec-pending_for</code> spec exclusions for 22.3/23.0. No workflow runs those engines (CI covers TruffleRuby 23.1, 24.2, 25.0, 33.0 and current), <code>heads.yml</code> runs <code>ruby-head</code> and <code>jruby-head</code> only, and <code>rspec-pending_for</code> is neither a dependency nor referenced by any spec. The badge rows for 22.3/23.0 had already been removed by templating, leaving the prose table describing CI that no longer runs.</p>
+  </li>
+  <li>
+    <p>Watchdog on the worker message queue: if no worker message arrives within TURBO_TESTS2_WATCHDOG_SECONDS (default 900), remaining workers are killed, unfinished groups reported, and the run fails — instead of blocking forever when a worker dies without an exit message (the parallel-worker CI hang class on 4-core runners)</p>
+  </li>
 </ul>
 
 <h2 id="3214---2026-10-08">

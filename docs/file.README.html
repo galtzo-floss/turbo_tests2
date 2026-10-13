@@ -271,7 +271,7 @@ Finished in 2 minute 25.15 seconds (files took 0 seconds to load)
     <tr>
       <td>Source</td>
       <td>
-<a href="https://gitlab.com/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/GitLab-FBA326?style=for-the-badge&amp;logo=Gitlab&amp;logoColor=orange" alt="Source on GitLab.com"></a> <a href="https://codeberg.org/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/CodeBerg-4893CC?style=for-the-badge&amp;logo=CodeBerg&amp;logoColor=blue" alt="Source on CodeBerg.org"></a> <a href="https://github.com/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/GitHub-238636?style=for-the-badge&amp;logo=GitHub&amp;logoColor=green" alt="Source on GitHub.com"></a> <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://img.shields.io/badge/KLOC-0.977-FFDD67.svg?style=for-the-badge&amp;logo=YouTube&amp;logoColor=blue" alt="The best SHA: dQw4w9WgXcQ!"></a>
+<a href="https://gitlab.com/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/GitLab-FBA326?style=for-the-badge&amp;logo=Gitlab&amp;logoColor=orange" alt="Source on GitLab.com"></a> <a href="https://codeberg.org/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/CodeBerg-4893CC?style=for-the-badge&amp;logo=CodeBerg&amp;logoColor=blue" alt="Source on CodeBerg.org"></a> <a href="https://github.com/galtzo-floss/turbo_tests2"><img src="https://img.shields.io/badge/GitHub-238636?style=for-the-badge&amp;logo=GitHub&amp;logoColor=green" alt="Source on GitHub.com"></a> <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"><img src="https://img.shields.io/badge/KLOC-1.022-FFDD67.svg?style=for-the-badge&amp;logo=YouTube&amp;logoColor=blue" alt="The best SHA: dQw4w9WgXcQ!"></a>
 </td>
     </tr>
     <tr>
@@ -871,6 +871,44 @@ count at the number of discovered test groups.</p>
 
 <p>Known coverage formatter chatter remains collapsed into the concise coverage<br>
 summary.</p>
+
+<h3 id="stall-watchdog">Stall watchdog</h3>
+
+<p>If the worker message queue goes silent — every worker alive but none<br>
+producing example/group messages — a run can otherwise hang until the CI<br>
+provider kills the job (GitHub Actions: 6 hours).</p>
+
+<p><code>TURBO_TESTS2_WATCHDOG_SECONDS=N</code> (integer, <code>0</code> = disabled) bounds that<br>
+silence. <strong>Default is <code>0</code> (disabled) in 3.x.</strong> In 4.0 the default becomes<br>
+<code>900</code> and the kill behavior is always on.</p>
+
+<p>When the watchdog fires it kills the remaining worker processes, prints the<br>
+unfinished groups and worker pids, and fails the run.</p>
+
+<p>Setting it:</p>
+
+<pre class="code language-bash"><code class="language-bash">TURBO_TESTS2_WATCHDOG_SECONDS=900 bundle exec turbo_tests2
+</code></pre>
+
+<p>Notes:</p>
+
+<ul>
+  <li>The clock measures <strong>silence across all workers</strong>, not per-test duration.<br>
+In parallel lanes any other worker finishing an example keeps the run<br>
+alive; only serial lanes (<code>TURBO_TESTS2_MAX_PROCESSES=1</code>) can trip on a<br>
+single long test. Raise the value there if you have legitimately long,<br>
+silent tests.</li>
+  <li>CI jobs that hang despite the watchdog will still hit the provider<br>
+limit; also set <code>timeout-minutes</code> on the CI job. Locally, an outer<br>
+supervisor (process watcher, container timeout) plays the same role.</li>
+  <li>When the watchdog is disabled (<code>0</code>), a 900s silence prints a one-time<br>
+deprecation notice describing the 4.0 default change and both options<br>
+(adopt the kill via <code>TURBO_TESTS2_WATCHDOG_SECONDS</code>, or explicitly opt out<br>
+with <code>0</code>). The notice is provider-neutral: it warns that with the<br>
+watchdog off, whatever outer process watcher exists — a CI job timeout,<br>
+a container orchestrator, or a local supervisor — is what will eventually<br>
+end a hung run.</li>
+</ul>
 
 <p><code>turbo_tests2</code> supports custom formatter such as Fuubar, but you might need to require it:</p>
 
