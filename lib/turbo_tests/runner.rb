@@ -249,7 +249,11 @@ module TurboTests
       @load_time = 0
       @load_count = 0
       @failure_count = 0
-      @watchdog_seconds = Float(ENV.fetch("TURBO_TESTS2_WATCHDOG_SECONDS", "900"))
+      # Deprecation-period default: disabled. In 4.0 the kill behavior
+      # becomes the default (TURBO_TESTS2_WATCHDOG_SECONDS=900) and this
+      # warning is removed. See README "Stall watchdog".
+      @watchdog_seconds = Float(ENV.fetch("TURBO_TESTS2_WATCHDOG_SECONDS", "0"))
+      @watchdog_warned = false
       @last_message_monotonic = nil
 
       # Supports runtime_log as a top level option,
@@ -736,6 +740,10 @@ module TurboTests
     # On a stall we kill the surviving worker pids, report which groups
     # never finished, and fail the run instead.
     def pop_message_with_watchdog
+      # 0 (the default) disables the watchdog: block indefinitely, exactly the
+      # pre-watchdog behavior.
+      return @messages.pop if @watchdog_seconds <= 0
+
       loop do
         timeout = [@watchdog_seconds - (Process.clock_gettime(Process::CLOCK_MONOTONIC) - @last_message_monotonic), 1.0].max
         begin
@@ -797,9 +805,26 @@ module TurboTests
       exited_process_ids = {}
       process_count = @tests_in_groups&.size || @num_processes
 
-      @last_message_monotonic = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      # Tests pre-seed @last_message_monotonic to simulate a stall; only
+      # initialize it here when unset.
+      @last_message_monotonic ||= Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      warned_silence = false
       loop do
         message = pop_message_with_watchdog
+        unless warned_silence
+          silence = Process.clock_gettime(Process::CLOCK_MONOTONIC) - @last_message_monotonic
+          if silence >= 900
+            warn(
+              "turbo_tests2: workers have been silent for #{silence.to_i}s. " \
+              "In turbo_tests2 4.0 (and now when TURBO_TESTS2_WATCHDOG_SECONDS is set) a stall this long kills the " \
+              "remaining workers and fails the run. To adopt the kill now set TURBO_TESTS2_WATCHDOG_SECONDS=900 (or " \
+              "another value), or to keep waiting set TURBO_TESTS2_WATCHDOG_SECONDS=0 and rely on GitHub Actions' " \
+              "6-hour job limit. A single long test only trips this in serial lanes (TURBO_TESTS2_MAX_PROCESSES=1); " \
+              "in parallel lanes other workers keep messages flowing."
+            )
+            warned_silence = true
+          end
+        end
         case message[:type]
         when "example_passed"
           example = FakeExample.from_obj(message[:example])

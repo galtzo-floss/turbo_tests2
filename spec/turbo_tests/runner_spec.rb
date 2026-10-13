@@ -602,6 +602,47 @@ RSpec.describe TurboTests::Runner do
 
         expect { runner.send(:pop_message_with_watchdog) }.not_to raise_error
       end
+
+      it "is disabled by default (watchdog seconds 0) and never trips" do
+        runner = build_watchdog_runner(0)
+        runner.instance_variable_set(:@last_message_monotonic, Process.clock_gettime(Process::CLOCK_MONOTONIC) - 10_000)
+        allow(runner).to receive(:tracked_pids).and_return([])
+        runner.instance_variable_get(:@messages) << {type: "close"}
+
+        expect(runner).not_to receive(:kill_remaining_workers)
+        expect(runner.send(:pop_message_with_watchdog)).to include(type: "close")
+      end
+
+      describe "silence deprecation warning" do
+        let(:reporter) do
+          double(
+            "reporter", message: nil, error_outside_of_examples: nil, deprecation: nil,
+            profile: nil, group_started: nil, group_finished: nil, example_passed: nil,
+            example_pending: nil, example_failed: nil, load_time: nil
+          )
+        end
+
+        def build_warning_runner(last_message_age)
+          runner = build_runner(reporter: reporter)
+          runner.instance_variable_set(:@num_processes, 1)
+          runner.instance_variable_set(:@watchdog_seconds, 0)
+          runner.instance_variable_set(:@last_message_monotonic, Process.clock_gettime(Process::CLOCK_MONOTONIC) - last_message_age)
+          runner.instance_variable_get(:@messages).push(type: "exit", process_id: 1)
+          runner
+        end
+
+        it "warns once at 900s of silence with adopt/disable instructions" do
+          runner = build_warning_runner(901)
+          expect { runner.send(:handle_messages) }.to output(
+            /silent for 90[01]s.*TURBO_TESTS2_WATCHDOG_SECONDS=900.*TURBO_TESTS2_WATCHDOG_SECONDS=0.*6-hour job limit/m
+          ).to_stderr
+        end
+
+        it "does not warn below 900s of silence" do
+          runner = build_warning_runner(10)
+          expect { runner.send(:handle_messages) }.not_to output(/silent for/).to_stderr
+        end
+      end
     end
 
     it "handles 'message' with a regular (non-error) message via reporter.message" do
