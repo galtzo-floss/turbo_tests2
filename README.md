@@ -410,12 +410,16 @@ Notes:
   alive; only serial lanes (`TURBO_TESTS2_MAX_PROCESSES=1`) can trip on a
   single long test. Raise the value there if you have legitimately long,
   silent tests.
-- CI jobs that hang despite the watchdog will still hit the provider limit;
-  also set `timeout-minutes` on the CI job.
+- CI jobs that hang despite the watchdog will still hit the provider
+  limit; also set `timeout-minutes` on the CI job. Locally, an outer
+  supervisor (process watcher, container timeout) plays the same role.
 - When the watchdog is disabled (`0`), a 900s silence prints a one-time
   deprecation notice describing the 4.0 default change and both options
   (adopt the kill via `TURBO_TESTS2_WATCHDOG_SECONDS`, or explicitly opt out
-  with `0`).
+  with `0`). The notice is provider-neutral: it warns that with the
+  watchdog off, whatever outer process watcher exists — a CI job timeout,
+  a container orchestrator, or a local supervisor — is what will eventually
+  end a hung run.
 
 `turbo_tests2` supports custom formatter such as Fuubar, but you might need to require it:
 
