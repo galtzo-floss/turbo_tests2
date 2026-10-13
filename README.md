@@ -384,6 +384,39 @@ count at the number of discovered test groups.
 Known coverage formatter chatter remains collapsed into the concise coverage
 summary.
 
+### Stall watchdog
+
+If the worker message queue goes silent — every worker alive but none
+producing example/group messages — a run can otherwise hang until the CI
+provider kills the job (GitHub Actions: 6 hours).
+
+`TURBO_TESTS2_WATCHDOG_SECONDS=N` (integer, `0` = disabled) bounds that
+silence. **Default is `0` (disabled) in 3.x.** In 4.0 the default becomes
+`900` and the kill behavior is always on.
+
+When the watchdog fires it kills the remaining worker processes, prints the
+unfinished groups and worker pids, and fails the run.
+
+Setting it:
+
+```bash
+TURBO_TESTS2_WATCHDOG_SECONDS=900 bundle exec turbo_tests2
+```
+
+Notes:
+
+- The clock measures **silence across all workers**, not per-test duration.
+  In parallel lanes any other worker finishing an example keeps the run
+  alive; only serial lanes (`TURBO_TESTS2_MAX_PROCESSES=1`) can trip on a
+  single long test. Raise the value there if you have legitimately long,
+  silent tests.
+- CI jobs that hang despite the watchdog will still hit the provider limit;
+  also set `timeout-minutes` on the CI job.
+- When the watchdog is disabled (`0`), a 900s silence prints a one-time
+  deprecation notice describing the 4.0 default change and both options
+  (adopt the kill via `TURBO_TESTS2_WATCHDOG_SECONDS`, or explicitly opt out
+  with `0`).
+
 `turbo_tests2` supports custom formatter such as Fuubar, but you might need to require it:
 
 ```bash
