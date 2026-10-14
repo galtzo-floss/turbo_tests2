@@ -1325,6 +1325,11 @@ RSpec.describe TurboTests::Runner do
     end
 
     it "exits from the waiter thread and closes worker pipes when output remains open" do
+      # This spec deliberately simulates a worker that stays silent with its
+      # pipes held open — exactly what the stall watchdog exists to kill. With
+      # TURBO_TESTS2_WATCHDOG_SECONDS set in CI the real watchdog would fire
+      # mid-example (and fail the strict reporter double), so disarm it here.
+      runner.instance_variable_set(:@watchdog_seconds, 0)
       stdout_reader, stdout_writer = IO.pipe
       stderr_reader, stderr_writer = IO.pipe
       begin
