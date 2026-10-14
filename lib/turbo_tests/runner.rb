@@ -819,13 +819,13 @@ module TurboTests
       # instance whose in-memory list starts empty, so a save overwrites (or,
       # for untrack, empties) the file. After any normal worker exit the file
       # is guaranteed useless — exactly when the watchdog needs it most.
-      pids = (@wait_threads || []).filter_map do |wait_thr|
+      pids = (@wait_threads || []).map do |wait_thr|
         begin
           wait_thr.pid
         rescue
           nil
         end
-      end
+      end.compact
       (pids | tracked_pids).each do |pid|
         begin
           Process.kill("KILL", pid)
