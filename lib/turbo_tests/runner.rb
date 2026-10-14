@@ -318,24 +318,41 @@ module TurboTests
 
           handle_messages
 
-          @threads.each(&:join)
-
-          report_workers_without_results
-
-          report_failed_group(tests_in_groups) if @print_failed_group
-
-          Signal.trap(:INT, old_signal)
-
-          statuses = @wait_threads.map(&:value)
-
-          if @reporter.failed_examples.empty? && statuses.all?(&:success?)
-            flush_successful_worker_output
-            report_coverage = true
-            exit_status = 0
-          else
+          if @watchdog_fired
+            # Workers were SIGKILLed by the watchdog; their reader threads end
+            # at EOF and waiters return as the OS reaps them — but if a kill
+            # failed (permissions, zombie, pid reuse) an unbounded join here
+            # would hang the run anyway, defeating the watchdog. Bound every
+            # join and treat any worker that still has not exited as failed.
+            @threads.each do |thread|
+              thread.join(FORCE_STOP_JOIN)
+              thread.kill if thread.alive?
+            end
+            @wait_threads.each do |wait_thr|
+              wait_thr.join(FORCE_STOP_JOIN)
+            end
             flush_worker_output unless stream_worker_output?
-            # From https://github.com/galtzo-floss/turbo_tests2/pull/20/
-            exit_status = statuses.map(&:exitstatus).max
+            exit_status = 1
+          else
+            @threads.each(&:join)
+
+            report_workers_without_results
+
+            report_failed_group(tests_in_groups) if @print_failed_group
+
+            Signal.trap(:INT, old_signal)
+
+            statuses = @wait_threads.map(&:value)
+
+            if @reporter.failed_examples.empty? && statuses.all?(&:success?)
+              flush_successful_worker_output
+              report_coverage = true
+              exit_status = 0
+            else
+              flush_worker_output unless stream_worker_output?
+              # From https://github.com/galtzo-floss/turbo_tests2/pull/20/
+              exit_status = statuses.map(&:exitstatus).max
+            end
           end
         end
 
@@ -759,6 +776,11 @@ module TurboTests
             "turbo_tests2: watchdog fired after #{@watchdog_seconds}s without worker messages; workers killed\n#{stall_report}"
           )
           @error = true
+          # The run is over: workers were just SIGKILLed. handle_messages must
+          # not keep waiting for per-worker exit messages that can never
+          # arrive, and the caller must not re-enter this watchdog (which would
+          # warn-and-kill in a 1-second spin).
+          @watchdog_fired = true
           return {type: "exit", process_id: :watchdog}
         end
       end
@@ -792,7 +814,19 @@ module TurboTests
     end
 
     def kill_remaining_workers
-      tracked_pids.each do |pid|
+      # The live waiter objects are authoritative: the parallel_tests pid file
+      # loses entries because every track/untrack call builds a fresh Pids
+      # instance whose in-memory list starts empty, so a save overwrites (or,
+      # for untrack, empties) the file. After any normal worker exit the file
+      # is guaranteed useless — exactly when the watchdog needs it most.
+      pids = (@wait_threads || []).filter_map do |wait_thr|
+        begin
+          wait_thr.pid
+        rescue
+          nil
+        end
+      end
+      (pids | tracked_pids).each do |pid|
         begin
           Process.kill("KILL", pid)
         rescue
@@ -870,6 +904,10 @@ module TurboTests
           nil
         when "exit"
           process_id = message[:process_id]
+          # Watchdog exit: workers were just SIGKILLed and no further per-worker
+          # exit messages can be relied upon — stop the loop immediately
+          # instead of waiting for process_count exits that never arrive.
+          break if process_id == :watchdog
           next if exited_process_ids.key?(process_id)
 
           exited_process_ids[process_id] = true

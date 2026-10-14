@@ -613,6 +613,37 @@ RSpec.describe TurboTests::Runner do
         expect(runner.send(:pop_message_with_watchdog)).to include(type: "close")
       end
 
+      it "kills worker pids from the live wait_threads when the pid file is empty" do
+        # Regression: the parallel_tests pid file loses entries because every
+        # track/untrack builds a fresh Pids instance (empty in-memory list, so
+        # untrack's save wipes the file). After any normal worker exit the file
+        # holds nothing, and the watchdog used to kill nothing at all.
+        runner = build_watchdog_runner(0.05)
+        wait_thr = instance_double(Process::Waiter, pid: 5_555_555)
+        runner.instance_variable_set(:@wait_threads, [wait_thr])
+        allow(runner).to receive(:tracked_pids).and_return([])
+        allow(Process).to receive(:kill)
+
+        runner.send(:kill_remaining_workers)
+
+        expect(Process).to have_received(:kill).with("KILL", 5_555_555)
+      end
+
+      it "stops handle_messages at the watchdog sentinel instead of waiting for all worker exits" do
+        # Regression: after the watchdog fired, the synthetic exit counted as
+        # one of process_count exits, so the loop kept waiting on wedged
+        # workers and the run hung past the kill (observed in CI: watchdog
+        # printed its report, then the job sat until the outer timeout).
+        runner = build_watchdog_runner(0.05)
+        allow(runner).to receive(:tracked_pids).and_return([])
+        allow(Process).to receive(:kill)
+        allow(reporter).to receive(:error_outside_of_examples)
+
+        Timeout.timeout(5) { runner.send(:handle_messages) }
+
+        expect(runner.instance_variable_get(:@watchdog_fired)).to be(true)
+      end
+
       describe "silence deprecation warning" do
         let(:reporter) do
           double(

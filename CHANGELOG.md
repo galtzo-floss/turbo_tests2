@@ -28,6 +28,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
+- Watchdog kills now actually end the run: kill_remaining_workers takes pids from the live wait_threads (the parallel_tests pid file was unreliable — each track/untrack built a fresh Pids instance, so any normal worker exit wiped the file and the watchdog killed nothing), handle_messages stops at the watchdog sentinel instead of waiting for per-worker exits that can never arrive, and post-kill joins are bounded so a wedged worker can no longer hold the run past the watchdog (observed: CI job printed the stall report, then hung 14 more minutes until cancellation)
+
 ### Security
 
 ## [3.2.15] - 2026-10-13
