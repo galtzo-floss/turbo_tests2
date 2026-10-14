@@ -28,9 +28,18 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
-- Watchdog kills now actually end the run: kill_remaining_workers takes pids from the live wait_threads (the parallel_tests pid file was unreliable — each track/untrack built a fresh Pids instance, so any normal worker exit wiped the file and the watchdog killed nothing), handle_messages stops at the watchdog sentinel instead of waiting for per-worker exits that can never arrive, and post-kill joins are bounded so a wedged worker can no longer hold the run past the watchdog (observed: CI job printed the stall report, then hung 14 more minutes until cancellation)
-
 ### Security
+
+## [3.2.16] - 2026-10-14
+
+- TAG: [v3.2.16][3.2.16t]
+- COVERAGE: 95.94% -- 993/1035 lines in 11 files
+- BRANCH COVERAGE: 83.86% -- 265/316 branches in 11 files
+- 39.42% documented
+
+### Fixed
+
+- Watchdog kills now actually end the run: kill_remaining_workers takes pids from the live wait_threads (the parallel_tests pid file was unreliable — each track/untrack built a fresh Pids instance, so any normal worker exit wiped the file and the watchdog killed nothing), handle_messages stops at the watchdog sentinel instead of waiting for per-worker exits that can never arrive, and post-kill joins are bounded so a wedged worker can no longer hold the run past the watchdog (observed: CI job printed the stall report, then hung 14 more minutes until cancellation)
 
 ## [3.2.15] - 2026-10-13
 
@@ -744,7 +753,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.15...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.16...HEAD
+[3.2.16]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.15...v3.2.16
+[3.2.16t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.16
 [3.2.15]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.14...v3.2.15
 [3.2.15t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.15
 [3.2.14]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.13...v3.2.14

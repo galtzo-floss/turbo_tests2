@@ -1404,7 +1404,24 @@ moment to notice EOF before it is killed.</p>
 342
 343
 344
-345</pre>
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/turbo_tests/runner.rb', line 280</span>
@@ -1450,24 +1467,41 @@ moment to notice EOF before it is killed.</p>
 
       <span class='id identifier rubyid_handle_messages'>handle_messages</span>
 
-      <span class='ivar'>@threads</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:join</span><span class='rparen'>)</span>
-
-      <span class='id identifier rubyid_report_workers_without_results'>report_workers_without_results</span>
-
-      <span class='id identifier rubyid_report_failed_group'>report_failed_group</span><span class='lparen'>(</span><span class='id identifier rubyid_tests_in_groups'>tests_in_groups</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='ivar'>@print_failed_group</span>
-
-      <span class='const'>Signal</span><span class='period'>.</span><span class='id identifier rubyid_trap'>trap</span><span class='lparen'>(</span><span class='symbol'>:INT</span><span class='comma'>,</span> <span class='id identifier rubyid_old_signal'>old_signal</span><span class='rparen'>)</span>
-
-      <span class='id identifier rubyid_statuses'>statuses</span> <span class='op'>=</span> <span class='ivar'>@wait_threads</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:value</span><span class='rparen'>)</span>
-
-      <span class='kw'>if</span> <span class='ivar'>@reporter</span><span class='period'>.</span><span class='id identifier rubyid_failed_examples'>failed_examples</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_statuses'>statuses</span><span class='period'>.</span><span class='id identifier rubyid_all?'>all?</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:success?</span><span class='rparen'>)</span>
-        <span class='id identifier rubyid_flush_successful_worker_output'>flush_successful_worker_output</span>
-        <span class='id identifier rubyid_report_coverage'>report_coverage</span> <span class='op'>=</span> <span class='kw'>true</span>
-        <span class='id identifier rubyid_exit_status'>exit_status</span> <span class='op'>=</span> <span class='int'>0</span>
-      <span class='kw'>else</span>
+      <span class='kw'>if</span> <span class='ivar'>@watchdog_fired</span>
+        <span class='comment'># Workers were SIGKILLed by the watchdog; their reader threads end
+</span>        <span class='comment'># at EOF and waiters return as the OS reaps them — but if a kill
+</span>        <span class='comment'># failed (permissions, zombie, pid reuse) an unbounded join here
+</span>        <span class='comment'># would hang the run anyway, defeating the watchdog. Bound every
+</span>        <span class='comment'># join and treat any worker that still has not exited as failed.
+</span>        <span class='ivar'>@threads</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_thread'>thread</span><span class='op'>|</span>
+          <span class='id identifier rubyid_thread'>thread</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="#FORCE_STOP_JOIN-constant" title="TurboTests::Runner::FORCE_STOP_JOIN (constant)">FORCE_STOP_JOIN</a></span></span><span class='rparen'>)</span>
+          <span class='id identifier rubyid_thread'>thread</span><span class='period'>.</span><span class='id identifier rubyid_kill'>kill</span> <span class='kw'>if</span> <span class='id identifier rubyid_thread'>thread</span><span class='period'>.</span><span class='id identifier rubyid_alive?'>alive?</span>
+        <span class='kw'>end</span>
+        <span class='ivar'>@wait_threads</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_wait_thr'>wait_thr</span><span class='op'>|</span>
+          <span class='id identifier rubyid_wait_thr'>wait_thr</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='const'><span class='object_link'><a href="#FORCE_STOP_JOIN-constant" title="TurboTests::Runner::FORCE_STOP_JOIN (constant)">FORCE_STOP_JOIN</a></span></span><span class='rparen'>)</span>
+        <span class='kw'>end</span>
         <span class='id identifier rubyid_flush_worker_output'>flush_worker_output</span> <span class='kw'>unless</span> <span class='id identifier rubyid_stream_worker_output?'>stream_worker_output?</span>
-        <span class='comment'># From https://github.com/galtzo-floss/turbo_tests2/pull/20/
-</span>        <span class='id identifier rubyid_exit_status'>exit_status</span> <span class='op'>=</span> <span class='id identifier rubyid_statuses'>statuses</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:exitstatus</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_max'>max</span>
+        <span class='id identifier rubyid_exit_status'>exit_status</span> <span class='op'>=</span> <span class='int'>1</span>
+      <span class='kw'>else</span>
+        <span class='ivar'>@threads</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:join</span><span class='rparen'>)</span>
+
+        <span class='id identifier rubyid_report_workers_without_results'>report_workers_without_results</span>
+
+        <span class='id identifier rubyid_report_failed_group'>report_failed_group</span><span class='lparen'>(</span><span class='id identifier rubyid_tests_in_groups'>tests_in_groups</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='ivar'>@print_failed_group</span>
+
+        <span class='const'>Signal</span><span class='period'>.</span><span class='id identifier rubyid_trap'>trap</span><span class='lparen'>(</span><span class='symbol'>:INT</span><span class='comma'>,</span> <span class='id identifier rubyid_old_signal'>old_signal</span><span class='rparen'>)</span>
+
+        <span class='id identifier rubyid_statuses'>statuses</span> <span class='op'>=</span> <span class='ivar'>@wait_threads</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:value</span><span class='rparen'>)</span>
+
+        <span class='kw'>if</span> <span class='ivar'>@reporter</span><span class='period'>.</span><span class='id identifier rubyid_failed_examples'>failed_examples</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_statuses'>statuses</span><span class='period'>.</span><span class='id identifier rubyid_all?'>all?</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:success?</span><span class='rparen'>)</span>
+          <span class='id identifier rubyid_flush_successful_worker_output'>flush_successful_worker_output</span>
+          <span class='id identifier rubyid_report_coverage'>report_coverage</span> <span class='op'>=</span> <span class='kw'>true</span>
+          <span class='id identifier rubyid_exit_status'>exit_status</span> <span class='op'>=</span> <span class='int'>0</span>
+        <span class='kw'>else</span>
+          <span class='id identifier rubyid_flush_worker_output'>flush_worker_output</span> <span class='kw'>unless</span> <span class='id identifier rubyid_stream_worker_output?'>stream_worker_output?</span>
+          <span class='comment'># From https://github.com/galtzo-floss/turbo_tests2/pull/20/
+</span>          <span class='id identifier rubyid_exit_status'>exit_status</span> <span class='op'>=</span> <span class='id identifier rubyid_statuses'>statuses</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span><span class='lparen'>(</span><span class='op'>&amp;</span><span class='symbol'>:exitstatus</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_max'>max</span>
+        <span class='kw'>end</span>
       <span class='kw'>end</span>
     <span class='kw'>end</span>
 
