@@ -619,7 +619,9 @@ RSpec.describe TurboTests::Runner do
         # untrack's save wipes the file). After any normal worker exit the file
         # holds nothing, and the watchdog used to kill nothing at all.
         runner = build_watchdog_runner(0.05)
-        wait_thr = instance_double(Process::Waiter, pid: 5_555_555)
+        # Plain double, not instance_double(Process::Waiter): TruffleRuby's
+        # Waiter doesn't expose #pid in a way verifying doubles can confirm.
+        wait_thr = double("waiter", pid: 5_555_555)
         runner.instance_variable_set(:@wait_threads, [wait_thr])
         allow(runner).to receive(:tracked_pids).and_return([])
         allow(Process).to receive(:kill)
