@@ -936,8 +936,9 @@ producing example/group messages — a run can otherwise hang until the CI<br>
 provider kills the job (GitHub Actions: 6 hours).</p>
 
 <p><code>TURBO_TESTS2_WATCHDOG_SECONDS=N</code> (integer, <code>0</code> = disabled) bounds that<br>
-silence. <strong>Default is <code>0</code> (disabled) in 3.x.</strong> In 4.0 the default becomes<br>
-<code>900</code> and the kill behavior is always on.</p>
+silence. <strong>Default is <code>900</code> as of 4.0.</strong> (3.x defaulted to <code>0</code> — disabled —<br>
+with a one-time deprecation notice; set <code>0</code> to keep the old wait-forever<br>
+behavior.)</p>
 
 <p>When the watchdog fires it kills the remaining worker processes, prints the<br>
 unfinished groups and worker pids, and fails the run.</p>
@@ -959,12 +960,12 @@ silent tests.</li>
 limit; also set <code>timeout-minutes</code> on the CI job. Locally, an outer<br>
 supervisor (process watcher, container timeout) plays the same role.</li>
   <li>When the watchdog is disabled (<code>0</code>), a 900s silence prints a one-time<br>
-deprecation notice describing the 4.0 default change and both options<br>
-(adopt the kill via <code>TURBO_TESTS2_WATCHDOG_SECONDS</code>, or explicitly opt out<br>
-with <code>0</code>). The notice is provider-neutral: it warns that with the<br>
-watchdog off, whatever outer process watcher exists — a CI job timeout,<br>
-a container orchestrator, or a local supervisor — is what will eventually<br>
-end a hung run.</li>
+provider-neutral notice: with the watchdog off, whatever outer process<br>
+watcher exists — a CI job timeout, a container orchestrator, or a local<br>
+supervisor — is what will eventually end a hung run, usually without a<br>
+useful stall report. The notice also names the most common cause of total<br>
+silence in a parallel lane (silently OOM-killed workers) and the fix (cap<br>
+<code>workers x per-worker memory</code>).</li>
 </ul>
 
 <p><code>turbo_tests2</code> supports custom formatter such as Fuubar, but you might need to require it:</p>

@@ -22,8 +22,6 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
-- Breaking: the stall watchdog is now ON by default (TURBO_TESTS2_WATCHDOG_SECONDS defaults to 900, killing silent workers and failing the run with a stall report); set TURBO_TESTS2_WATCHDOG_SECONDS=0 to restore the 3.x wait-forever behavior. The 3.x deprecation notice is replaced by a provider-neutral one-time warning when the watchdog is disabled and workers go silent 900s, naming the most common cause of total silence in a parallel lane (silently OOM-killed workers) and the fix (cap workers x per-worker memory)
-
 ### Deprecated
 
 ### Removed
@@ -42,6 +40,8 @@ Please file a bug if you notice a violation of semantic versioning.
 ### Changed
 
 - Breaking: replace the parallel_tests runtime dependency with runtime_groups (~> 0.1, >= 0.1.2) for process counts, pid bookkeeping, options-file discovery, and runtime-weighted grouping; turbo_tests2 now owns a TurboTests::RuntimeLogger RSpec formatter and reimplements the Rails db:create bootstrap directly on Process.spawn
+
+- Breaking: the stall watchdog is now ON by default (TURBO_TESTS2_WATCHDOG_SECONDS defaults to 900, killing silent workers and failing the run with a stall report); set TURBO_TESTS2_WATCHDOG_SECONDS=0 to restore the 3.x wait-forever behavior. The 3.x deprecation notice is replaced by a provider-neutral one-time warning when the watchdog is disabled and workers go silent 900s, naming the most common cause of total silence in a parallel lane (silently OOM-killed workers) and the fix (cap workers x per-worker memory)
 
 ### Fixed
 
