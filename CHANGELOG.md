@@ -22,7 +22,7 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
-- Breaking: replace the parallel_tests runtime dependency with runtime_groups (~> 0.1, >= 0.1.2) for process counts, pid bookkeeping, options-file discovery, and runtime-weighted grouping; turbo_tests2 now owns a TurboTests::RuntimeLogger RSpec formatter and reimplements the Rails db:create bootstrap directly on Process.spawn
+- Breaking: the stall watchdog is now ON by default (TURBO_TESTS2_WATCHDOG_SECONDS defaults to 900, killing silent workers and failing the run with a stall report); set TURBO_TESTS2_WATCHDOG_SECONDS=0 to restore the 3.x wait-forever behavior. The 3.x deprecation notice is replaced by a provider-neutral one-time warning when the watchdog is disabled and workers go silent 900s, naming the most common cause of total silence in a parallel lane (silently OOM-killed workers) and the fix (cap workers x per-worker memory)
 
 ### Deprecated
 
@@ -30,9 +30,22 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
-- --allowed-missing now actually bounds the share of files allowed to miss the runtime log when grouping (parallel_tests silently ignored the option); runtime log is now written by the first-party TurboTests::RuntimeLogger through RuntimeGroups::RuntimeLog, and the watchdog's tracked-pid fallback reads the read-before-write pid ledger correctly
-
 ### Security
+
+## [4.0.0] - 2026-10-15
+
+- TAG: [v4.0.0][4.0.0t]
+- COVERAGE: 96.01% -- 1034/1077 lines in 12 files
+- BRANCH COVERAGE: 82.42% -- 272/330 branches in 12 files
+- 37.39% documented
+
+### Changed
+
+- Breaking: replace the parallel_tests runtime dependency with runtime_groups (~> 0.1, >= 0.1.2) for process counts, pid bookkeeping, options-file discovery, and runtime-weighted grouping; turbo_tests2 now owns a TurboTests::RuntimeLogger RSpec formatter and reimplements the Rails db:create bootstrap directly on Process.spawn
+
+### Fixed
+
+- --allowed-missing now actually bounds the share of files allowed to miss the runtime log when grouping (parallel_tests silently ignored the option); runtime log is now written by the first-party TurboTests::RuntimeLogger through RuntimeGroups::RuntimeLog, and the watchdog's tracked-pid fallback reads the read-before-write pid ledger correctly
 
 ## [3.2.17] - 2026-10-14
 
@@ -778,7 +791,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.17...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v4.0.0...HEAD
+[4.0.0]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.17...v4.0.0
+[4.0.0t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v4.0.0
 [3.2.17]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.16...v3.2.17
 [3.2.17t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.17
 [3.2.16]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.15...v3.2.16

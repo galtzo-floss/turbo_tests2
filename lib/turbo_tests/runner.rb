@@ -253,10 +253,11 @@ module TurboTests
       @load_time = 0
       @load_count = 0
       @failure_count = 0
-      # Deprecation-period default: disabled. In 4.0 the kill behavior
-      # becomes the default (TURBO_TESTS2_WATCHDOG_SECONDS=900) and this
-      # warning is removed. See README "Stall watchdog".
-      @watchdog_seconds = Float(ENV.fetch("TURBO_TESTS2_WATCHDOG_SECONDS", "0"))
+      # 4.0 default: kill behavior on (900s of total worker silence). Set
+      # TURBO_TESTS2_WATCHDOG_SECONDS=0 to disable explicitly (a long-hang
+      # run then ends via whatever outer watcher exists). See README
+      # "Stall watchdog".
+      @watchdog_seconds = Float(ENV.fetch("TURBO_TESTS2_WATCHDOG_SECONDS", "900"))
       @watchdog_warned = false
       @last_message_monotonic = nil
 
@@ -884,16 +885,13 @@ module TurboTests
           if silence >= 900
             warn(
               "turbo_tests2: workers have been silent for #{silence.to_i}s. " \
-              "In turbo_tests2 4.0 (and now when TURBO_TESTS2_WATCHDOG_SECONDS is set) a stall this long kills the " \
-              "remaining workers and fails the run. To adopt the kill now set TURBO_TESTS2_WATCHDOG_SECONDS=900 (or " \
-              "another value). To keep waiting indefinitely set TURBO_TESTS2_WATCHDOG_SECONDS=0; be aware that an " \
-              "outer process watcher (a CI job timeout, a container orchestrator, or a local supervisor) will then " \
-              "be what eventually ends the run, usually without a useful stall report. A single long test only " \
-              "trips this in serial lanes (TURBO_TESTS2_MAX_PROCESSES=1); in parallel lanes other workers keep " \
-              "messages flowing. Total silence in a PARALLEL lane usually means workers died rather than slowed " \
-              "down — the most common cause is the kernel OOM killer (each worker is a real spawned process; on " \
-              "JVM engines each is a full JVM whose default heap is 1/4 of RAM). Cap workers x per-worker memory: " \
-              "TURBO_TESTS2_MAX_PROCESSES=2 with a capped heap (e.g. JRUBY_OPTS=\"-J-Xmx1280m\")."
+              "The stall watchdog is disabled (TURBO_TESTS2_WATCHDOG_SECONDS=0), so this run will keep waiting " \
+              "until some outer watcher ends it — a CI job timeout, a container orchestrator, or a local " \
+              "supervisor — usually without a useful stall report. Total silence in a PARALLEL lane usually means " \
+              "workers died rather than slowed down — the most common cause is the kernel OOM killer (each worker " \
+              "is a real spawned process; on JVM engines each is a full JVM whose default heap is 1/4 of RAM). " \
+              "Cap workers x per-worker memory: TURBO_TESTS2_MAX_PROCESSES=2 with a capped heap (e.g. " \
+              "JRUBY_OPTS=\"-J-Xmx1280m\"), or re-enable the watchdog to convert hangs into fast failures."
             )
             warned_silence = true
           end

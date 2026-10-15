@@ -664,10 +664,10 @@ RSpec.describe TurboTests::Runner do
           runner
         end
 
-        it "warns once at 900s of silence with adopt/disable instructions" do
+        it "warns once at 900s of silence that the disabled watchdog keeps waiting" do
           runner = build_warning_runner(901)
           expect { runner.send(:handle_messages) }.to output(
-            /silent for 90[01]s.*TURBO_TESTS2_WATCHDOG_SECONDS=900.*TURBO_TESTS2_WATCHDOG_SECONDS=0.*outer process watcher/m
+            /silent for 90[01]s.*stall watchdog is disabled.*TURBO_TESTS2_WATCHDOG_SECONDS=0.*OOM killer/m
           ).to_stderr
         end
 

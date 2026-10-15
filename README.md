@@ -445,8 +445,9 @@ producing example/group messages — a run can otherwise hang until the CI
 provider kills the job (GitHub Actions: 6 hours).
 
 `TURBO_TESTS2_WATCHDOG_SECONDS=N` (integer, `0` = disabled) bounds that
-silence. **Default is `0` (disabled) in 3.x.** In 4.0 the default becomes
-`900` and the kill behavior is always on.
+silence. **Default is `900` as of 4.0.** (3.x defaulted to `0` — disabled —
+with a one-time deprecation notice; set `0` to keep the old wait-forever
+behavior.)
 
 When the watchdog fires it kills the remaining worker processes, prints the
 unfinished groups and worker pids, and fails the run.
@@ -468,12 +469,12 @@ Notes:
   limit; also set `timeout-minutes` on the CI job. Locally, an outer
   supervisor (process watcher, container timeout) plays the same role.
 - When the watchdog is disabled (`0`), a 900s silence prints a one-time
-  deprecation notice describing the 4.0 default change and both options
-  (adopt the kill via `TURBO_TESTS2_WATCHDOG_SECONDS`, or explicitly opt out
-  with `0`). The notice is provider-neutral: it warns that with the
-  watchdog off, whatever outer process watcher exists — a CI job timeout,
-  a container orchestrator, or a local supervisor — is what will eventually
-  end a hung run.
+  provider-neutral notice: with the watchdog off, whatever outer process
+  watcher exists — a CI job timeout, a container orchestrator, or a local
+  supervisor — is what will eventually end a hung run, usually without a
+  useful stall report. The notice also names the most common cause of total
+  silence in a parallel lane (silently OOM-killed workers) and the fix (cap
+  `workers x per-worker memory`).
 
 `turbo_tests2` supports custom formatter such as Fuubar, but you might need to require it:
 
@@ -913,7 +914,7 @@ Thanks for RTFM. ☺️
 [📌gitmoji]: https://gitmoji.dev
 [📌gitmoji-img]: https://img.shields.io/badge/gitmoji_commits-%20%F0%9F%98%9C%20%F0%9F%98%8D-34495e.svg?style=flat-square
 [🧮kloc]: https://www.youtube.com/watch?v=dQw4w9WgXcQ
-[🧮kloc-img]: https://img.shields.io/badge/KLOC-1.035-FFDD67.svg?style=for-the-badge&logo=YouTube&logoColor=blue
+[🧮kloc-img]: https://img.shields.io/badge/KLOC-1.077-FFDD67.svg?style=for-the-badge&logo=YouTube&logoColor=blue
 [🔐security]: https://github.com/galtzo-floss/turbo_tests2/blob/main/SECURITY.md
 [🔐security-img]: https://img.shields.io/badge/security-policy-259D6C.svg?style=flat
 [📄copyright-notice-explainer]: https://opensource.stackexchange.com/questions/5778/why-do-licenses-such-as-the-mit-license-specify-a-single-year
