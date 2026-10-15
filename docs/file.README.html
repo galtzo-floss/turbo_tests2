@@ -872,6 +872,63 @@ count at the number of discovered test groups.</p>
 <p>Known coverage formatter chatter remains collapsed into the concise coverage<br>
 summary.</p>
 
+<h3 id="resource-constrained-ci-jvm-engines">Resource-Constrained CI (JVM Engines)</h3>
+
+<p>Worker parallelism is spawn-based, not fork-based: each worker is started as a<br>
+real subprocess (<code>Process.spawn</code> / <code>Open3.popen3</code>), never <code>Kernel#fork</code>. That<br>
+makes parallel workers engine-portable — MRI, JRuby, and TruffleRuby all run<br>
+the same spawn-based pool, and the default worker count is the machine’s core<br>
+count (<code>Etc.nprocessors</code>) on every engine. There is no serial-only mode for<br>
+JVM engines unless you ask for one with <code>TURBO_TESTS2_MAX_PROCESSES=1</code>.</p>
+
+<p>The cost of that portability on JVM engines is memory: each JRuby or<br>
+TruffleRuby worker is a full JVM subprocess, and JRuby defaults its heap to<br>
+one quarter of machine RAM. On a CI runner, <code>Etc.nprocessors</code> workers each<br>
+grabbing a quarter of RAM is a recipe for the kernel’s OOM killer, which kills<br>
+workers <strong>silently</strong> — every worker stops messaging at once, and the stall<br>
+watchdog then reports total silence. This is a resource problem, not a<br>
+parallelism problem.</p>
+
+<p>The fix is to run fewer, smaller workers. This is the canonical<br>
+resource-constrained setup, and the <code>kettle-jem</code> CI templates bake it into<br>
+every JRuby workflow they generate:</p>
+
+<pre class="code language-bash"><code class="language-bash">TURBO_TESTS2_MAX_PROCESSES=2 \
+JRUBY_OPTS=&quot;-J-Xmx1280m&quot; \
+TURBO_TESTS2_WATCHDOG_SECONDS=1500 \
+bundle exec turbo_tests2
+</code></pre>
+
+<p>Or in a GitHub Actions workflow:</p>
+
+<pre class="code language-yaml"><code class="language-yaml">env:
+  # Fewer, smaller JVM workers on constrained runners.
+  TURBO_TESTS2_MAX_PROCESSES: 2
+  # Cap each worker JVM&#39;s heap (JRuby default: 1/4 of runner RAM).
+  JRUBY_OPTS: &quot;-J-Xmx1280m&quot;
+  # JVM lanes are slow; give the watchdog room without hitting the job timeout.
+  TURBO_TESTS2_WATCHDOG_SECONDS: 1500
+</code></pre>
+
+<p>Guidance:</p>
+
+<ul>
+  <li>
+<strong>Cap workers</strong> (<code>TURBO_TESTS2_MAX_PROCESSES=2</code>) when each worker is a heavy<br>
+process: JVM engines, large test suites, or shared/undersized runners. Two<br>
+JVM workers still roughly halve wall-clock time versus one.</li>
+  <li>
+<strong>Cap the heap</strong> (<code>JRUBY_OPTS="-J-Xmx1280m"</code>, or your engine’s equivalent)<br>
+so total memory is bounded regardless of runner size.</li>
+  <li>
+<strong>Raise the watchdog</strong> (1500s) on slow engines: JIT warmup and heavy GC make<br>
+silence windows longer, and you want the watchdog report, not the provider<br>
+timeout, when something genuinely hangs.</li>
+  <li>The same knobs apply to any engine where a worker process is expensive —<br>
+the principle is: bound <code>workers × per-worker memory</code> under the runner’s<br>
+capacity.</li>
+</ul>
+
 <h3 id="stall-watchdog">Stall watchdog</h3>
 
 <p>If the worker message queue goes silent — every worker alive but none<br>

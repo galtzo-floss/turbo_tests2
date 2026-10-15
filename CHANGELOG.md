@@ -22,10 +22,6 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
-- README: document the spawn-based (fork-free) worker architecture that makes parallel workers engine-portable to JRuby and TruffleRuby, and add a Resource-Constrained CI (JVM Engines) section with the canonical 2-worker + capped-heap + raised-watchdog setup, matching the kettle-jem CI templates
-
-- Stall diagnostics and in-code docs now explain silent worker death: the 900s silence warning and the watchdog stall path point at the OOM killer as the most common cause of total silence in a parallel lane (spawned workers, JVM engines defaulting to 1/4 RAM heap each), with the fix inline (TURBO_TESTS2_MAX_PROCESSES=2 + capped heap); start_subprocess and max_processes_from_environment document the spawn-based engine-portable architecture
-
 ### Deprecated
 
 ### Removed
@@ -33,6 +29,19 @@ Please file a bug if you notice a violation of semantic versioning.
 ### Fixed
 
 ### Security
+
+## [3.2.17] - 2026-10-14
+
+- TAG: [v3.2.17][3.2.17t]
+- COVERAGE: 95.94% -- 993/1035 lines in 11 files
+- BRANCH COVERAGE: 83.86% -- 265/316 branches in 11 files
+- 39.42% documented
+
+### Changed
+
+- README: document the spawn-based (fork-free) worker architecture that makes parallel workers engine-portable to JRuby and TruffleRuby, and add a Resource-Constrained CI (JVM Engines) section with the canonical 2-worker + capped-heap + raised-watchdog setup, matching the kettle-jem CI templates
+
+- Stall diagnostics and in-code docs now explain silent worker death: the 900s silence warning and the watchdog stall path point at the OOM killer as the most common cause of total silence in a parallel lane (spawned workers, JVM engines defaulting to 1/4 RAM heap each), with the fix inline (TURBO_TESTS2_MAX_PROCESSES=2 + capped heap); start_subprocess and max_processes_from_environment document the spawn-based engine-portable architecture
 
 ## [3.2.16] - 2026-10-14
 
@@ -765,7 +774,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.16...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.17...HEAD
+[3.2.17]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.16...v3.2.17
+[3.2.17t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.17
 [3.2.16]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.15...v3.2.16
 [3.2.16t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v3.2.16
 [3.2.15]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.14...v3.2.15
