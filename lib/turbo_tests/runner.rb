@@ -3,7 +3,7 @@
 require "json"
 require "timeout"
 require "fileutils"
-require "parallel_tests/rspec/runner"
+require "runtime_groups"
 require "rspec/core"
 require "shellwords"
 require "tempfile"
@@ -30,14 +30,18 @@ module TurboTests
 
     class << self
       def create(count)
-        # We are unable to load parallel tests' tasks in the normal way (top of file)
-        # because it requires that the Rails.application instance already be configured
-        require "parallel_tests/tasks"
-
-        ENV["PARALLEL_TEST_FIRST_IS_1"] = "true"
-        command = ["bundle", "exec", "rake", "db:create", "RAILS_ENV=#{ParallelTests::Tasks.rails_env}"]
-        args = {count: count.to_s}
-        ParallelTests::Tasks.run_in_parallel(command, args)
+        # Rails bootstrap: prepare the database once per worker, in parallel.
+        # Implemented directly with Process.spawn so the runner does not
+        # depend on parallel_tests for anything.
+        count = RuntimeGroups.process_count(count)
+        pids = (1..count).map do |process_id|
+          Process.spawn(
+            {"TEST_ENV_NUMBER" => process_id.to_s, "PARALLEL_TEST_GROUPS" => count.to_s},
+            "bundle", "exec", "rake", "db:create", "RAILS_ENV=#{ENV.fetch("RAILS_ENV", "test")}"
+          )
+        end
+        statuses = pids.map { |pid| Process.wait2(pid).last }
+        statuses.all?(&:success?) ? 0 : 1
       end
 
       def run(opts = {})
@@ -279,10 +283,9 @@ module TurboTests
 
     def run
       parallel_tests_options = @parallel_options.reject { |key, _value| key == :only_group }
-      tests_with_size = ParallelTests::RSpec::Runner.tests_with_size(@files, parallel_tests_options.merge(quiet: true))
       @num_processes = [
-        ParallelTests.determine_number_of_processes(@count),
-        tests_with_size.size
+        RuntimeGroups.process_count(@count),
+        @files.size
       ].min
 
       if @num_processes.zero?
@@ -292,10 +295,13 @@ module TurboTests
       end
 
       tests_in_groups =
-        ParallelTests::RSpec::Runner.tests_in_groups(
+        RuntimeGroups::Grouping.in_groups(
           @files,
           @num_processes,
-          **parallel_tests_options
+          group_by: parallel_tests_options[:group_by] || :runtime,
+          runtime_log: parallel_tests_options[:runtime_log],
+          allowed_missing: (parallel_tests_options[:allowed_missing_percent] || 100).to_f / 100,
+          unknown_runtime: parallel_tests_options[:unknown_runtime]
         )
       tests_in_groups = selected_groups(tests_in_groups) if @parallel_options[:only_group]
       @tests_in_groups = tests_in_groups
@@ -304,60 +310,72 @@ module TurboTests
         record_runtime: @record_runtime
       }
 
-      ParallelTests.with_pid_file do
-        exit_status = nil
-        report_coverage = false
+      pid_file_was_set = ENV.key?("PARALLEL_PID_FILE")
+      pid_file_before = ENV["PARALLEL_PID_FILE"]
+      begin
+        RuntimeGroups::PidFile.with do |pid_path|
+          ENV["PARALLEL_PID_FILE"] = pid_path
 
-        @reporter.report(tests_in_groups) do |_reporter|
-          old_signal = Signal.trap(:INT) { handle_interrupt }
+          exit_status = nil
+          report_coverage = false
 
-          @wait_threads = tests_in_groups.map.with_index do |tests, process_id|
-            start_regular_subprocess(tests, process_id + 1, **subprocess_opts)
-          end.compact
-          @interrupt_handled = false
+          @reporter.report(tests_in_groups) do |_reporter|
+            old_signal = Signal.trap(:INT) { handle_interrupt }
 
-          handle_messages
+            @wait_threads = tests_in_groups.map.with_index do |tests, process_id|
+              start_regular_subprocess(tests, process_id + 1, **subprocess_opts)
+            end.compact
+            @interrupt_handled = false
 
-          if @watchdog_fired
-            # Workers were SIGKILLed by the watchdog; their reader threads end
-            # at EOF and waiters return as the OS reaps them — but if a kill
-            # failed (permissions, zombie, pid reuse) an unbounded join here
-            # would hang the run anyway, defeating the watchdog. Bound every
-            # join and treat any worker that still has not exited as failed.
-            @threads.each do |thread|
-              thread.join(FORCE_STOP_JOIN)
-              thread.kill if thread.alive?
-            end
-            @wait_threads.each do |wait_thr|
-              wait_thr.join(FORCE_STOP_JOIN)
-            end
-            flush_worker_output unless stream_worker_output?
-            exit_status = 1
-          else
-            @threads.each(&:join)
+            handle_messages
 
-            report_workers_without_results
-
-            report_failed_group(tests_in_groups) if @print_failed_group
-
-            Signal.trap(:INT, old_signal)
-
-            statuses = @wait_threads.map(&:value)
-
-            if @reporter.failed_examples.empty? && statuses.all?(&:success?)
-              flush_successful_worker_output
-              report_coverage = true
-              exit_status = 0
-            else
+            if @watchdog_fired
+              # Workers were SIGKILLed by the watchdog; their reader threads end
+              # at EOF and waiters return as the OS reaps them — but if a kill
+              # failed (permissions, zombie, pid reuse) an unbounded join here
+              # would hang the run anyway, defeating the watchdog. Bound every
+              # join and treat any worker that still has not exited as failed.
+              @threads.each do |thread|
+                thread.join(FORCE_STOP_JOIN)
+                thread.kill if thread.alive?
+              end
+              @wait_threads.each do |wait_thr|
+                wait_thr.join(FORCE_STOP_JOIN)
+              end
               flush_worker_output unless stream_worker_output?
-              # From https://github.com/galtzo-floss/turbo_tests2/pull/20/
-              exit_status = statuses.map(&:exitstatus).max
+              exit_status = 1
+            else
+              @threads.each(&:join)
+
+              report_workers_without_results
+
+              report_failed_group(tests_in_groups) if @print_failed_group
+
+              Signal.trap(:INT, old_signal)
+
+              statuses = @wait_threads.map(&:value)
+
+              if @reporter.failed_examples.empty? && statuses.all?(&:success?)
+                flush_successful_worker_output
+                report_coverage = true
+                exit_status = 0
+              else
+                flush_worker_output unless stream_worker_output?
+                # From https://github.com/galtzo-floss/turbo_tests2/pull/20/
+                exit_status = statuses.map(&:exitstatus).max
+              end
             end
           end
-        end
 
-        flush_coverage_summary if report_coverage
-        exit_status
+          flush_coverage_summary if report_coverage
+          exit_status
+        end
+      ensure
+        if pid_file_was_set
+          ENV["PARALLEL_PID_FILE"] = pid_file_before
+        else
+          ENV.delete("PARALLEL_PID_FILE")
+        end
       end
     end
 
@@ -447,7 +465,7 @@ module TurboTests
             FileUtils.mkdir_p(File.dirname(@runtime_log))
             [
               "--format",
-              "ParallelTests::RSpec::RuntimeLogger",
+              "TurboTests::RuntimeLogger",
               "--out",
               @runtime_log
             ]
@@ -467,7 +485,7 @@ module TurboTests
           []
         end
 
-        spec_opts = self.class.worker_spec_opts(ParallelTests::RSpec::Runner.send(:spec_opts))
+        spec_opts = self.class.worker_spec_opts(RuntimeGroups::Options.spec_opts)
 
         command = [
           *command_name,
@@ -556,11 +574,11 @@ module TurboTests
     end
 
     def track_parallel_pid(pid, pid_file_path = parallel_pid_file_path)
-      ParallelTests::Pids.new(pid_file_path).add(pid) if pid && pid_file_path
+      RuntimeGroups::Pids.new(pid_file_path).add(pid) if pid && pid_file_path
     end
 
     def untrack_parallel_pid(pid, pid_file_path = parallel_pid_file_path)
-      ParallelTests::Pids.new(pid_file_path).delete(pid) if pid && pid_file_path
+      RuntimeGroups::Pids.new(pid_file_path).delete(pid) if pid && pid_file_path
     end
 
     def start_copy_thread(src, process_id, stream)
@@ -821,10 +839,10 @@ module TurboTests
     end
 
     def tracked_pids
-      path = ParallelTests.pid_file_path
+      path = parallel_pid_file_path
       return [] unless path && File.file?(path)
 
-      File.read(path).lines.map { |l| l.strip.to_i }.reject(&:zero?)
+      RuntimeGroups::Pids.new(path).to_a
     rescue
       []
     end

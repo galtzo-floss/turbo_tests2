@@ -22,11 +22,15 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
+- Breaking: replace the parallel_tests runtime dependency with runtime_groups (~> 0.1, >= 0.1.2) for process counts, pid bookkeeping, options-file discovery, and runtime-weighted grouping; turbo_tests2 now owns a TurboTests::RuntimeLogger RSpec formatter and reimplements the Rails db:create bootstrap directly on Process.spawn
+
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+- --allowed-missing now actually bounds the share of files allowed to miss the runtime log when grouping (parallel_tests silently ignored the option); runtime log is now written by the first-party TurboTests::RuntimeLogger through RuntimeGroups::RuntimeLog, and the watchdog's tracked-pid fallback reads the read-before-write pid ledger correctly
 
 ### Security
 

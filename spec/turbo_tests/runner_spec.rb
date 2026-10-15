@@ -597,7 +597,7 @@ RSpec.describe TurboTests::Runner do
 
       it "survives an unreadable pid file" do
         runner = build_watchdog_runner(0.05)
-        allow(ParallelTests).to receive(:pid_file_path).and_return("/nonexistent/pids")
+        stub_env("PARALLEL_PID_FILE" => "/nonexistent/pids")
         allow(reporter).to receive(:error_outside_of_examples)
 
         expect { runner.send(:pop_message_with_watchdog) }.not_to raise_error
@@ -1121,7 +1121,7 @@ RSpec.describe TurboTests::Runner do
       hide_env("RSPEC_EXECUTABLE")
       runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: true)
 
-      expect(captured).to include("ParallelTests::RSpec::RuntimeLogger")
+      expect(captured).to include("TurboTests::RuntimeLogger")
     end
 
     it "passes defined order without a seed when randomization is disabled" do
@@ -1293,12 +1293,13 @@ RSpec.describe TurboTests::Runner do
       mock_open3(runner) { |*args| captured.replace(args) }
 
       hide_env("RSPEC_EXECUTABLE")
-      ParallelTests.with_pid_file do
+      RuntimeGroups::PidFile.with do |pid_path|
+        stub_env("PARALLEL_PID_FILE" => pid_path)
         runner.send(:start_regular_subprocess, tests, 2, record_runtime: false)
         expect(captured.first).to include(
           "TEST_ENV_NUMBER" => "2",
           "PARALLEL_TEST_GROUPS" => "3",
-          "PARALLEL_PID_FILE" => ParallelTests.pid_file_path
+          "PARALLEL_PID_FILE" => pid_path
         )
       end
     end
@@ -1310,11 +1311,11 @@ RSpec.describe TurboTests::Runner do
       allow(ENV).to receive(:[]).with("BUNDLE_BIN_PATH").and_return(nil)
 
       wait_threads = nil
-      ParallelTests.with_pid_file do
+      RuntimeGroups::PidFile.with do |pid_path|
         env = {
           "TEST_ENV_NUMBER" => "2",
           "PARALLEL_TEST_GROUPS" => "3",
-          "PARALLEL_PID_FILE" => ParallelTests.pid_file_path
+          "PARALLEL_PID_FILE" => pid_path
         }
 
         runner.send(:start_subprocess, env, [], tests, 2, record_runtime: false)
@@ -1516,11 +1517,8 @@ RSpec.describe TurboTests::Runner do
 
         test_groups = [["spec/one_spec.rb"]]
 
-        allow(ParallelTests).to receive(:determine_number_of_processes).and_return(1)
-        allow(ParallelTests::RSpec::Runner).to receive_messages(
-          tests_with_size: [["spec/one_spec.rb", 1]],
-          tests_in_groups: test_groups
-        )
+        allow(RuntimeGroups).to receive(:process_count).and_return(1)
+        allow(RuntimeGroups::Grouping).to receive(:in_groups).and_return(test_groups)
         allow(reporter).to receive(:report).and_yield(reporter)
         allow(Signal).to receive(:trap).and_return(nil)
         allow(runner).to receive(:start_regular_subprocess).and_return(nil)
@@ -1535,9 +1533,9 @@ RSpec.describe TurboTests::Runner do
       reporter = double("reporter", failed_examples: [], report: nil)
       runner = build_runner(reporter: reporter, files: [])
 
-      allow(ParallelTests).to receive(:determine_number_of_processes).and_return(22)
-      allow(ParallelTests::RSpec::Runner).to receive(:tests_with_size).and_return([])
-      expect(ParallelTests::RSpec::Runner).not_to receive(:tests_in_groups)
+      allow(RuntimeGroups).to receive(:process_count).and_return(22)
+
+      expect(RuntimeGroups::Grouping).not_to receive(:in_groups)
 
       expect(runner.run).to eq(0)
       expect(reporter).to have_received(:report).with([])
@@ -1548,8 +1546,8 @@ RSpec.describe TurboTests::Runner do
       runner = build_runner(reporter: reporter)
       test_groups = [["spec/one_spec.rb"]]
 
-      allow(ParallelTests).to receive(:determine_number_of_processes).and_return(1)
-      allow(ParallelTests::RSpec::Runner).to receive_messages(tests_with_size: [["spec/one_spec.rb", 1]], tests_in_groups: test_groups)
+      allow(RuntimeGroups).to receive(:process_count).and_return(1)
+      allow(RuntimeGroups::Grouping).to receive(:in_groups).and_return(test_groups)
       allow(reporter).to receive(:report).and_yield(reporter)
       allow(Signal).to receive(:trap).and_return(nil)
       allow(runner).to receive(:start_regular_subprocess).and_return(nil)
@@ -1566,11 +1564,8 @@ RSpec.describe TurboTests::Runner do
       runner = build_runner(reporter: reporter)
       test_groups = [["spec/one_spec.rb"]]
 
-      allow(ParallelTests).to receive(:determine_number_of_processes).and_return(1)
-      allow(ParallelTests::RSpec::Runner).to receive_messages(
-        tests_with_size: [["spec/one_spec.rb", 1]],
-        tests_in_groups: test_groups
-      )
+      allow(RuntimeGroups).to receive(:process_count).and_return(1)
+      allow(RuntimeGroups::Grouping).to receive(:in_groups).and_return(test_groups)
       allow(reporter).to receive(:report).and_yield(reporter)
       allow(Signal).to receive(:trap).and_return(nil)
       allow(runner).to receive(:start_regular_subprocess).and_return(double("wait thread", value: status))
@@ -1589,11 +1584,8 @@ RSpec.describe TurboTests::Runner do
       runner = build_runner(reporter: reporter, verbose: true)
       test_groups = [["spec/one_spec.rb"]]
 
-      allow(ParallelTests).to receive(:determine_number_of_processes).and_return(1)
-      allow(ParallelTests::RSpec::Runner).to receive_messages(
-        tests_with_size: [["spec/one_spec.rb", 1]],
-        tests_in_groups: test_groups
-      )
+      allow(RuntimeGroups).to receive(:process_count).and_return(1)
+      allow(RuntimeGroups::Grouping).to receive(:in_groups).and_return(test_groups)
       allow(reporter).to receive(:report).and_yield(reporter)
       allow(Signal).to receive(:trap).and_return(nil)
       allow(runner).to receive(:start_regular_subprocess).and_return(double("wait thread", value: status))
@@ -1610,11 +1602,8 @@ RSpec.describe TurboTests::Runner do
       runner = build_runner(reporter: reporter, worker_output: :stream)
       test_groups = [["spec/one_spec.rb"]]
 
-      allow(ParallelTests).to receive(:determine_number_of_processes).and_return(1)
-      allow(ParallelTests::RSpec::Runner).to receive_messages(
-        tests_with_size: [["spec/one_spec.rb", 1]],
-        tests_in_groups: test_groups
-      )
+      allow(RuntimeGroups).to receive(:process_count).and_return(1)
+      allow(RuntimeGroups::Grouping).to receive(:in_groups).and_return(test_groups)
       allow(reporter).to receive(:report).and_yield(reporter)
       allow(Signal).to receive(:trap).and_return(nil)
       allow(runner).to receive(:start_regular_subprocess).and_return(double("wait thread", value: status))
@@ -1631,11 +1620,8 @@ RSpec.describe TurboTests::Runner do
       runner = build_runner(reporter: reporter, parallel_options: parallel_options)
       test_groups = [["spec/one_spec.rb"]]
 
-      allow(ParallelTests).to receive(:determine_number_of_processes).and_return(2)
-      allow(ParallelTests::RSpec::Runner).to receive_messages(
-        tests_with_size: [["spec/one_spec.rb", 1]],
-        tests_in_groups: test_groups
-      )
+      allow(RuntimeGroups).to receive(:process_count).and_return(2)
+      allow(RuntimeGroups::Grouping).to receive(:in_groups).and_return(test_groups)
       allow(reporter).to receive(:report).and_yield(reporter)
       allow(Signal).to receive(:trap).and_return(nil)
       allow(runner).to receive(:start_regular_subprocess).and_return(nil)
@@ -1643,32 +1629,27 @@ RSpec.describe TurboTests::Runner do
 
       runner.run
 
-      expect(ParallelTests::RSpec::Runner).to have_received(:tests_with_size).with(["spec"], parallel_options.merge(quiet: true))
-      expect(ParallelTests::RSpec::Runner).to have_received(:tests_in_groups).with(["spec"], 1, **parallel_options)
+      expect(RuntimeGroups::Grouping).to have_received(:in_groups).with(["spec"], 1, group_by: :runtime, runtime_log: "tmp/turbo_rspec_runtime.log", allowed_missing: 1.0, unknown_runtime: nil)
     end
 
     it "runs only selected 1-based groups after building the full group split" do
       reporter = double("reporter", failed_examples: [])
       parallel_options = {only_group: [2]}
-      runner = build_runner(reporter: reporter, parallel_options: parallel_options)
+      runner = build_runner(
+        reporter: reporter,
+        files: ["spec/one_spec.rb", "spec/two_spec.rb", "spec/three_spec.rb"],
+        parallel_options: parallel_options
+      )
       test_groups = [
         ["spec/one_spec.rb"],
         ["spec/two_spec.rb"],
         ["spec/three_spec.rb"]
       ]
-      tests_with_size_options = nil
+      nil
       tests_in_groups_options = nil
 
-      allow(ParallelTests).to receive(:determine_number_of_processes).and_return(3)
-      allow(ParallelTests::RSpec::Runner).to receive(:tests_with_size) do |_files, options|
-        tests_with_size_options = options
-        [
-          ["spec/one_spec.rb", 1],
-          ["spec/two_spec.rb", 1],
-          ["spec/three_spec.rb", 1]
-        ]
-      end
-      allow(ParallelTests::RSpec::Runner).to receive(:tests_in_groups) do |_files, _count, **options|
+      allow(RuntimeGroups).to receive(:process_count).and_return(3)
+      allow(RuntimeGroups::Grouping).to receive(:in_groups) do |_files, _count, **options|
         tests_in_groups_options = options
         test_groups
       end
@@ -1685,9 +1666,8 @@ RSpec.describe TurboTests::Runner do
         1,
         record_runtime: true
       )
-      expect(tests_with_size_options).not_to include(:only_group)
-      expect(tests_with_size_options).to include(quiet: true)
-      expect(tests_in_groups_options).not_to include(:only_group)
+
+      expect(tests_in_groups_options.keys).to contain_exactly(:group_by, :runtime_log, :allowed_missing, :unknown_runtime)
       expect(tests_in_groups_options).not_to include(:quiet)
       expect(runner.instance_variable_get(:@num_processes)).to eq(3)
     end
@@ -1697,11 +1677,8 @@ RSpec.describe TurboTests::Runner do
       runner = build_runner(reporter: reporter, parallel_options: {only_group: [99]})
       test_groups = [["spec/one_spec.rb"]]
 
-      allow(ParallelTests).to receive(:determine_number_of_processes).and_return(1)
-      allow(ParallelTests::RSpec::Runner).to receive_messages(
-        tests_with_size: [["spec/one_spec.rb", 1]],
-        tests_in_groups: test_groups
-      )
+      allow(RuntimeGroups).to receive(:process_count).and_return(1)
+      allow(RuntimeGroups::Grouping).to receive(:in_groups).and_return(test_groups)
 
       expect { runner.run }.to raise_error(
         ArgumentError,
@@ -1723,11 +1700,8 @@ RSpec.describe TurboTests::Runner do
       )
       test_groups = [["spec/turbo_tests/runner_spec.rb"]]
 
-      allow(ParallelTests).to receive(:determine_number_of_processes).and_return(1)
-      allow(ParallelTests::RSpec::Runner).to receive_messages(
-        tests_with_size: [["spec/turbo_tests/runner_spec.rb", 1]],
-        tests_in_groups: test_groups
-      )
+      allow(RuntimeGroups).to receive(:process_count).and_return(1)
+      allow(RuntimeGroups::Grouping).to receive(:in_groups).and_return(test_groups)
       allow(reporter).to receive(:report).and_yield(reporter)
       allow(Signal).to receive(:trap).and_return(nil)
       allow(runner).to receive(:handle_messages)

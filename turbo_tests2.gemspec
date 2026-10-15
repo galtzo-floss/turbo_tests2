@@ -23,8 +23,8 @@ Gem::Specification.new do |spec|
   spec.authors = ["Illia", "Ilya Zub", "AMHOL", "Serge Bedzhyk", "Bo Anderson", "Dmitiry Zub☀️", "mrudzki", "Sebastien Savater", "Hiroshi SHIBATA", "Gareth Jones", "Peter H. Boling", "Jeff Widman"]
   spec.email = ["floss@galtzo.com"]
 
-  spec.summary = "🚀 RSpec parallel test runner built on `parallel_tests`, with incremental summarized output"
-  spec.description = "🚀 turbo_tests2` is an RSpec parallel test runner built on `parallel_tests`. It uses `parallel_tests` for process counts, file grouping, and runtime balancing, then replaces interleaved worker output with incremental summarized RSpec reporting. Source code of `turbo_test2` gem is based on Discourse and Rubygems work in this area (see README.md)."
+  spec.summary = "🚀 RSpec parallel test runner with incremental summarized output"
+  spec.description = "🚀 turbo_tests2` is an RSpec parallel test runner. It uses runtime_groups for process counts, pid bookkeeping, file grouping, and runtime balancing, and replaces interleaved worker output with incremental summarized RSpec reporting. Source code of `turbo_test2` gem is based on Discourse and Rubygems work in this area (see README.md)."
   spec.homepage = "https://github.com/galtzo-floss/turbo_tests2"
   spec.licenses = ["MIT"]
   spec.required_ruby_version = ">= 2.4.0"
@@ -116,8 +116,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Utilities
-  spec.add_dependency("parallel_tests", ">= 3.3.0", "< 6")
   spec.add_dependency("rspec", ">= 3.10")
+  spec.add_dependency("runtime_groups", "~> 0.1", ">= 0.1.2")
   spec.add_dependency("version_gem", "~> 1.1", ">= 1.1.15")              # ruby >= 2.2.0
 
   # NOTE: It is preferable to list development dependencies in the gemspec due to increased

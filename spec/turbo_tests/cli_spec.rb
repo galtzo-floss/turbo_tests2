@@ -387,7 +387,7 @@ RSpec.describe TurboTests::CLI do
           double("status", success?: true)
         ]
 
-        allow(ParallelTests).to receive(:determine_number_of_processes).with(2).and_return(2)
+        allow(RuntimeGroups).to receive(:process_count).with(2).and_return(2)
         allow(Process).to receive(:spawn) do |env, *command|
           spawned << [env, command]
           spawned.size + 100
@@ -426,7 +426,7 @@ RSpec.describe TurboTests::CLI do
         spawned = []
         statuses = [double("status", success?: true)]
 
-        allow(ParallelTests).to receive(:determine_number_of_processes).with(1).and_return(1)
+        allow(RuntimeGroups).to receive(:process_count).with(1).and_return(1)
         allow(Process).to receive(:spawn) do |env, *command|
           spawned << [env, command]
           101
@@ -442,7 +442,7 @@ RSpec.describe TurboTests::CLI do
         success = double("success", success?: true)
         failure = double("failure", success?: false)
 
-        allow(ParallelTests).to receive(:determine_number_of_processes).with(nil).and_return(2)
+        allow(RuntimeGroups).to receive(:process_count).with(nil).and_return(2)
         allow(Process).to receive(:spawn).and_return(101, 102)
         allow(Process).to receive(:wait2).with(101).and_return([101, success])
         allow(Process).to receive(:wait2).with(102).and_return([102, failure])

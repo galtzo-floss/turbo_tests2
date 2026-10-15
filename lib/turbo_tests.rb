@@ -7,10 +7,10 @@ require "json"
 
 require "rspec"
 
-require "parallel_tests"
-require "parallel_tests/rspec/runner"
+require "runtime_groups"
 
 require "turbo_tests/reporter"
+require "turbo_tests/runtime_logger"
 require "turbo_tests/runner"
 require "turbo_tests/json_rows_formatter"
 

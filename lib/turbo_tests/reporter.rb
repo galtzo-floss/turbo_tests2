@@ -80,7 +80,7 @@ module TurboTests
     end
 
     def report_number_of_tests(groups)
-      name = ParallelTests::RSpec::Runner.test_file_name
+      name = "spec"
 
       num_processes = groups.size
       num_tests = groups.map(&:size).sum
