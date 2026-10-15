@@ -408,6 +408,14 @@ module TurboTests
       )
     end
 
+    # Spawns one worker as a real OS subprocess via Open3.popen3 — never
+    # Kernel#fork. This is what makes the worker pool engine-portable: MRI,
+    # JRuby, and TruffleRuby all spawn subprocesses the same way, and the
+    # default pool size is Etc.nprocessors on every engine. Remember each
+    # worker is a full interpreter/VM process: on JVM engines that is a whole
+    # JVM with its own heap, so bound the pool (TURBO_TESTS2_MAX_PROCESSES)
+    # and the per-worker heap (e.g. JRUBY_OPTS) on memory-constrained
+    # runners — see README "Resource-Constrained CI (JVM Engines)".
     def start_subprocess(env, extra_args, tests, process_id, record_runtime:)
       if tests.empty?
         @messages << {
@@ -756,6 +764,14 @@ module TurboTests
     # on the queue forever — CI jobs hung for hours with no diagnostics.
     # On a stall we kill the surviving worker pids, report which groups
     # never finished, and fail the run instead.
+    #
+    # Note the OOM killer is the most common silent worker death on CI: the
+    # kernel kills the process with no stderr, no exit message, and no
+    # partial output. Workers are spawn-based real processes (never forked),
+    # so on JVM engines (JRuby, TruffleRuby) each one is a full JVM whose
+    # default heap can be 1/4 of machine RAM — a core-count pool of those
+    # exhausts a CI runner. Bound `workers x per-worker memory` on
+    # constrained runners (see README "Resource-Constrained CI").
     def pop_message_with_watchdog
       # 0 (the default) disables the watchdog: block indefinitely, exactly the
       # pre-watchdog behavior.
@@ -856,7 +872,10 @@ module TurboTests
               "outer process watcher (a CI job timeout, a container orchestrator, or a local supervisor) will then " \
               "be what eventually ends the run, usually without a useful stall report. A single long test only " \
               "trips this in serial lanes (TURBO_TESTS2_MAX_PROCESSES=1); in parallel lanes other workers keep " \
-              "messages flowing."
+              "messages flowing. Total silence in a PARALLEL lane usually means workers died rather than slowed " \
+              "down — the most common cause is the kernel OOM killer (each worker is a real spawned process; on " \
+              "JVM engines each is a full JVM whose default heap is 1/4 of RAM). Cap workers x per-worker memory: " \
+              "TURBO_TESTS2_MAX_PROCESSES=2 with a capped heap (e.g. JRUBY_OPTS=\"-J-Xmx1280m\")."
             )
             warned_silence = true
           end

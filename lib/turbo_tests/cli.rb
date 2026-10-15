@@ -243,6 +243,16 @@ module TurboTests
       ]
     end
 
+    # Inclusive ceiling on the worker pool when neither --count nor --workers
+    # is passed. Explicit CLI counts always win. Two main uses:
+    #
+    # 1. Outer orchestrators (kettle-family) budgeting a machine-wide process
+    #    pool across concurrent family jobs.
+    # 2. Resource-constrained CI, where each worker is an expensive process —
+    #    JVM engines (JRuby, TruffleRuby) spawn a full JVM per worker, so cap
+    #    the pool (typically 2) AND the per-worker heap (e.g. JRUBY_OPTS=
+    #    "-J-Xmx1280m") to stay under runner RAM. See README
+    #    "Resource-Constrained CI (JVM Engines)".
     def max_processes_from_environment
       value = ENV.fetch("TURBO_TESTS2_MAX_PROCESSES", "").strip
       return if value.empty?

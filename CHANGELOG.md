@@ -24,6 +24,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - README: document the spawn-based (fork-free) worker architecture that makes parallel workers engine-portable to JRuby and TruffleRuby, and add a Resource-Constrained CI (JVM Engines) section with the canonical 2-worker + capped-heap + raised-watchdog setup, matching the kettle-jem CI templates
 
+- Stall diagnostics and in-code docs now explain silent worker death: the 900s silence warning and the watchdog stall path point at the OOM killer as the most common cause of total silence in a parallel lane (spawned workers, JVM engines defaulting to 1/4 RAM heap each), with the fix inline (TURBO_TESTS2_MAX_PROCESSES=2 + capped heap); start_subprocess and max_processes_from_environment document the spawn-based engine-portable architecture
+
 ### Deprecated
 
 ### Removed
