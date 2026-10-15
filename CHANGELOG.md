@@ -22,6 +22,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
+- README: document the spawn-based (fork-free) worker architecture that makes parallel workers engine-portable to JRuby and TruffleRuby, and add a Resource-Constrained CI (JVM Engines) section with the canonical 2-worker + capped-heap + raised-watchdog setup, matching the kettle-jem CI templates
+
 ### Deprecated
 
 ### Removed

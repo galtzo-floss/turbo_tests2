@@ -384,6 +384,60 @@ count at the number of discovered test groups.
 Known coverage formatter chatter remains collapsed into the concise coverage
 summary.
 
+### Resource-Constrained CI (JVM Engines)
+
+Worker parallelism is spawn-based, not fork-based: each worker is started as a
+real subprocess (`Process.spawn` / `Open3.popen3`), never `Kernel#fork`. That
+makes parallel workers engine-portable — MRI, JRuby, and TruffleRuby all run
+the same spawn-based pool, and the default worker count is the machine's core
+count (`Etc.nprocessors`) on every engine. There is no serial-only mode for
+JVM engines unless you ask for one with `TURBO_TESTS2_MAX_PROCESSES=1`.
+
+The cost of that portability on JVM engines is memory: each JRuby or
+TruffleRuby worker is a full JVM subprocess, and JRuby defaults its heap to
+one quarter of machine RAM. On a CI runner, `Etc.nprocessors` workers each
+grabbing a quarter of RAM is a recipe for the kernel's OOM killer, which kills
+workers **silently** — every worker stops messaging at once, and the stall
+watchdog then reports total silence. This is a resource problem, not a
+parallelism problem.
+
+The fix is to run fewer, smaller workers. This is the canonical
+resource-constrained setup, and the `kettle-jem` CI templates bake it into
+every JRuby workflow they generate:
+
+```bash
+TURBO_TESTS2_MAX_PROCESSES=2 \
+JRUBY_OPTS="-J-Xmx1280m" \
+TURBO_TESTS2_WATCHDOG_SECONDS=1500 \
+bundle exec turbo_tests2
+```
+
+Or in a GitHub Actions workflow:
+
+```yaml
+env:
+  # Fewer, smaller JVM workers on constrained runners.
+  TURBO_TESTS2_MAX_PROCESSES: 2
+  # Cap each worker JVM's heap (JRuby default: 1/4 of runner RAM).
+  JRUBY_OPTS: "-J-Xmx1280m"
+  # JVM lanes are slow; give the watchdog room without hitting the job timeout.
+  TURBO_TESTS2_WATCHDOG_SECONDS: 1500
+```
+
+Guidance:
+
+- **Cap workers** (`TURBO_TESTS2_MAX_PROCESSES=2`) when each worker is a heavy
+  process: JVM engines, large test suites, or shared/undersized runners. Two
+  JVM workers still roughly halve wall-clock time versus one.
+- **Cap the heap** (`JRUBY_OPTS="-J-Xmx1280m"`, or your engine's equivalent)
+  so total memory is bounded regardless of runner size.
+- **Raise the watchdog** (1500s) on slow engines: JIT warmup and heavy GC make
+  silence windows longer, and you want the watchdog report, not the provider
+  timeout, when something genuinely hangs.
+- The same knobs apply to any engine where a worker process is expensive —
+  the principle is: bound `workers × per-worker memory` under the runner's
+  capacity.
+
 ### Stall watchdog
 
 If the worker message queue goes silent — every worker alive but none
