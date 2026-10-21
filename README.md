@@ -661,7 +661,7 @@ For most applications, prefer the [Pessimistic Version Constraint][📌pvc] with
 For example:
 
 ```ruby
-spec.add_dependency("turbo_tests2", "~> 3.0")
+spec.add_dependency("turbo_tests2", "~> 4.0")
 ```
 
 <details markdown="1">
