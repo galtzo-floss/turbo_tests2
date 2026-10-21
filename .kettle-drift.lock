@@ -12,8 +12,8 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        196,
-        305
+        199,
+        308
       ]
     }
   ],
@@ -21,8 +21,8 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        199,
-        261
+        202,
+        264
       ]
     }
   ],
@@ -30,8 +30,8 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        200,
-        285
+        203,
+        288
       ]
     }
   ],
@@ -39,8 +39,8 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        84,
-        262
+        87,
+        265
       ]
     }
   ],
@@ -48,8 +48,17 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        85,
-        263
+        88,
+        266
+      ]
+    }
+  ],
+  "- documentation (1)\n- other (1)": [
+    {
+      "file": "CHANGELOG.md",
+      "lines": [
+        31,
+        130
       ]
     }
   ],
@@ -57,8 +66,8 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        128,
-        202
+        131,
+        205
       ]
     }
   ],

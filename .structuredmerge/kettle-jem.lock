@@ -18,10 +18,27 @@ template_state:
     - gemfiles/modular/templating_local.gemfile
     - turbo_tests2.gemspec
     kettle-jem/template:
+    - ".github/workflows/coverage.yml"
+    - ".github/workflows/dep-heads.yml"
+    - ".github/workflows/jruby-10.0.yml"
+    - ".github/workflows/jruby-9.2.yml"
+    - ".github/workflows/jruby-9.3.yml"
+    - ".github/workflows/jruby-9.4.yml"
+    - ".github/workflows/jruby.yml"
+    - ".github/workflows/truffle.yml"
+    - ".github/workflows/truffleruby-23.1.yml"
+    - ".github/workflows/truffleruby-24.2.yml"
+    - ".github/workflows/truffleruby-25.0.yml"
+    - ".github/workflows/truffleruby-33.0.yml"
     - ".simplecov"
     - Gemfile
+    - README.md
+    - Rakefile
+    - gemfiles/modular/coverage_local.gemfile
     - gemfiles/modular/style_local.gemfile
     - gemfiles/modular/templating.gemfile
+    - gemfiles/modular/templating_local.gemfile
+    - spec/turbo_tests/version_spec.rb
     - turbo_tests2.gemspec
   checksums:
     ".aiignore.example": 48a5dfdd93afd1a15fdce39cc28ca9920263f00018b0968ab031fa744521e5ce
