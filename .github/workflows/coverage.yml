@@ -11,6 +11,7 @@ env:
   K_SOUP_COV_MIN_BRANCH: 76
   K_SOUP_COV_MIN_LINE: 92
   K_SOUP_COV_MIN_HARD: true
+  K_SOUP_COV_MIN_STRICT: false
   K_SOUP_COV_FORMATTERS: "xml,rcov,lcov,tty"
   K_SOUP_COV_DO: true
   K_SOUP_COV_MULTI_FORMATTERS: true
@@ -63,7 +64,7 @@ jobs:
           persist-credentials: false
 
       - name: Setup Ruby & RubyGems
-        uses: ruby/setup-ruby@824c0e29fdfc7d689c191c27acc969d2d04b7dd8 # v1.331.0
+        uses: ruby/setup-ruby@b3aaceaef7e0ee231b499e7b5f49c03fc1d32199 # v1.338.0
         with:
           ruby-version: "${{ matrix.ruby }}"
           rubygems: "${{ matrix.rubygems }}"
@@ -122,7 +123,7 @@ jobs:
 
       - name: Upload coverage to QLTY
         if: ${{ !env.ACT }}
-        uses: qltysh/qlty-action/coverage@c9b09987143d1e4ac955f4803c7bea742102feb5 # v2.4.0
+        uses: qltysh/qlty-action/coverage@ebcd284bf32e36a030afe15f1e136c7be08b9506 # v2.5.0
         with:
           oidc: true
           files: coverage/lcov.info

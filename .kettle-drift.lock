@@ -1,19 +1,10 @@
 {
-  "- **Unsupported**: the engine/platform combination is not covered by CI and is\nnot a project compatibility claim.": [
-    {
-      "file": "README.md",
-      "lines": [
-        41,
-        146
-      ]
-    }
-  ],
   "- [kc] kettle-jem/prepare: updated 11 project files:\n- dependencies (11)": [
     {
       "file": "CHANGELOG.md",
       "lines": [
-        199,
-        308
+        200,
+        309
       ]
     }
   ],
@@ -21,8 +12,8 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        202,
-        264
+        203,
+        265
       ]
     }
   ],
@@ -30,21 +21,12 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        203,
-        288
+        204,
+        289
       ]
     }
   ],
   "- code and tests (1)\n- dependencies (3)": [
-    {
-      "file": "CHANGELOG.md",
-      "lines": [
-        87,
-        265
-      ]
-    }
-  ],
-  "- dependencies (3)\n- other (1)": [
     {
       "file": "CHANGELOG.md",
       "lines": [
@@ -53,12 +35,21 @@
       ]
     }
   ],
-  "- documentation (1)\n- other (1)": [
+  "- dependencies (3)\n- other (1)": [
     {
       "file": "CHANGELOG.md",
       "lines": [
-        31,
-        130
+        89,
+        267
+      ]
+    }
+  ],
+  "- documentation (1)\n- other (3)": [
+    {
+      "file": "CHANGELOG.md",
+      "lines": [
+        32,
+        316
       ]
     }
   ],
@@ -66,8 +57,8 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        131,
-        205
+        132,
+        206
       ]
     }
   ],
@@ -77,15 +68,6 @@
       "lines": [
         41,
         47
-      ]
-    }
-  ],
-  "Support tiers describe what this project's CI actually exercises, not what may\nwork in an untested environment:": [
-    {
-      "file": "README.md",
-      "lines": [
-        35,
-        142
       ]
     }
   ],
@@ -144,6 +126,15 @@
       ]
     }
   ],
+  "out != \"\" { print > out }\n' \"$bundle\"": [
+    {
+      "file": ".github/workflows/current.yml",
+      "lines": [
+        95,
+        124
+      ]
+    }
+  ],
   "preference: destination\nfile_type: gemfile": [
     {
       "file": ".structuredmerge/kettle-jem.yml",
@@ -170,6 +161,15 @@
         475,
         491,
         508
+      ]
+    }
+  ],
+  "subject=\"$(openssl x509 -in \"$file\" -noout -subject 2>/dev/null || true)\"\nif [ -n \"$subject\" ] && matches \"$subject\"; then": [
+    {
+      "file": ".github/workflows/current.yml",
+      "lines": [
+        103,
+        127
       ]
     }
   ]
