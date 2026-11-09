@@ -44,15 +44,6 @@
       ]
     }
   ],
-  "- documentation (1)\n- other (3)": [
-    {
-      "file": "CHANGELOG.md",
-      "lines": [
-        32,
-        316
-      ]
-    }
-  ],
   "- other (1)\n- workflows (1)": [
     {
       "file": "CHANGELOG.md",
