@@ -22,6 +22,23 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Changed
 
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [4.0.1] - 2026-11-09
+
+- TAG: [v4.0.1][4.0.1t]
+- COVERAGE: 96.01% -- 1034/1077 lines in 12 files
+- BRANCH COVERAGE: 82.42% -- 272/330 branches in 12 files
+- 37.39% documented
+
+### Changed
+
 - [kc] kettle-jem/prepare: updated 20 project files:
   - configuration (1)
   - dependencies (19)
@@ -32,14 +49,6 @@ Please file a bug if you notice a violation of semantic versioning.
   - documentation (1)
   - other (4)
   - workflows (14)
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 
 ## [4.0.0] - 2026-10-15
 
@@ -802,7 +811,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v4.0.0...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v4.0.1...HEAD
+[4.0.1]: https://github.com/galtzo-floss/turbo_tests2/compare/v4.0.0...v4.0.1
+[4.0.1t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v4.0.1
 [4.0.0]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.17...v4.0.0
 [4.0.0t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v4.0.0
 [3.2.17]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.16...v3.2.17
