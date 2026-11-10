@@ -127,7 +127,9 @@ end
 # a tiny watchdog must name the worker and example, and the worker must dump
 # thread backtraces even though the example silenced $stderr.
 RSpec.describe "TurboTests stall diagnostics integration", :check_output do
-  before { skip_for(engine: "truffleruby", versions: "3.0", reason: "nested turbo_tests2 subprocesses hang on TruffleRuby 23.0 (EOL)") }
+  # JVM engines take longer than the tiny watchdog used here just to start the
+  # nested worker, so the report would legitimately say "no messages received".
+  before { skip "timing-sensitive; needs a fast-starting engine" unless RUBY_ENGINE == "ruby" }
 
   include_context "with simplecov spawn coverage"
 
