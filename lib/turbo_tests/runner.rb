@@ -848,7 +848,72 @@ module TurboTests
       (@tests_in_groups || []).each_with_index do |group, idx|
         lines << "group #{idx + 1}: #{Array(group).join(", ")}" unless group.nil?
       end
+      lines.concat(worker_progress_lines)
       lines.join("\n")
+    end
+
+    # Per-worker view of a stall: which worker is silent, what it last did,
+    # and what the OS says about its process. The group list above cannot
+    # say which worker hung or which example it was running.
+    def record_worker_progress(message)
+      process_id = message[:process_id]
+      return unless process_id.is_a?(Integer)
+
+      now = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      progress = (@worker_progress ||= {})[process_id] ||= {finished: 0, groups: []}
+      progress[:last_type] = message[:type]
+      progress[:last_at] = now
+      case message[:type]
+      when "group_started"
+        progress[:groups].push(message.dig(:group, :group, :description))
+      when "group_finished"
+        progress[:groups].pop
+      when "example_passed", "example_failed", "example_pending"
+        progress[:finished] += 1
+        progress[:last_example] = message.dig(:example, :location)
+      when "exit"
+        progress[:exited] = true
+      end
+    end
+
+    def worker_progress_lines
+      now = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      (1..(@num_processes || 0)).flat_map do |process_id|
+        progress = (@worker_progress || {})[process_id]
+        pid = worker_pid(process_id)
+        line = "worker #{process_id} (pid #{pid.inspect}): "
+        line << if progress
+          "#{progress[:exited] ? "exited" : "no exit message"}; #{progress[:finished]} example(s) finished; " \
+            "last message #{progress[:last_type]} #{(now - progress[:last_at]).round}s ago; " \
+            "last finished example #{progress[:last_example].inspect}; " \
+            "open groups #{progress[:groups].inspect}"
+        else
+          "no messages received"
+        end
+        [line, *proc_state_lines(pid)]
+      end
+    end
+
+    def worker_pid(process_id)
+      @wait_threads&.at(process_id - 1)&.pid
+    rescue
+      nil
+    end
+
+    # Linux only; best effort. State "S" with a wchan like futex/poll_schedule
+    # is a blocked process, "R" is spinning, "Z" is a zombie, and a missing
+    # /proc entry means the worker is gone (OOM kill or crash).
+    def proc_state_lines(pid)
+      return [] unless pid
+
+      dir = "/proc/#{pid}"
+      return ["  /proc/#{pid}: missing (process is gone)"] unless File.directory?(dir)
+
+      status = File.read("#{dir}/status").lines.grep(/\A(State|Threads|VmRSS|VmHWM):/).map(&:strip).join(" ")
+      wchan = File.read("#{dir}/wchan").strip
+      ["  /proc/#{pid}: #{status}; wchan=#{wchan}"]
+    rescue
+      []
     end
 
     def tracked_pids
@@ -892,6 +957,7 @@ module TurboTests
       warned_silence = false
       loop do
         message = pop_message_with_watchdog
+        record_worker_progress(message)
         unless warned_silence
           silence = Process.clock_gettime(Process::CLOCK_MONOTONIC) - @last_message_monotonic
           if silence >= 900

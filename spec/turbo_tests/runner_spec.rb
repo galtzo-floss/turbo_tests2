@@ -581,6 +581,21 @@ RSpec.describe TurboTests::Runner do
         expect(Process).to have_received(:kill).with("KILL", 4_242_424)
       end
 
+      it "names the silent worker, its last finished example and open groups in the stall report" do
+        runner = build_watchdog_runner(0.05)
+        runner.instance_variable_set(:@num_processes, 2)
+        runner.instance_variable_set(:@wait_threads, [double(pid: 111), double(pid: 222)])
+        runner.send(:record_worker_progress, {type: "group_started", process_id: 2, group: {group: {description: "Slow"}}})
+        runner.send(:record_worker_progress, {type: "example_passed", process_id: 2, example: {location: "./spec/a_spec.rb:7"}})
+        runner.send(:record_worker_progress, {type: "exit", process_id: 1})
+        allow(runner).to receive(:tracked_pids).and_return([])
+
+        report = runner.send(:remaining_workers_report)
+
+        expect(report).to include("worker 1 (pid 111): exited")
+        expect(report).to match(/worker 2 \(pid 222\): no exit message; 1 example\(s\) finished.*"\.\/spec\/a_spec\.rb:7".*\["Slow"\]/)
+      end
+
       it "returns queued messages without tripping the watchdog" do
         runner = build_watchdog_runner(5)
         runner.instance_variable_get(:@messages) << {type: "close"}
