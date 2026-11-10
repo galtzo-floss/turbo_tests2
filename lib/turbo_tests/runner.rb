@@ -524,7 +524,7 @@ module TurboTests
               stdout.each_line do |line|
                 parse_worker_stdout_line(line, output_id, process_id)
               end
-            rescue IOError
+            rescue IOError, SystemCallError
               nil
             end
 
@@ -555,9 +555,18 @@ module TurboTests
             # is a deduped fallback for a stdout reader that was force-stopped
             # before reaching EOF, and being in ensure also prevents a hang if
             # wait_thr.value raises.
-            drain_worker_readers(stdout_thread, stdout, stderr_thread, stderr)
-            @messages << {type: "exit", process_id: process_id}
-            untrack_parallel_pid(wait_thr.pid, pid_file_path)
+            begin
+              drain_worker_readers(stdout_thread, stdout, stderr_thread, stderr)
+            rescue
+              # Thread#join re-raises a dead reader's exception. Teardown
+              # errors must never skip the exit message below: with no exit
+              # message handle_messages blocks forever (watchdog 0) or until
+              # the watchdog fires.
+              nil
+            ensure
+              @messages << {type: "exit", process_id: process_id}
+              untrack_parallel_pid(wait_thr.pid, pid_file_path)
+            end
           end
         end
         # rubocop:enable ThreadSafety/NewThread
@@ -592,7 +601,10 @@ module TurboTests
           rescue EOFError
             close_io(src)
             break
-          rescue IOError
+          rescue IOError, SystemCallError
+            # SystemCallError: closing a pipe under a blocked read raises
+            # IOError on MRI but Errno::EBADF on TruffleRuby. An unrescued
+            # exception here is re-raised by Thread#join in the waiter.
             break
           else
             append_worker_output(process_id, stream, msg)
