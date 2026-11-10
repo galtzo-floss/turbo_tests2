@@ -30,6 +30,7 @@ module TurboTests
       self,
       :start,
       :close,
+      :example_started,
       :example_failed,
       :example_passed,
       :example_pending,
@@ -45,9 +46,67 @@ module TurboTests
 
     def initialize(output)
       @output = output
+      @current_example = nil
+      @last_progress = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+    end
+
+    def example_started(notification)
+      @current_example = notification.example.location
+      touch_progress
+    end
+
+    # When no example finishes for a long time the parent's watchdog can only
+    # say "silent". The worker is the only one that can say where it is stuck,
+    # so dump every thread's backtrace to stderr (which the parent surfaces)
+    # once per stall, at half the watchdog. Disabled when the watchdog is.
+    def start_stall_dumper
+      threshold = stall_dump_seconds
+      return unless threshold.positive?
+
+      @stall_dumper = Thread.new do
+        Thread.current.report_on_exception = false
+        dumped = false
+        loop do
+          sleep([threshold / 4.0, 1.0].max)
+          idle = Process.clock_gettime(Process::CLOCK_MONOTONIC) - @last_progress
+          if idle < threshold
+            dumped = false
+          elsif !dumped
+            dumped = true
+            dump_stall(idle)
+          end
+        end
+      end
+    end
+
+    def dump_stall(idle)
+      lines = ["turbo_tests2 worker #{ENV["TEST_ENV_NUMBER"].inspect} pid #{Process.pid}: " \
+        "no example finished for #{idle.round}s; current example: #{@current_example.inspect}"]
+      Thread.list.each do |thread|
+        lines << "--- #{thread.inspect}"
+        lines.concat(Array(thread.backtrace).map { |frame| "    #{frame}" })
+      end
+      $stderr.puts(lines.join("\n"))
+      $stderr.flush
+    rescue
+      nil
+    end
+
+    def stall_dump_seconds
+      explicit = ENV["TURBO_TESTS2_STACK_DUMP_SECONDS"]
+      return Float(explicit) if explicit
+
+      Float(ENV.fetch("TURBO_TESTS2_WATCHDOG_SECONDS", "900")) / 2
+    rescue ArgumentError
+      0.0
+    end
+
+    def touch_progress
+      @last_progress = Process.clock_gettime(Process::CLOCK_MONOTONIC)
     end
 
     def start(notification)
+      start_stall_dumper
       output_row(
         type: :load_summary,
         summary: load_summary_to_json(notification)
@@ -69,6 +128,7 @@ module TurboTests
     end
 
     def example_passed(notification)
+      touch_progress
       output_row(
         type: :example_passed,
         example: example_to_json(notification.example)
@@ -76,6 +136,7 @@ module TurboTests
     end
 
     def example_pending(notification)
+      touch_progress
       output_row(
         type: :example_pending,
         example: example_to_json(notification.example)
@@ -83,6 +144,7 @@ module TurboTests
     end
 
     def example_failed(notification)
+      touch_progress
       output_row(
         type: :example_failed,
         example: example_to_json(notification.example)
@@ -97,6 +159,7 @@ module TurboTests
     end
 
     def close(_notification)
+      @stall_dumper&.kill
       output_row(
         type: :close
       )
