@@ -20,6 +20,8 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Added
 
+- Stall diagnostics: the watchdog report now has one line per worker (pid, whether it exited, examples finished, age of its last message, last finished example, open groups, and `/proc` state on Linux). Each worker also dumps every thread's backtrace to a private duplicate of stderr when no example finishes for half the watchdog time; `TURBO_TESTS2_STACK_DUMP_SECONDS` overrides the delay and `0` disables it. (#58, #61)
+
 ### Changed
 
 ### Deprecated
@@ -27,6 +29,8 @@ Please file a bug if you notice a violation of semantic versioning.
 ### Removed
 
 ### Fixed
+
+- A worker's exit message is no longer skipped when reader teardown raises. Force-closing a pipe under a blocked reader raises `Errno::EBADF` on TruffleRuby (`IOError` on MRI); the readers now rescue `SystemCallError` too, and the exit message is queued in an `ensure`. This caused a rare indefinite stall on TruffleRuby 33.0. (#58, #59)
 
 ### Security
 
