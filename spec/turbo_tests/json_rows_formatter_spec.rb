@@ -25,23 +25,22 @@ RSpec.describe TurboTests::JsonRowsFormatter do
   end
 
   describe "stall dump" do
-    it "dumps every thread to stderr when no example finishes within the threshold" do
+    it "dumps every thread to the stderr captured at start, even if $stderr is later swapped" do
       stub_env("TURBO_TESTS2_STACK_DUMP_SECONDS" => "0.2")
-      formatter.example_started(double(example: double(location: "./spec/x_spec.rb:3")))
-      formatter.start(double(count: 1, load_time: 0.1))
-
       captured = StringIO.new
       original = $stderr
       begin
         $stderr = captured
+        formatter.example_started(double(example: double(location: "./spec/x_spec.rb:3")))
+        formatter.start(double(count: 1, load_time: 0.1))
+        $stderr = StringIO.new # a spec silencing $stderr must not swallow the dump
         sleep 1.5
       ensure
         $stderr = original
+        formatter.close(nil)
       end
 
       expect(captured.string).to match(/no example finished for .*current example: "\.\/spec\/x_spec\.rb:3".*--- #<Thread/m)
-    ensure
-      formatter.close(nil)
     end
   end
 
