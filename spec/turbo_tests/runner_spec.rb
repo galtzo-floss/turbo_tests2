@@ -1364,6 +1364,32 @@ RSpec.describe TurboTests::Runner do
       end
     end
 
+    # Regression (TruffleRuby 33.0 CI stall, turbo_tests2#58): force-closing a
+    # pipe under a blocked reader raises Errno::EBADF there (IOError on MRI).
+    # Thread#join re-raised it in the waiter's ensure, which skipped the exit
+    # message and left handle_messages blocked forever.
+    it "still queues the exit message when draining the readers raises" do
+      allow(Open3).to receive(:popen3).and_return([fake_stdin, StringIO.new, StringIO.new, fake_wait_thr])
+      allow(runner).to receive(:drain_worker_readers).and_raise(Errno::EBADF)
+      runner.instance_variable_set(:@num_processes, 1)
+
+      runner.send(:start_subprocess, {}, [], tests, 1, record_runtime: false)
+      runner.instance_variable_get(:@threads).each { |thread| thread.join(2) }
+
+      messages = []
+      messages << runner.instance_variable_get(:@messages).pop until runner.instance_variable_get(:@messages).empty?
+      expect(messages).to include(include(type: "exit", process_id: 1))
+    end
+
+    it "treats Errno::EBADF from a force-closed pipe like EOF in the copy thread" do
+      src = instance_double(IO)
+      allow(src).to receive(:readpartial).and_raise(Errno::EBADF)
+
+      thread = runner.send(:start_copy_thread, src, 1, :stderr)
+
+      expect { thread.join(2) }.not_to raise_error
+    end
+
     it "ignores duplicate exit messages from the same process" do
       runner.instance_variable_set(:@num_processes, 2)
       queue = runner.instance_variable_get(:@messages)
