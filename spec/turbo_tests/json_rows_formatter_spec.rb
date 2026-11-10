@@ -24,6 +24,22 @@ RSpec.describe TurboTests::JsonRowsFormatter do
     end
   end
 
+  describe "stall dump" do
+    it "dumps every thread to stderr when no example finishes within the threshold" do
+      stub_env("TURBO_TESTS2_STACK_DUMP_SECONDS" => "0.2")
+      dumped = RSpec::Matchers::BuiltIn::Output.new(
+        /no example finished for .*current example: "\.\/spec\/x_spec\.rb:3".*--- #<Thread/m
+      ).to_stderr
+
+      expect {
+        formatter.example_started(double(example: double(location: "./spec/x_spec.rb:3")))
+        formatter.start(double(count: 1, load_time: 0.1))
+        sleep 1.5
+        formatter.close(nil)
+      }.to dumped
+    end
+  end
+
   def build_example(shared_group_frames: [])
     execution_result = double(
       "execution_result",
