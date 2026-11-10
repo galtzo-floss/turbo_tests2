@@ -63,6 +63,14 @@ module TurboTests
       threshold = stall_dump_seconds
       return unless threshold.positive?
 
+      # Specs routinely silence or swap $stderr (silent_stream reopens the fd),
+      # which would swallow the dump exactly when a spec hangs inside such a
+      # block. Keep our own duplicate of the original stderr.
+      @stall_io = begin
+        $stderr.dup
+      rescue
+        $stderr
+      end
       @stall_dumper = Thread.new do
         Thread.current.report_on_exception = false
         dumped = false
@@ -86,8 +94,8 @@ module TurboTests
         lines << "--- #{thread.inspect}"
         lines.concat(Array(thread.backtrace).map { |frame| "    #{frame}" })
       end
-      $stderr.puts(lines.join("\n"))
-      $stderr.flush
+      @stall_io.puts(lines.join("\n"))
+      @stall_io.flush
     rescue
       nil
     end
