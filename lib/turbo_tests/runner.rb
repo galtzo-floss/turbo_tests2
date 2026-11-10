@@ -881,8 +881,7 @@ module TurboTests
       (1..(@num_processes || 0)).flat_map do |process_id|
         progress = (@worker_progress || {})[process_id]
         pid = worker_pid(process_id)
-        line = "worker #{process_id} (pid #{pid.inspect}): "
-        line << if progress
+        detail = if progress
           "#{progress[:exited] ? "exited" : "no exit message"}; #{progress[:finished]} example(s) finished; " \
             "last message #{progress[:last_type]} #{(now - progress[:last_at]).round}s ago; " \
             "last finished example #{progress[:last_example].inspect}; " \
@@ -890,7 +889,7 @@ module TurboTests
         else
           "no messages received"
         end
-        [line, *proc_state_lines(pid)]
+        ["worker #{process_id} (pid #{pid.inspect}): #{detail}", *proc_state_lines(pid)]
       end
     end
 

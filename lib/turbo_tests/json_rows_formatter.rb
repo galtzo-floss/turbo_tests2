@@ -71,6 +71,7 @@ module TurboTests
       rescue
         $stderr
       end
+      # rubocop:disable ThreadSafety/NewThread -- watchdog helper thread, one per worker process.
       @stall_dumper = Thread.new do
         Thread.current.report_on_exception = false
         dumped = false
@@ -85,6 +86,7 @@ module TurboTests
           end
         end
       end
+      # rubocop:enable ThreadSafety/NewThread
     end
 
     def dump_stall(idle)
