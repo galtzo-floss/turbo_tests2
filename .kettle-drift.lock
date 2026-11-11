@@ -3,8 +3,8 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        222,
-        331
+        224,
+        333
       ]
     }
   ],
@@ -12,8 +12,8 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        225,
-        287
+        227,
+        289
       ]
     }
   ],
@@ -21,9 +21,8 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        31,
-        226,
-        311
+        228,
+        313
       ]
     }
   ],
@@ -31,17 +30,17 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        110,
-        288
+        112,
+        290
       ]
     }
   ],
-  "- dependencies (2)\n- other (1)": [
+  "- code and tests (1)\n- documentation (1)": [
     {
       "file": "CHANGELOG.md",
       "lines": [
-        32,
-        227
+        29,
+        154
       ]
     }
   ],
@@ -49,8 +48,17 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        111,
-        289
+        113,
+        291
+      ]
+    }
+  ],
+  "- documentation (1)\n- other (1)": [
+    {
+      "file": "CHANGELOG.md",
+      "lines": [
+        30,
+        155
       ]
     }
   ],
@@ -58,8 +66,8 @@
     {
       "file": "CHANGELOG.md",
       "lines": [
-        154,
-        228
+        156,
+        230
       ]
     }
   ],
