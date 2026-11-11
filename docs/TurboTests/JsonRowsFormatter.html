@@ -252,6 +252,29 @@
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#dump_stall-instance_method" title="#dump_stall (instance method)">#<strong>dump_stall</strong>(idle)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#example_failed-instance_method" title="#example_failed (instance method)">#<strong>example_failed</strong>(notification)  &#x21d2; Object </a>
     
 
@@ -367,6 +390,29 @@
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#example_started-instance_method" title="#example_started (instance method)">#<strong>example_started</strong>(notification)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(output)  &#x21d2; JsonRowsFormatter </a>
     
 
@@ -438,7 +484,76 @@
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#stall_dump_seconds-instance_method" title="#stall_dump_seconds (instance method)">#<strong>stall_dump_seconds</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#start-instance_method" title="#start (instance method)">#<strong>start</strong>(notification)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#start_stall_dumper-instance_method" title="#start_stall_dumper (instance method)">#<strong>start_stall_dumper</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>When no example finishes for a long time the parent’s watchdog can only say “silent”.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#touch_progress-instance_method" title="#touch_progress (instance method)">#<strong>touch_progress</strong>  &#x21d2; Object </a>
     
 
     
@@ -490,15 +605,19 @@
       <pre class="lines">
 
 
-46
 47
-48</pre>
+48
+49
+50
+51</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 46</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 47</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_output'>output</span><span class='rparen'>)</span>
   <span class='ivar'>@output</span> <span class='op'>=</span> <span class='id identifier rubyid_output'>output</span>
+  <span class='ivar'>@current_example</span> <span class='op'>=</span> <span class='kw'>nil</span>
+  <span class='ivar'>@last_progress</span> <span class='op'>=</span> <span class='const'>Process</span><span class='period'>.</span><span class='id identifier rubyid_clock_gettime'>clock_gettime</span><span class='lparen'>(</span><span class='const'>Process</span><span class='op'>::</span><span class='const'>CLOCK_MONOTONIC</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -537,12 +656,12 @@
       <pre class="lines">
 
 
-44
 45
-46</pre>
+46
+47</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 44</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 45</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_output'>output</span>
   <span class='ivar'>@output</span>
@@ -574,16 +693,18 @@
       <pre class="lines">
 
 
-99
-100
-101
-102
-103</pre>
+171
+172
+173
+174
+175
+176</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 99</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 171</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_close'>close</span><span class='lparen'>(</span><span class='id identifier rubyid__notification'>_notification</span><span class='rparen'>)</span>
+  <span class='ivar'>@stall_dumper</span><span class='op'>&amp;.</span><span class='id identifier rubyid_kill'>kill</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
     <span class='label'>type:</span> <span class='symbol'>:close</span>
   <span class='rparen'>)</span>
@@ -608,15 +729,15 @@
       <pre class="lines">
 
 
-112
-113
-114
-115
-116
-117</pre>
+185
+186
+187
+188
+189
+190</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 112</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 185</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_deprecation'>deprecation</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
@@ -644,21 +765,69 @@
       <pre class="lines">
 
 
-119
-120
-121
-122
-123
-124</pre>
+192
+193
+194
+195
+196
+197</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 119</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 192</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_dump_profile'>dump_profile</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
     <span class='label'>type:</span> <span class='symbol'>:profile</span><span class='comma'>,</span>
     <span class='label'>profile:</span> <span class='id identifier rubyid_profile_to_json'>profile_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="dump_stall-instance_method">
+  
+    #<strong>dump_stall</strong>(idle)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 92</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_dump_stall'>dump_stall</span><span class='lparen'>(</span><span class='id identifier rubyid_idle'>idle</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_lines'>lines</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>turbo_tests2 worker </span><span class='embexpr_beg'>#{</span><span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>TEST_ENV_NUMBER</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='embexpr_end'>}</span><span class='tstring_content'> pid </span><span class='embexpr_beg'>#{</span><span class='const'>Process</span><span class='period'>.</span><span class='id identifier rubyid_pid'>pid</span><span class='embexpr_end'>}</span><span class='tstring_content'>: </span><span class='tstring_end'>&quot;</span></span> \
+    <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>no example finished for </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_idle'>idle</span><span class='period'>.</span><span class='id identifier rubyid_round'>round</span><span class='embexpr_end'>}</span><span class='tstring_content'>s; current example: </span><span class='embexpr_beg'>#{</span><span class='ivar'>@current_example</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+  <span class='const'>Thread</span><span class='period'>.</span><span class='id identifier rubyid_list'>list</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_thread'>thread</span><span class='op'>|</span>
+    <span class='id identifier rubyid_lines'>lines</span> <span class='op'>&lt;&lt;</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>--- </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_thread'>thread</span><span class='period'>.</span><span class='id identifier rubyid_inspect'>inspect</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+    <span class='id identifier rubyid_lines'>lines</span><span class='period'>.</span><span class='id identifier rubyid_concat'>concat</span><span class='lparen'>(</span><span class='const'>Array</span><span class='lparen'>(</span><span class='id identifier rubyid_thread'>thread</span><span class='period'>.</span><span class='id identifier rubyid_backtrace'>backtrace</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id identifier rubyid_frame'>frame</span><span class='op'>|</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>    </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_frame'>frame</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+  <span class='ivar'>@stall_io</span><span class='period'>.</span><span class='id identifier rubyid_puts'>puts</span><span class='lparen'>(</span><span class='id identifier rubyid_lines'>lines</span><span class='period'>.</span><span class='id identifier rubyid_join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='ivar'>@stall_io</span><span class='period'>.</span><span class='id identifier rubyid_flush'>flush</span>
+<span class='kw'>rescue</span>
+  <span class='kw'>nil</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -680,17 +849,19 @@
       <pre class="lines">
 
 
-85
-86
-87
-88
-89
-90</pre>
+156
+157
+158
+159
+160
+161
+162</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 85</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 156</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_example_failed'>example_failed</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_touch_progress'>touch_progress</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
     <span class='label'>type:</span> <span class='symbol'>:example_failed</span><span class='comma'>,</span>
     <span class='label'>example:</span> <span class='id identifier rubyid_example_to_json'>example_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='period'>.</span><span class='id identifier rubyid_example'>example</span><span class='rparen'>)</span>
@@ -716,15 +887,15 @@
       <pre class="lines">
 
 
-64
-65
-66
-67
-68
-69</pre>
+133
+134
+135
+136
+137
+138</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 64</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 133</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_example_group_finished'>example_group_finished</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
@@ -752,15 +923,15 @@
       <pre class="lines">
 
 
-57
-58
-59
-60
-61
-62</pre>
+126
+127
+128
+129
+130
+131</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 57</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 126</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_example_group_started'>example_group_started</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
@@ -788,17 +959,19 @@
       <pre class="lines">
 
 
-71
-72
-73
-74
-75
-76</pre>
+140
+141
+142
+143
+144
+145
+146</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 71</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 140</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_example_passed'>example_passed</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_touch_progress'>touch_progress</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
     <span class='label'>type:</span> <span class='symbol'>:example_passed</span><span class='comma'>,</span>
     <span class='label'>example:</span> <span class='id identifier rubyid_example_to_json'>example_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='period'>.</span><span class='id identifier rubyid_example'>example</span><span class='rparen'>)</span>
@@ -824,21 +997,55 @@
       <pre class="lines">
 
 
-78
-79
-80
-81
-82
-83</pre>
+148
+149
+150
+151
+152
+153
+154</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 78</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 148</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_example_pending'>example_pending</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_touch_progress'>touch_progress</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
     <span class='label'>type:</span> <span class='symbol'>:example_pending</span><span class='comma'>,</span>
     <span class='label'>example:</span> <span class='id identifier rubyid_example_to_json'>example_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='period'>.</span><span class='id identifier rubyid_example'>example</span><span class='rparen'>)</span>
   <span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="example_started-instance_method">
+  
+    #<strong>example_started</strong>(notification)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+53
+54
+55
+56</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 53</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_example_started'>example_started</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
+  <span class='ivar'>@current_example</span> <span class='op'>=</span> <span class='id identifier rubyid_notification'>notification</span><span class='period'>.</span><span class='id identifier rubyid_example'>example</span><span class='period'>.</span><span class='id identifier rubyid_location'>location</span>
+  <span class='id identifier rubyid_touch_progress'>touch_progress</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -860,15 +1067,15 @@
       <pre class="lines">
 
 
-105
-106
-107
-108
-109
-110</pre>
+178
+179
+180
+181
+182
+183</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 105</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 178</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_message'>message</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
@@ -896,21 +1103,61 @@
       <pre class="lines">
 
 
-92
-93
-94
-95
-96
-97</pre>
+164
+165
+166
+167
+168
+169</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 92</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 164</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_seed'>seed</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
     <span class='label'>type:</span> <span class='symbol'>:seed</span><span class='comma'>,</span>
     <span class='label'>seed:</span> <span class='id identifier rubyid_notification'>notification</span><span class='period'>.</span><span class='id identifier rubyid_seed'>seed</span>
   <span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="stall_dump_seconds-instance_method">
+  
+    #<strong>stall_dump_seconds</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+105
+106
+107
+108
+109
+110
+111
+112</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 105</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_stall_dump_seconds'>stall_dump_seconds</span>
+  <span class='id identifier rubyid_explicit'>explicit</span> <span class='op'>=</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>TURBO_TESTS2_STACK_DUMP_SECONDS</span><span class='tstring_end'>&quot;</span></span><span class='rbracket'>]</span>
+  <span class='kw'>return</span> <span class='const'>Float</span><span class='lparen'>(</span><span class='id identifier rubyid_explicit'>explicit</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_explicit'>explicit</span>
+
+  <span class='const'>Float</span><span class='lparen'>(</span><span class='const'>ENV</span><span class='period'>.</span><span class='id identifier rubyid_fetch'>fetch</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>TURBO_TESTS2_WATCHDOG_SECONDS</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>900</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span> <span class='op'>/</span> <span class='int'>2</span>
+<span class='kw'>rescue</span> <span class='const'>ArgumentError</span>
+  <span class='float'>0.0</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -932,21 +1179,148 @@
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55</pre>
+118
+119
+120
+121
+122
+123
+124</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 118</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_start'>start</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_start_stall_dumper'>start_stall_dumper</span>
   <span class='id identifier rubyid_output_row'>output_row</span><span class='lparen'>(</span>
     <span class='label'>type:</span> <span class='symbol'>:load_summary</span><span class='comma'>,</span>
     <span class='label'>summary:</span> <span class='id identifier rubyid_load_summary_to_json'>load_summary_to_json</span><span class='lparen'>(</span><span class='id identifier rubyid_notification'>notification</span><span class='rparen'>)</span>
   <span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="start_stall_dumper-instance_method">
+  
+    #<strong>start_stall_dumper</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    <p>When no example finishes for a long time the parent’s watchdog can only<br />
+say “silent”. The worker is the only one that can say where it is stuck,<br />
+so dump every thread’s backtrace to stderr (which the parent surfaces)<br />
+once per stall, at half the watchdog. Disabled when the watchdog is.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 62</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_start_stall_dumper'>start_stall_dumper</span>
+  <span class='id identifier rubyid_threshold'>threshold</span> <span class='op'>=</span> <span class='id identifier rubyid_stall_dump_seconds'>stall_dump_seconds</span>
+  <span class='kw'>return</span> <span class='kw'>unless</span> <span class='id identifier rubyid_threshold'>threshold</span><span class='period'>.</span><span class='id identifier rubyid_positive?'>positive?</span>
+
+  <span class='comment'># Specs routinely silence or swap $stderr (silent_stream reopens the fd),
+</span>  <span class='comment'># which would swallow the dump exactly when a spec hangs inside such a
+</span>  <span class='comment'># block. Keep our own duplicate of the original stderr.
+</span>  <span class='ivar'>@stall_io</span> <span class='op'>=</span> <span class='kw'>begin</span>
+    <span class='gvar'>$stderr</span><span class='period'>.</span><span class='id identifier rubyid_dup'>dup</span>
+  <span class='kw'>rescue</span>
+    <span class='gvar'>$stderr</span>
+  <span class='kw'>end</span>
+  <span class='comment'># rubocop:disable ThreadSafety/NewThread -- watchdog helper thread, one per worker process.
+</span>  <span class='ivar'>@stall_dumper</span> <span class='op'>=</span> <span class='const'>Thread</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>do</span>
+    <span class='const'>Thread</span><span class='period'>.</span><span class='id identifier rubyid_current'>current</span><span class='period'>.</span><span class='id identifier rubyid_report_on_exception'>report_on_exception</span> <span class='op'>=</span> <span class='kw'>false</span>
+    <span class='id identifier rubyid_dumped'>dumped</span> <span class='op'>=</span> <span class='kw'>false</span>
+    <span class='id identifier rubyid_loop'>loop</span> <span class='kw'>do</span>
+      <span class='id identifier rubyid_sleep'>sleep</span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='id identifier rubyid_threshold'>threshold</span> <span class='op'>/</span> <span class='float'>4.0</span><span class='comma'>,</span> <span class='float'>1.0</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_max'>max</span><span class='rparen'>)</span>
+      <span class='id identifier rubyid_idle'>idle</span> <span class='op'>=</span> <span class='const'>Process</span><span class='period'>.</span><span class='id identifier rubyid_clock_gettime'>clock_gettime</span><span class='lparen'>(</span><span class='const'>Process</span><span class='op'>::</span><span class='const'>CLOCK_MONOTONIC</span><span class='rparen'>)</span> <span class='op'>-</span> <span class='ivar'>@last_progress</span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_idle'>idle</span> <span class='op'>&lt;</span> <span class='id identifier rubyid_threshold'>threshold</span>
+        <span class='id identifier rubyid_dumped'>dumped</span> <span class='op'>=</span> <span class='kw'>false</span>
+      <span class='kw'>elsif</span> <span class='op'>!</span><span class='id identifier rubyid_dumped'>dumped</span>
+        <span class='id identifier rubyid_dumped'>dumped</span> <span class='op'>=</span> <span class='kw'>true</span>
+        <span class='id identifier rubyid_dump_stall'>dump_stall</span><span class='lparen'>(</span><span class='id identifier rubyid_idle'>idle</span><span class='rparen'>)</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+  <span class='kw'>end</span>
+  <span class='comment'># rubocop:enable ThreadSafety/NewThread
+</span><span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="touch_progress-instance_method">
+  
+    #<strong>touch_progress</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+114
+115
+116</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/turbo_tests/json_rows_formatter.rb', line 114</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_touch_progress'>touch_progress</span>
+  <span class='ivar'>@last_progress</span> <span class='op'>=</span> <span class='const'>Process</span><span class='period'>.</span><span class='id identifier rubyid_clock_gettime'>clock_gettime</span><span class='lparen'>(</span><span class='const'>Process</span><span class='op'>::</span><span class='const'>CLOCK_MONOTONIC</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>

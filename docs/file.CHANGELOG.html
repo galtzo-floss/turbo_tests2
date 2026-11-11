@@ -84,35 +84,47 @@ Please file a bug if you notice a violation of semantic versioning.</p>
 
 <h3 id="security">Security</h3>
 
-<h2 id="401---2026-11-09">
-<a href="https://github.com/galtzo-floss/turbo_tests2/compare/v4.0.0...v4.0.1">4.0.1</a> - 2026-11-09</h2>
+<h2 id="401---2026-11-10">
+<a href="https://github.com/galtzo-floss/turbo_tests2/compare/v4.0.0...v4.0.1">4.0.1</a> - 2026-11-10</h2>
 
 <ul>
   <li>TAG: <a href="https://github.com/galtzo-floss/turbo_tests2/releases/tag/v4.0.1">v4.0.1</a>
 </li>
-  <li>COVERAGE: 96.01% – 1034/1077 lines in 12 files</li>
-  <li>BRANCH COVERAGE: 82.42% – 272/330 branches in 12 files</li>
-  <li>37.39% documented</li>
+  <li>COVERAGE: 95.15% – 1099/1155 lines in 12 files</li>
+  <li>BRANCH COVERAGE: 84.12% – 302/359 branches in 12 files</li>
+  <li>36.67% documented</li>
 </ul>
 
 <h3 id="changed-1">Changed</h3>
 
 <ul>
-  <li>[kc] kettle-jem/prepare: updated 20 project files:
+  <li>[kc] kettle-jem/prepare: updated 24 project files:
     <ul>
       <li>configuration (1)</li>
-      <li>dependencies (19)</li>
+      <li>dependencies (23)</li>
     </ul>
   </li>
-  <li>[kc] kettle-jem/template: updated 27 project files:
+  <li>[kc] kettle-jem/template: updated 37 project files:
     <ul>
-      <li>code and tests (2)</li>
-      <li>dependencies (6)</li>
+      <li>code and tests (3)</li>
+      <li>dependencies (8)</li>
       <li>documentation (1)</li>
-      <li>other (4)</li>
-      <li>workflows (14)</li>
+      <li>other (5)</li>
+      <li>workflows (20)</li>
     </ul>
   </li>
+</ul>
+
+<h3 id="added-1">Added</h3>
+
+<ul>
+  <li>Stall diagnostics: the watchdog report now has one line per worker (pid, whether it exited, examples finished, age of its last message, last finished example, open groups, and <code>/proc</code> state on Linux). Each worker also dumps every thread’s backtrace to a private duplicate of stderr when no example finishes for half the watchdog time; <code>TURBO_TESTS2_STACK_DUMP_SECONDS</code> overrides the delay and <code>0</code> disables it. (#58, #61)</li>
+</ul>
+
+<h3 id="fixed-1">Fixed</h3>
+
+<ul>
+  <li>A worker’s exit message is no longer skipped when reader teardown raises. Force-closing a pipe under a blocked reader raises <code>Errno::EBADF</code> on TruffleRuby (<code>IOError</code> on MRI); the readers now rescue <code>SystemCallError</code> too, and the exit message is queued in an <code>ensure</code>. This caused a rare indefinite stall on TruffleRuby 33.0. (#58, #59)</li>
 </ul>
 
 <h2 id="400---2026-10-15">
@@ -137,7 +149,7 @@ Please file a bug if you notice a violation of semantic versioning.</p>
   </li>
 </ul>
 
-<h3 id="fixed-1">Fixed</h3>
+<h3 id="fixed-2">Fixed</h3>
 
 <ul>
   <li>–allowed-missing now actually bounds the share of files allowed to miss the runtime log when grouping (parallel_tests silently ignored the option); runtime log is now written by the first-party TurboTests::RuntimeLogger through RuntimeGroups::RuntimeLog, and the watchdog’s tracked-pid fallback reads the read-before-write pid ledger correctly</li>
@@ -176,7 +188,7 @@ Please file a bug if you notice a violation of semantic versioning.</p>
   <li>39.42% documented</li>
 </ul>
 
-<h3 id="fixed-2">Fixed</h3>
+<h3 id="fixed-3">Fixed</h3>
 
 <ul>
   <li>Watchdog kills now actually end the run: kill_remaining_workers takes pids from the live wait_threads (the parallel_tests pid file was unreliable — each track/untrack built a fresh Pids instance, so any normal worker exit wiped the file and the watchdog killed nothing), handle_messages stops at the watchdog sentinel instead of waiting for per-worker exits that can never arrive, and post-kill joins are bounded so a wedged worker can no longer hold the run past the watchdog (observed: CI job printed the stall report, then hung 14 more minutes until cancellation)</li>
@@ -225,7 +237,7 @@ Please file a bug if you notice a violation of semantic versioning.</p>
   </li>
 </ul>
 
-<h3 id="fixed-3">Fixed</h3>
+<h3 id="fixed-4">Fixed</h3>
 
 <ul>
   <li>
@@ -265,7 +277,7 @@ Please file a bug if you notice a violation of semantic versioning.</p>
   </li>
 </ul>
 
-<h3 id="fixed-4">Fixed</h3>
+<h3 id="fixed-5">Fixed</h3>
 
 <ul>
   <li>
@@ -312,7 +324,7 @@ Please file a bug if you notice a violation of semantic versioning.</p>
   <li>Documented runtime and platform support tiers, including the TruffleRuby single-worker CI exception and skipped process-spec groups.</li>
 </ul>
 
-<h3 id="fixed-5">Fixed</h3>
+<h3 id="fixed-6">Fixed</h3>
 
 <ul>
   <li>Cap the TruffleRuby 23.0 compatibility workflow at one test worker after an intermittent parallel-run hang; maintained runtimes retain parallel test coverage.</li>
@@ -346,7 +358,7 @@ Please file a bug if you notice a violation of semantic versioning.</p>
   </li>
 </ul>
 
-<h3 id="fixed-6">Fixed</h3>
+<h3 id="fixed-7">Fixed</h3>
 
 <ul>
   <li>Windows runs use size-based worker grouping and skip the runtime logger that requires file locking.</li>
@@ -384,7 +396,7 @@ Please file a bug if you notice a violation of semantic versioning.</p>
   </li>
 </ul>
 
-<h3 id="added-1">Added</h3>
+<h3 id="added-2">Added</h3>
 
 <ul>
   <li>kettle-jem-template-20260913-001 - Templating now also surfaces a review<br>
@@ -395,7 +407,7 @@ dependency doesn’t support one or more of this project’s declared<br>
 engine support needs.</li>
 </ul>
 
-<h3 id="fixed-7">Fixed</h3>
+<h3 id="fixed-8">Fixed</h3>
 
 <ul>
   <li>
@@ -430,7 +442,7 @@ execution of the Windows command shim from <code>BUNDLE_BIN_PATH</code>.</p>
   <li>36.73% documented</li>
 </ul>
 
-<h3 id="fixed-8">Fixed</h3>
+<h3 id="fixed-9">Fixed</h3>
 
 <ul>
   <li>Workers that exit unsuccessfully before reporting any results (for example<br>
@@ -452,7 +464,7 @@ crash workers.</li>
   <li>36.73% documented</li>
 </ul>
 
-<h3 id="added-2">Added</h3>
+<h3 id="added-3">Added</h3>
 
 <ul>
   <li>Support TURBO_TESTS2_MAX_PROCESSES as an orchestration process ceiling.</li>
@@ -486,7 +498,7 @@ crash workers.</li>
   <li>36.73% documented</li>
 </ul>
 
-<h3 id="added-3">Added</h3>
+<h3 id="added-4">Added</h3>
 
 <ul>
   <li>Added <code>--no-rake-hooks</code> to run without loading a discoverable Rakefile or<br>
@@ -513,7 +525,7 @@ invoking the <code>turbo_tests2:setup</code> and <code>turbo_tests2:cleanup</cod
   </li>
 </ul>
 
-<h3 id="fixed-9">Fixed</h3>
+<h3 id="fixed-10">Fixed</h3>
 
 <ul>
   <li>Running <code>turbo_tests2</code> no longer requires a Rakefile merely because the<br>
@@ -569,7 +581,7 @@ discoverable.</li>
 use ClickGems instead of BestGems.</li>
 </ul>
 
-<h3 id="fixed-10">Fixed</h3>
+<h3 id="fixed-11">Fixed</h3>
 
 <ul>
   <li>kettle-jem-template-20260801-002 - Generated RSpec helpers now normalize<br>
@@ -598,7 +610,7 @@ preserving comments and trailing commas during template updates.</li>
   <li>36.73% documented</li>
 </ul>
 
-<h3 id="added-4">Added</h3>
+<h3 id="added-5">Added</h3>
 
 <ul>
   <li>
@@ -620,7 +632,7 @@ setup-ruby-flash planning and can prepare appraisal-only jobs without<br>
 installing the main Gemfile bundle.</li>
 </ul>
 
-<h3 id="fixed-11">Fixed</h3>
+<h3 id="fixed-12">Fixed</h3>
 
 <ul>
   <li>kettle-jem-template-20260728-002 - Generated RuboCop configs now ignore the<br>
@@ -662,7 +674,7 @@ even when the gemspec is loaded from another working directory.</li>
   <li>36.73% documented</li>
 </ul>
 
-<h3 id="added-5">Added</h3>
+<h3 id="added-6">Added</h3>
 
 <ul>
   <li>
@@ -675,7 +687,7 @@ before generated docs are refreshed.</p>
   </li>
 </ul>
 
-<h3 id="fixed-12">Fixed</h3>
+<h3 id="fixed-13">Fixed</h3>
 
 <ul>
   <li>Worker stdout that happens to contain <code>RSPEC_FORMATTER_OUTPUT_ID</code> is now kept<br>
@@ -758,7 +770,7 @@ so release CI monitoring does not report intentionally skipped engine<br>
 workflows as failures.</li>
 </ul>
 
-<h3 id="fixed-13">Fixed</h3>
+<h3 id="fixed-14">Fixed</h3>
 
 <ul>
   <li>Worker commands now drop project <code>.rspec</code> presentation formatter and output<br>
@@ -780,7 +792,7 @@ turbo summary.</li>
   <li>34.69% documented</li>
 </ul>
 
-<h3 id="added-6">Added</h3>
+<h3 id="added-7">Added</h3>
 
 <ul>
   <li>
@@ -814,7 +826,7 @@ alternate engine jobs.</li>
 normal suite does not pay its fixed load-time delay.</li>
 </ul>
 
-<h3 id="fixed-14">Fixed</h3>
+<h3 id="fixed-15">Fixed</h3>
 
 <ul>
   <li>Successful non-verbose runs now surface warning and deprecation lines emitted<br>
@@ -851,7 +863,7 @@ supplied after <code>--</code>.</li>
   <li>35.11% documented</li>
 </ul>
 
-<h3 id="fixed-15">Fixed</h3>
+<h3 id="fixed-16">Fixed</h3>
 
 <ul>
   <li>Worker commands now override RSpec’s default options file, then explicitly<br>
@@ -872,7 +884,7 @@ suite while preserving options like <code>--require spec_helper</code>.</li>
   <li>35.87% documented</li>
 </ul>
 
-<h3 id="fixed-16">Fixed</h3>
+<h3 id="fixed-17">Fixed</h3>
 
 <ul>
   <li>Duplicate RSpec <code>Run options:</code> messages from parallel workers are now<br>
@@ -890,7 +902,7 @@ collapsed so they no longer interrupt progress formatter output repeatedly.</li>
   <li>35.87% documented</li>
 </ul>
 
-<h3 id="fixed-17">Fixed</h3>
+<h3 id="fixed-18">Fixed</h3>
 
 <ul>
   <li>
@@ -910,7 +922,7 @@ selectors.</li>
   <li>36.67% documented</li>
 </ul>
 
-<h3 id="fixed-18">Fixed</h3>
+<h3 id="fixed-19">Fixed</h3>
 
 <ul>
   <li>
@@ -933,7 +945,7 @@ honoring <code>.rspec</code> pattern overrides.</p>
   <li>36.67% documented</li>
 </ul>
 
-<h3 id="fixed-19">Fixed</h3>
+<h3 id="fixed-20">Fixed</h3>
 
 <ul>
   <li>No-argument runs now use RSpec configuration for file discovery, including<br>
@@ -952,7 +964,7 @@ directory.</li>
   <li>37.08% documented</li>
 </ul>
 
-<h3 id="fixed-20">Fixed</h3>
+<h3 id="fixed-21">Fixed</h3>
 
 <ul>
   <li>Buffered non-RSpec worker stdout/stderr so successful parallel runs no longer<br>
@@ -991,7 +1003,7 @@ runner on JRuby after the underlying RSpec examples pass.</li>
 as an RSpec parallel runner built on <code>parallel_tests</code>.</li>
 </ul>
 
-<h3 id="fixed-21">Fixed</h3>
+<h3 id="fixed-22">Fixed</h3>
 
 <ul>
   <li>Fixed generated README metadata backticks around <code>turbo_tests2</code> in the<br>
@@ -1009,7 +1021,7 @@ package description.</li>
   <li>37.08% documented</li>
 </ul>
 
-<h3 id="fixed-22">Fixed</h3>
+<h3 id="fixed-23">Fixed</h3>
 
 <ul>
   <li>Package configured license files in gem release file lists.</li>
@@ -1026,7 +1038,7 @@ package description.</li>
   <li>37.08% documented</li>
 </ul>
 
-<h3 id="added-7">Added</h3>
+<h3 id="added-8">Added</h3>
 
 <ul>
   <li>Added support for JRuby 10.1 and TruffleRuby 34.0.</li>
@@ -1038,7 +1050,7 @@ package description.</li>
   <li>Retemplated project metadata and CI/development automation with <code>kettle-jem</code> v7.0.0.</li>
 </ul>
 
-<h3 id="fixed-23">Fixed</h3>
+<h3 id="fixed-24">Fixed</h3>
 
 <ul>
   <li>Fixed subprocess coverage setup for SimpleCov v1 by starting coverage<br>
@@ -1068,7 +1080,7 @@ supported versions exit nonzero but omit the RSpec load-error summary.</li>
   <li>37.08% documented</li>
 </ul>
 
-<h3 id="fixed-24">Fixed</h3>
+<h3 id="fixed-25">Fixed</h3>
 
 <ul>
   <li>
@@ -1094,7 +1106,7 @@ TruffleRuby 25.0 CI failures in the worker pipe cleanup regression spec.</p>
   <li>37.08% documented</li>
 </ul>
 
-<h3 id="fixed-25">Fixed</h3>
+<h3 id="fixed-26">Fixed</h3>
 
 <ul>
   <li>Restored <code>docs/CNAME</code> so the generated documentation site keeps its custom domain.</li>
@@ -1111,7 +1123,7 @@ TruffleRuby 25.0 CI failures in the worker pipe cleanup regression spec.</p>
   <li>37.08% documented</li>
 </ul>
 
-<h3 id="fixed-26">Fixed</h3>
+<h3 id="fixed-27">Fixed</h3>
 
 <ul>
   <li>
@@ -1132,7 +1144,7 @@ passes it to every worker process, and supports <code>--order defined</code> /<b
   <li>36.78% documented</li>
 </ul>
 
-<h3 id="fixed-27">Fixed</h3>
+<h3 id="fixed-28">Fixed</h3>
 
 <ul>
   <li>The CLI now honors documented <code>turbo_tests2:setup</code> and <code>turbo_tests2:cleanup</code><br>
@@ -1159,7 +1171,7 @@ while other gems can still use <code>turbo_tests2</code> under <code>kettle-test
   <li>36.78% documented</li>
 </ul>
 
-<h3 id="added-8">Added</h3>
+<h3 id="added-9">Added</h3>
 
 <ul>
   <li>
@@ -1182,7 +1194,7 @@ worker with <code>TEST_ENV_NUMBER</code> and <code>PARALLEL_TEST_GROUPS</code> s
   <li>Interrupted runs now report spec groups that had not finished before shutdown.</li>
 </ul>
 
-<h3 id="fixed-28">Fixed</h3>
+<h3 id="fixed-29">Fixed</h3>
 
 <ul>
   <li>Reconstructed failure backtraces now filter internal <code>turbo_tests2</code> frames.</li>
@@ -1226,7 +1238,7 @@ SARIF uploads from advanced configurations.</li>
   <li>37.97% documented</li>
 </ul>
 
-<h3 id="added-9">Added</h3>
+<h3 id="added-10">Added</h3>
 
 <ul>
   <li>Initial release</li>

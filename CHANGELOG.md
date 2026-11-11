@@ -20,18 +20,7 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Added
 
-- Stall diagnostics: the watchdog report now has one line per worker (pid, whether it exited, examples finished, age of its last message, last finished example, open groups, and `/proc` state on Linux). Each worker also dumps every thread's backtrace to a private duplicate of stderr when no example finishes for half the watchdog time; `TURBO_TESTS2_STACK_DUMP_SECONDS` overrides the delay and `0` disables it. (#58, #61)
-
 ### Changed
-
-- [kc] kettle-jem/prepare: updated 4 project files:
-  - dependencies (4)
-
-- [kc] kettle-jem/template: updated 10 project files:
-  - code and tests (1)
-  - dependencies (2)
-  - other (1)
-  - workflows (6)
 
 ### Deprecated
 
@@ -39,29 +28,34 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Fixed
 
-- A worker's exit message is no longer skipped when reader teardown raises. Force-closing a pipe under a blocked reader raises `Errno::EBADF` on TruffleRuby (`IOError` on MRI); the readers now rescue `SystemCallError` too, and the exit message is queued in an `ensure`. This caused a rare indefinite stall on TruffleRuby 33.0. (#58, #59)
-
 ### Security
 
-## [4.0.1] - 2026-11-09
+## [4.0.1] - 2026-11-10
 
 - TAG: [v4.0.1][4.0.1t]
-- COVERAGE: 96.01% -- 1034/1077 lines in 12 files
-- BRANCH COVERAGE: 82.42% -- 272/330 branches in 12 files
-- 37.39% documented
+- COVERAGE: 95.15% -- 1099/1155 lines in 12 files
+- BRANCH COVERAGE: 84.12% -- 302/359 branches in 12 files
+- 36.67% documented
 
 ### Changed
 
-- [kc] kettle-jem/prepare: updated 20 project files:
+- [kc] kettle-jem/prepare: updated 24 project files:
   - configuration (1)
-  - dependencies (19)
-
-- [kc] kettle-jem/template: updated 27 project files:
-  - code and tests (2)
-  - dependencies (6)
+  - dependencies (23)
+- [kc] kettle-jem/template: updated 37 project files:
+  - code and tests (3)
+  - dependencies (8)
   - documentation (1)
-  - other (4)
-  - workflows (14)
+  - other (5)
+  - workflows (20)
+
+### Added
+
+- Stall diagnostics: the watchdog report now has one line per worker (pid, whether it exited, examples finished, age of its last message, last finished example, open groups, and `/proc` state on Linux). Each worker also dumps every thread's backtrace to a private duplicate of stderr when no example finishes for half the watchdog time; `TURBO_TESTS2_STACK_DUMP_SECONDS` overrides the delay and `0` disables it. (#58, #61)
+
+### Fixed
+
+- A worker's exit message is no longer skipped when reader teardown raises. Force-closing a pipe under a blocked reader raises `Errno::EBADF` on TruffleRuby (`IOError` on MRI); the readers now rescue `SystemCallError` too, and the exit message is queued in an `ensure`. This caused a rare indefinite stall on TruffleRuby 33.0. (#58, #59)
 
 ## [4.0.0] - 2026-10-15
 
