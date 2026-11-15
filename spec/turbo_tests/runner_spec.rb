@@ -544,7 +544,7 @@ RSpec.describe TurboTests::Runner do
     it "emits test_progress events when opted in via KETTLE_TEST_EVENTS" do
       io = StringIO.new
       runner = build_runner_for_messages
-      runner.instance_variable_set(:@progress, TurboTests::TestProgress.new(io: io, interval: 3600))
+      runner.instance_variable_set(:@progress, Kettle::Ndjson::TestProgress.new(io: io, source: "turbo_tests2", interval: 3600))
       reporter_double = reporter
       allow(reporter_double).to receive_messages(example_passed: nil, example_pending: nil, example_failed: nil)
       row = {execution_result: {status: "passed"}, location: "./spec/a_spec.rb:1", description: "d", full_description: "A d",

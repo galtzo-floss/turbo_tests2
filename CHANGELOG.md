@@ -20,7 +20,7 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Added
 
-- Opt-in `KETTLE_TEST_EVENTS=1` live `test_progress` NDJSON events (throttled ticks, immediate failure events, final) emitted from the parent process via kettle-ndjson
+- Opt-in `KETTLE_TEST_EVENTS=1` live `test_progress` NDJSON events (throttled ticks, immediate failure events, final) emitted from the parent process via `Kettle::Ndjson::TestProgress` (kettle-ndjson >= 0.1.24)
 
 ### Changed
 
