@@ -70,7 +70,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 and <a href="https://tom.preston-werner.com/2022/05/23/major-version-numbers-are-not-sacred.html">yes</a>, platform and engine support are part of the <a href="https://github.com/semver/semver/issues/716#issuecomment-869336139">public API</a>.<br>
 Please file a bug if you notice a violation of semantic versioning.</p>
 
-<h2 id="unreleased"><a href="https://github.com/galtzo-floss/turbo_tests2/compare/v4.0.1...HEAD">Unreleased</a></h2>
+<h2 id="unreleased"><a href="https://github.com/galtzo-floss/turbo_tests2/compare/v4.0.2...HEAD">Unreleased</a></h2>
 
 <h3 id="added">Added</h3>
 
@@ -84,6 +84,41 @@ Please file a bug if you notice a violation of semantic versioning.</p>
 
 <h3 id="security">Security</h3>
 
+<h2 id="402---2026-11-14">
+<a href="https://github.com/galtzo-floss/turbo_tests2/compare/v4.0.1...v4.0.2">4.0.2</a> - 2026-11-14</h2>
+
+<ul>
+  <li>TAG: <a href="https://github.com/galtzo-floss/turbo_tests2/releases/tag/v4.0.2">v4.0.2</a>
+</li>
+  <li>COVERAGE: 96.04% – 1115/1161 lines in 12 files</li>
+  <li>BRANCH COVERAGE: 82.83% – 304/367 branches in 12 files</li>
+  <li>36.67% documented</li>
+</ul>
+
+<h3 id="added-1">Added</h3>
+
+<ul>
+  <li>Opt-in <code>KETTLE_TEST_EVENTS=1</code> live <code>test_progress</code> NDJSON events (throttled ticks, immediate failure events, final) emitted from the parent process via <code>Kettle::Ndjson::TestProgress</code> (kettle-ndjson &gt;= 0.1.24)</li>
+</ul>
+
+<h3 id="changed-1">Changed</h3>
+
+<ul>
+  <li>[kc] kettle-jem/prepare: updated 5 project files:
+    <ul>
+      <li>dependencies (5)</li>
+    </ul>
+  </li>
+  <li>[kc] kettle-jem/template: updated 4 project files:
+    <ul>
+      <li>code and tests (1)</li>
+      <li>documentation (1)</li>
+      <li>other (1)</li>
+      <li>workflows (1)</li>
+    </ul>
+  </li>
+</ul>
+
 <h2 id="401---2026-11-10">
 <a href="https://github.com/galtzo-floss/turbo_tests2/compare/v4.0.0...v4.0.1">4.0.1</a> - 2026-11-10</h2>
 
@@ -95,7 +130,7 @@ Please file a bug if you notice a violation of semantic versioning.</p>
   <li>36.67% documented</li>
 </ul>
 
-<h3 id="changed-1">Changed</h3>
+<h3 id="changed-2">Changed</h3>
 
 <ul>
   <li>[kc] kettle-jem/prepare: updated 24 project files:
@@ -115,7 +150,7 @@ Please file a bug if you notice a violation of semantic versioning.</p>
   </li>
 </ul>
 
-<h3 id="added-1">Added</h3>
+<h3 id="added-2">Added</h3>
 
 <ul>
   <li>Stall diagnostics: the watchdog report now has one line per worker (pid, whether it exited, examples finished, age of its last message, last finished example, open groups, and <code>/proc</code> state on Linux). Each worker also dumps every thread’s backtrace to a private duplicate of stderr when no example finishes for half the watchdog time; <code>TURBO_TESTS2_STACK_DUMP_SECONDS</code> overrides the delay and <code>0</code> disables it. (#58, #61)</li>
@@ -138,7 +173,7 @@ Please file a bug if you notice a violation of semantic versioning.</p>
   <li>37.39% documented</li>
 </ul>
 
-<h3 id="changed-2">Changed</h3>
+<h3 id="changed-3">Changed</h3>
 
 <ul>
   <li>
@@ -166,7 +201,7 @@ Please file a bug if you notice a violation of semantic versioning.</p>
   <li>39.42% documented</li>
 </ul>
 
-<h3 id="changed-3">Changed</h3>
+<h3 id="changed-4">Changed</h3>
 
 <ul>
   <li>
@@ -194,7 +229,7 @@ Please file a bug if you notice a violation of semantic versioning.</p>
   <li>Watchdog kills now actually end the run: kill_remaining_workers takes pids from the live wait_threads (the parallel_tests pid file was unreliable — each track/untrack built a fresh Pids instance, so any normal worker exit wiped the file and the watchdog killed nothing), handle_messages stops at the watchdog sentinel instead of waiting for per-worker exits that can never arrive, and post-kill joins are bounded so a wedged worker can no longer hold the run past the watchdog (observed: CI job printed the stall report, then hung 14 more minutes until cancellation)</li>
 </ul>
 
-<h3 id="changed-4">Changed</h3>
+<h3 id="changed-5">Changed</h3>
 
 <ul>
   <li>[kc] kettle-jem/template: updated 32 project files:
@@ -218,7 +253,7 @@ Please file a bug if you notice a violation of semantic versioning.</p>
   <li>39.42% documented</li>
 </ul>
 
-<h3 id="changed-5">Changed</h3>
+<h3 id="changed-6">Changed</h3>
 
 <ul>
   <li>[kc] kettle-jem/prepare: updated 13 project files:
@@ -259,7 +294,7 @@ Please file a bug if you notice a violation of semantic versioning.</p>
   <li>39.42% documented</li>
 </ul>
 
-<h3 id="changed-6">Changed</h3>
+<h3 id="changed-7">Changed</h3>
 
 <ul>
   <li>[kc] kettle-jem/prepare: updated 6 project files:
@@ -305,7 +340,7 @@ Please file a bug if you notice a violation of semantic versioning.</p>
   <li>36.36% documented</li>
 </ul>
 
-<h3 id="changed-7">Changed</h3>
+<h3 id="changed-8">Changed</h3>
 
 <ul>
   <li>[kc] kettle-jem/prepare: updated 15 project files:
@@ -341,7 +376,7 @@ Please file a bug if you notice a violation of semantic versioning.</p>
   <li>36.36% documented</li>
 </ul>
 
-<h3 id="changed-8">Changed</h3>
+<h3 id="changed-9">Changed</h3>
 
 <ul>
   <li>[kc] kettle-jem/prepare: updated 7 project files:
@@ -375,7 +410,7 @@ Please file a bug if you notice a violation of semantic versioning.</p>
   <li>36.36% documented</li>
 </ul>
 
-<h3 id="changed-9">Changed</h3>
+<h3 id="changed-10">Changed</h3>
 
 <ul>
   <li>
@@ -396,7 +431,7 @@ Please file a bug if you notice a violation of semantic versioning.</p>
   </li>
 </ul>
 
-<h3 id="added-2">Added</h3>
+<h3 id="added-3">Added</h3>
 
 <ul>
   <li>kettle-jem-template-20260913-001 - Templating now also surfaces a review<br>
@@ -464,13 +499,13 @@ crash workers.</li>
   <li>36.73% documented</li>
 </ul>
 
-<h3 id="added-3">Added</h3>
+<h3 id="added-4">Added</h3>
 
 <ul>
   <li>Support TURBO_TESTS2_MAX_PROCESSES as an orchestration process ceiling.</li>
 </ul>
 
-<h3 id="changed-10">Changed</h3>
+<h3 id="changed-11">Changed</h3>
 
 <ul>
   <li>[kc] kettle-jem/prepare: updated 8 project files:
@@ -498,14 +533,14 @@ crash workers.</li>
   <li>36.73% documented</li>
 </ul>
 
-<h3 id="added-4">Added</h3>
+<h3 id="added-5">Added</h3>
 
 <ul>
   <li>Added <code>--no-rake-hooks</code> to run without loading a discoverable Rakefile or<br>
 invoking the <code>turbo_tests2:setup</code> and <code>turbo_tests2:cleanup</code> hooks.</li>
 </ul>
 
-<h3 id="changed-11">Changed</h3>
+<h3 id="changed-12">Changed</h3>
 
 <ul>
   <li>[kc] kettle-jem/prepare: updated 40 project files:
@@ -544,7 +579,7 @@ discoverable.</li>
   <li>36.73% documented</li>
 </ul>
 
-<h3 id="changed-12">Changed</h3>
+<h3 id="changed-13">Changed</h3>
 
 <ul>
   <li>[kc] kettle-jem/prepare: updated 11 project files:
@@ -574,7 +609,7 @@ discoverable.</li>
   <li>36.73% documented</li>
 </ul>
 
-<h3 id="changed-13">Changed</h3>
+<h3 id="changed-14">Changed</h3>
 
 <ul>
   <li>kettle-jem-template-20260801-001 - Generated README gem dashboard links now<br>
@@ -610,7 +645,7 @@ preserving comments and trailing commas during template updates.</li>
   <li>36.73% documented</li>
 </ul>
 
-<h3 id="added-5">Added</h3>
+<h3 id="added-6">Added</h3>
 
 <ul>
   <li>
@@ -624,7 +659,7 @@ tagged RubyForum community alongside Discord.</p>
   </li>
 </ul>
 
-<h3 id="changed-14">Changed</h3>
+<h3 id="changed-15">Changed</h3>
 
 <ul>
   <li>kettle-jem-template-20260728-001 - Generated Ruby workflows now use clearer<br>
@@ -653,11 +688,6 @@ lockfile parser failures on Git and path dependencies.</p>
 missing canonical version spec when a project only has shim namespace version<br>
 specs.</p>
   </li>
-  <li>
-    <p>kettle-jem-template-20260729-001 - Generated JRuby 9.4 workflows now use the<br>
-legacy manual bundle install path, avoiding setup-time Bundler full-index<br>
-failures against <code>gem.coop</code>.</p>
-  </li>
   <li>kettle-jem-template-20260730-001 - Gemspec package file enumeration now runs<br>
 relative to the gemspec directory, so packaged template assets are included<br>
 even when the gemspec is loaded from another working directory.</li>
@@ -674,7 +704,7 @@ even when the gemspec is loaded from another working directory.</li>
   <li>36.73% documented</li>
 </ul>
 
-<h3 id="added-6">Added</h3>
+<h3 id="added-7">Added</h3>
 
 <ul>
   <li>
@@ -701,7 +731,7 @@ QLTY, and Codecov as optional, so provider outages do not fail CI when local<br>
 coverage thresholds still pass.</li>
 </ul>
 
-<h3 id="changed-15">Changed</h3>
+<h3 id="changed-16">Changed</h3>
 
 <ul>
   <li>README guidance now distinguishes the <code>TurboTests</code> namespace from the<br>
@@ -721,7 +751,7 @@ default <code>coverage/</code> base directory.</li>
   <li>34.69% documented</li>
 </ul>
 
-<h3 id="changed-16">Changed</h3>
+<h3 id="changed-17">Changed</h3>
 
 <ul>
   <li>
@@ -749,7 +779,7 @@ or incompatible with the project’s runtime Ruby floor.</p>
   <li>34.69% documented</li>
 </ul>
 
-<h3 id="changed-17">Changed</h3>
+<h3 id="changed-18">Changed</h3>
 
 <ul>
   <li>
@@ -792,7 +822,7 @@ turbo summary.</li>
   <li>34.69% documented</li>
 </ul>
 
-<h3 id="added-7">Added</h3>
+<h3 id="added-8">Added</h3>
 
 <ul>
   <li>
@@ -814,7 +844,7 @@ explicitly and mapped to <code>parallel_tests</code> runtime grouping tuning opt
 including when supplied after the compatibility <code>--</code> separator.</li>
 </ul>
 
-<h3 id="changed-18">Changed</h3>
+<h3 id="changed-19">Changed</h3>
 
 <ul>
   <li>Pull request engine workflows now keep JRuby and TruffleRuby coverage<br>
@@ -996,7 +1026,7 @@ runner on JRuby after the underlying RSpec examples pass.</li>
   <li>37.08% documented</li>
 </ul>
 
-<h3 id="changed-19">Changed</h3>
+<h3 id="changed-20">Changed</h3>
 
 <ul>
   <li>Clarified project metadata, README, and CLI help to describe <code>turbo_tests2</code><br>
@@ -1038,13 +1068,13 @@ package description.</li>
   <li>37.08% documented</li>
 </ul>
 
-<h3 id="added-8">Added</h3>
+<h3 id="added-9">Added</h3>
 
 <ul>
   <li>Added support for JRuby 10.1 and TruffleRuby 34.0.</li>
 </ul>
 
-<h3 id="changed-20">Changed</h3>
+<h3 id="changed-21">Changed</h3>
 
 <ul>
   <li>Retemplated project metadata and CI/development automation with <code>kettle-jem</code> v7.0.0.</li>
@@ -1171,7 +1201,7 @@ while other gems can still use <code>turbo_tests2</code> under <code>kettle-test
   <li>36.78% documented</li>
 </ul>
 
-<h3 id="added-9">Added</h3>
+<h3 id="added-10">Added</h3>
 
 <ul>
   <li>
@@ -1185,7 +1215,7 @@ worker with <code>TEST_ENV_NUMBER</code> and <code>PARALLEL_TEST_GROUPS</code> s
 <code>parallel_tests</code>-compatible runtime log so grouping can use example-level timing history.</li>
 </ul>
 
-<h3 id="changed-21">Changed</h3>
+<h3 id="changed-22">Changed</h3>
 
 <ul>
   <li>Worker subprocess JSON now forwards RSpec deprecation notifications to the parent reporter.</li>
@@ -1238,7 +1268,7 @@ SARIF uploads from advanced configurations.</li>
   <li>37.97% documented</li>
 </ul>
 
-<h3 id="added-10">Added</h3>
+<h3 id="added-11">Added</h3>
 
 <ul>
   <li>Initial release</li>

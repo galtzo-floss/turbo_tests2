@@ -20,6 +20,25 @@ Please file a bug if you notice a violation of semantic versioning.
 
 ### Added
 
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [4.0.2] - 2026-11-14
+
+- TAG: [v4.0.2][4.0.2t]
+- COVERAGE: 96.04% -- 1115/1161 lines in 12 files
+- BRANCH COVERAGE: 82.83% -- 304/367 branches in 12 files
+- 36.67% documented
+
+### Added
+
 - Opt-in `KETTLE_TEST_EVENTS=1` live `test_progress` NDJSON events (throttled ticks, immediate failure events, final) emitted from the parent process via `Kettle::Ndjson::TestProgress` (kettle-ndjson >= 0.1.24)
 
 ### Changed
@@ -32,14 +51,6 @@ Please file a bug if you notice a violation of semantic versioning.
   - documentation (1)
   - other (1)
   - workflows (1)
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 
 ## [4.0.1] - 2026-11-10
 
@@ -825,7 +836,9 @@ Please file a bug if you notice a violation of semantic versioning.
 
 - Initial release
 
-[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v4.0.1...HEAD
+[Unreleased]: https://github.com/galtzo-floss/turbo_tests2/compare/v4.0.2...HEAD
+[4.0.2]: https://github.com/galtzo-floss/turbo_tests2/compare/v4.0.1...v4.0.2
+[4.0.2t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v4.0.2
 [4.0.1]: https://github.com/galtzo-floss/turbo_tests2/compare/v4.0.0...v4.0.1
 [4.0.1t]: https://github.com/galtzo-floss/turbo_tests2/releases/tag/v4.0.1
 [4.0.0]: https://github.com/galtzo-floss/turbo_tests2/compare/v3.2.17...v4.0.0
