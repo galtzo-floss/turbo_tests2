@@ -124,6 +124,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Utilities
+  spec.add_dependency("kettle-ndjson", "~> 0.1", ">= 0.1.23")                # ruby >= 2.4, NDJSON emission for opt-in test_progress events
   spec.add_dependency("rspec", ">= 3.10")
   spec.add_dependency("runtime_groups", "~> 0.1", ">= 0.1.3")
   spec.add_dependency("version_gem", "~> 1.1", ">= 1.1.17")              # ruby >= 2.2.0
