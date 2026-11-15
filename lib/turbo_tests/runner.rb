@@ -4,6 +4,7 @@ require "json"
 require "timeout"
 require "fileutils"
 require "runtime_groups"
+require "kettle/ndjson"
 require "rspec/core"
 require "shellwords"
 require "tempfile"
@@ -250,6 +251,7 @@ module TurboTests
       @nice = opts[:nice]
       @use_runtime_info = opts[:use_runtime_info]
 
+      @progress = Kettle::Ndjson::TestProgress.from_env(io: $stdout, source: "turbo_tests2")
       @load_time = 0
       @load_count = 0
       @failure_count = 0
@@ -977,6 +979,7 @@ module TurboTests
         when "example_passed"
           example = FakeExample.from_obj(message[:example])
           @reporter.example_passed(example)
+          @progress&.record(:passed)
         when "group_started"
           @reporter.group_started(message[:group].to_struct)
         when "group_finished"
@@ -984,6 +987,7 @@ module TurboTests
         when "example_pending"
           example = FakeExample.from_obj(message[:example])
           @reporter.example_pending(example)
+          @progress&.record(:pending)
         when "load_summary"
           message = message[:summary]
           # NOTE: notifications order and content is not guaranteed hence the fetch
@@ -992,6 +996,11 @@ module TurboTests
         when "example_failed"
           example = FakeExample.from_obj(message[:example])
           @reporter.example_failed(example)
+          @progress&.record(
+            :failed,
+            location: message[:example][:location],
+            description: message[:example][:full_description]
+          )
           @failure_count += 1
           if fail_fast_met
             report_unfinished_groups("Groups stopped by fail-fast")
@@ -1032,6 +1041,7 @@ module TurboTests
         $stdout.flush
       end
 
+      @progress&.finish
       flush_deferred_run_options_messages
     rescue Interrupt
     end

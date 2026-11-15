@@ -449,6 +449,31 @@ Notes:
 bundle exec turbo_tests2 -r fuubar -f Fuubar spec/whatever
 ```
 
+### Live test progress events
+
+Opt-in, off by default. Set `KETTLE_TEST_EVENTS=1` (also `true`/`yes`/`on`) and the
+`turbo_tests2` parent process aggregates every worker's results and writes
+[kettle-ndjson](https://github.com/kettle-dev/kettle-ndjson) `test_progress` events,
+one JSON object per line, to stdout. It never emits one event per example.
+
+```json
+{"kind":"tick","source":"turbo_tests2","examples":120,"failures":1,"pending":2,"elapsed":8.31,"type":"test_progress","event_version":1}
+{"kind":"failure","source":"turbo_tests2","examples":57,"failures":1,"pending":0,"elapsed":4.02,"location":"./spec/a_spec.rb:3","description":"A fails","type":"test_progress","event_version":1}
+```
+
+| Field | Meaning |
+| --- | --- |
+| `type` | always `test_progress` |
+| `event_version` | `1` |
+| `kind` | `tick` (throttled, at most 1/s), `failure` (immediate, one per failed example), `final` (once, at end) |
+| `source` | `turbo_tests2` (the `kettle-test` formatter emits `kettle-test`) |
+| `examples`, `failures`, `pending` | running totals across all workers |
+| `elapsed` | seconds since the run started (float) |
+| `location`, `description` | `failure` only: example location and full description |
+
+`KETTLE_TEST_EVENTS_INTERVAL` (seconds, default `1`) tunes the tick throttle. Each event is
+preceded by a newline so it starts on its own line even amid progress dots.
+
 ### Rake Hooks
 
 If Rake and a Rakefile are present, the CLI will invoke the tasks `turbo_tests2:setup` and

@@ -541,6 +541,24 @@ RSpec.describe TurboTests::Runner do
       runner.instance_variable_get(:@messages).push(type: "exit", process_id: 1)
     end
 
+    it "emits test_progress events when opted in via KETTLE_TEST_EVENTS" do
+      io = StringIO.new
+      runner = build_runner_for_messages
+      runner.instance_variable_set(:@progress, Kettle::Ndjson::TestProgress.new(io: io, source: "turbo_tests2", interval: 3600))
+      reporter_double = reporter
+      allow(reporter_double).to receive_messages(example_passed: nil, example_pending: nil, example_failed: nil)
+      row = {execution_result: {status: "passed"}, location: "./spec/a_spec.rb:1", description: "d", full_description: "A d",
+             metadata: {shared_group_inclusion_backtrace: [], extra_failure_lines: nil}, location_rerun_argument: "./spec/a_spec.rb:1"}
+      allow(TurboTests::FakeExample).to receive(:from_obj).and_return(double("example"))
+      enqueue_then_exit(runner, {type: "example_passed", example: row}, {type: "example_pending", example: row}, {type: "example_failed", example: row})
+
+      runner.send(:handle_messages)
+
+      kinds = io.string.lines.map(&:strip).reject(&:empty?).map { |l| JSON.parse(l) }
+      expect(kinds.map { |e| e["kind"] }).to eq(%w[tick failure final])
+      expect(kinds.last).to include("examples" => 3, "failures" => 1, "pending" => 1)
+    end
+
     it "handles 'seed' message (no-op)" do
       runner = build_runner_for_messages
       enqueue_then_exit(runner, {type: "seed", seed: 1234})
